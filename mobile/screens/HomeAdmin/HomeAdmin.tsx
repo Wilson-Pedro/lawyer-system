@@ -23,19 +23,19 @@ export default function HomeAdmin() {
       <View style={styles.menu}>
         <MenuButton
           label="Ver Processos"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('Processos')}
         />
         <MenuButton
           label="Cadastrar Assistido"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('CadastrarAssistido')}
         />
         <MenuButton
           label="Cadastrar Estagiário"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('CadastrarEstagiario')}
         />
         <MenuButton
           label="Cadastrar Processo"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('CadastrarProcesso')}
         />
         <MenuButton
           label="Sair"

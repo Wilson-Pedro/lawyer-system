@@ -33,17 +33,17 @@ export default function Home({ navigation }: Props) {
       </Text>
 
       <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Admin')}
-      >
-        <Text style={styles.buttonText}>Fazer Cadastro</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
         style={[styles.button, styles.secondaryButton]}
         onPress={() => navigation.navigate('Admin')}
       >
         <Text style={[styles.buttonText, { color: '#2a3a7f' }]}>Já tenho conta</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Admin')}
+      >
+        <Text style={styles.buttonText}>Fazer Cadastro</Text>
       </TouchableOpacity>
     </View>
   );
