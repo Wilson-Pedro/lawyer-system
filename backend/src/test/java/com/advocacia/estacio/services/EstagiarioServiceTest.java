@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +33,16 @@ class EstagiarioServiceTest {
 				"Pedro Lucas", "pedro@gmail.com", "20251208", 
 				PeriodoEstagio.ESTAGIO_I, "1234");
 	}
+	
+	@Test
+	@Order(1)
+	void deletandoTodosOsDadosAntesDostestes() {
+		estagiarioRepository.deleteAll();
+	}
 
 	@Test
-	void deveSalvarEstagiarioNoBanco() {
+	@Order(2)
+	void deveSalvarEstagiarioNoBancoPeloService() {
 		assertEquals(0, estagiarioRepository.count());
 		
 		Estagiario estagiarioSalvo = estagiarioService.salvar(new EstagiarioDto(estagiario));
