@@ -11,6 +11,8 @@ import {
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { StackParamList } from '../../types';
 
+//import imgPath from './../../assets/Balanca-da-justica.png';
+
 const { width } = Dimensions.get('window');
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<StackParamList, 'Home'>;
@@ -23,7 +25,7 @@ export default function Home({ navigation }: Props) {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: 'https://cdn-icons-png.flaticon.com/512/891/891462.png' }}
+        source={require('./../../assets/Balanca-da-justica.png')}
         style={styles.logo}
       />
 
