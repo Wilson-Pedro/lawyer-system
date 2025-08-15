@@ -59,7 +59,7 @@ class EstagiarioControllerTest {
 	}
 	
 	@Test
-	void deveSalvarEstagiarioNoBancoPeloController() throws Exception {
+	void deveSalvar_Estagiario_NoBancoDeDados_PeloController() throws Exception {
 		
 		assertEquals(0, estagiarioRepository.count());
 		

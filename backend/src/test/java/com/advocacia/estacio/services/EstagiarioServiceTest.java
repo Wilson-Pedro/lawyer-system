@@ -13,19 +13,27 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EstagiarioServiceTest {
 	
-	Estagiario estagiario;
-	
 	@Autowired
 	EstagiarioService estagiarioService;
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
+	
+	@Autowired
+	EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	AssistidoRepository assistidoRepository;
+	
+	Estagiario estagiario;
 	
 	@BeforeEach
 	void setUp() {
@@ -36,13 +44,15 @@ class EstagiarioServiceTest {
 	
 	@Test
 	@Order(1)
-	void deletandoTodosOsDadosAntesDostestes() {
+	void deveDeletar_TodosOsDados_AntesDostestes() {
 		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
 	}
 
 	@Test
 	@Order(2)
-	void deveSalvarEstagiarioNoBancoPeloService() {
+	void deveSalvar_Estagiario_NoBancoDeDadosPeloService() {
 		assertEquals(0, estagiarioRepository.count());
 		
 		Estagiario estagiarioSalvo = estagiarioService.salvar(new EstagiarioDto(estagiario));
