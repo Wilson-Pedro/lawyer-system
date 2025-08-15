@@ -2,6 +2,8 @@ package com.advocacia.estacio.domain.dto;
 
 import java.io.Serializable;
 
+import com.advocacia.estacio.domain.entities.Assistido;
+
 public class AssistidoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -24,6 +26,9 @@ public class AssistidoDto implements Serializable{
 	private Integer numeroDaCasa;
 	
 	private String cep;
+	
+	private AssistidoDto() {
+	}
 
 	public AssistidoDto(Long id, String nome, String matricula, String telefone, String email, String cidade, String bairro, String rua,
 			Integer numeroDaCasa, String cep) {
@@ -37,6 +42,19 @@ public class AssistidoDto implements Serializable{
 		this.rua = rua;
 		this.numeroDaCasa = numeroDaCasa;
 		this.cep = cep;
+	}
+	
+	public AssistidoDto(Assistido assistido) {
+		this.id = assistido.getId();
+		this.nome = assistido.getNome();
+		this.matricula = assistido.getMatricula();
+		this.telefone = assistido.getTelefone();
+		this.email = assistido.getEmail();
+		this.cidade = assistido.getEndereco().getCidade();
+		this.bairro = assistido.getEndereco().getBairro();
+		this.rua = assistido.getEndereco().getRua();
+		this.numeroDaCasa = assistido.getEndereco().getNumeroDaCasa();
+		this.cep = assistido.getEndereco().getCep();
 	}
 
 	public Long getId() {
