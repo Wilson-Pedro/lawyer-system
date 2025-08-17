@@ -1,7 +1,10 @@
 package com.advocacia.estacio.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
@@ -33,6 +36,9 @@ public class Estagiario implements Serializable {
 	private PeriodoEstagio periodo;
 	
 	private String senha;
+	
+	@CreationTimestamp
+	private LocalDateTime registro;
 	
 	public Estagiario() {
 	}
@@ -99,6 +105,10 @@ public class Estagiario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public LocalDateTime getRegistro() {
+		return registro;
 	}
 
 	@Override

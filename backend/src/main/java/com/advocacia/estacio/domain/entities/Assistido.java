@@ -1,7 +1,10 @@
 package com.advocacia.estacio.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 
@@ -33,6 +36,9 @@ public class Assistido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+	
+	@CreationTimestamp
+	private LocalDateTime registro;
 	
 	public Assistido() {
 	}
@@ -99,6 +105,10 @@ public class Assistido implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+	
+	public LocalDateTime getRegistro() {
+		return registro;
 	}
 
 	@Override

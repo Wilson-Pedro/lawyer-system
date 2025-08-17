@@ -1,7 +1,10 @@
 package com.advocacia.estacio.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 
@@ -29,6 +32,9 @@ public class Endereco implements Serializable {
 	private Integer numeroDaCasa;
 	
 	private String cep;
+	
+	@CreationTimestamp
+	private LocalDateTime registro;
 	
 	public Endereco() {
 	}
@@ -96,6 +102,10 @@ public class Endereco implements Serializable {
 
 	public void setCep(String cep) {
 		this.cep = cep;
+	}
+	
+	public LocalDateTime getRegistro() {
+		return registro;
 	}
 
 	@Override

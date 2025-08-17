@@ -1,6 +1,7 @@
 package com.advocacia.estacio.domain.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.advocacia.estacio.domain.entities.Assistido;
 
