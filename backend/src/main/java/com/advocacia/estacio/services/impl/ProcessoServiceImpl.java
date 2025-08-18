@@ -21,7 +21,6 @@ public class ProcessoServiceImpl implements ProcessoService {
 	public Processo salvar(ProcessoRequestDto request) {
 		Processo processo = new Processo(request);
 		processo.setNumeroDoProcesso(gerarNumeroProcesso());
-		processo.setPrazoFinal(LocalDateTime.now().plusDays(30L));
 		processo.postulatoria();
 		processo.setUltimaAtualizacao(LocalDateTime.now());
 		return processoRepository.save(processo);

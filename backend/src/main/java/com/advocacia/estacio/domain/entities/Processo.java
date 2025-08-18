@@ -1,7 +1,9 @@
 package com.advocacia.estacio.domain.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -31,7 +33,9 @@ public class Processo implements Serializable{
 	
 	private String assunto;
 	
-	private LocalDateTime prazoFinal;
+	private String vara;
+	
+	private LocalDate prazoFinal;
 	
 	private String responsavel;
 	
@@ -48,7 +52,7 @@ public class Processo implements Serializable{
 	public Processo() {
 	}
 
-	public Processo(Long id, Integer numeroDoProcesso, String assunto, LocalDateTime prazoFinal, String responsavel,
+	public Processo(Long id, Integer numeroDoProcesso, String assunto, String vara, LocalDate prazoFinal, String responsavel,
 			StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.numeroDoProcesso = numeroDoProcesso;
@@ -63,7 +67,8 @@ public class Processo implements Serializable{
 	public Processo(ProcessoDto dto) {
 		this.numeroDoProcesso = dto.getNumeroDoProcesso();
 		this.assunto = dto.getAssunto();
-		this.prazoFinal = dto.getPrazoFinal();
+		this.vara = dto.getVara();
+		this.prazoFinal = localDateToString(dto.getPrazoFinal());
 		this.responsavel = dto.getResponsavel();
 		this.statusDoProcesso = StatusProcesso.toEnum(dto.getStatusDoProcesso());
 		this.partesEnvolvidas = dto.getPartesEnvolvidas();
@@ -73,11 +78,16 @@ public class Processo implements Serializable{
 	public Processo(ProcessoRequestDto request) {
 		this.assunto = request.getAssunto();
 		this.responsavel = request.getResponsavel();
-		this.partesEnvolvidas = request.getPartesEnvolvidas();
+		this.prazoFinal = localDateToString(request.getPrazo());
 	}
 	
 	public void postulatoria() {
 		this.statusDoProcesso = StatusProcesso.POSTULATORIA;
+	}
+	
+	private LocalDate localDateToString(String string) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return LocalDate.parse(string, formatter);
 	}
 
 	public Long getId() {
@@ -104,11 +114,19 @@ public class Processo implements Serializable{
 		this.assunto = assunto;
 	}
 
-	public LocalDateTime getPrazoFinal() {
+	public String getVara() {
+		return vara;
+	}
+
+	public void setVara(String vara) {
+		this.vara = vara;
+	}
+
+	public LocalDate getPrazoFinal() {
 		return prazoFinal;
 	}
 
-	public void setPrazoFinal(LocalDateTime prazoFinal) {
+	public void setPrazoFinal(LocalDate prazoFinal) {
 		this.prazoFinal = prazoFinal;
 	}
 

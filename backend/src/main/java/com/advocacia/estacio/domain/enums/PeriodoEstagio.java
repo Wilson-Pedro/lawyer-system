@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 public enum PeriodoEstagio {
 	
 	ESTAGIO_I(1, "Estágio I"),
-	ESTAGIO_II(2, "Estágio I"),
-	ESTAGIO_III(3, "Estágio I"),
-	ESTAGIO_IV(4, "Estágio I");
+	ESTAGIO_II(2, "Estágio II"),
+	ESTAGIO_III(3, "Estágio III"),
+	ESTAGIO_IV(4, "Estágio IV");
 	
 	private Integer codigo;
 	

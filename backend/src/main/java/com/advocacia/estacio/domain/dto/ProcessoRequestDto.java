@@ -7,28 +7,35 @@ public class ProcessoRequestDto implements Serializable{
 	
 	private String assunto;
 	
+	private String vara;
+	
 	private String responsavel;
 	
-	private String partesEnvolvidas;
+	private String prazo;
 	
 	public ProcessoRequestDto() {
 	}
 
-	public ProcessoRequestDto(String assunto, String responsavel, String partesEnvolvidas) {
+	public ProcessoRequestDto(String assunto, String vara, String responsavel, String prazo) {
 		this.assunto = assunto;
+		this.vara = vara;
 		this.responsavel = responsavel;
-		this.partesEnvolvidas = partesEnvolvidas;
+		this.prazo = prazo;
 	}
 
 	public String getAssunto() {
 		return assunto;
 	}
 
+	public String getVara() {
+		return vara;
+	}
+
 	public String getResponsavel() {
 		return responsavel;
 	}
 
-	public String getPartesEnvolvidas() {
-		return partesEnvolvidas;
+	public String getPrazo() {
+		return prazo;
 	}
 }

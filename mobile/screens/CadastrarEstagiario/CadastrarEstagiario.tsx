@@ -11,64 +11,114 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 
+import axios from 'axios';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
 type FormTypes = {
-    nome: string;
-    email: string;
-    matricula: string;
-    periodo: string;
-    senha: string;
+  nome: string;
+  email: string;
+  matricula: string;
+  periodo: string;
+  senha: string;
 };
 
 const { width } = Dimensions.get('window');
 
 export default function CadastrarEstagiario() {
-  const [form, setForm] = useState<FormTypes>({
-    nome: '',
-    email: '',
-    matricula: '',
-    periodo: '',
-    senha: '',
-  });
 
-  const handleChange = (field:any, value:any) => {
-    setForm({ ...form, [field]: value });
-  };
+  const [nome, setNome] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [matricula, setMatricula] = useState<string>('');
+  const [periodo, setPeriodo] = useState<string>('Estágio I');
+  const [senha, setSenha] = useState<string>('');
 
-  const handleSubmit = () => {
-    Alert.alert('Cadastro enviado!', 'Obrigado por se cadastrar no Núcleo de Práticas Jurídicas.');
-  };
+  const cadastrarEstagiario = async () => {
+    try {
+      await axios.post(`${API_URL}/estagiarios/`, {
+        nome,
+        email,
+        matricula,
+        periodo,
+        senha
+      });
+      limparCampos();
+    } catch(error) {
+      console.log(error);
+    }
+  }
 
-  const fields: {
-    label:string;
-    field: keyof FormTypes;
-    keyboardType?: KeyboardTypeOptions;
-  }[] = [
-    { label: 'Nome completo', field: 'nome' },
-    { label: 'E-mail', field: 'email', keyboardType: 'email-address' },
-    { label: 'Matrícula', field: 'matricula' },
-    { label: 'Perio', field: 'periodo' },
-    { label: 'Senha', field: 'senha' },
-  ];
+  function limparCampos() {
+    setNome('');
+    setEmail('');
+    setMatricula('');
+    setSenha('');
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Cadastro - Núcleo de Práticas Jurídicas</Text>
 
-      {fields.map(({ label, field, keyboardType }) => (
-        <View key={field} style={styles.inputGroup}>
-          <Text style={styles.label}>{label}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={label}
-            value={form[field]}
-            keyboardType={keyboardType || 'default'}
-            onChangeText={(text) => handleChange(field, text)}
-            placeholderTextColor="#888"
-          />
-        </View>
-      ))}
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Nome Completo</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Nome Completo'
+          value={nome}
+          onChangeText={(value) => setNome(value)}
+          placeholderTextColor="#888"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>E-mail</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='E-mail'
+          value={email}
+          keyboardType='email-address'
+          onChangeText={(value) => setEmail(value)}
+          placeholderTextColor="#888"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Matrícula</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Matrícula'
+          value={matricula}
+          onChangeText={(value) => setMatricula(value)}
+          placeholderTextColor="#888"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Periodo</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Periodo'
+          value={periodo}
+          onChangeText={(value) => setPeriodo(value)}
+          placeholderTextColor="#888"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Senha</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Senha'
+          secureTextEntry
+          value={senha}
+          onChangeText={(value) => setSenha(value)}
+          placeholderTextColor="#888"
+        />
+      </View>
+
+
+      <TouchableOpacity style={styles.button} onPress={cadastrarEstagiario}>
         <Text style={styles.buttonText}>Enviar Cadastro</Text>
       </TouchableOpacity>
     </ScrollView>

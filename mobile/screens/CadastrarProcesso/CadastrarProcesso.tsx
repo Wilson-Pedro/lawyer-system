@@ -12,78 +12,103 @@ import {
 } from 'react-native';
 
 type FormTypes = {
-    numero: string;
-    assunto: string;
-    vara: string;
-    responsavel: string;
-    prazo: string;
+  numero: string;
+  assunto: string;
+  vara: string;
+  responsavel: string;
+  prazo: string;
 };
 
 const { width } = Dimensions.get('window');
 
+import axios from 'axios';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
 export default function CadastrarProcesso() {
-  const [form, setForm] = useState<FormTypes>({
-    numero: '',
-    assunto: '',
-    vara: '',
-    responsavel: '',
-    prazo: '',
-  });
 
-  const handleChange = (field: string, value: string) => {
-    setForm({ ...form, [field]: value });
-  };
+  const [assunto, setAssunto] = useState<string>('Seguro de Carro');
+  const [vara, setVara] = useState<string>('23423vara423');
+  const [responsavel, setResponsavel] = useState<string>('Júlio');
+  const [prazo, setPrazo] = useState<string>('');
 
-  const handleSubmit = () => {
-    const { numero, assunto, vara, responsavel, prazo } = form;
-
-    if (!numero || !assunto || !vara || !responsavel || !prazo) {
-      Alert.alert('Campos obrigatórios', 'Por favor, preencha todos os campos.');
-      return;
+  const cadastrarProcesso = async () => {
+    try {
+      await axios.post(`${API_URL}/processos/`, {
+        assunto,
+        vara,
+        responsavel,
+        prazo
+      });
+      Alert.alert('Cadatardo com Sucesso', 'O cadastro foi cadastrado com sucesso.');
+      limparCampos();
+    } catch (error) {
+      console.log(error)
     }
-
-    // Aqui você pode enviar os dados para a API/backend
-    Alert.alert('Processo cadastrado!', `Número: ${numero}\nAssunto: ${assunto}`);
-    setForm({
-      numero: '',
-      assunto: '',
-      vara: '',
-      responsavel: '',
-      prazo: '',
-    });
   };
 
-  const fields: {
-    label:string;
-    field: keyof FormTypes;
-    keyboardType?: KeyboardTypeOptions;
-  }[] = [
-    { label: 'Número do Processo', field: 'numero' },
-    { label: 'Assunto', field: 'assunto' },
-    { label: 'Vara', field: 'vara' },
-    { label: 'Responsável', field: 'responsavel' },
-    { label: 'Prazo (DD/MM/AAAA)', field: 'prazo', keyboardType: 'numeric' },
-  ]
+  function limparCampos() {
+    setAssunto('');
+    setVara('');
+    setResponsavel('');
+    setPrazo('');
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Cadastro de Processo</Text>
 
-      {fields.map(({ label, field, keyboardType }) => (
-        <View key={field} style={styles.inputGroup}>
-          <Text style={styles.label}>{label}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder={label}
-            value={(form as any)[field]}
-            onChangeText={(text) => handleChange(field, text)}
-            keyboardType={keyboardType || 'default'}
-            placeholderTextColor="#999"
-          />
-        </View>
-      ))}
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Assunto</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Assunto'
+          value={assunto}
+          onChangeText={(value) => setAssunto(value)}
+          keyboardType='default'
+          placeholderTextColor="#999"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Vara</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Vara'
+          value={vara}
+          onChangeText={(value) => setVara(value)}
+          keyboardType='default'
+          placeholderTextColor="#999"
+        />
+      </View>
+
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Responsavel</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Responsavel'
+          value={responsavel}
+          onChangeText={(value) => setResponsavel(value)}
+          keyboardType='default'
+          placeholderTextColor="#999"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Prazo</Text>
+        <TextInput
+          style={styles.input}
+          placeholder='Prazo (DD/MM/AAAA)'
+          value={prazo}
+          onChangeText={(value) => setPrazo(value)}
+          keyboardType='default'
+          placeholderTextColor="#999"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={cadastrarProcesso}>
         <Text style={styles.buttonText}>Cadastrar Processo</Text>
       </TouchableOpacity>
     </ScrollView>

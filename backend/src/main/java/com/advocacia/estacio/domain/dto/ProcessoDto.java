@@ -14,7 +14,9 @@ public class ProcessoDto implements Serializable{
 	
 	private String assunto;
 	
-	private LocalDateTime prazoFinal;
+	private String vara;
+	
+	private String prazoFinal;
 	
 	private String responsavel;
 	
@@ -27,11 +29,12 @@ public class ProcessoDto implements Serializable{
 	public ProcessoDto() {
 	}
 
-	public ProcessoDto(Long id, Integer numeroDoProcesso, String assunto, LocalDateTime prazoFinal, String responsavel,
+	public ProcessoDto(Long id, Integer numeroDoProcesso, String assunto, String vara, String prazoFinal, String responsavel,
 			String statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.numeroDoProcesso = numeroDoProcesso;
 		this.assunto = assunto;
+		this.vara = vara;
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
 		this.statusDoProcesso = statusDoProcesso;
@@ -43,7 +46,8 @@ public class ProcessoDto implements Serializable{
 		this.id = processo.getId();
 		this.numeroDoProcesso = processo.getNumeroDoProcesso();
 		this.assunto = processo.getAssunto();
-		this.prazoFinal = processo.getPrazoFinal();
+		this.vara = processo.getVara();
+		this.prazoFinal = processo.getPrazoFinal().toString();
 		this.responsavel = processo.getResponsavel();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
@@ -62,7 +66,11 @@ public class ProcessoDto implements Serializable{
 		return assunto;
 	}
 
-	public LocalDateTime getPrazoFinal() {
+	public String getVara() {
+		return vara;
+	}
+
+	public String getPrazoFinal() {
 		return prazoFinal;
 	}
 
