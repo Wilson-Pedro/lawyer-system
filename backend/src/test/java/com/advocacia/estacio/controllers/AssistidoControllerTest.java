@@ -63,13 +63,6 @@ class AssistidoControllerTest {
 	
 	@Test
 	@Order(1)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		assistidoRepository.deleteAll();
-	}
-	
-	@Test
 	void deveSalvar_Assistido_NoBancoDeDados_PeloController() throws Exception {
 		
 		assertEquals(0, assistidoRepository.count());
@@ -93,4 +86,11 @@ class AssistidoControllerTest {
 		assertEquals(1, assistidoRepository.count());
 	}
 
+	@Test
+	@Order(2)
+	void deletandoTodosOsDadosAntesDostestes() {
+		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
+	}
 }

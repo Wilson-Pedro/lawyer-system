@@ -40,17 +40,9 @@ class EnderecoServiceTest {
 		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
-	
-	@Test
-	@Order(1)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-	}
 
 	@Test
-	@Order(2)
+	@Order(1)
 	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
 		assertEquals(0, enderecoRepository.count());
 		
@@ -67,4 +59,11 @@ class EnderecoServiceTest {
 
 	}
 
+	@Test
+	@Order(2)
+	void deletandoTodosOsDadosAntesDostestes() {
+		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
+	}
 }

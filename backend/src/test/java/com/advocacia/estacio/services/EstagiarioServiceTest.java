@@ -41,17 +41,9 @@ class EstagiarioServiceTest {
 				"Pedro Lucas", "pedro@gmail.com", "20251208", 
 				PeriodoEstagio.ESTAGIO_I, "1234");
 	}
-	
-	@Test
-	@Order(1)
-	void deveDeletar_TodosOsDados_AntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-	}
 
 	@Test
-	@Order(2)
+	@Order(1)
 	void deveSalvar_Estagiario_NoBancoDeDadosPeloService() {
 		assertEquals(0, estagiarioRepository.count());
 		
@@ -64,6 +56,14 @@ class EstagiarioServiceTest {
 		assertEquals("1234", estagiarioSalvo.getSenha());
 		assertEquals(1, estagiarioRepository.count());
 
+	}
+	
+	@Test
+	@Order(2)
+	void deveDeletar_TodosOsDados_AntesDostestes() {
+		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
 	}
 
 }

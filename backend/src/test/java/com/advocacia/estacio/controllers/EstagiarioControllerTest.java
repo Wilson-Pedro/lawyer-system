@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +38,12 @@ class EstagiarioControllerTest {
 	EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
+	EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	AssistidoRepository assistidoRepository;
+	
+	@Autowired
 	MockMvc mockMvc;
 	
 	@Autowired
@@ -45,12 +53,6 @@ class EstagiarioControllerTest {
 	
 	Estagiario estagiario;
 	
-	@Test
-	@Order(1)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-	}
-	
 	@BeforeEach
 	void setUp() {
 		estagiario = new Estagiario(
@@ -59,6 +61,7 @@ class EstagiarioControllerTest {
 	}
 	
 	@Test
+	@Order(1)
 	void deveSalvar_Estagiario_NoBancoDeDados_PeloController() throws Exception {
 		
 		assertEquals(0, estagiarioRepository.count());
@@ -79,4 +82,11 @@ class EstagiarioControllerTest {
 		assertEquals(1, estagiarioRepository.count());
 	}
 
+	@Test
+	@Order(2)
+	void deletandoTodosOsDadosAntesDostestes() {
+		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
+	}
 }

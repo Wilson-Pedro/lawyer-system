@@ -43,17 +43,9 @@ class AssistidoServiceServiceTest {
 		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
-	
-	@Test
-	@Order(1)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		assistidoRepository.deleteAll();
-	}
 
 	@Test
-	@Order(2)
+	@Order(1)
 	void deveSalvar_Assistido_NoBancoDeDados_PeloService() {
 		assertEquals(0, assistidoRepository.count());
 		
@@ -70,4 +62,11 @@ class AssistidoServiceServiceTest {
 
 	}
 
+	@Test
+	@Order(2)
+	void deletandoTodosOsDadosAntesDostestes() {
+		estagiarioRepository.deleteAll();
+		assistidoRepository.deleteAll();
+		enderecoRepository.deleteAll();
+	}
 }
