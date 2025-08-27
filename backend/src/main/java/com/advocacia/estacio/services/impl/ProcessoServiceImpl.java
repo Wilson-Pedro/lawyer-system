@@ -2,10 +2,12 @@ package com.advocacia.estacio.services.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.repositories.ProcessoRepository;
@@ -29,5 +31,10 @@ public class ProcessoServiceImpl implements ProcessoService {
 	private Integer gerarNumeroProcesso() {
 		String processo = String.format("%d%d", LocalDate.now().getYear(), processoRepository.count()+1);
 		return Integer.parseInt(processo);
+	}
+	
+	public List<ProcessoDto> buscarProcessosPorStatusDoProcesso() {
+		return processoRepository.buscarProcessosPorStatusDoProcesso().stream()
+				.map(ProcessoDto::new).toList();
 	}
 }

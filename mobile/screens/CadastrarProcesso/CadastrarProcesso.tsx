@@ -11,13 +11,13 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 
-type FormTypes = {
-  numero: string;
-  assunto: string;
-  vara: string;
-  responsavel: string;
-  prazo: string;
-};
+// type FormTypes = {
+//   numero: string;
+//   assunto: string;
+//   vara: string;
+//   responsavel: string;
+//   prazo: string;
+// };
 
 const { width } = Dimensions.get('window');
 

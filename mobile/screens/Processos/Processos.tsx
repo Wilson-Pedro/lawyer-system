@@ -1,7 +1,10 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Dimensions, ListRenderItem } from 'react-native';
 
-const { width } = Dimensions.get('window');
+import axios from 'axios';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 type ProcessoType = {
     id:string;
@@ -11,37 +14,62 @@ type ProcessoType = {
     responsavel:string;
 }
 
-const processos:ProcessoType[]  = [
-  {
-    id: '1',
-    numero: '0001234-56.2023.8.01.0001',
-    assunto: 'Pensão alimentícia',
-    prazo: '20/05/2025',
-    responsavel: 'Ana Souza',
-  },
-  {
-    id: '2',
-    numero: '0004321-98.2023.8.01.0002',
-    assunto: 'Direito trabalhista',
-    prazo: '30/06/2025',
-    responsavel: 'João Lima',
-  },
-  {
-    id: '3',
-    numero: '0008765-44.2024.8.01.0003',
-    assunto: 'Inventário',
-    prazo: '15/07/2025',
-    responsavel: 'Mariana Rocha',
-  },
-];
+type Processo = {
+  id:string;
+  numeroDoProcesso:string;
+  assunto:string;
+  prazoFinal:string;
+  responsavel:string;
+}
+
+// const processos:ProcessoType[]  = [
+//   {
+//     id: '1',
+//     numero: '0001234-56.2023.8.01.0001',
+//     assunto: 'Pensão alimentícia',
+//     prazo: '20/05/2025',
+//     responsavel: 'Ana Souza',
+//   },
+//   {
+//     id: '2',
+//     numero: '0004321-98.2023.8.01.0002',
+//     assunto: 'Direito trabalhista',
+//     prazo: '30/06/2025',
+//     responsavel: 'João Lima',
+//   },
+//   {
+//     id: '3',
+//     numero: '0008765-44.2024.8.01.0003',
+//     assunto: 'Inventário',
+//     prazo: '15/07/2025',
+//     responsavel: 'Mariana Rocha',
+//   },
+// ];
 
 export default function Processos() {
+
+  const [processos, setProcessos] = useState<Processo[]>([]);
+
+  useEffect(() => {
     
-  const renderCard: ListRenderItem<ProcessoType> = ({ item }) => (
+    const fetchProcessos = async() => {
+      try {
+        
+        const response = await axios.get(`${API_URL}/processos/statusDoProcesso`);
+        setProcessos(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+    }
+    fetchProcessos();
+  }, []);
+    
+  const renderCard: ListRenderItem<Processo> = ({ item }) => (
       <View style={styles.card}>
-          <Text style={styles.numero}>Nº Processo: {item.numero}</Text>
+          <Text style={styles.numero}>Nº Processo: {item.numeroDoProcesso}</Text>
           <Text style={styles.assunto}>Assunto: {item.assunto}</Text>
-          <Text style={styles.prazo}>Prazo: {item.prazo}</Text>
+          <Text style={styles.prazo}>Prazo: {item.prazoFinal}</Text>
           <Text style={styles.responsavel}>Responsável: {item.responsavel}</Text>
       </View>
   );

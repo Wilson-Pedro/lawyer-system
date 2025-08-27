@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.projections.ProcessoProjection;
 
 public class ProcessoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -52,6 +53,14 @@ public class ProcessoDto implements Serializable{
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
 		this.ultimaAtualizacao = processo.getUltimaAtualizacao();
+	}
+	
+	public ProcessoDto(ProcessoProjection projection) {
+		this.id = projection.getId();
+		this.numeroDoProcesso = projection.getNumeroDoProcesso();
+		this.assunto = projection.getAssunto();
+		this.prazoFinal = projection.getPrazoFinal();
+		this.responsavel = projection.getResponsavel();
 	}
 
 	public Long getId() {
