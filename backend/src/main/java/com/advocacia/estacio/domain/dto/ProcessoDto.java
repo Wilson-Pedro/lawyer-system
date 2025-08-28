@@ -1,6 +1,7 @@
 package com.advocacia.estacio.domain.dto;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.advocacia.estacio.domain.entities.Processo;
@@ -43,12 +44,20 @@ public class ProcessoDto implements Serializable{
 		this.ultimaAtualizacao = ultimaAtualizacao;
 	}
 	
+	public ProcessoDto(Long id, String assunto, String vara, String prazoFinal, String responsavel) {
+		this.id = id;
+		this.assunto = assunto;
+		this.vara = vara;
+		this.prazoFinal = prazoFinal;
+		this.responsavel = responsavel;
+	}
+	
 	public ProcessoDto(Processo processo) {
 		this.id = processo.getId();
 		this.numeroDoProcesso = processo.getNumeroDoProcesso();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = processo.getPrazoFinal().toString();
+		this.prazoFinal = toPrazoString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
@@ -61,6 +70,10 @@ public class ProcessoDto implements Serializable{
 		this.assunto = projection.getAssunto();
 		this.prazoFinal = projection.getPrazoFinal();
 		this.responsavel = projection.getResponsavel();
+	}
+	
+	private String toPrazoString(LocalDate localDate) {
+		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
 	}
 
 	public Long getId() {

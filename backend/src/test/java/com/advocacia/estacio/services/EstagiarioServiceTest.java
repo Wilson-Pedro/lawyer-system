@@ -16,6 +16,7 @@ import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.repositories.ProcessoRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -32,6 +33,9 @@ class EstagiarioServiceTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	ProcessoRepository processoRepository;
 	
 	Estagiario estagiario;
 	
@@ -64,6 +68,7 @@ class EstagiarioServiceTest {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		processoRepository.deleteAll();
 	}
 
 }

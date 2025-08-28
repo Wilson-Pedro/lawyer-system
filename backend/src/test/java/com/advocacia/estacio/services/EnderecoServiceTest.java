@@ -16,6 +16,7 @@ import com.advocacia.estacio.domain.entities.Endereco;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.repositories.ProcessoRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -32,6 +33,9 @@ class EnderecoServiceTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	ProcessoRepository processoRepository;
 	
 	AssistidoDto assistidoDto;
 	
@@ -65,5 +69,6 @@ class EnderecoServiceTest {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		processoRepository.deleteAll();
 	}
 }

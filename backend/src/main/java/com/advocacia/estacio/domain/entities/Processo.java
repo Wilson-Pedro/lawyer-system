@@ -77,6 +77,7 @@ public class Processo implements Serializable{
 	
 	public Processo(ProcessoRequestDto request) {
 		this.assunto = request.getAssunto();
+		this.vara = request.getVara();
 		this.responsavel = request.getResponsavel();
 		this.prazoFinal = localDateToString(request.getPrazo());
 	}

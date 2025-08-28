@@ -16,6 +16,7 @@ import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.repositories.ProcessoRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -35,6 +36,9 @@ class AssistidoServiceServiceTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	ProcessoRepository processoRepository;
 	
 	AssistidoDto assistidoDto;
 	
@@ -68,5 +72,6 @@ class AssistidoServiceServiceTest {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		processoRepository.deleteAll();
 	}
 }

@@ -23,16 +23,13 @@ import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.EstagiarioService;
+import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EstagiarioControllerTest {
-	
-	@Autowired
-	EstagiarioService estagiarioService;
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
@@ -42,6 +39,9 @@ class EstagiarioControllerTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	ProcessoRepository processoRepository;
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -88,5 +88,6 @@ class EstagiarioControllerTest {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		processoRepository.deleteAll();
 	}
 }
