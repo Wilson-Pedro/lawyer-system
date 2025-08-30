@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { StackParamList } from './../../types'; // caminho correto do seu types
+import { StackParamList } from './../../types';
 
 type HomeAdminNavigationProp = NativeStackNavigationProp<StackParamList, 'Admin'>;
 

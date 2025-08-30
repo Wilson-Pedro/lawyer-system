@@ -1,0 +1,26 @@
+.container {
+  min-height: 100vh;
+  background-color: #eef2f7;
+  padding: 50px 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #2a3a7f;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.menu {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  overflow-y: auto; /* rolagem caso tenha muitos botões */
+}
