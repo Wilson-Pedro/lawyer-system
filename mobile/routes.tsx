@@ -16,10 +16,10 @@ export default function Routes() {
         <Stack.Navigator initialRouteName="Home">
             <Stack.Screen name="Home" component={Home} options={{ title: 'Início' }}/>
             <Stack.Screen name="Admin" component={Admin} options={{ title: 'Painel do Administrador' }}/>
-            <Stack.Screen name="CadastrarAssistido" component={CadastrarAssistido} options={{ title: 'Cadastrar Assistido' }} />
-            <Stack.Screen name="CadastrarEstagiario" component={CadastrarEstagiario} options={{ title: 'Cadastrar Estagiário' }} />
+            {/* <Stack.Screen name="CadastrarAssistido" component={CadastrarAssistido} options={{ title: 'Cadastrar Assistido' }} />
+            <Stack.Screen name="CadastrarEstagiario" component={CadastrarEstagiario} options={{ title: 'Cadastrar Estagiário' }} /> */}
             <Stack.Screen name="Processos" component={Processos} options={{ title: 'Processos' }} />
-            <Stack.Screen name="CadastrarProcesso" component={CadastrarProcesso} options={{ title: 'Cadastrar Processo' }} />
+            {/* <Stack.Screen name="CadastrarProcesso" component={CadastrarProcesso} options={{ title: 'Cadastrar Processo' }} /> */}
         </Stack.Navigator>
     )
 }

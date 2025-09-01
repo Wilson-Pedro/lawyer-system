@@ -25,7 +25,7 @@ export default function HomeAdmin() {
           label="Ver Processos"
           onPress={() => navigation.navigate('Processos')}
         />
-        <MenuButton
+        {/* <MenuButton
           label="Cadastrar Assistido"
           onPress={() => navigation.navigate('CadastrarAssistido')}
         />
@@ -36,7 +36,7 @@ export default function HomeAdmin() {
         <MenuButton
           label="Cadastrar Processo"
           onPress={() => navigation.navigate('CadastrarProcesso')}
-        />
+        />*/}
         <MenuButton
           label="Sair"
           onPress={() => navigation.navigate('Home')}

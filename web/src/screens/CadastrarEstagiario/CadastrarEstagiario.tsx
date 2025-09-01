@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./CadastrarEstagiario.module.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarEstagiario() {
   const navigate = useNavigate();
@@ -30,6 +30,10 @@ export default function CadastrarEstagiario() {
       alert("Erro ao cadastrar estagiário.");
     }
   };
+
+  const selecionarPeriodo = async (e: any) => {
+    setPeriodo(e.target.value);
+  }
 
   const limparCampos = () => {
     setNome("");
@@ -82,12 +86,12 @@ export default function CadastrarEstagiario() {
 
       <div className={styles.inputGroup}>
         <label className={styles.label}>Período</label>
-        <input
-          className={styles.input}
-          placeholder="Período"
-          value={periodo}
-          onChange={(e) => setPeriodo(e.target.value)}
-        />
+        <select className={styles.input} onChange={selecionarPeriodo}>
+          <option value="Estágio I">Estágio I</option>
+          <option value="Estágio II">Estágio II</option>
+          <option value="Estágio III">Estágio III</option>
+          <option value="Estágio IV">Estágio IV</option>
+        </select>
       </div>
 
       <div className={styles.inputGroup}>

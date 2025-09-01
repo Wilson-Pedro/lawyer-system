@@ -82,6 +82,11 @@ export default function Processos() {
         keyExtractor={(item) => item.id}
         renderItem={renderCard}
         contentContainerStyle={styles.list}
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>Nenhum Processo foi cadastrado.</Text>
+          </View>
+        }
       />
     </View>
   );
@@ -136,5 +141,16 @@ const styles = StyleSheet.create({
   responsavel: {
     fontSize: 15,
     color: '#34495e',
+  },
+    emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
   },
 });

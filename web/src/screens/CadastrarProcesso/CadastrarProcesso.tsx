@@ -3,15 +3,15 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./CadastrarProcesso.module.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarProcesso() {
   const navigate = useNavigate();
 
-  const [assunto, setAssunto] = useState("Seguro de Carro");
-  const [vara, setVara] = useState("23423vara423");
-  const [responsavel, setResponsavel] = useState("Júlio");
-  const [prazo, setPrazo] = useState("");
+  const [assunto, setAssunto] = useState("");
+  const [vara, setVara] = useState("");
+  const [responsavel, setResponsavel] = useState("");
+  const [prazo, setPrazo] = useState("11/11/2026");
 
   const cadastrarProcesso = async () => {
     try {
@@ -37,14 +37,14 @@ export default function CadastrarProcesso() {
   };
 
   return (
-    <div className={styles.container}>
+    <form className={styles.container} onSubmit={cadastrarProcesso}>
 
       {/* Botão de Voltar */}
       <button className={styles.backButton} onClick={() => navigate(-1)}>
         ← Voltar
       </button>
 
-      <h1 className={styles.title}>Cadastro de Processo</h1>
+      <h1 className={styles.title}>Cadastro de Processo {API_URL}</h1>
 
       <div className={styles.inputGroup}>
         <label className={styles.label}>Assunto</label>
@@ -53,6 +53,7 @@ export default function CadastrarProcesso() {
           placeholder="Assunto"
           value={assunto}
           onChange={(e) => setAssunto(e.target.value)}
+          required
         />
       </div>
 
@@ -63,6 +64,7 @@ export default function CadastrarProcesso() {
           placeholder="Vara"
           value={vara}
           onChange={(e) => setVara(e.target.value)}
+          required
         />
       </div>
 
@@ -73,6 +75,7 @@ export default function CadastrarProcesso() {
           placeholder="Responsável"
           value={responsavel}
           onChange={(e) => setResponsavel(e.target.value)}
+          required
         />
       </div>
 
@@ -83,12 +86,13 @@ export default function CadastrarProcesso() {
           placeholder="Prazo (DD/MM/AAAA)"
           value={prazo}
           onChange={(e) => setPrazo(e.target.value)}
+          required
         />
       </div>
 
-      <button className={styles.button} onClick={cadastrarProcesso}>
+      <button type="submit" className={styles.button}>
         Cadastrar Processo
       </button>
-    </div>
+    </form>
   );
 }
