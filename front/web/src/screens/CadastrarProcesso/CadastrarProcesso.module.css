@@ -74,3 +74,8 @@
 .button:hover {
   opacity: 0.9;
 }
+
+.messageError {
+  color: red;
+  font-weight: bold;
+}

@@ -11,23 +11,63 @@ export default function CadastrarProcesso() {
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
-  const [prazo, setPrazo] = useState("11/11/2026");
+  const [prazo, setPrazo] = useState("");
+  const [messageDataError, setMessageDataError] = useState("");
+  const [postValid, setPostValid] = useState(false);
 
   const cadastrarProcesso = async () => {
-    try {
-      await axios.post(`${API_URL}/processos/`, {
-        assunto,
-        vara,
-        responsavel,
-        prazo,
-      });
-      alert("Processo cadastrado com sucesso!");
-      limparCampos();
-    } catch (error) {
-      console.error(error);
-      alert("Erro ao cadastrar processo.");
+    if(postValid) {
+      try {
+        await axios.post(`${API_URL}/processos/`, {
+          assunto,
+          vara,
+          responsavel,
+          prazo,
+        });
+        alert("Processo cadastrado com sucesso!");
+        limparCampos();
+      } catch (error) {
+        console.error(error);
+        alert("Erro ao cadastrar processo.");
+      }
     }
   };
+
+  const formatarData = (dataValue: string) => {
+    let numeros = dataValue.replace(/\D/g, "");
+
+    if(numeros.length > 8) {
+      numeros = numeros.substring(0, 8);
+    }
+
+    let formatado = numeros;
+
+    if(numeros.length > 2) {
+      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
+    }
+
+    if(numeros.length > 4) {
+      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2, 4) + "/" + numeros.substring(4);
+    }
+
+    if(numeros.length === 8) {
+      const dia = parseInt(numeros.substring(0, 2));
+      const mes = parseInt(numeros.substring(2, 4));
+      const ano = parseInt(numeros.substring(4, 8));
+
+      const dataDigitada = new Date(ano, mes - 1, dia);
+      const hoje = new Date();
+
+      if(dataDigitada.getTime() < hoje.getTime()) {
+        setMessageDataError("*Data inválida");
+      }
+    } else {
+        setMessageDataError("post valido");
+        setPostValid(true);
+    }
+
+    setPrazo(formatado);
+  }
 
   const limparCampos = () => {
     setAssunto("");
@@ -44,7 +84,7 @@ export default function CadastrarProcesso() {
         ← Voltar
       </button>
 
-      <h1 className={styles.title}>Cadastro de Processo {API_URL}</h1>
+      <h1 className={styles.title}>Cadastro de Processo</h1>
 
       <div className={styles.inputGroup}>
         <label className={styles.label}>Assunto</label>
@@ -80,12 +120,12 @@ export default function CadastrarProcesso() {
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Prazo</label>
+        <label className={styles.label}>Prazo <span className={styles.messageError}>{messageDataError}</span></label>
         <input
           className={styles.input}
           placeholder="Prazo (DD/MM/AAAA)"
           value={prazo}
-          onChange={(e) => setPrazo(e.target.value)}
+          onChange={(e) => formatarData(e.target.value)}
           required
         />
       </div>
