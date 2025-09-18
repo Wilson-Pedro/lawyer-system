@@ -1,6 +1,10 @@
 package com.advocacia.estacio.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
@@ -25,5 +29,11 @@ public class AssistidoServiceImpl implements AssistidoService {
 		Assistido assistido = new Assistido(assistidoDto);
 		assistido.setEndereco(endereco);
 		return assistidoRepository.save(assistido);
+	}
+	
+	@Override
+	public Page<Assistido> buscarAssistido(String nome, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
+		return assistidoRepository.findByNomeContainingIgnoreCase(nome, pageable);
 	}
 }

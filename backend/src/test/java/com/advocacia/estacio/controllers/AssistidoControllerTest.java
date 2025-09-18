@@ -2,6 +2,8 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -85,9 +87,24 @@ class AssistidoControllerTest {
 		
 		assertEquals(1, assistidoRepository.count());
 	}
+	
+	@Test
+	@Order(3)
+	void deveSalvar_buscar_assistido_PeloController() throws Exception {
+		
+		String nome = "Car";
+		
+		mockMvc.perform(get(URI + "/buscar/" + nome)
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+		.andExpect(jsonPath("$.content.length()").value(1))
+		.andExpect(jsonPath("$.content[0].nome").value("Ana Carla"));
+		
+	}
 
 	@Test
-	@Order(2)
+	@Order(4)
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();

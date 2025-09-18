@@ -18,7 +18,7 @@ import com.advocacia.estacio.services.ProcessoService;
 
 @RequestMapping("/processos")
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://my-s3-adv.s3-website-us-east-1.amazonaws.com")
 public class ProcessoController {
 	
 	@Autowired

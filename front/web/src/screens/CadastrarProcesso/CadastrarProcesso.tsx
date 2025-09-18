@@ -62,7 +62,6 @@ export default function CadastrarProcesso() {
         setMessageDataError("*Data inválida");
       }
     } else {
-        setMessageDataError("post valido");
         setPostValid(true);
     }
 

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Assistido;
@@ -65,9 +66,19 @@ class AssistidoServiceServiceTest {
 		assertEquals(1, assistidoRepository.count());
 
 	}
-
+	
 	@Test
 	@Order(2)
+	void deveSalvar_buscar_assistido_PeloController() throws Exception {
+		
+		Page<Assistido> pages = assistidoService.buscarAssistido("Car", 0, 20);
+		assertEquals(pages.getContent().size(), 1);
+		assertEquals(pages.getContent().get(0).getNome(), "Ana Carla");
+		
+	}
+
+	@Test
+	@Order(3)
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
