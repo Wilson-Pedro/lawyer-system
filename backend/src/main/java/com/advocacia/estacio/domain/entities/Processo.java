@@ -18,6 +18,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -28,6 +30,10 @@ public class Processo implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "assistido_id")
+	private Assistido assistido;
 	
 	private Integer numeroDoProcesso;
 	
@@ -52,9 +58,10 @@ public class Processo implements Serializable{
 	public Processo() {
 	}
 
-	public Processo(Long id, Integer numeroDoProcesso, String assunto, String vara, LocalDate prazoFinal, String responsavel,
+	public Processo(Long id, Assistido assistido, Integer numeroDoProcesso, String assunto, String vara, LocalDate prazoFinal, String responsavel,
 			StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
+		this.assistido = assistido;
 		this.numeroDoProcesso = numeroDoProcesso;
 		this.assunto = assunto;
 		this.prazoFinal = prazoFinal;
@@ -97,6 +104,14 @@ public class Processo implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Assistido getAssistido() {
+		return assistido;
+	}
+
+	public void setAssistido(Assistido assistido) {
+		this.assistido = assistido;
 	}
 
 	public Integer getNumeroDoProcesso() {

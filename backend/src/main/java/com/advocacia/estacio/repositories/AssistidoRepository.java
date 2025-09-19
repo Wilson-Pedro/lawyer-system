@@ -8,8 +8,6 @@ import com.advocacia.estacio.domain.entities.Assistido;
 
 public interface AssistidoRepository extends JpaRepository<Assistido, Long> {
 	
-	//Page<Novel> findByNovelNameContainingIgnoreCase(String novelName, Pageable pageable);
-	
 	Page<Assistido> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
 }

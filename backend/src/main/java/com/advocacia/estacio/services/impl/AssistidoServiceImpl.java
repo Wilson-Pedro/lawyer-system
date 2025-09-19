@@ -14,6 +14,8 @@ import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EnderecoService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class AssistidoServiceImpl implements AssistidoService {
 	
@@ -35,5 +37,10 @@ public class AssistidoServiceImpl implements AssistidoService {
 	public Page<Assistido> buscarAssistido(String nome, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
 		return assistidoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+	}
+
+	@Override
+	public Assistido findById(Long assistidoId) {
+		return assistidoRepository.findById(assistidoId).orElseThrow(EntityNotFoundException::new);
 	}
 }

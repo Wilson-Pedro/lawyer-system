@@ -9,5 +9,7 @@ public interface AssistidoService {
 
 	Assistido salvar(AssistidoDto assistidoDto);
 	
+	Assistido findById(Long assistidoId);
+	
 	Page<Assistido> buscarAssistido(String nome, int page, int size);
 }

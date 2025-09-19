@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class ProcessoRequestDto implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	private Long assistidoId;
+	
 	private String assunto;
 	
 	private String vara;
@@ -16,11 +18,16 @@ public class ProcessoRequestDto implements Serializable{
 	public ProcessoRequestDto() {
 	}
 
-	public ProcessoRequestDto(String assunto, String vara, String responsavel, String prazo) {
+	public ProcessoRequestDto(Long assistidoId, String assunto, String vara, String responsavel, String prazo) {
+		this.assistidoId = assistidoId;
 		this.assunto = assunto;
 		this.vara = vara;
 		this.responsavel = responsavel;
 		this.prazo = prazo;
+	}
+
+	public Long getAssistidoId() {
+		return assistidoId;
 	}
 
 	public String getAssunto() {

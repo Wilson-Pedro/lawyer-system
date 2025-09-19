@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
@@ -26,6 +27,7 @@ import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.services.AssistidoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -46,6 +48,9 @@ class ProcessoControllerTest {
 	ProcessoRepository processoRepository;
 	
 	@Autowired
+	AssistidoService assistidoService;
+	
+	@Autowired
 	MockMvc mockMvc;
 	
 	@Autowired
@@ -54,6 +59,9 @@ class ProcessoControllerTest {
 	private static String URI = "/processos";
 	
 	Estagiario estagiario;
+	
+	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
+			"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	
 	@BeforeEach
 	void setUp() {
@@ -68,7 +76,9 @@ class ProcessoControllerTest {
 		
 		assertEquals(0, processoRepository.count());
 		
-		ProcessoRequestDto request = new ProcessoRequestDto("Seguro de Carro", "23423ee23", "Júlio", "25/10/2025");
+		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
+		
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", "25/10/2025");
 		
 		String jsonRequest = objectMapper.writeValueAsString(request);
 		
@@ -76,6 +86,7 @@ class ProcessoControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.assistidoId").value(assistidoId))
 				.andExpect(jsonPath("$.assunto", equalTo("Seguro de Carro")))
 				.andExpect(jsonPath("$.vara", equalTo("23423ee23")))
 				.andExpect(jsonPath("$.responsavel", equalTo("Júlio")))
@@ -104,8 +115,8 @@ class ProcessoControllerTest {
 	@Order(3)
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
+		processoRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		enderecoRepository.deleteAll();
-		processoRepository.deleteAll();
 	}
 }
