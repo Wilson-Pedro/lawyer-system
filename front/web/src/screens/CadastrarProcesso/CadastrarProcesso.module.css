@@ -6,6 +6,13 @@
   align-items: center;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .backButton {
   align-self: flex-start;
   margin-bottom: 20px;
@@ -37,6 +44,7 @@
   margin-bottom: 14px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .label {
@@ -62,7 +70,7 @@
   padding: 14px 30px;
   border-radius: 8px;
   width: 92%;
-  max-width: 500px;
+  max-width: 25%;
   color: #fff;
   font-size: 16px;
   font-weight: 600;
@@ -78,4 +86,35 @@
 .messageError {
   color: red;
   font-weight: bold;
+}
+
+.ul {
+  background: #fff;
+  border: 1px solid #ccd1d9;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 100%;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  margin: auto;
+}
+
+.li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: 0.2s;
+  list-style-type: none;
+  max-width: 100%;
+}
+
+
+li:hover {
+  background-color: lightgray;
 }

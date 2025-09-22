@@ -14,7 +14,7 @@ import com.advocacia.estacio.services.EstagiarioService;
 
 @RequestMapping("/estagiarios")
 @RestController
-@CrossOrigin(origins = "http://my-s3-adv.s3-website-us-east-1.amazonaws.com")
+@CrossOrigin("http://localhost:3000")
 public class EstagiarioController {
 	
 	@Autowired

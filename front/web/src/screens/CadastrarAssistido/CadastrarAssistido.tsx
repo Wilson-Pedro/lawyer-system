@@ -20,6 +20,7 @@ export default function CadastrarAssistido() {
   const navigate = useNavigate();
 
   const cadastrarAssistido = async () => {
+    
     try {
       await axios.post(`${API_URL}/assistidos/`, {
         nome,
@@ -52,108 +53,99 @@ export default function CadastrarAssistido() {
   };
 
   return (
-    <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+    <form className={styles.container} onSubmit={cadastrarAssistido}>
+      <button className={styles.backButton} onClick={() => navigate("/")}>
         ← Voltar
       </button>
       <h1 className={styles.title}>Cadastro - Núcleo de Práticas Jurídicas</h1>
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nome Completo</label>
-        <input
-          className={styles.input}
-          placeholder="Nome Completo"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Matrícula</label>
-        <input
-          className={styles.input}
-          placeholder="Matrícula"
-          value={matricula}
-          onChange={(e) => setMatricula(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Telefone</label>
-        <input
-          className={styles.input}
-          placeholder="Telefone"
-          type="tel"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>E-mail</label>
-        <input
-          className={styles.input}
-          placeholder="E-mail"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Cidade</label>
-        <input
-          className={styles.input}
-          placeholder="Cidade"
-          value={cidade}
-          onChange={(e) => setCidade(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Bairro</label>
-        <input
-          className={styles.input}
-          placeholder="Bairro"
-          value={bairro}
-          onChange={(e) => setBairro(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Rua</label>
-        <input
-          className={styles.input}
-          placeholder="Rua"
-          value={rua}
-          onChange={(e) => setRua(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Número da Casa</label>
-        <input
-          className={styles.input}
-          placeholder="Número da Casa"
-          type="number"
-          value={numeroDaCasa}
-          onChange={(e) => setNumeroDaCasa(e.target.value)}
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>CEP</label>
-        <input
-          className={styles.input}
-          placeholder="CEP"
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-        />
-      </div>
-
-      <button className={styles.button} onClick={cadastrarAssistido}>
-        Enviar Cadastro
-      </button>
-    </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Nome Completo</label>
+          <input
+            className={styles.input}
+            placeholder="Nome Completo"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Matrícula</label>
+          <input
+            className={styles.input}
+            placeholder="Matrícula"
+            value={matricula}
+            onChange={(e) => setMatricula(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Telefone</label>
+          <input
+            className={styles.input}
+            placeholder="Telefone"
+            type="tel"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>E-mail</label>
+          <input
+            className={styles.input}
+            placeholder="E-mail"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Cidade</label>
+          <input
+            className={styles.input}
+            placeholder="Cidade"
+            value={cidade}
+            onChange={(e) => setCidade(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Bairro</label>
+          <input
+            className={styles.input}
+            placeholder="Bairro"
+            value={bairro}
+            onChange={(e) => setBairro(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Rua</label>
+          <input
+            className={styles.input}
+            placeholder="Rua"
+            value={rua}
+            onChange={(e) => setRua(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Número da Casa</label>
+          <input
+            className={styles.input}
+            placeholder="Número da Casa"
+            type="number"
+            value={numeroDaCasa}
+            onChange={(e) => setNumeroDaCasa(e.target.value)}
+          />
+        </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>CEP</label>
+          <input
+            className={styles.input}
+            placeholder="CEP"
+            value={cep}
+            onChange={(e) => setCep(e.target.value)}
+          />
+        </div>
+        <button type="submit" className={styles.button}>
+          Cadastrar
+        </button>
+    </form>
   );
 }
