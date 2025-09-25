@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 
 import jakarta.persistence.Entity;
@@ -49,6 +50,14 @@ public class Endereco implements Serializable {
 	}
 	
 	public Endereco(AssistidoDto dto) {
+		this.cidade = dto.getCidade();
+		this.bairro = dto.getBairro();
+		this.rua = dto.getRua();
+		this.numeroDaCasa = dto.getNumeroDaCasa();
+		this.cep = dto.getCep();
+	}
+	
+	public Endereco(AdvogadoDto dto) {
 		this.cidade = dto.getCidade();
 		this.bairro = dto.getBairro();
 		this.rua = dto.getRua();

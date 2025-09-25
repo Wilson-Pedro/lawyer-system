@@ -11,8 +11,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.entities.Endereco;
+import com.advocacia.estacio.domain.dto.AdvogadoDto;
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
@@ -21,10 +21,16 @@ import com.advocacia.estacio.repositories.ProcessoRepository;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class EnderecoServiceTest {
+class AdvogadoServiceTest {
 	
 	@Autowired
 	EnderecoService enderecoService;
+	
+	@Autowired
+	AssistidoService assistidoService;
+	
+	@Autowired
+	AdvogadoService advogadoService;
 	
 	@Autowired
 	EnderecoRepository enderecoRepository;
@@ -41,29 +47,31 @@ class EnderecoServiceTest {
 	@Autowired
 	ProcessoRepository processoRepository;
 	
-	AssistidoDto assistidoDto;
+	AdvogadoDto advogadoDto;
 	
 	@BeforeEach
 	void setUp() {
-		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+		advogadoDto = new AdvogadoDto(null, "Júlio Silva", "julio@gmail.com", "61946620131",
+				"88566519808", "25/09/1996", "São Luís", "Vila Palmeira", 
+				"rua dos nobres", 12, "43012-232");
 	}
 
 	@Test
 	@Order(1)
-	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
-		assertEquals(0, enderecoRepository.count());
+	void deveSalvar_Advogado_NoBancoDeDados_PeloService() {
+		assertEquals(0, advogadoRepository.count());
 		
-		Endereco endereco = enderecoService.salvar(assistidoDto);
+		Advogado advogado = advogadoService.salvar(advogadoDto);
 		
-		assertNotNull(endereco);
-		assertNotNull(endereco.getId());
-		assertEquals("São Luís", endereco.getCidade());
-		assertEquals("Vila Palmeira", endereco.getBairro());
-		assertEquals("rua dos nobres", endereco.getRua());
-		assertEquals(12, endereco.getNumeroDaCasa());
-		assertEquals("43012-232", endereco.getCep());
-		assertEquals(1, enderecoRepository.count());
+		assertNotNull(advogado);
+		assertNotNull(advogado.getId());
+		assertEquals("Júlio Silva", advogado.getNome());
+		assertEquals("julio@gmail.com", advogado.getEmail());
+		assertEquals("61946620131", advogado.getCpf());
+		assertEquals("88566519808", advogado.getTelefone());
+		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
+		
+		assertEquals(1, advogadoRepository.count());
 
 	}
 

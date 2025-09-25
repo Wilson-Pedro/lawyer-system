@@ -3,6 +3,7 @@ package com.advocacia.estacio.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Endereco;
 import com.advocacia.estacio.repositories.EnderecoRepository;
@@ -17,5 +18,10 @@ public class EnderecoServiceImpl implements EnderecoService {
 	@Override
 	public Endereco salvar(AssistidoDto assistidoDto) {
 		return enderecoRepository.save(new Endereco(assistidoDto));
+	}
+	
+	@Override
+	public Endereco salvar(AdvogadoDto advogadoDto) {
+		return enderecoRepository.save(new Endereco(advogadoDto));
 	}
 }

@@ -62,7 +62,7 @@ public class ProcessoDto implements Serializable{
 		this.numeroDoProcesso = processo.getNumeroDoProcesso();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = toPrazoString(processo.getPrazoFinal());
+		this.prazoFinal = toDateString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
@@ -77,7 +77,7 @@ public class ProcessoDto implements Serializable{
 		this.responsavel = projection.getResponsavel();
 	}
 	
-	private String toPrazoString(LocalDate localDate) {
+	private String toDateString(LocalDate localDate) {
 		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
 	}
 

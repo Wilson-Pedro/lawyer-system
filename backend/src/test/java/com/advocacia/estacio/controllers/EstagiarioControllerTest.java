@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
@@ -39,6 +40,9 @@ class EstagiarioControllerTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
 	ProcessoRepository processoRepository;
@@ -87,6 +91,7 @@ class EstagiarioControllerTest {
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
+		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
 		processoRepository.deleteAll();
 	}

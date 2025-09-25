@@ -17,6 +17,7 @@ import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
@@ -40,6 +41,9 @@ class ProcessoServiceTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
 	AssistidoService assistidoService;
@@ -85,6 +89,7 @@ class ProcessoServiceTest {
 		estagiarioRepository.deleteAll();
 		processoRepository.deleteAll();
 		assistidoRepository.deleteAll();
+		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
 	}
 

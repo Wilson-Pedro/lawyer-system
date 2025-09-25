@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
@@ -37,6 +38,9 @@ class AssistidoServiceServiceTest {
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;
+	
+	@Autowired
+	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
 	ProcessoRepository processoRepository;
@@ -82,6 +86,7 @@ class AssistidoServiceServiceTest {
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
+		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
 		processoRepository.deleteAll();
 	}
