@@ -14,6 +14,7 @@ export default function HomeAdmin() {
         <MenuButton label="Ver Processos" onClick={() => navigate("/processos")} />
         <MenuButton label="Cadastrar Assistido" onClick={() => navigate("/CadastrarAssistido")} />
         <MenuButton label="Cadastrar Estagiário" onClick={() => navigate("/CadastrarEstagiario")} />
+        <MenuButton label="Cadastrar Advogado" onClick={() => navigate("/CadastrarAdvogado")}/>
         <MenuButton label="Cadastrar Processo" onClick={() => navigate("/CadastrarProcesso")} />
         <MenuButton label="Sair" onClick={() => navigate("/")} color="#e74c3c" />
       </div>

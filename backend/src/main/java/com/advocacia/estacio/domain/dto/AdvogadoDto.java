@@ -18,7 +18,7 @@ public class AdvogadoDto implements Serializable {
 	
 	private String telefone;
 	
-	private String dataDeNascimeto;
+	private String dataDeNascimento;
 	
 	private String cidade;
 	
@@ -33,13 +33,15 @@ public class AdvogadoDto implements Serializable {
 	public AdvogadoDto() {
 	}
 
-	public AdvogadoDto(Long id, String nome, String email, String cpf, String telefone, String dataDeNascimeto, String cidade, String bairro, String rua, Integer numeroDaCasa, String cep) {
+	public AdvogadoDto(Long id, String nome, String email, String cpf, String telefone, 
+			String dataDeNascimento, String cidade, String bairro, String rua, 
+			Integer numeroDaCasa, String cep) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.telefone = telefone;
-		this.dataDeNascimeto = dataDeNascimeto;
+		this.dataDeNascimento = dataDeNascimento;
 		this.cidade = cidade;
 		this.bairro = bairro;
 		this.rua = rua;
@@ -53,7 +55,7 @@ public class AdvogadoDto implements Serializable {
 		this.email = advogado.getEmail();
 		this.cpf = advogado.getCpf();
 		this.telefone = advogado.getTelefone();
-		this.dataDeNascimeto = toDateString(advogado.getDataDeNascimeto());
+		this.dataDeNascimento = toDateString(advogado.getDataDeNascimeto());
 		this.cidade = advogado.getEndereco().getCidade();
 		this.bairro = advogado.getEndereco().getBairro();
 		this.rua = advogado.getEndereco().getRua();
@@ -85,8 +87,8 @@ public class AdvogadoDto implements Serializable {
 		return telefone;
 	}
 
-	public String getDataDeNascimeto() {
-		return dataDeNascimeto;
+	public String getDataDeNascimento() {
+		return dataDeNascimento;
 	}
 
 	public String getCidade() {

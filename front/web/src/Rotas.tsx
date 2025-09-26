@@ -6,6 +6,7 @@ import Processos from './screens/Processos/Processos';
 import CadastrarAssistido from './screens/CadastrarAssistido/CadastrarAssistido';
 import CadastrarEstagiario from './screens/CadastrarEstagiario/CadastrarEstagiario';
 import CadastrarProcesso from './screens/CadastrarProcesso/CadastrarProcesso';
+import CadastrarAdvogado from './screens/CadastrarAdvogado/CadastrarAdvogado';
 
 export default function Rotas() {
     return(
@@ -17,6 +18,7 @@ export default function Rotas() {
                 <Route path="/CadastrarAssistido" element={<CadastrarAssistido />} />
                 <Route path="/CadastrarEstagiario" element={<CadastrarEstagiario />} />
                 <Route path="/CadastrarProcesso" element={<CadastrarProcesso />} />
+                <Route path="/CadastrarAdvogado" element={<CadastrarAdvogado />} />
             </Routes>
         </BrowserRouter>
     );

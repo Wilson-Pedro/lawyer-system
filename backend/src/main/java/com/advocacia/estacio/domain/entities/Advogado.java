@@ -65,7 +65,7 @@ public class Advogado implements Serializable {
 		this.email = dto.getEmail();
 		this.cpf = dto.getCpf();
 		this.telefone = dto.getTelefone();
-		this.dataDeNascimeto = localDateToString(dto.getDataDeNascimeto());
+		this.dataDeNascimeto = localDateToString(dto.getDataDeNascimento());
 	}
 	
 	private LocalDate localDateToString(String string) {
