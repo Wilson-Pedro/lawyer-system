@@ -45,6 +45,10 @@ public class Processo implements Serializable{
 	
 	private String responsavel;
 	
+	@ManyToOne
+	@JoinColumn(name = "advogado_id")
+	private Advogado advogado;
+	
 	@Enumerated(EnumType.STRING)
 	private StatusProcesso statusDoProcesso;
 	
@@ -58,7 +62,8 @@ public class Processo implements Serializable{
 	public Processo() {
 	}
 
-	public Processo(Long id, Assistido assistido, Integer numeroDoProcesso, String assunto, String vara, LocalDate prazoFinal, String responsavel,
+	public Processo(Long id, Assistido assistido, Integer numeroDoProcesso, String assunto, 
+			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado,
 			StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.assistido = assistido;
@@ -66,6 +71,7 @@ public class Processo implements Serializable{
 		this.assunto = assunto;
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
+		this.advogado = advogado;
 		this.statusDoProcesso = statusDoProcesso;
 		this.partesEnvolvidas = partesEnvolvidas;
 		this.ultimaAtualizacao = ultimaAtualizacao;
@@ -152,6 +158,14 @@ public class Processo implements Serializable{
 
 	public void setResponsavel(String responsavel) {
 		this.responsavel = responsavel;
+	}
+
+	public Advogado getAdvogado() {
+		return advogado;
+	}
+
+	public void setAdvogado(Advogado advogado) {
+		this.advogado = advogado;
 	}
 
 	public StatusProcesso getStatusDoProcesso() {

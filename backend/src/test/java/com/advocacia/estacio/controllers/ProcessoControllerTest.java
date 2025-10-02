@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
@@ -28,6 +29,7 @@ import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -52,6 +54,9 @@ class ProcessoControllerTest {
 	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
+	AdvogadoService advogadoService;
+	
+	@Autowired
 	AssistidoService assistidoService;
 	
 	@Autowired
@@ -67,6 +72,10 @@ class ProcessoControllerTest {
 	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 			"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	
+	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
+			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
+			"rua do passeio", 11, "53022-112");
+	
 	@BeforeEach
 	void setUp() {
 		estagiario = new Estagiario(
@@ -81,8 +90,9 @@ class ProcessoControllerTest {
 		assertEquals(0, processoRepository.count());
 		
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
+		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "25/10/2025");
 		
 		String jsonRequest = objectMapper.writeValueAsString(request);
 		
@@ -94,7 +104,8 @@ class ProcessoControllerTest {
 				.andExpect(jsonPath("$.assunto", equalTo("Seguro de Carro")))
 				.andExpect(jsonPath("$.vara", equalTo("23423ee23")))
 				.andExpect(jsonPath("$.responsavel", equalTo("Júlio")))
-				.andExpect(jsonPath("$.prazoFinal".toString(), equalTo("25/10/2025")));
+				.andExpect(jsonPath("$.prazoFinal".toString(), equalTo("25/10/2025")))
+				.andExpect(jsonPath("$.advogadoId".toString(), equalTo(advogadoId.intValue())));
 		
 		assertEquals(1, processoRepository.count());
 	}

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
@@ -46,10 +47,17 @@ class ProcessoServiceTest {
 	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
+	AdvogadoService advogadoService;
+	
+	@Autowired
 	AssistidoService assistidoService;
 	
 	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 			"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+	
+	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
+			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
+			"rua do passeio", 11, "53022-112");
 
 	@Test
 	@Order(1)
@@ -57,8 +65,9 @@ class ProcessoServiceTest {
 		assertEquals(0, processoRepository.count());
 		
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
+		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "25/10/2025");
 		
 		Processo processo = processoService.salvar(request);
 		
@@ -67,6 +76,7 @@ class ProcessoServiceTest {
 		assertEquals("23423ee23", processo.getVara());
 		assertEquals("2025-10-25", processo.getPrazoFinal().toString());
 		assertEquals("Júlio", processo.getResponsavel());
+		assertEquals("Carlos Silva", processo.getAdvogado().getNome());
 		assertNotNull(processo.getNumeroDoProcesso());
 
 		assertEquals(1, processoRepository.count());

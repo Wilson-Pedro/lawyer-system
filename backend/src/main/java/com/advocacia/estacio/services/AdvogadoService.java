@@ -5,5 +5,7 @@ import com.advocacia.estacio.domain.entities.Advogado;
 
 public interface AdvogadoService {
 
-	public Advogado salvar(AdvogadoDto advogadoDto);
+	Advogado salvar(AdvogadoDto advogadoDto);
+	
+	Advogado findById(Long id);
 }

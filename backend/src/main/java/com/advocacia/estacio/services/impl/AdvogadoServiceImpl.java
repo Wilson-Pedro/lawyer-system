@@ -10,6 +10,8 @@ import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.EnderecoService;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class AdvogadoServiceImpl implements AdvogadoService {
 	
@@ -25,5 +27,10 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 		Advogado advogado = new Advogado(advogadoDto);
 		advogado.setEndereco(endereco);
 		return advogadoRepository.save(advogado);
+	}
+
+	@Override
+	public Advogado findById(Long id) {
+		return advogadoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 }
