@@ -1,11 +1,15 @@
 package com.advocacia.estacio.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
@@ -24,5 +28,16 @@ public class AdvogadoController {
 	public ResponseEntity<AdvogadoDto> salvar(@RequestBody AdvogadoDto advogadoDto) {
 		Advogado advogado = advogadoService.salvar(advogadoDto);
 		return ResponseEntity.status(201).body(new AdvogadoDto(advogado));
+	}
+	
+	@GetMapping("/buscar/{nome}")
+	public ResponseEntity<Page<AdvogadoDto>> buscarAdvogado(
+			@PathVariable String nome,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size
+			) {
+		Page<Advogado> pages = advogadoService.buscarAdvogado(nome, page, size);
+		Page<AdvogadoDto> pagesDto = pages.map(x -> new AdvogadoDto(x));
+		return ResponseEntity.ok(pagesDto);
 	}
 }

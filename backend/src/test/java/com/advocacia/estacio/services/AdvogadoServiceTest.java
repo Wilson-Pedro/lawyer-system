@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
@@ -74,9 +76,23 @@ class AdvogadoServiceTest {
 		assertEquals(1, advogadoRepository.count());
 
 	}
-
+	
 	@Test
 	@Order(2)
+	void deveBuscar_Advogado_peloNome_PeloService() {
+		
+		String nome = "il";
+		
+		Page<Advogado> advogados = advogadoService.buscarAdvogado(nome, 0, 10);
+		
+		assertNotNull(advogados);
+		assertEquals(advogados.getContent().size(), 1);
+		assertEquals(advogados.getContent().get(0).getNome(), "Júlio Silva");
+
+	}
+
+	@Test
+	@Order(3)
 	void deletandoTodosOsDadosAntesDostestes() {
 		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
