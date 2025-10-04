@@ -11,10 +11,12 @@ import com.advocacia.estacio.projections.ProcessoProjection;
 public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 
 	@Query(nativeQuery=true, value="""
-			SELECT p.id, p.numero_do_processo, p.assunto, p.prazo_final, p.responsavel 
-			FROM TBL_PROCESSO p 
-			WHERE p.status_do_processo = 'POSTULATORIA' 
-			ORDER BY p.id DESC
+				SELECT p.id, p.numero_do_processo, p.assunto, p.prazo_final, p.responsavel, 
+				a.id AS advogado_id, a.nome AS advogado_nome 
+				FROM TBL_PROCESSO p 
+				JOIN TBL_ADVOGADO a ON p.advogado_id = a.id
+				WHERE p.status_do_processo = 'POSTULATORIA' 
+				ORDER BY p.id DESC
 			""")
 	List<ProcessoProjection> buscarProcessosPorStatusDoProcesso();
 }

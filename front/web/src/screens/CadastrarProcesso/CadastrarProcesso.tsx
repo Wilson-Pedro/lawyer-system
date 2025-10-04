@@ -13,9 +13,15 @@ export interface Page<T> {
   number: number;
 }
 
-export interface Assistido {
+export interface Entity {
   id: number;
   nome: string;
+}
+
+export interface Assistido extends Entity {
+}
+
+export interface Advogado extends Entity {
 }
 
 export default function CadastrarProcesso() {
@@ -27,22 +33,29 @@ export default function CadastrarProcesso() {
   const [prazo, setPrazo] = useState("");
   const [messageDataError, setMessageDataError] = useState("");
   const [postValid, setPostValid] = useState(false);
-  const [nome, setNome] = useState("");
-  const [nomeSearch, setNomeSearch] = useState("");
+
+  const [nomeAssistido, setNomeAssistido] = useState("");
+  const [nomeAssistidoSearch, setNomeAssistidoSearch] = useState("");
   const [assistidoId, setAssistidoId] = useState<number>(0);
   const [assistidos, setAssistidos] = useState<Assistido[]>([]);
+
+  const [nomeAdvogado, setNomeAdvogado] = useState("");
+  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
+  const [advogadoId, setAdvogadoId] = useState<number>(0);
+  const [advogados, setAdvogados] = useState<Advogado[]>([]);
+
   const page = 0;
   const size = 20;
 
 
   useEffect(() => {
-    const buscar = async () => {
-      if (nomeSearch.length < 2) {
+    const buscarAssistido = async () => {
+      if (nomeAssistidoSearch.length < 2) {
         setAssistidos([]);
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeAssistidoSearch}?page=${page}&size=${size}`);
         const pageData: Page<Assistido> = response.data;
         setAssistidos(pageData.content);
       } catch (error) {
@@ -51,10 +64,31 @@ export default function CadastrarProcesso() {
 
     };
 
-    const delay = setTimeout(buscar, 100);
+    const delay = setTimeout(buscarAssistido, 100);
 
     return () => clearTimeout(delay);
-  }, [nomeSearch]);
+  }, [nomeAssistidoSearch]);
+
+  useEffect(() => {
+    const buscarAdvogado = async () => {
+      if (nomeAdvogadoSearch.length < 2) {
+        setAdvogados([]);
+        return;
+      }
+      try {
+        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
+        const pageData: Page<Advogado> = response.data;
+        setAdvogados(pageData.content);
+      } catch (error) {
+        console.log('Error ao tentar buscar advogados ', error);
+      }
+
+    };
+
+    const delay = setTimeout(buscarAdvogado, 100);
+
+    return () => clearTimeout(delay);
+  }, [nomeAdvogadoSearch]);
 
 
   const cadastrarProcesso = async () => {
@@ -65,6 +99,7 @@ export default function CadastrarProcesso() {
           assunto,
           vara,
           responsavel,
+          advogadoId,
           prazo,
         });
         alert("Processo cadastrado com sucesso!");
@@ -103,6 +138,8 @@ export default function CadastrarProcesso() {
 
       if (dataDigitada.getTime() < hoje.getTime()) {
         setMessageDataError("*Data inválida");
+      } else {
+        setMessageDataError("");
       }
     } else {
       setPostValid(true);
@@ -112,9 +149,15 @@ export default function CadastrarProcesso() {
   }
 
   const setAssistido = (assistido: Assistido) => {
-    setNome(assistido.nome);
+    setNomeAssistido(assistido.nome);
     setAssistidoId(assistido.id);
-    setNomeSearch("");
+    setNomeAssistidoSearch("");
+  }
+
+  const setAdvogado = (advogado: Advogado) => {
+    setNomeAdvogado(advogado.nome);
+    setAdvogadoId(advogado.id);
+    setNomeAdvogadoSearch("");
   }
 
   const limparCampos = () => {
@@ -138,8 +181,8 @@ export default function CadastrarProcesso() {
           <input
             className={styles.input}
             placeholder="Digite o nome do assistido"
-            value={nomeSearch || nome}
-            onChange={(e) => setNomeSearch(e.target.value)}
+            value={nomeAssistidoSearch || nomeAssistido}
+            onChange={(e) => setNomeAssistidoSearch(e.target.value)}
             required
           />
           {assistidos.length > 0 && (
@@ -186,6 +229,28 @@ export default function CadastrarProcesso() {
             onChange={(e) => setResponsavel(e.target.value)}
             required
           />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Advogado</label>
+          <input
+            className={styles.input}
+            placeholder="Digite o nome do advogado"
+            value={nomeAdvogadoSearch || nomeAdvogado}
+            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            required
+          />
+          {advogados.length > 0 && (
+            <ul className={styles.ul}>
+              {advogados.map((data) => (
+                <li
+                  className={styles.li}
+                  key={data.id}
+                  onClick={() => setAdvogado(data)}
+                >{data.nome}</li>
+              ))}
+            </ul>
+          )}
         </div>
 
         <div className={styles.inputGroup}>

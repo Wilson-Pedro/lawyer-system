@@ -26,6 +26,8 @@ public class ProcessoDto implements Serializable{
 	
 	private Long advogadoId;
 	
+	private String advogadoNome;
+	
 	private String statusDoProcesso;
 	
 	private String partesEnvolvidas;
@@ -36,7 +38,7 @@ public class ProcessoDto implements Serializable{
 	}
 
 	public ProcessoDto(Long id, Long assistidoId, Integer numeroDoProcesso, String assunto, 
-			String vara, String prazoFinal, String responsavel, Long advogadoId,
+			String vara, String prazoFinal, String responsavel, Long advogadoId, String advogadoNome,
 			String statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.assistidoId = assistidoId;
@@ -46,6 +48,7 @@ public class ProcessoDto implements Serializable{
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
 		this.advogadoId = advogadoId;
+		this.advogadoNome = advogadoNome;
 		this.statusDoProcesso = statusDoProcesso;
 		this.partesEnvolvidas = partesEnvolvidas;
 		this.ultimaAtualizacao = ultimaAtualizacao;
@@ -69,6 +72,7 @@ public class ProcessoDto implements Serializable{
 		this.prazoFinal = toDateString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
+		this.advogadoNome = processo.getAdvogado().getNome();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
 		this.ultimaAtualizacao = processo.getUltimaAtualizacao();
@@ -80,6 +84,8 @@ public class ProcessoDto implements Serializable{
 		this.assunto = projection.getAssunto();
 		this.prazoFinal = projection.getPrazoFinal();
 		this.responsavel = projection.getResponsavel();
+		this.advogadoId = projection.getAdvogadoId();
+		this.advogadoNome = projection.getAdvogadoNome();
 	}
 	
 	private String toDateString(LocalDate localDate) {
@@ -116,6 +122,10 @@ public class ProcessoDto implements Serializable{
 
 	public Long getAdvogadoId() {
 		return advogadoId;
+	}
+
+	public String getAdvogadoNome() {
+		return advogadoNome;
 	}
 
 	public String getStatusDoProcesso() {

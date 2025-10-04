@@ -11,4 +11,8 @@ public interface ProcessoProjection {
 	String getPrazoFinal();
 	
 	String getResponsavel();
+	
+	Long getAdvogadoId();
+	
+	String getAdvogadoNome();
 }

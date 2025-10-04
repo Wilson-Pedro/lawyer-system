@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import styles from "./Processos.module.css";
+import styles from "./Movimento.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -14,7 +14,7 @@ interface Processo {
   advogadoNome: string;
 };
 
-export default function Processos() {
+export default function Movimento() {
   const [processos, setProcessos] = useState<Processo[]>([]);
   const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ export default function Processos() {
         ← Voltar
       </button>
 
-      <h1 className={styles.title}>Processos em Andamento</h1>
+      <h1 className={styles.title}>Movimento</h1>
 
       <div className={styles.list}>
         {processos.length > 0 ? ( processos.map((item) => (
@@ -45,8 +45,8 @@ export default function Processos() {
             <p className={styles.assunto}>Assunto: {item.assunto}</p>
             <p className={styles.prazo}>Prazo: {item.prazoFinal}</p>
             <p className={styles.responsavel}>Advogado: {item.advogadoNome}</p>
-            <div className={styles.btnCard} onClick={() => navigate(`/processos/${item.numeroDoProcesso}/movimento`)}>
-              Ver Movimento
+            <div className={styles.btnCard}>
+              Ver Detalhe
             </div>
           </div>
         ))) : (
