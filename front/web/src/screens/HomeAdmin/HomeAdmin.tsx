@@ -12,10 +12,10 @@ export default function HomeAdmin() {
 
       <div className={styles.menu}>
         <MenuButton label="Ver Processos" onClick={() => navigate("/processos")} />
-        <MenuButton label="Cadastrar Assistido" onClick={() => navigate("/CadastrarAssistido")} />
-        <MenuButton label="Cadastrar Estagiário" onClick={() => navigate("/CadastrarEstagiario")} />
-        <MenuButton label="Cadastrar Advogado" onClick={() => navigate("/CadastrarAdvogado")}/>
-        <MenuButton label="Cadastrar Processo" onClick={() => navigate("/CadastrarProcesso")} />
+        <MenuButton label="Cadastrar Assistido" onClick={() => navigate("/cadastrarAssistido")} />
+        <MenuButton label="Cadastrar Estagiário" onClick={() => navigate("/cadastrarEstagiario")} />
+        <MenuButton label="Cadastrar Advogado" onClick={() => navigate("/cadastrarAdvogado")}/>
+        <MenuButton label="Cadastrar Processo" onClick={() => navigate("/cadastrarProcesso")} />
         <MenuButton label="Sair" onClick={() => navigate("/")} color="#e74c3c" />
       </div>
     </div>

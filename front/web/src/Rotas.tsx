@@ -7,6 +7,7 @@ import CadastrarAssistido from './screens/CadastrarAssistido/CadastrarAssistido'
 import CadastrarEstagiario from './screens/CadastrarEstagiario/CadastrarEstagiario';
 import CadastrarProcesso from './screens/CadastrarProcesso/CadastrarProcesso';
 import CadastrarAdvogado from './screens/CadastrarAdvogado/CadastrarAdvogado';
+import CadastrarMovimento from './screens/CadastrarMovimento/CadastrarMovimento';
 import Movimento from './screens/Movimento/Movimento';
 
 export default function Rotas() {
@@ -16,11 +17,12 @@ export default function Rotas() {
                 <Route path="/" element={<Home />} />
                 <Route path="/admin" element={<HomeAdmin />} />
                 <Route path="/processos" element={<Processos />} />
-                <Route path="/CadastrarAssistido" element={<CadastrarAssistido />} />
-                <Route path="/CadastrarEstagiario" element={<CadastrarEstagiario />} />
-                <Route path="/CadastrarProcesso" element={<CadastrarProcesso />} />
-                <Route path="/CadastrarAdvogado" element={<CadastrarAdvogado />} />
+                <Route path="/cadastrarAssistido" element={<CadastrarAssistido />} />
+                <Route path="/cadastrarEstagiario" element={<CadastrarEstagiario />} />
+                <Route path="/cadastrarProcesso" element={<CadastrarProcesso />} />
+                <Route path="/cadastrarAdvogado" element={<CadastrarAdvogado />} />
                 <Route path="processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
+                <Route path="/cadastrarMovimento" element={ <CadastrarMovimento /> } />
             </Routes>
         </BrowserRouter>
     );

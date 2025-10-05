@@ -38,6 +38,12 @@ export default function Movimento() {
 
       <h1 className={styles.title}>Movimento</h1>
 
+      <div className={styles.divBtn}>
+        <button className={styles.button} onClick={() => navigate("/cadastrarMovimento")}>
+          Cadastrar Movimento
+        </button>
+      </div>
+
       <div className={styles.list}>
         {processos.length > 0 ? ( processos.map((item) => (
           <div key={item.id} className={styles.card}>
@@ -45,9 +51,6 @@ export default function Movimento() {
             <p className={styles.assunto}>Assunto: {item.assunto}</p>
             <p className={styles.prazo}>Prazo: {item.prazoFinal}</p>
             <p className={styles.responsavel}>Advogado: {item.advogadoNome}</p>
-            <div className={styles.btnCard}>
-              Ver Detalhe
-            </div>
           </div>
         ))) : (
           <div className={styles.emptyContainer}>
