@@ -4,7 +4,7 @@ public interface ProcessoProjection {
 
 	Long getId();
 	
-	Integer getNumeroDoProcesso();
+	String getNumeroDoProcesso();
 	
 	String getAssunto();
 	

@@ -18,6 +18,7 @@ import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -29,28 +30,25 @@ class EnderecoServiceTest {
 	@Autowired
 	EnderecoRepository enderecoRepository;
 	
-	@Autowired
-	EstagiarioRepository estagiarioRepository;
-	
-	@Autowired
-	AssistidoRepository assistidoRepository;
-	
-	@Autowired
-	AdvogadoRepository advogadoRepository;
-	
-	@Autowired
-	ProcessoRepository processoRepository;
-	
 	AssistidoDto assistidoDto;
+	
+	@Autowired
+	TestUtil testUtil;
 	
 	@BeforeEach
 	void setUp() {
 		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
-
+	
 	@Test
 	@Order(1)
+	void deletandoTodosOsDadosAntesDostestes() {
+		testUtil.deleteAll();
+	}
+
+	@Test
+	@Order(2)
 	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
 		assertEquals(0, enderecoRepository.count());
 		
@@ -65,15 +63,5 @@ class EnderecoServiceTest {
 		assertEquals("43012-232", endereco.getCep());
 		assertEquals(1, enderecoRepository.count());
 
-	}
-
-	@Test
-	@Order(2)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		advogadoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		processoRepository.deleteAll();
 	}
 }

@@ -14,7 +14,7 @@ public class ProcessoDto implements Serializable{
 	
 	private Long assistidoId;
 	
-	private Integer numeroDoProcesso;
+	private String numeroDoProcesso;
 	
 	private String assunto;
 	
@@ -37,7 +37,7 @@ public class ProcessoDto implements Serializable{
 	public ProcessoDto() {
 	}
 
-	public ProcessoDto(Long id, Long assistidoId, Integer numeroDoProcesso, String assunto, 
+	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String assunto, 
 			String vara, String prazoFinal, String responsavel, Long advogadoId, String advogadoNome,
 			String statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
@@ -100,7 +100,7 @@ public class ProcessoDto implements Serializable{
 		return assistidoId;
 	}
 
-	public Integer getNumeroDoProcesso() {
+	public String getNumeroDoProcesso() {
 		return numeroDoProcesso;
 	}
 

@@ -34,7 +34,7 @@ public class AdvogadoController {
 	public ResponseEntity<Page<AdvogadoDto>> buscarAdvogado(
 			@PathVariable String nome,
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size
+			@RequestParam(defaultValue = "20") int size
 			) {
 		Page<Advogado> pages = advogadoService.buscarAdvogado(nome, page, size);
 		Page<AdvogadoDto> pagesDto = pages.map(x -> new AdvogadoDto(x));

@@ -1,6 +1,5 @@
 package com.advocacia.estacio.services;
 
-import static org.assertj.core.api.Assertions.assertThatException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -16,38 +15,20 @@ import org.springframework.data.domain.Page;
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
-import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AdvogadoServiceTest {
 	
 	@Autowired
-	EnderecoService enderecoService;
-	
-	@Autowired
-	AssistidoService assistidoService;
-	
-	@Autowired
 	AdvogadoService advogadoService;
-	
-	@Autowired
-	EnderecoRepository enderecoRepository;
-	
-	@Autowired
-	EstagiarioRepository estagiarioRepository;
-	
-	@Autowired
-	AssistidoRepository assistidoRepository;
 	
 	@Autowired
 	AdvogadoRepository advogadoRepository;
 	
 	@Autowired
-	ProcessoRepository processoRepository;
+	TestUtil testUtil;
 	
 	AdvogadoDto advogadoDto;
 	
@@ -93,11 +74,7 @@ class AdvogadoServiceTest {
 
 	@Test
 	@Order(3)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		advogadoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		processoRepository.deleteAll();
+	void deletando_TodosOsDados_DepoisDostestes() {
+		testUtil.deleteAll();
 	}
 }

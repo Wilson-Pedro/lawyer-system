@@ -20,11 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
-import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -39,13 +37,7 @@ class EstagiarioControllerTest {
 	EnderecoRepository enderecoRepository;
 	
 	@Autowired
-	AssistidoRepository assistidoRepository;
-	
-	@Autowired
-	AdvogadoRepository advogadoRepository;
-	
-	@Autowired
-	ProcessoRepository processoRepository;
+	TestUtil testUtil;
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -66,6 +58,12 @@ class EstagiarioControllerTest {
 	
 	@Test
 	@Order(1)
+	void deletando_TodosOsDados_AntesDostestes() {
+		testUtil.deleteAll();
+	}
+	
+	@Test
+	@Order(2)
 	void deveSalvar_Estagiario_NoBancoDeDados_PeloController() throws Exception {
 		
 		assertEquals(0, estagiarioRepository.count());
@@ -84,15 +82,5 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.periodo", equalTo("Estágio I")));
 		
 		assertEquals(1, estagiarioRepository.count());
-	}
-
-	@Test
-	@Order(2)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		advogadoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		processoRepository.deleteAll();
 	}
 }

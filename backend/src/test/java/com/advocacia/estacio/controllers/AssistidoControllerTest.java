@@ -2,9 +2,9 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,12 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -37,19 +34,10 @@ class AssistidoControllerTest {
 	AssistidoService assistidoService;
 	
 	@Autowired
-	EnderecoRepository enderecoRepository;
-	
-	@Autowired
-	EstagiarioRepository estagiarioRepository;
-	
-	@Autowired
 	AssistidoRepository assistidoRepository;
 	
 	@Autowired
-	AdvogadoRepository advogadoRepository;
-	
-	@Autowired
-	ProcessoRepository processoRepository;
+	TestUtil testUtil;
 	
 	@Autowired
 	MockMvc mockMvc;
@@ -69,6 +57,12 @@ class AssistidoControllerTest {
 	
 	@Test
 	@Order(1)
+	void deletando_TodosOsDados_AntesDostestes() {
+		testUtil.deleteAll();
+	}
+	
+	@Test
+	@Order(2)
 	void deveSalvar_Assistido_NoBancoDeDados_PeloController() throws Exception {
 		
 		assertEquals(0, assistidoRepository.count());
@@ -105,15 +99,5 @@ class AssistidoControllerTest {
 		.andExpect(jsonPath("$.content.length()").value(1))
 		.andExpect(jsonPath("$.content[0].nome").value("Ana Carla"));
 		
-	}
-
-	@Test
-	@Order(4)
-	void deletandoTodosOsDadosAntesDostestes() {
-		estagiarioRepository.deleteAll();
-		assistidoRepository.deleteAll();
-		advogadoRepository.deleteAll();
-		enderecoRepository.deleteAll();
-		processoRepository.deleteAll();
 	}
 }

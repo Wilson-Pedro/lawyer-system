@@ -35,7 +35,7 @@ public class Processo implements Serializable{
 	@JoinColumn(name = "assistido_id")
 	private Assistido assistido;
 	
-	private Integer numeroDoProcesso;
+	private String numeroDoProcesso;
 	
 	private String assunto;
 	
@@ -62,7 +62,7 @@ public class Processo implements Serializable{
 	public Processo() {
 	}
 
-	public Processo(Long id, Assistido assistido, Integer numeroDoProcesso, String assunto, 
+	public Processo(Long id, Assistido assistido, String numeroDoProcesso, String assunto, 
 			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado,
 			StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
@@ -120,11 +120,11 @@ public class Processo implements Serializable{
 		this.assistido = assistido;
 	}
 
-	public Integer getNumeroDoProcesso() {
+	public String getNumeroDoProcesso() {
 		return numeroDoProcesso;
 	}
 
-	public void setNumeroDoProcesso(Integer numeroDoProcesso) {
+	public void setNumeroDoProcesso(String numeroDoProcesso) {
 		this.numeroDoProcesso = numeroDoProcesso;
 	}
 
