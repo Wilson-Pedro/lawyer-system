@@ -21,8 +21,8 @@ export default function Rotas() {
                 <Route path="/cadastrarEstagiario" element={<CadastrarEstagiario />} />
                 <Route path="/cadastrarProcesso" element={<CadastrarProcesso />} />
                 <Route path="/cadastrarAdvogado" element={<CadastrarAdvogado />} />
-                <Route path="processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
-                <Route path="/cadastrarMovimento" element={ <CadastrarMovimento /> } />
+                <Route path="/processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
+                <Route path="/cadastrarMovimento/:numeroDoProcesso" element={ <CadastrarMovimento /> } />
             </Routes>
         </BrowserRouter>
     );

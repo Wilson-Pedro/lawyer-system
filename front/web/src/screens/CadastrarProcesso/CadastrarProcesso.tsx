@@ -170,7 +170,7 @@ export default function CadastrarProcesso() {
   return (
 
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate("/admin")}>
         ← Voltar
       </button>
 

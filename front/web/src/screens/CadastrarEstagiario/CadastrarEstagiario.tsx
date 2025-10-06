@@ -47,7 +47,7 @@ export default function CadastrarEstagiario() {
     <div className={styles.container}>
 
       {/* Botão de Voltar */}
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate("/admin")}>
         ← Voltar
       </button>
 

@@ -1,6 +1,7 @@
 package com.advocacia.estacio.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,6 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 	List<ProcessoProjection> buscarProcessosPorStatusDoProcesso();
 	
 	Page<Processo> findByNumeroDoProcessoContainingIgnoreCase(String numeroDoProcesso, Pageable pageable);
+
+	Optional<Processo> findByNumeroDoProcesso(String numeroDoProcesso);
 }

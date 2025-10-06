@@ -12,7 +12,9 @@ public interface ProcessoService {
 	
 	Processo salvar(ProcessoRequestDto request);
 	
-	Processo findById(Long id);
+	Processo buscarPorId(Long id);
+	
+	Processo buscarPorNumeroDoProcesso(String numeroDoProcesso);
 	
 	List<ProcessoDto> buscarProcessosPorStatusDoProcesso();
 	

@@ -37,7 +37,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 	@Override
 	public Processo salvar(ProcessoRequestDto request) {
 		Assistido assistido = assistidoService.findById(request.getAssistidoId());
-		Advogado advogado = advogadoService.findById(request.getAdvogadoId());
+		Advogado advogado = advogadoService.buscarPorId(request.getAdvogadoId());
 		Processo processo = new Processo(request);
 		processo.setAssistido(assistido);
 		processo.setAdvogado(advogado);
@@ -62,7 +62,13 @@ public class ProcessoServiceImpl implements ProcessoService {
 	}
 
 	@Override
-	public Processo findById(Long id) {
+	public Processo buscarPorId(Long id) {
 		return processoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	}
+
+	@Override
+	public Processo buscarPorNumeroDoProcesso(String numeroDoProcesso) {
+		return processoRepository.findByNumeroDoProcesso(numeroDoProcesso)
+				.orElseThrow(EntityNotFoundException::new);
 	}
 }

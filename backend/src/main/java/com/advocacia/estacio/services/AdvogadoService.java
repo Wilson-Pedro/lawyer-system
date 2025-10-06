@@ -9,7 +9,7 @@ public interface AdvogadoService {
 
 	Advogado salvar(AdvogadoDto advogadoDto);
 	
-	Advogado findById(Long id);
+	Advogado buscarPorId(Long id);
 	
 	Page<Advogado> buscarAdvogado(String nome, int page, int size);
 }

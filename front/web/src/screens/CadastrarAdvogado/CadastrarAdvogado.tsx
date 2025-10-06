@@ -77,7 +77,7 @@ export default function CadastrarAdvogado() {
 
   return (
     <form className={styles.container} onSubmit={cadastrarAssistido}>
-      <button className={styles.backButton} onClick={() => navigate("/")}>
+      <button className={styles.backButton} onClick={() => navigate("/admin")}>
         ← Voltar
       </button>
       <h1 className={styles.title}>Cadastrar Advogado</h1>

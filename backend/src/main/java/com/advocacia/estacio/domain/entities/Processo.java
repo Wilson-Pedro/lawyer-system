@@ -12,6 +12,7 @@ import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,6 +36,7 @@ public class Processo implements Serializable{
 	@JoinColumn(name = "assistido_id")
 	private Assistido assistido;
 	
+	@Column(unique = true)
 	private String numeroDoProcesso;
 	
 	private String assunto;

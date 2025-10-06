@@ -1,6 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.MovimentoDto;
@@ -27,11 +30,19 @@ public class MovimentoServiceImpl implements MovimentoService {
 	
 	@Override
 	public Movimento salvar(MovimentoDto movimentoDto) {
-		Processo processo = processoService.findById(movimentoDto.getProcessoId());
-		Advogado advogado = advogadoService.findById(movimentoDto.getAdvogadoId());
+		Processo processo = processoService.buscarPorId(movimentoDto.getProcessoId());
+		Advogado advogado = advogadoService.buscarPorId(movimentoDto.getAdvogadoId());
 		Movimento movimento = new Movimento(movimentoDto);
 		movimento.setAdvogado(advogado);
 		movimento.setProcesso(processo);
 		return movimentoRepository.save(movimento);
+	}
+
+
+	@Override
+	public Page<Movimento> buscarMovimentosPorProcesso(String numeroDoProcesso, int page, int size) {
+		Processo processo = processoService.buscarPorNumeroDoProcesso(numeroDoProcesso);
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("registro").descending());
+		return movimentoRepository.findAllByProcesso(processo, pageable);
 	}
 }

@@ -1,60 +1,74 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Movimento.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
-interface Processo {
-  id: string;
+interface Page<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+}
+
+interface Movimento {
+  id: number;
   numeroDoProcesso: string;
-  assunto: string;
-  prazoFinal: string;
-  responsavel: string;
-  advogadoNome: string;
-};
+  advogado: string;
+  movimento: string;
+  registro: string;
+}
 
 export default function Movimento() {
-  const [processos, setProcessos] = useState<Processo[]>([]);
+  const [movimentos, setMovimentos] = useState<Movimento[]>([]);
   const navigate = useNavigate();
 
+  const params = useParams();
+  const numeroDoProcesso = params.numeroDoProcesso || '';
+
   useEffect(() => {
-    const fetchProcessos = async () => {
+
+    const fetchMovimentos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso`);
-        setProcessos(response.data);
-      } catch (error) {
-        console.error(error);
+        const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`); 
+        const pageData: Page<Movimento> = response.data;
+        setMovimentos(pageData.content);
+
+      } catch(error) {
+        console.log("Error ao buscar movimentos: " +  error);
       }
-    };
-    fetchProcessos();
-  }, []);
+    }
+
+    fetchMovimentos();
+  }, [numeroDoProcesso]);
 
   return (
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate("/processos")}>
         ← Voltar
       </button>
 
       <h1 className={styles.title}>Movimento</h1>
 
       <div className={styles.divBtn}>
-        <button className={styles.button} onClick={() => navigate("/cadastrarMovimento")}>
+        <button className={styles.button} onClick={() => navigate(`/cadastrarMovimento/${numeroDoProcesso}`)}>
           Cadastrar Movimento
         </button>
       </div>
 
       <div className={styles.list}>
-        {processos.length > 0 ? ( processos.map((item) => (
+        {movimentos.length > 0 ? ( movimentos.map((item) => (
           <div key={item.id} className={styles.card}>
-            <p className={styles.numero}>Nº Processo: {item.numeroDoProcesso}</p>
-            <p className={styles.assunto}>Assunto: {item.assunto}</p>
-            <p className={styles.prazo}>Prazo: {item.prazoFinal}</p>
-            <p className={styles.responsavel}>Advogado: {item.advogadoNome}</p>
+            <p className={styles.numero}><span>Nº Processo:</span> {item.numeroDoProcesso}</p>
+            <p className={styles.assunto}><span>Nº Assunto:</span> {item.movimento}</p>
+            <p className={styles.assunto}><span>Advogado:</span> {item.advogado}</p>
+            <p className={styles.prazo}><span>{item.registro}</span></p>
           </div>
         ))) : (
           <div className={styles.emptyContainer}>
-            <p className={styles.emptyText}>Nenhum Processo foi cadastrado.</p>
+            <p className={styles.emptyText}>Nenhum Movimento foi cadastrado.</p>
           </div>
         )}
       </div>

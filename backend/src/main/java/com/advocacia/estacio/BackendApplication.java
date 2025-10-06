@@ -7,10 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 
 @SpringBootApplication
@@ -24,6 +26,9 @@ public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	ProcessoService processoService;
+	
+	@Autowired
+	MovimentoService movimentoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -44,6 +49,14 @@ public class BackendApplication implements CommandLineRunner {
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "25/10/2025");
 		
 		Processo processo = processoService.salvar(request);
+		
+		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro1");
+		MovimentoDto movimentoDto2 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro2");
+		MovimentoDto movimentoDto3 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro3");
+		
+		movimentoService.salvar(movimentoDto1);
+		movimentoService.salvar(movimentoDto2);
+		movimentoService.salvar(movimentoDto3);
 	}
 
 }

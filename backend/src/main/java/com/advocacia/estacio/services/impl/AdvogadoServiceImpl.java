@@ -34,7 +34,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	}
 
 	@Override
-	public Advogado findById(Long id) {
+	public Advogado buscarPorId(Long id) {
 		return advogadoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	

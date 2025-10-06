@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./CadastrarMovimento.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
-export interface Page<T> {
+interface Page<T> {
   content: T[];
   totalPages: number;
   totalElements: number;
@@ -13,18 +13,18 @@ export interface Page<T> {
   number: number;
 }
 
-export interface Entity {
+interface Entity {
   id: number;
   nome: string;
 }
 
-export interface Assistido extends Entity {
+interface Assistido extends Entity {
 }
 
-export interface Advogado extends Entity {
+interface Advogado extends Entity {
 }
 
-export interface Processo {
+interface Processo {
   id:number;
   numeroDoProcesso:string;
 }
@@ -49,6 +49,8 @@ export default function CadastrarMovimento() {
   const page = 0;
   const size = 20;
 
+  const params = useParams();
+  const numeroDoProcessoParams = params.numeroDoProcesso || '';
 
   useEffect(() => {
     const buscarAssistido = async () => {
@@ -127,7 +129,7 @@ export default function CadastrarMovimento() {
   return (
 
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate(`/processos/${numeroDoProcessoParams}/movimento`)}>
         ← Voltar
       </button>
 
@@ -137,7 +139,7 @@ export default function CadastrarMovimento() {
           <label className={styles.label}>Processo</label>
           <input
             className={styles.input}
-            placeholder="Digite o número do processo"
+            placeholder={numeroDoProcessoParams}
             value={numeroDoProcessoSearch || numeroDoProcesso}
             onChange={(e) => setNumeroDoProcessoSearch(e.target.value)}
             required
@@ -189,7 +191,7 @@ export default function CadastrarMovimento() {
         </div>
 
         <button type="submit" className={styles.button}>
-          Cadastrar Processo
+          Cadastrar Movimento
         </button>
       </form>
     </div>
