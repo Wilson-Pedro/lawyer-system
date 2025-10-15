@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
+import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,9 @@ class AdvogadoControllerTest {
 	
 	@Autowired
 	AdvogadoRepository advogadoRepository;
+	
+	@Autowired
+	DemandaRepository demandaRepository;
 	
 	AdvogadoDto advogadoDto;
 	
@@ -59,6 +63,7 @@ class AdvogadoControllerTest {
 	@Test
 	@Order(1)
 	void deletando_TodosOsDados_AntesDostestes() {
+		demandaRepository.deleteAll();
 		testUtil.deleteAll();
 	}
 	

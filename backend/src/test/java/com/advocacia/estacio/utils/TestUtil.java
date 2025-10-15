@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.MovimentoRepository;
@@ -31,7 +32,11 @@ public class TestUtil {
 	@Autowired
 	MovimentoRepository movimentoRepository;
 	
+	@Autowired
+	DemandaRepository demandaRepository;
+	
 	public void deleteAll() {
+		demandaRepository.deleteAll();
 		estagiarioRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();

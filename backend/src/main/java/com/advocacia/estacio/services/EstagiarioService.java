@@ -6,4 +6,6 @@ import com.advocacia.estacio.domain.entities.Estagiario;
 public interface EstagiarioService {
 
 	Estagiario salvar(EstagiarioDto estagiarioDto);
+	
+	Estagiario buscarPorId(Long id);
 }
