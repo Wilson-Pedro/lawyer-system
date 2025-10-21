@@ -17,6 +17,14 @@ public class AssistidoDto implements Serializable{
 	
 	private String email;
 	
+	private String profissao;
+	
+	private String nacionalidade;
+	
+	private String naturalidade;
+	
+	private String estadoCivil;
+	
 	private String cidade;
 	
 	private String bairro;
@@ -30,13 +38,18 @@ public class AssistidoDto implements Serializable{
 	private AssistidoDto() {
 	}
 
-	public AssistidoDto(Long id, String nome, String matricula, String telefone, String email, String cidade, String bairro, String rua,
-			Integer numeroDaCasa, String cep) {
+	public AssistidoDto(Long id, String nome, String matricula, String telefone, String email, 
+			String profissao, String nacionalidade, String naturalidade, String estadoCivil,
+			String cidade, String bairro, String rua, Integer numeroDaCasa, String cep) {
 		this.id = id;
 		this.nome = nome;
 		this.matricula = matricula;
 		this.telefone = telefone;
 		this.email = email;
+		this.profissao = profissao;
+		this.nacionalidade = nacionalidade;
+		this.naturalidade = naturalidade;
+		this.estadoCivil = estadoCivil;
 		this.cidade = cidade;
 		this.bairro = bairro;
 		this.rua = rua;
@@ -49,7 +62,11 @@ public class AssistidoDto implements Serializable{
 		this.nome = assistido.getNome();
 		this.matricula = assistido.getMatricula();
 		this.telefone = assistido.getTelefone();
+		this.estadoCivil = assistido.getEstadoCivil().getEstado();
 		this.email = assistido.getEmail();
+		this.profissao = assistido.getProfissao();
+		this.nacionalidade = assistido.getNacionalidade();
+		this.naturalidade = assistido.getNaturalidade();
 		this.cidade = assistido.getEndereco().getCidade();
 		this.bairro = assistido.getEndereco().getBairro();
 		this.rua = assistido.getEndereco().getRua();
@@ -75,6 +92,22 @@ public class AssistidoDto implements Serializable{
 
 	public String getEmail() {
 		return email;
+	}
+
+	public String getProfissao() {
+		return profissao;
+	}
+	
+	public String getNacionalidade() {
+		return nacionalidade;
+	}
+
+	public String getNaturalidade() {
+		return naturalidade;
+	}
+
+	public String getEstadoCivil() {
+		return estadoCivil;
 	}
 
 	public String getCidade() {

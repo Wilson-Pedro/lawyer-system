@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
@@ -39,7 +40,7 @@ class AssistidoServiceServiceTest {
 	@BeforeEach
 	void setUp() {
 		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+				"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
 	
 	@Test
@@ -61,6 +62,10 @@ class AssistidoServiceServiceTest {
 		assertEquals("20250815", assistido.getMatricula());
 		assertEquals("86766523354", assistido.getTelefone());
 		assertEquals("ana@gmail.com", assistido.getEmail());
+		assertEquals("Cientista de Dados", assistido.getProfissao());
+		assertEquals("brasileiro", assistido.getNacionalidade());
+		assertEquals("São Luís/MA", assistido.getNaturalidade());
+		assertEquals(EstadoCivil.SOLTERIO, assistido.getEstadoCivil());
 		
 		assertEquals(1, assistidoRepository.count());
 

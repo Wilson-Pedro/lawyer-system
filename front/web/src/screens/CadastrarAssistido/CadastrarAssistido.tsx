@@ -11,6 +11,10 @@ export default function CadastrarAssistido() {
   const [matricula, setMatricula] = useState("23423423");
   const [telefone, setTelefone] = useState("88776643466");
   const [email, setEmail] = useState("lucas@gmail.com");
+  const [profissao, setProfissao] = useState("Programador");
+  const [nacionalidade, setNacionalidade] = useState("brasileiro");
+  const [naturalidade, setnaturalidade] = useState("Sõa Luís/MA");
+  const [estadoCivil, setEstadoCivil] = useState("");
   const [cidade, setCidade] = useState("São Luís");
   const [bairro, setBairro] = useState("Alemanha");
   const [rua, setRua] = useState("Rua das Flores");
@@ -27,6 +31,10 @@ export default function CadastrarAssistido() {
         matricula,
         telefone,
         email,
+        profissao,
+        nacionalidade,
+        naturalidade,
+        estadoCivil,
         cidade,
         bairro,
         rua,
@@ -40,6 +48,10 @@ export default function CadastrarAssistido() {
     }
   };
 
+  const selecionarEstadoCivil = async (e:any) => {
+    setEstadoCivil(e.target.value)
+  }
+
   const limparCampos = () => {
     setNome("");
     setMatricula("");
@@ -50,6 +62,10 @@ export default function CadastrarAssistido() {
     setRua("");
     setNumeroDaCasa("");
     setCep("");
+    setProfissao("");
+    setNacionalidade("");
+    setnaturalidade("");
+    setEstadoCivil("");
   };
 
   return (
@@ -97,6 +113,49 @@ export default function CadastrarAssistido() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Profissão</label>
+          <input
+            className={styles.input}
+            placeholder="Profissão"
+            value={profissao}
+            onChange={(e) => setProfissao(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Nacionalidade</label>
+          <input
+            className={styles.input}
+            placeholder="Nacionalidade"
+            value={nacionalidade}
+            onChange={(e) => setNacionalidade(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Naturalidade</label>
+          <input
+            className={styles.input}
+            placeholder="Naturalidade"
+            value={naturalidade}
+            onChange={(e) => setnaturalidade(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Estado Civil</label>
+          <select className={styles.input} onChange={selecionarEstadoCivil}>
+            <option value="Solteiro(a)">Solteiro(a)</option>
+            <option value="Casado(a)">Casado(a)</option>
+            <option value="Divorciado(a)">Divorciado(a)</option>
+            <option value="Viuvo(a)">Viuvo(a)</option>
+            <option value="Separado Judicialmente">Separado Judicialmente</option>
+          </select>
+        </div>
+        
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>Cidade</label>
           <input

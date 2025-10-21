@@ -52,7 +52,7 @@ class AssistidoControllerTest {
 	@BeforeEach
 	void setUp() {
 		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+				"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
 	
 	@Test
@@ -77,6 +77,10 @@ class AssistidoControllerTest {
 				.andExpect(jsonPath("$.matricula", equalTo("20250815")))
 				.andExpect(jsonPath("$.telefone", equalTo("86766523354")))
 				.andExpect(jsonPath("$.email", equalTo("ana@gmail.com")))
+				.andExpect(jsonPath("$.profissao", equalTo("Cientista de Dados")))
+				.andExpect(jsonPath("$.nacionalidade", equalTo("brasileiro")))
+				.andExpect(jsonPath("$.naturalidade", equalTo("São Luís/MA")))
+				.andExpect(jsonPath("$.estadoCivil", equalTo("Solteiro(a)")))
 				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
 				.andExpect(jsonPath("$.bairro", equalTo("Vila Palmeira")))
 				.andExpect(jsonPath("$.rua", equalTo("rua dos nobres")))
