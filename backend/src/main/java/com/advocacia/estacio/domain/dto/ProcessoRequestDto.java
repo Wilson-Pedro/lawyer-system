@@ -7,6 +7,8 @@ public class ProcessoRequestDto implements Serializable{
 	
 	private Long assistidoId;
 	
+	private String numeroDoProcessoPje;
+	
 	private String assunto;
 	
 	private String vara;
@@ -15,23 +17,34 @@ public class ProcessoRequestDto implements Serializable{
 	
 	private Long advogadoId;
 	
+	private String areaDoDireito;
+	
+	private String tribunal;
+	
 	private String prazo;
 	
 	public ProcessoRequestDto() {
 	}
 
-	public ProcessoRequestDto(Long assistidoId, String assunto, String vara, String responsavel, 
-			Long advogadoId,  String prazo) {
+	public ProcessoRequestDto(Long assistidoId, String numeroDoProcessoPje, String assunto, String vara, String responsavel, 
+			Long advogadoId, String areaDoDireito, String tribunal,  String prazo) {
 		this.assistidoId = assistidoId;
+		this.numeroDoProcessoPje =numeroDoProcessoPje;
 		this.assunto = assunto;
 		this.vara = vara;
 		this.responsavel = responsavel;
 		this.advogadoId = advogadoId;
+		this.areaDoDireito = areaDoDireito;
+		this.tribunal = tribunal;
 		this.prazo = prazo;
 	}
 
 	public Long getAssistidoId() {
 		return assistidoId;
+	}
+
+	public String getNumeroDoProcessoPje() {
+		return numeroDoProcessoPje;
 	}
 
 	public String getAssunto() {
@@ -48,6 +61,14 @@ public class ProcessoRequestDto implements Serializable{
 
 	public Long getAdvogadoId() {
 		return advogadoId;
+	}
+
+	public String getAreaDoDireito() {
+		return areaDoDireito;
+	}
+
+	public String getTribunal() {
+		return tribunal;
 	}
 
 	public String getPrazo() {

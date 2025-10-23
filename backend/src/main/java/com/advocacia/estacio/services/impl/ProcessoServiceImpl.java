@@ -42,7 +42,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 		processo.setAssistido(assistido);
 		processo.setAdvogado(advogado);
 		processo.setNumeroDoProcesso(gerarNumeroProcesso());
-		processo.postulatoria();
+		processo.tramitando();
 		processo.setUltimaAtualizacao(LocalDateTime.now());
 		return processoRepository.save(processo);
 	}
@@ -51,8 +51,8 @@ public class ProcessoServiceImpl implements ProcessoService {
 		return String.format("%d%d", LocalDate.now().getYear(), processoRepository.count()+1);
 	}
 	
-	public List<ProcessoDto> buscarProcessosPorStatusDoProcesso() {
-		return processoRepository.buscarProcessosPorStatusDoProcesso().stream()
+	public List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus) {
+		return processoRepository.buscarProcessosPorStatusDoProcesso(processoStatus).stream()
 				.map(ProcessoDto::new).toList();
 	}
 	

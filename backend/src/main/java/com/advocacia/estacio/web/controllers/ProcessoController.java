@@ -33,9 +33,10 @@ public class ProcessoController {
 		return ResponseEntity.status(201).body(new ProcessoDto(processo));
 	}
 	
-	@GetMapping("/statusDoProcesso")
-	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso() {
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso();
+	@GetMapping("/statusDoProcesso/{processoStatus}")
+	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso
+	(@PathVariable String processoStatus) {
+		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus);
 		return ResponseEntity.ok(processos);
 	}
 	

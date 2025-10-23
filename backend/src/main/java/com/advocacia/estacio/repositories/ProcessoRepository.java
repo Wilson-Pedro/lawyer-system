@@ -18,10 +18,10 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 				a.id AS advogado_id, a.nome AS advogado_nome 
 				FROM TBL_PROCESSO p 
 				JOIN TBL_ADVOGADO a ON p.advogado_id = a.id
-				WHERE p.status_do_processo = 'POSTULATORIA' 
+				WHERE p.status_do_processo = :processoStatus 
 				ORDER BY p.id DESC
 			""")
-	List<ProcessoProjection> buscarProcessosPorStatusDoProcesso();
+	List<ProcessoProjection> buscarProcessosPorStatusDoProcesso(String processoStatus);
 	
 	Page<Processo> findByNumeroDoProcessoContainingIgnoreCase(String numeroDoProcesso, Pageable pageable);
 

@@ -77,7 +77,7 @@ class ProcessoControllerTest {
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "Civil", "Estadual", "25/10/2025");
 		
 		String jsonRequest = objectMapper.writeValueAsString(request);
 		
@@ -99,7 +99,7 @@ class ProcessoControllerTest {
 	@Order(3)
 	void deveBuscar_Processos_PorStatusDoProcesso_PeloController() throws Exception {
 		
-		mockMvc.perform(get(URI + "/statusDoProcesso")
+		mockMvc.perform(get(URI + "/statusDoProcesso/TRAMITANDO")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

@@ -4,11 +4,9 @@ import java.util.stream.Stream;
 
 public enum StatusProcesso {
 	
-	POSTULATORIA(1, "Postulatória"),
-	INSTRUTORIA(2, "Instrutória"),
-	DECISORIA(3, "Decisória"),
-	RECURSAL(4, "Recursal"),
-	EXECUTOIA(4, "Executória");
+	TRAMITANDO(1, "Tramitando"),
+	SUSPENSO(2, "Suspenso"),
+	ARQUIVADO(3, "Arquivado");
 	
 	private Integer codigo;
 	

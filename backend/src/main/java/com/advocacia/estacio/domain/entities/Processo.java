@@ -10,7 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
+import com.advocacia.estacio.domain.enums.Tribunal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,6 +41,9 @@ public class Processo implements Serializable{
 	@Column(unique = true)
 	private String numeroDoProcesso;
 	
+	@Column(unique = true, nullable = true)
+	private String numeroDoProcessoPje;
+	
 	private String assunto;
 	
 	private String vara;
@@ -50,6 +55,12 @@ public class Processo implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "advogado_id")
 	private Advogado advogado;
+	
+	@Enumerated(EnumType.STRING)
+	private AreaDoDireito areaDoDireito;
+	
+	@Enumerated(EnumType.STRING)
+	private Tribunal tribunal;
 	
 	@Enumerated(EnumType.STRING)
 	private StatusProcesso statusDoProcesso;
@@ -64,16 +75,19 @@ public class Processo implements Serializable{
 	public Processo() {
 	}
 
-	public Processo(Long id, Assistido assistido, String numeroDoProcesso, String assunto, 
-			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado,
-			StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
+	public Processo(Long id, Assistido assistido, String numeroDoProcesso, String numeroDoProcessoPje, String assunto, 
+			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado, AreaDoDireito areaDoDireito,
+			Tribunal tribunal, StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.assistido = assistido;
 		this.numeroDoProcesso = numeroDoProcesso;
+		this.numeroDoProcessoPje = numeroDoProcessoPje;
 		this.assunto = assunto;
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
 		this.advogado = advogado;
+		this.areaDoDireito = areaDoDireito;
+		this.tribunal = tribunal;
 		this.statusDoProcesso = statusDoProcesso;
 		this.partesEnvolvidas = partesEnvolvidas;
 		this.ultimaAtualizacao = ultimaAtualizacao;
@@ -81,10 +95,13 @@ public class Processo implements Serializable{
 	
 	public Processo(ProcessoDto dto) {
 		this.numeroDoProcesso = dto.getNumeroDoProcesso();
+		this.numeroDoProcessoPje = dto.getNumeroDoProcessoPje();
 		this.assunto = dto.getAssunto();
 		this.vara = dto.getVara();
 		this.prazoFinal = localDateToString(dto.getPrazoFinal());
 		this.responsavel = dto.getResponsavel();
+		this.areaDoDireito = AreaDoDireito.toEnum(dto.getAreaDoDireito());
+		this.tribunal = Tribunal.toEnum(dto.getTribunal());
 		this.statusDoProcesso = StatusProcesso.toEnum(dto.getStatusDoProcesso());
 		this.partesEnvolvidas = dto.getPartesEnvolvidas();
 		this.ultimaAtualizacao = dto.getUltimaAtualizacao();
@@ -92,13 +109,16 @@ public class Processo implements Serializable{
 	
 	public Processo(ProcessoRequestDto request) {
 		this.assunto = request.getAssunto();
+		this.numeroDoProcessoPje = request.getNumeroDoProcessoPje();
 		this.vara = request.getVara();
 		this.responsavel = request.getResponsavel();
 		this.prazoFinal = localDateToString(request.getPrazo());
+		this.areaDoDireito = AreaDoDireito.toEnum(request.getAreaDoDireito());
+		this.tribunal = Tribunal.toEnum(request.getTribunal());
 	}
 	
-	public void postulatoria() {
-		this.statusDoProcesso = StatusProcesso.POSTULATORIA;
+	public void tramitando() {
+		this.statusDoProcesso = StatusProcesso.TRAMITANDO;
 	}
 	
 	private LocalDate localDateToString(String string) {
@@ -128,6 +148,14 @@ public class Processo implements Serializable{
 
 	public void setNumeroDoProcesso(String numeroDoProcesso) {
 		this.numeroDoProcesso = numeroDoProcesso;
+	}
+
+	public String getNumeroDoProcessoPje() {
+		return numeroDoProcessoPje;
+	}
+
+	public void setNumeroDoProcessoPje(String numeroDoProcessoPje) {
+		this.numeroDoProcessoPje = numeroDoProcessoPje;
 	}
 
 	public String getAssunto() {
@@ -168,6 +196,22 @@ public class Processo implements Serializable{
 
 	public void setAdvogado(Advogado advogado) {
 		this.advogado = advogado;
+	}
+
+	public AreaDoDireito getAreaDoDireito() {
+		return areaDoDireito;
+	}
+
+	public void setAreaDoDireito(AreaDoDireito areaDoDireito) {
+		this.areaDoDireito = areaDoDireito;
+	}
+
+	public Tribunal getTribunal() {
+		return tribunal;
+	}
+
+	public void setTribunal(Tribunal tribunal) {
+		this.tribunal = tribunal;
 	}
 
 	public StatusProcesso getStatusDoProcesso() {

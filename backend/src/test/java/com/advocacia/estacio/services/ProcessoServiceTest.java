@@ -62,7 +62,7 @@ class ProcessoServiceTest {
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "Civil", "Estadual", "25/10/2025");
 		
 		Processo processo = processoService.salvar(request);
 		
@@ -80,7 +80,7 @@ class ProcessoServiceTest {
 	@Test
 	void deveBuscar_Processo_PorStatusDoProcesso() {
 		
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso();
+		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
 		
 		assertNotNull(processos);
 		assertTrue(processos.size() > 0);

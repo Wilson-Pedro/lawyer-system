@@ -16,7 +16,7 @@ public interface ProcessoService {
 	
 	Processo buscarPorNumeroDoProcesso(String numeroDoProcesso);
 	
-	List<ProcessoDto> buscarProcessosPorStatusDoProcesso();
+	List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus);
 	
 	Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size);
 }
