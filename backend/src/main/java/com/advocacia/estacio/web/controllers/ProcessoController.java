@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.dto.ProcessoUpdate;
@@ -43,14 +44,14 @@ public class ProcessoController {
 	}
 	
 	@GetMapping("/buscar/{numeroDoProcesso}")
-	public ResponseEntity<Page<ProcessoDto>> buscarProcesso(
+	public ResponseEntity<PageResponseDto<ProcessoDto>> buscarProcesso(
 			@PathVariable String numeroDoProcesso,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size
 			) {
 		Page<Processo> pages = processoService.buscarProcesso(numeroDoProcesso, page, size);
 		Page<ProcessoDto> pagesDto = pages.map(x -> new ProcessoDto(x));
-		return ResponseEntity.ok(pagesDto);
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 	
 	@PutMapping("/{id}")

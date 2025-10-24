@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
+import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.services.AdvogadoService;
 
@@ -31,13 +32,13 @@ public class AdvogadoController {
 	}
 	
 	@GetMapping("/buscar/{nome}")
-	public ResponseEntity<Page<AdvogadoDto>> buscarAdvogado(
+	public ResponseEntity<PageResponseDto<AdvogadoDto>> buscarAdvogado(
 			@PathVariable String nome,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size
 			) {
 		Page<Advogado> pages = advogadoService.buscarAdvogado(nome, page, size);
 		Page<AdvogadoDto> pagesDto = pages.map(x -> new AdvogadoDto(x));
-		return ResponseEntity.ok(pagesDto);
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 }

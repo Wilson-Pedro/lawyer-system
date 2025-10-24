@@ -1,6 +1,10 @@
 package com.advocacia.estacio.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
@@ -24,5 +28,11 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	@Override
 	public Estagiario buscarPorId(Long id) {
 		return estagiarioRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	}
+	
+	@Override
+	public Page<Estagiario> buscarEstagiario(String nome, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
+		return estagiarioRepository.findByNomeContainingIgnoreCase(nome, pageable);
 	}
 }

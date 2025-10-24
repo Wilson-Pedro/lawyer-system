@@ -24,13 +24,20 @@ export interface Assistido extends Entity {
 export interface Advogado extends Entity {
 }
 
+export interface Estagiario extends Entity {
+}
+
 export default function CadastrarProcesso() {
   const navigate = useNavigate();
 
+  const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState("");
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
+  const [areaDeDireito, setAreaDeDireito] = useState("");
+  const [tribunal, setTribunal] = useState("");
   const [prazo, setPrazo] = useState("");
+
   const [messageDataError, setMessageDataError] = useState("");
   const [postValid, setPostValid] = useState(false);
 
@@ -43,6 +50,11 @@ export default function CadastrarProcesso() {
   const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
   const [advogadoId, setAdvogadoId] = useState<number>(0);
   const [advogados, setAdvogados] = useState<Advogado[]>([]);
+
+  const [nomeEstagiario, setNomeEstagiario] = useState("");
+  const [nomeEstagiarioSearch, setNomeEstagiarioSearch] = useState("");
+  const [estagiariod, setEstagiarioId] = useState<number>(0);
+  const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
   const page = 0;
   const size = 20;
@@ -221,6 +233,16 @@ export default function CadastrarProcesso() {
         </div>
 
         <div className={styles.inputGroup}>
+          <label className={styles.label}>Nº do processo do PJE</label>
+          <input
+            className={styles.input}
+            placeholder="Nº do processo do PJE"
+            value={numeroDoProcessoPje}
+            onChange={(e) => setNumeroDoProcessoPje(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
           <label className={styles.label}>Responsável</label>
           <input
             className={styles.input}
@@ -251,6 +273,39 @@ export default function CadastrarProcesso() {
               ))}
             </ul>
           )}
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Estagiario</label>
+          <input
+            className={styles.input}
+            placeholder="Estagiario"
+            value={""}
+            onChange={(e) => setVara(e.target.value)}
+            required
+          />
+        </div>
+
+         <div className={styles.inputGroup}>
+          <label className={styles.label}>Área de Direito</label>
+          <input
+            className={styles.input}
+            placeholder="Área de Direito"
+            value={""}
+            onChange={(e) => setVara(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Tribunal</label>
+          <input
+            className={styles.input}
+            placeholder="Tribunal"
+            value={""}
+            onChange={(e) => setVara(e.target.value)}
+            required
+          />
         </div>
 
         <div className={styles.inputGroup}>

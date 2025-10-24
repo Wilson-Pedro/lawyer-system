@@ -12,10 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.MovimentoResponseDto;
-import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Movimento;
 import com.advocacia.estacio.services.MovimentoService;
 
@@ -34,13 +33,13 @@ public class MovimentoController {
 	}
 	
 	@GetMapping("/buscar/{numeroDoProcesso}")
-	public ResponseEntity<Page<MovimentoResponseDto>> buscarMovimentosPorProcesso(
+	public ResponseEntity<PageResponseDto<MovimentoResponseDto>> buscarMovimentosPorProcesso(
 			@PathVariable String numeroDoProcesso,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size
 			) {
 		Page<Movimento> pages = movimentoService.buscarMovimentosPorProcesso(numeroDoProcesso, page, size);
 		Page<MovimentoResponseDto> pagesDto = pages.map(x -> new MovimentoResponseDto(x));
-		return ResponseEntity.ok(pagesDto);
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 }
