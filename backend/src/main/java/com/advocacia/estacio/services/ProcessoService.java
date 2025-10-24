@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Processo;
 
 public interface ProcessoService {
@@ -19,4 +20,6 @@ public interface ProcessoService {
 	List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus);
 	
 	Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size);
+	
+	Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate);
 }

@@ -56,6 +56,10 @@ public class Processo implements Serializable{
 	@JoinColumn(name = "advogado_id")
 	private Advogado advogado;
 	
+	@ManyToOne
+	@JoinColumn(name = "estagiario_id")
+	private Estagiario estagiario;
+	
 	@Enumerated(EnumType.STRING)
 	private AreaDoDireito areaDoDireito;
 	
@@ -74,25 +78,29 @@ public class Processo implements Serializable{
 	
 	public Processo() {
 	}
-
-	public Processo(Long id, Assistido assistido, String numeroDoProcesso, String numeroDoProcessoPje, String assunto, 
-			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado, AreaDoDireito areaDoDireito,
-			Tribunal tribunal, StatusProcesso statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
+	
+	public Processo(Long id, Assistido assistido, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
+			String vara, LocalDate prazoFinal, String responsavel, Advogado advogado, Estagiario estagiario,
+			AreaDoDireito areaDoDireito, Tribunal tribunal, StatusProcesso statusDoProcesso, String partesEnvolvidas,
+			LocalDateTime ultimaAtualizacao, LocalDateTime registro) {
 		this.id = id;
 		this.assistido = assistido;
 		this.numeroDoProcesso = numeroDoProcesso;
 		this.numeroDoProcessoPje = numeroDoProcessoPje;
 		this.assunto = assunto;
+		this.vara = vara;
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
 		this.advogado = advogado;
+		this.estagiario = estagiario;
 		this.areaDoDireito = areaDoDireito;
 		this.tribunal = tribunal;
 		this.statusDoProcesso = statusDoProcesso;
 		this.partesEnvolvidas = partesEnvolvidas;
 		this.ultimaAtualizacao = ultimaAtualizacao;
+		this.registro = registro;
 	}
-	
+
 	public Processo(ProcessoDto dto) {
 		this.numeroDoProcesso = dto.getNumeroDoProcesso();
 		this.numeroDoProcessoPje = dto.getNumeroDoProcessoPje();
@@ -196,6 +204,14 @@ public class Processo implements Serializable{
 
 	public void setAdvogado(Advogado advogado) {
 		this.advogado = advogado;
+	}
+
+	public Estagiario getEstagiario() {
+		return estagiario;
+	}
+
+	public void setEstagiario(Estagiario estagiario) {
+		this.estagiario = estagiario;
 	}
 
 	public AreaDoDireito getAreaDoDireito() {

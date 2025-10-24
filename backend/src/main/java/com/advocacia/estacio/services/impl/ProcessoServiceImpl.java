@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.ProcessoService;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -34,15 +37,20 @@ public class ProcessoServiceImpl implements ProcessoService {
 	@Autowired
 	AdvogadoService advogadoService;
 	
+	@Autowired
+	EstagiarioService estagiarioService;
+	
 	@Override
 	public Processo salvar(ProcessoRequestDto request) {
 		Assistido assistido = assistidoService.findById(request.getAssistidoId());
 		Advogado advogado = advogadoService.buscarPorId(request.getAdvogadoId());
+		Estagiario estagiario = estagiarioService.buscarPorId(request.getEstagiarioId());
 		Processo processo = new Processo(request);
 		processo.setAssistido(assistido);
 		processo.setAdvogado(advogado);
 		processo.setNumeroDoProcesso(gerarNumeroProcesso());
 		processo.tramitando();
+		processo.setEstagiario(estagiario);
 		processo.setUltimaAtualizacao(LocalDateTime.now());
 		return processoRepository.save(processo);
 	}
@@ -70,5 +78,13 @@ public class ProcessoServiceImpl implements ProcessoService {
 	public Processo buscarPorNumeroDoProcesso(String numeroDoProcesso) {
 		return processoRepository.findByNumeroDoProcesso(numeroDoProcesso)
 				.orElseThrow(EntityNotFoundException::new);
+	}
+
+	@Override
+	public Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate) {
+		Processo processo = buscarPorId(id);
+		Estagiario estagiario = estagiarioService.buscarPorId(processoUpdate.getEstagiarioId());
+		processo.setEstagiario(estagiario);
+		return processoRepository.save(processo);
 	}
 }

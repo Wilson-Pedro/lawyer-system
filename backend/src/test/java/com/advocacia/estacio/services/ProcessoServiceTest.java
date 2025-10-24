@@ -18,7 +18,11 @@ import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.dto.ProcessoUpdate;
+import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
@@ -39,6 +43,9 @@ class ProcessoServiceTest {
 	AssistidoService assistidoService;
 	
 	@Autowired
+	EstagiarioRepository estagiarioRepository;
+	
+	@Autowired
 	TestUtil testUtil;
 	
 	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
@@ -47,6 +54,14 @@ class ProcessoServiceTest {
 	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
 			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 			"rua do passeio", 11, "53022-112");
+	
+	Estagiario estagiario = new Estagiario(
+			"Pedro Lucas", "pedro@gmail.com", "20251208", 
+			PeriodoEstagio.ESTAGIO_I, "1234");
+	
+	Estagiario estagiario2 = new Estagiario(
+			"João Lucas", "lucas@gmail.com", "20251209", 
+			PeriodoEstagio.ESTAGIO_II, "1234");
 
 	@Test
 	@Order(1)
@@ -56,13 +71,14 @@ class ProcessoServiceTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Processo_NoBancoDeDadosPeloService() {
+	void deveSalvar_Processo_NoBancoDeDados_PeloService() {
 		assertEquals(0, processoRepository.count());
 		
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
+		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, "Civil", "Estadual", "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, estagiarioId, "Civil", "Estadual", "25/10/2025");
 		
 		Processo processo = processoService.salvar(request);
 		
@@ -78,7 +94,7 @@ class ProcessoServiceTest {
 	}
 	
 	@Test
-	void deveBuscar_Processo_PorStatusDoProcesso() {
+	void deveBuscar_Processo_PorStatusDoProcesso_PeloService() {
 		
 		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
 		
@@ -87,7 +103,7 @@ class ProcessoServiceTest {
 	}
 	
 	@Test
-	void deveBuscar_Processo_Pelo_NumeroDoProcesso() {
+	void deveBuscar_Processo_Pelo_NumeroDoProcesso_PeloService() {
 		
 		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso().toString();
 		Page<Processo> processos = processoService.buscarProcesso(numeroDoProcesso, 0, 10);
@@ -95,5 +111,20 @@ class ProcessoServiceTest {
 		assertNotNull(processos);
 		assertTrue(processos.getContent().size() > 0);
 		assertNotNull(processos.getContent().get(0).getAssunto(), "Seguro de Carro");
+	}
+	
+	@Test
+	void deveAtualzar_Estagiario_noProcesso_PeloService() {
+		
+		Long estagiarioId1 = estagiarioRepository.findAll().get(0).getId();
+		Processo processo = processoRepository.findAll().get(0);
+		Long estagiarioId2 = estagiarioRepository.save(estagiario2).getId();
+		
+		assertEquals(processo.getEstagiario().getId(), estagiarioId1);
+		
+		processo = processoService.atualizarProcesso(
+				processo.getId(), new ProcessoUpdate(processo.getId(), estagiarioId2));
+		
+		assertEquals(processo.getEstagiario().getId(), estagiarioId2);
 	}
 }

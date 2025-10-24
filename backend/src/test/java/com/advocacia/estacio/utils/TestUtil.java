@@ -37,12 +37,11 @@ public class TestUtil {
 	
 	public void deleteAll() {
 		demandaRepository.deleteAll();
-		estagiarioRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();
+		estagiarioRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
 	}
-	
 }

@@ -28,6 +28,8 @@ public class ProcessoDto implements Serializable{
 	
 	private Long advogadoId;
 	
+	private Long estagiarioId;
+	
 	private String advogadoNome;
 	
 	private String areaDoDireito;
@@ -42,10 +44,11 @@ public class ProcessoDto implements Serializable{
 	
 	public ProcessoDto() {
 	}
-
-	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto, 
-			String vara, String prazoFinal, String responsavel, Long advogadoId, String advogadoNome, String areaDoDireito,
-			String tribunal, String statusDoProcesso, String partesEnvolvidas, LocalDateTime ultimaAtualizacao) {
+	
+	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
+			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId, String advogadoNome,
+			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas,
+			LocalDateTime ultimaAtualizacao) {
 		this.id = id;
 		this.assistidoId = assistidoId;
 		this.numeroDoProcesso = numeroDoProcesso;
@@ -55,6 +58,7 @@ public class ProcessoDto implements Serializable{
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
 		this.advogadoId = advogadoId;
+		this.estagiarioId = estagiarioId;
 		this.advogadoNome = advogadoNome;
 		this.areaDoDireito = areaDoDireito;
 		this.tribunal = tribunal;
@@ -62,7 +66,7 @@ public class ProcessoDto implements Serializable{
 		this.partesEnvolvidas = partesEnvolvidas;
 		this.ultimaAtualizacao = ultimaAtualizacao;
 	}
-	
+
 	public ProcessoDto(Long id, Long assistidoId, String assunto, String vara, String prazoFinal, String responsavel) {
 		this.id = id;
 		this.assistidoId = assistidoId;
@@ -110,6 +114,10 @@ public class ProcessoDto implements Serializable{
 
 	public Long getAssistidoId() {
 		return assistidoId;
+	}
+
+	public Long getEstagiarioId() {
+		return estagiarioId;
 	}
 
 	public String getNumeroDoProcesso() {
