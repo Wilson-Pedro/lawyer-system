@@ -31,15 +31,14 @@ export default function CadastrarProcesso() {
   const navigate = useNavigate();
 
   const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState("");
-  const [assunto, setAssunto] = useState("");
-  const [vara, setVara] = useState("");
-  const [responsavel, setResponsavel] = useState("");
-  const [areaDeDireito, setAreaDeDireito] = useState("");
+  const [assunto, setAssunto] = useState("Seguro");
+  const [vara, setVara] = useState("654654");
+  const [responsavel, setResponsavel] = useState("Carlos");
+  const [areaDoDireito, setAreaDeDireito] = useState("");
   const [tribunal, setTribunal] = useState("");
-  const [prazo, setPrazo] = useState("");
+  const [prazo, setPrazo] = useState("11/11/2026");
 
   const [messageDataError, setMessageDataError] = useState("");
-  const [postValid, setPostValid] = useState(false);
 
   const [nomeAssistido, setNomeAssistido] = useState("");
   const [nomeAssistidoSearch, setNomeAssistidoSearch] = useState("");
@@ -53,7 +52,7 @@ export default function CadastrarProcesso() {
 
   const [nomeEstagiario, setNomeEstagiario] = useState("");
   const [nomeEstagiarioSearch, setNomeEstagiarioSearch] = useState("");
-  const [estagiariod, setEstagiarioId] = useState<number>(0);
+  const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
   const page = 0;
@@ -102,24 +101,48 @@ export default function CadastrarProcesso() {
     return () => clearTimeout(delay);
   }, [nomeAdvogadoSearch]);
 
+  useEffect(() => {
+    const buscarEstagiario = async () => {
+      if(nomeEstagiarioSearch.length < 2) {
+        setEstagiarios([]);
+        return;
+      }
+      try {
+        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`);
+        const pageData: Page<Estagiario> = response.data;
+        setEstagiarios(pageData.content);
+
+      } catch(error) {
+        console.log("Error ao tentar buscar estagiarios ", error)
+      }
+    };
+
+    const delay = setTimeout(buscarEstagiario, 100);
+
+    return () => clearTimeout(delay);
+  }, [nomeEstagiarioSearch]);
+
 
   const cadastrarProcesso = async () => {
-    if (postValid) {
-      try {
-        await axios.post(`${API_URL}/processos/`, {
-          assistidoId,
-          assunto,
-          vara,
-          responsavel,
-          advogadoId,
-          prazo,
-        });
-        alert("Processo cadastrado com sucesso!");
-        limparCampos();
-      } catch (error) {
-        console.error(error);
-        alert("Erro ao cadastrar processo.");
-      }
+
+    try {
+      await axios.post(`${API_URL}/processos/`, {
+        assistidoId,
+        numeroDoProcessoPje,
+        assunto,
+        vara,
+        responsavel,
+        advogadoId,
+        estagiarioId,
+        areaDoDireito,
+        tribunal,
+        prazo,
+      });
+      alert("Processo cadastrado com sucesso!");
+      limparCampos();
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao cadastrar processo.");
     }
   };
 
@@ -153,8 +176,6 @@ export default function CadastrarProcesso() {
       } else {
         setMessageDataError("");
       }
-    } else {
-      setPostValid(true);
     }
 
     setPrazo(formatado);
@@ -172,11 +193,28 @@ export default function CadastrarProcesso() {
     setNomeAdvogadoSearch("");
   }
 
+  const setEstagiario = (estagiario: Estagiario) => {
+    setNomeEstagiario(estagiario.nome);
+    setEstagiarioId(estagiario.id);
+    setNomeEstagiarioSearch("");
+  }
+
+  const selecionarAreaDoDireito = async (e:any) => {
+    setAreaDeDireito(e.target.value);
+  }
+
+  const selecionarTribunal = async (e:any) => {
+    setTribunal(e.target.value);
+  }
+
   const limparCampos = () => {
     setAssunto("");
     setVara("");
     setResponsavel("");
     setPrazo("");
+    setAreaDeDireito("");
+    setTribunal("");
+    setNumeroDoProcessoPje("");
   };
 
   return (
@@ -276,36 +314,45 @@ export default function CadastrarProcesso() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Estagiario</label>
+          <label className={styles.label}>Estagiário</label>
           <input
             className={styles.input}
-            placeholder="Estagiario"
-            value={""}
-            onChange={(e) => setVara(e.target.value)}
+            placeholder="Digite o nome do estagiário"
+            value={nomeEstagiarioSearch || nomeEstagiario}
+            onChange={(e) => setNomeEstagiarioSearch(e.target.value)}
             required
           />
+          {estagiarios.length > 0 && (
+            <ul className={styles.ul}>
+              {estagiarios.map((data) => (
+                <li
+                  className={styles.li}
+                  key={data.id}
+                  onClick={() => setEstagiario(data)}
+                >{data.nome}</li>
+              ))}
+            </ul>
+          )}
         </div>
 
-         <div className={styles.inputGroup}>
+        <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
-          <input
-            className={styles.input}
-            placeholder="Área de Direito"
-            value={""}
-            onChange={(e) => setVara(e.target.value)}
-            required
-          />
+          <select className={styles.input} onChange={selecionarAreaDoDireito} required>
+            <option value="" disabled selected></option>
+            <option value="Civil">Civil</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Previdenciário">Previdenciário</option>
+          </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
-          <input
-            className={styles.input}
-            placeholder="Tribunal"
-            value={""}
-            onChange={(e) => setVara(e.target.value)}
-            required
-          />
+          <select className={styles.input} onChange={selecionarTribunal} required>
+            <option value="" disabled selected></option>
+            <option value="Estadual">Estadual</option>
+            <option value="Federal">Federal</option>
+            <option value="Trabalho">Trabalho</option>
+          </select>
         </div>
 
         <div className={styles.inputGroup}>

@@ -18,9 +18,6 @@ interface Entity {
   nome: string;
 }
 
-interface Assistido extends Entity {
-}
-
 interface Advogado extends Entity {
 }
 
