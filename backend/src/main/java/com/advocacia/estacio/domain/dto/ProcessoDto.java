@@ -3,6 +3,7 @@ package com.advocacia.estacio.domain.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.projections.ProcessoProjection;
@@ -40,7 +41,7 @@ public class ProcessoDto implements Serializable{
 	
 	private String partesEnvolvidas;
 	
-	private LocalDateTime ultimaAtualizacao;
+	private String ultimaAtualizacao;
 	
 	public ProcessoDto() {
 	}
@@ -48,7 +49,7 @@ public class ProcessoDto implements Serializable{
 	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
 			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId, String advogadoNome,
 			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas,
-			LocalDateTime ultimaAtualizacao) {
+			String ultimaAtualizacao) {
 		this.id = id;
 		this.assistidoId = assistidoId;
 		this.numeroDoProcesso = numeroDoProcesso;
@@ -86,12 +87,13 @@ public class ProcessoDto implements Serializable{
 		this.prazoFinal = toDateString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
+		this.estagiarioId = processo.getEstagiario().getId();
 		this.advogadoNome = processo.getAdvogado().getNome();
 		this.areaDoDireito = processo.getAreaDoDireito().getDescricao();
 		this.tribunal = processo.getTribunal().getDescricao();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
-		this.ultimaAtualizacao = processo.getUltimaAtualizacao();
+		this.ultimaAtualizacao = toDateString(processo.getUltimaAtualizacao());
 	}
 	
 	public ProcessoDto(ProcessoProjection projection) {
@@ -106,6 +108,11 @@ public class ProcessoDto implements Serializable{
 	
 	private String toDateString(LocalDate localDate) {
 		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
+	}
+	
+	private String toDateString(LocalDateTime localDateTime) {
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/ss HH:mm:ss");
+		return localDateTime.format(format);
 	}
 
 	public Long getId() {
@@ -168,7 +175,7 @@ public class ProcessoDto implements Serializable{
 		return partesEnvolvidas;
 	}
 
-	public LocalDateTime getUltimaAtualizacao() {
+	public String getUltimaAtualizacao() {
 		return ultimaAtualizacao;
 	}
 }

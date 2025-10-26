@@ -54,6 +54,13 @@ public class ProcessoController {
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 	
+	@GetMapping("/numeroDoProcesso/{numeroDoProcesso}")
+	public ResponseEntity<ProcessoDto> buscarPorNumeroDoProcesso(
+			@PathVariable String numeroDoProcesso) {
+		Processo processo = processoService.buscarPorNumeroDoProcesso(numeroDoProcesso);
+		return ResponseEntity.ok(new ProcessoDto(processo));
+	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> atualizarProcesso(
 			@PathVariable Long id, 

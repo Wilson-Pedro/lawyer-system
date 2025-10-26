@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from './Movimento.module.css';
 import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
-import { EditIcon, PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
+import { PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_URL = process.env.REACT_APP_API;
@@ -97,18 +96,18 @@ export default function Movimento() {
               <th>Movimento</th>
               <th>Advogado</th>
               <th>Registro</th>
-              <th>Ações</th>
+              {/* <th>Ações</th> */}
             </tr>
           </thead>
           <tbody>
             {movimentosFiltrados.map((item) => (
               <tr key={item.id}>
-                {/* <td className="text-center">{item.id}</td> */}
+                
                 <td>{item.numeroDoProcesso}</td>
                 <td>{item.movimento}</td>
                 <td>{item.advogado}</td>
                 <td className="text-center">{item.registro}</td>
-                <td className="text-center">
+                {/* <td className="text-center">
                   <Button
                     variant="outline-primary"
                     size="sm"
@@ -117,7 +116,7 @@ export default function Movimento() {
                   >
                     <EditIcon />
                   </Button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>

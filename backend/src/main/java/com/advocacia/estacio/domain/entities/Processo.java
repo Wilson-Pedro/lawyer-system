@@ -112,7 +112,7 @@ public class Processo implements Serializable{
 		this.tribunal = Tribunal.toEnum(dto.getTribunal());
 		this.statusDoProcesso = StatusProcesso.toEnum(dto.getStatusDoProcesso());
 		this.partesEnvolvidas = dto.getPartesEnvolvidas();
-		this.ultimaAtualizacao = dto.getUltimaAtualizacao();
+		this.ultimaAtualizacao = stringToLocalDateTime(dto.getUltimaAtualizacao());
 	}
 	
 	public Processo(ProcessoRequestDto request) {
@@ -132,6 +132,11 @@ public class Processo implements Serializable{
 	private LocalDate localDateToString(String string) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(string, formatter);
+	}
+	
+	private LocalDateTime stringToLocalDateTime(String string) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return LocalDateTime.parse(string, formatter);
 	}
 
 	public Long getId() {

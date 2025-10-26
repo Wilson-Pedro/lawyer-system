@@ -21,75 +21,65 @@ interface Entity {
 interface Advogado extends Entity {
 }
 
-interface Processo {
-  id:number;
-  numeroDoProcesso:string;
-}
-
 
 export default function CadastrarMovimento() {
 
   const navigate = useNavigate();
 
   const [numeroDoProcesso, setNumeroDoProcesso] = useState("");
-  const [numeroDoProcessoSearch, setNumeroDoProcessoSearch] = useState("");
   const [processoId, setProcessoId] = useState<number>(0);
-  const [processos, setProcesos] = useState<Processo[]>([]);
 
   const [nomeAdvogado, setNomeAdvogado] = useState("");
-  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
+  //const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
   const [advogadoId, setAdvogadoId] = useState<number>(0);
-  const [advogados, setAdvogados] = useState<Advogado[]>([]);
+  //const [advogados, setAdvogados] = useState<Advogado[]>([]);
 
   const [movimento, setMovimento] = useState("");
 
-  const page = 0;
-  const size = 20;
+  // const page = 0;
+  // const size = 20;
 
   const params = useParams();
   const numeroDoProcessoParams = params.numeroDoProcesso || '';
 
+  // BUSCAR ADVOGADO
+  // useEffect(() => {
+  //   const buscarAdvogado = async () => {
+  //     if (nomeAdvogadoSearch.length < 2) {
+  //       setAdvogados([]);
+  //       return;
+  //     }
+  //     try {
+  //       const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
+  //       const pageData: Page<Advogado> = response.data;
+  //       setAdvogados(pageData.content);
+  //     } catch (error) {
+  //       console.log('Error ao tentar buscar advogados ', error);
+  //     }
+
+  //   };
+
+  //   const delay = setTimeout(buscarAdvogado, 100);
+
+  //   return () => clearTimeout(delay);
+  // }, [nomeAdvogadoSearch]);
+
+  // BUSCAR PROCESSO POR NÚMERO DO PROCESSO
   useEffect(() => {
-    const buscarAssistido = async () => {
-      if (numeroDoProcessoSearch.length < 2) {
-        setProcesos([]);
-        return;
-      }
+    const buscarProcessoPorNumeroDoProcesso = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/buscar/${numeroDoProcessoSearch}?page=${page}&size=${size}`);
-        const pageData: Page<Processo> = response.data;
-        setProcesos(pageData.content);
-      } catch (error) {
-        console.log('Error ao tentar buscar processos ', error);
+        const response = await axios.get(`${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`);
+        setNumeroDoProcesso(response.data.numeroDoProcesso);
+        setProcessoId(response.data.id);
+        setNomeAdvogado(response.data.advogadoNome);
+        setAdvogadoId(response.data.advogadoId);
+      } catch(error) {
+        console.log("Error ao buscar processo pelo número do processo ", error);
       }
+    }
 
-    };
-
-    const delay = setTimeout(buscarAssistido, 100);
-
-    return () => clearTimeout(delay);
-  }, [numeroDoProcessoSearch]);
-
-  useEffect(() => {
-    const buscarAdvogado = async () => {
-      if (nomeAdvogadoSearch.length < 2) {
-        setAdvogados([]);
-        return;
-      }
-      try {
-        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
-        const pageData: Page<Advogado> = response.data;
-        setAdvogados(pageData.content);
-      } catch (error) {
-        console.log('Error ao tentar buscar advogados ', error);
-      }
-
-    };
-
-    const delay = setTimeout(buscarAdvogado, 100);
-
-    return () => clearTimeout(delay);
-  }, [nomeAdvogadoSearch]);
+    buscarProcessoPorNumeroDoProcesso();
+  }, [numeroDoProcesso]);
 
 
   const cadastrarMovimento = async () => {
@@ -107,17 +97,11 @@ export default function CadastrarMovimento() {
     }
   };
 
-  const setProcesso = (processo: Processo) => {
-    setNumeroDoProcesso(processo.numeroDoProcesso);
-    setProcessoId(processo.id);
-    setNumeroDoProcessoSearch("");
-  }
-
-  const setAdvogado = (advogado: Advogado) => {
-    setNomeAdvogado(advogado.nome);
-    setAdvogadoId(advogado.id);
-    setNomeAdvogadoSearch("");
-  }
+  // const setAdvogado = (advogado: Advogado) => {
+  //   setNomeAdvogado(advogado.nome);
+  //   setAdvogadoId(advogado.id);
+  //   setNomeAdvogadoSearch("");
+  // }
 
   const limparCampos = () => {
     setMovimento("");
@@ -133,25 +117,14 @@ export default function CadastrarMovimento() {
       <h1 className={styles.title}>Cadastro de Movimento</h1>
       <form className={styles.form} onSubmit={cadastrarMovimento}>
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Processo</label>
+          <label className={styles.label}>Nº do Processo</label>
           <input
             className={styles.input}
             placeholder={numeroDoProcessoParams}
-            value={numeroDoProcessoSearch || numeroDoProcesso}
-            onChange={(e) => setNumeroDoProcessoSearch(e.target.value)}
+            value={numeroDoProcesso}
             required
+            disabled
           />
-          {processos.length > 0 && (
-            <ul className={styles.ul}>
-              {processos.map((data) => (
-                <li
-                  className={styles.li}
-                  key={data.id}
-                  onClick={() => setProcesso(data)}
-                >{data.numeroDoProcesso}</li>
-              ))}
-            </ul>
-          )}
         </div>
 
         <div className={styles.inputGroup}>
@@ -159,11 +132,11 @@ export default function CadastrarMovimento() {
           <input
             className={styles.input}
             placeholder="Digite o nome do advogado"
-            value={nomeAdvogadoSearch || nomeAdvogado}
-            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            value={nomeAdvogado}
             required
+            disabled
           />
-          {advogados.length > 0 && (
+          {/* {advogados.length > 0 && (
             <ul className={styles.ul}>
               {advogados.map((data) => (
                 <li
@@ -173,7 +146,7 @@ export default function CadastrarMovimento() {
                 >{data.nome}</li>
               ))}
             </ul>
-          )}
+          )} */}
         </div>
 
         <div className={styles.inputGroup}>
