@@ -30,7 +30,7 @@ public enum Tribunal {
 				.filter(p -> p.getDescricao().equals(descricao))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException
-						("Area DeDireito: " + descricao));
+						("Tribunal inválido: " + descricao));
 	}
 	
 	public static Tribunal toEnum(Integer codigo) {
@@ -38,6 +38,6 @@ public enum Tribunal {
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException
-						("Código inválido: " + codigo));
+						("Código de tribunal inválido: " + codigo));
 	}
 }

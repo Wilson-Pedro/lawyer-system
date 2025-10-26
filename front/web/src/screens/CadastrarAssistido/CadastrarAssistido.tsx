@@ -1,29 +1,35 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Toast, ToastContainer } from "react-bootstrap"
 import styles from "./CadastrarAssistido.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAssistido() {
 
-  const [nome, setNome] = useState("lucas");
-  const [matricula, setMatricula] = useState("23423423");
-  const [telefone, setTelefone] = useState("88776643466");
-  const [email, setEmail] = useState("lucas@gmail.com");
-  const [profissao, setProfissao] = useState("Programador");
-  const [nacionalidade, setNacionalidade] = useState("brasileiro");
-  const [naturalidade, setnaturalidade] = useState("Sõa Luís/MA");
+  const [nome, setNome] = useState("");
+  const [matricula, setMatricula] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  const [profissao, setProfissao] = useState("");
+  const [nacionalidade, setNacionalidade] = useState("");
+  const [naturalidade, setnaturalidade] = useState("");
   const [estadoCivil, setEstadoCivil] = useState("");
-  const [cidade, setCidade] = useState("São Luís");
-  const [bairro, setBairro] = useState("Alemanha");
-  const [rua, setRua] = useState("Rua das Flores");
-  const [numeroDaCasa, setNumeroDaCasa] = useState("12");
-  const [cep, setCep] = useState("84023-242");
+  const [cidade, setCidade] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numeroDaCasa, setNumeroDaCasa] = useState("");
+  const [cep, setCep] = useState("");
+
+  const [mostrarToast, setMostrarToast] = useState(false);
+  const [mensagemToast, setMensagemToast] = useState("");
+  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
 
   const navigate = useNavigate();
 
-  const cadastrarAssistido = async () => {
+  const cadastrarAssistido = async (e:any) => {
+    e.preventDefault();
     
     try {
       await axios.post(`${API_URL}/assistidos/`, {
@@ -41,10 +47,18 @@ export default function CadastrarAssistido() {
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
       });
-      alert("Cadastrado com Sucesso! O assistido foi cadastrado.");
+
+      setMostrarToast(true);
+      setMensagemToast("Aassistido cadastrado com sucesso.");
+      setVarianteToast("success");
+
       limparCampos();
     } catch (error) {
       console.error(error);
+
+      setMostrarToast(true);
+      setMensagemToast("Falha ao Cadastrar Assistido");
+      setVarianteToast("danger");
     }
   };
 
@@ -73,7 +87,7 @@ export default function CadastrarAssistido() {
       <button className={styles.backButton} onClick={() => navigate("/admin")}>
         ← Voltar
       </button>
-      <h1 className={styles.title}>Cadastro - Núcleo de Práticas Jurídicas</h1>
+      <h1 className={styles.title}>Cadastrar Assistido</h1>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Nome Completo</label>
@@ -147,6 +161,7 @@ export default function CadastrarAssistido() {
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estado Civil</label>
           <select className={styles.input} onChange={selecionarEstadoCivil}>
+            <option value="" disabled selected></option>
             <option value="Solteiro(a)">Solteiro(a)</option>
             <option value="Casado(a)">Casado(a)</option>
             <option value="Divorciado(a)">Divorciado(a)</option>
@@ -205,6 +220,19 @@ export default function CadastrarAssistido() {
         <button type="submit" className={styles.button}>
           Cadastrar
         </button>
+        <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+          <Toast
+            show={mostrarToast}
+            onClose={() => setMostrarToast(false)}
+            bg={varianteToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white fw-semibold">
+              {mensagemToast}
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
     </form>
   );
 }

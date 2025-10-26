@@ -7,7 +7,8 @@ import {
     FaSignOutAlt,
     FaEdit,
     FaPlus,
-    FaArrowLeft
+    FaArrowLeft,
+    FaSave
 } from "react-icons/fa";
 
 export const EyeIcon = FaEye as React.FC<{ className?: string }>;
@@ -19,3 +20,4 @@ export const SingOutAltIcon = FaSignOutAlt as React.FC<{ className?: string }>;
 export const EditIcon = FaEdit as React.FC<{ className?: string }>;
 export const PlusIcon = FaPlus as React.FC<{ className?: string }>;
 export const ArrowLeftIcon = FaArrowLeft as React.FC<{ className?: string }>;
+export const SaveIcon = FaSave as React.FC<{ className?: string }>;

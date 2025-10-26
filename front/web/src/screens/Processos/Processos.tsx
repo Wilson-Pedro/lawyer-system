@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EditIcon, EyeIcon } from "../../Icons/Icon";
+import { EditIcon, FileAltIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -140,7 +140,7 @@ export default function Processos() {
                         className="btn btn-sm btn-outline-success"
                         onClick={() => navigate(`/processos/${proc.numeroDoProcesso}/movimento`)}
                       >
-                        <EyeIcon />
+                        <FileAltIcon />
                       </button>
                     </td>
                   </tr>

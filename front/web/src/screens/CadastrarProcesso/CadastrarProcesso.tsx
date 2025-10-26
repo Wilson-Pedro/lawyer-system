@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./CadastrarProcesso.module.css";
+import { Toast, ToastContainer } from "react-bootstrap";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -31,12 +32,12 @@ export default function CadastrarProcesso() {
   const navigate = useNavigate();
 
   const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState("");
-  const [assunto, setAssunto] = useState("Seguro");
-  const [vara, setVara] = useState("654654");
-  const [responsavel, setResponsavel] = useState("Carlos");
+  const [assunto, setAssunto] = useState("");
+  const [vara, setVara] = useState("");
+  const [responsavel, setResponsavel] = useState("");
   const [areaDoDireito, setAreaDeDireito] = useState("");
   const [tribunal, setTribunal] = useState("");
-  const [prazo, setPrazo] = useState("11/11/2026");
+  const [prazo, setPrazo] = useState("");
 
   const [messageDataError, setMessageDataError] = useState("");
 
@@ -55,6 +56,10 @@ export default function CadastrarProcesso() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
+  const [mostrarToast, setMostrarToast] = useState(false);
+  const [mensagemToast, setMensagemToast] = useState("");
+  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  
   const page = 0;
   const size = 20;
 
@@ -69,8 +74,10 @@ export default function CadastrarProcesso() {
         const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeAssistidoSearch}?page=${page}&size=${size}`);
         const pageData: Page<Assistido> = response.data;
         setAssistidos(pageData.content);
+
+        limparCampos();
       } catch (error) {
-        console.log('Error ao tentar buscar assistidos ', error);
+        setMensagemToast("Error ao buscar assistidos");
       }
 
     };
@@ -91,7 +98,7 @@ export default function CadastrarProcesso() {
         const pageData: Page<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
-        console.log('Error ao tentar buscar advogados ', error);
+        setMensagemToast("Error ao tentar buscar advogados");
       }
 
     };
@@ -138,11 +145,18 @@ export default function CadastrarProcesso() {
         tribunal,
         prazo,
       });
-      alert("Processo cadastrado com sucesso!");
+      
+      setMostrarToast(true);
+      setMensagemToast("Aassistido cadastrado com sucesso.");
+      setVarianteToast("success");
+
       limparCampos();
     } catch (error) {
       console.error(error);
-      alert("Erro ao cadastrar processo.");
+
+      setMostrarToast(true);
+      setMensagemToast("Falha ao Cadastrar Assistido");
+      setVarianteToast("danger");
     }
   };
 
@@ -369,7 +383,22 @@ export default function CadastrarProcesso() {
         <button type="submit" className={styles.button}>
           Cadastrar Processo
         </button>
+
+        <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+          <Toast
+            show={mostrarToast}
+            onClose={() => setMostrarToast(false)}
+            bg={varianteToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className="text-white fw-semibold">
+              {mensagemToast}
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
       </form>
+      
     </div>
   );
 }

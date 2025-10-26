@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
@@ -16,7 +15,6 @@ import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
-import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 
@@ -58,18 +56,18 @@ public class BackendApplication implements CommandLineRunner {
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
-		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Civil", "Estadual", "25/10/2025");
-		
-		Processo processo = processoService.salvar(request);
-		
-		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro1");
-		MovimentoDto movimentoDto2 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro2");
-		MovimentoDto movimentoDto3 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro3");
-		
-		movimentoService.salvar(movimentoDto1);
-		movimentoService.salvar(movimentoDto2);
-		movimentoService.salvar(movimentoDto3);
+//		
+//		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Civil", "Estadual", "25/10/2025");
+//		
+//		Processo processo = processoService.salvar(request);
+//		
+//		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Documentação completa");
+//		MovimentoDto movimentoDto2 = new MovimentoDto(null, processo.getId(), advogadoId, "Documentação do processo aprovada");
+//		MovimentoDto movimentoDto3 = new MovimentoDto(null, processo.getId(), advogadoId, "Proesso enviado ao juri");
+//		
+//		movimentoService.salvar(movimentoDto1);
+//		movimentoService.salvar(movimentoDto2);
+//		movimentoService.salvar(movimentoDto3);
 	}
 
 }
