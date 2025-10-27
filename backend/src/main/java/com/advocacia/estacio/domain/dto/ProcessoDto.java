@@ -1,9 +1,9 @@
 package com.advocacia.estacio.domain.dto;
 
+import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.projections.ProcessoProjection;
@@ -84,7 +84,7 @@ public class ProcessoDto implements Serializable{
 		this.numeroDoProcessoPje = processo.getNumeroDoProcessoPje();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = toDateString(processo.getPrazoFinal());
+		this.prazoFinal = localDateToString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
 		this.estagiarioId = processo.getEstagiario().getId();
@@ -93,7 +93,7 @@ public class ProcessoDto implements Serializable{
 		this.tribunal = processo.getTribunal().getDescricao();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
-		this.ultimaAtualizacao = toDateString(processo.getUltimaAtualizacao());
+		this.ultimaAtualizacao = localDateTimeToString(processo.getUltimaAtualizacao());
 	}
 	
 	public ProcessoDto(ProcessoProjection projection) {
@@ -104,15 +104,6 @@ public class ProcessoDto implements Serializable{
 		this.responsavel = projection.getResponsavel();
 		this.advogadoId = projection.getAdvogadoId();
 		this.advogadoNome = projection.getAdvogadoNome();
-	}
-	
-	private String toDateString(LocalDate localDate) {
-		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
-	}
-	
-	private String toDateString(LocalDateTime localDateTime) {
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/ss HH:mm:ss");
-		return localDateTime.format(format);
 	}
 
 	public Long getId() {

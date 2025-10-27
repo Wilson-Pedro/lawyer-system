@@ -12,16 +12,20 @@ import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.ProcessoService;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDateTime;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -42,7 +46,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 	
 	@Override
 	public Processo salvar(ProcessoRequestDto request) {
-		Assistido assistido = assistidoService.findById(request.getAssistidoId());
+		Assistido assistido = assistidoService.buscarPorId(request.getAssistidoId());
 		Advogado advogado = advogadoService.buscarPorId(request.getAdvogadoId());
 		Estagiario estagiario = estagiarioService.buscarPorId(request.getEstagiarioId());
 		Processo processo = new Processo(request);
@@ -81,10 +85,30 @@ public class ProcessoServiceImpl implements ProcessoService {
 	}
 
 	@Override
-	public Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate) {
+	public Processo atualizarProcesso(Long id, ProcessoDto processoUpdate) {
 		Processo processo = buscarPorId(id);
+		processo.setId(id);
+		processo = dtoParaEntidade(processo, processoUpdate);
+		
 		Estagiario estagiario = estagiarioService.buscarPorId(processoUpdate.getEstagiarioId());
+		Advogado advogado = advogadoService.buscarPorId(processoUpdate.getAdvogadoId());
+		processo.setAdvogado(advogado);
 		processo.setEstagiario(estagiario);
+		
 		return processoRepository.save(processo);
+	}
+	
+	private Processo dtoParaEntidade(Processo processo, ProcessoDto dto) {
+		processo.setNumeroDoProcesso(dto.getNumeroDoProcesso());
+		processo.setNumeroDoProcessoPje(dto.getNumeroDoProcessoPje());
+		processo.setAssunto(dto.getAssunto());
+		processo.setVara(dto.getVara());
+		processo.setPrazoFinal(localDateToString(dto.getPrazoFinal()));
+		processo.setResponsavel(dto.getResponsavel());
+		processo.setAreaDoDireito(AreaDoDireito.toEnum(dto.getAreaDoDireito()));
+		processo.setTribunal(Tribunal.toEnum(dto.getTribunal()));
+		processo.setStatusDoProcesso(StatusProcesso.toEnum(dto.getStatusDoProcesso()));
+		processo.setPartesEnvolvidas(dto.getPartesEnvolvidas());
+		return processo;
 	}
 }

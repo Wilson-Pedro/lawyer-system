@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.services.ProcessoService;
 
@@ -64,7 +63,7 @@ public class ProcessoController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> atualizarProcesso(
 			@PathVariable Long id, 
-			@RequestBody ProcessoUpdate processoUpdate) {
+			@RequestBody ProcessoDto processoUpdate) {
 		processoService.atualizarProcesso(id, processoUpdate);
 		return ResponseEntity.noContent().build();
 	}

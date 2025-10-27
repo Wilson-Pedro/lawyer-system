@@ -40,7 +40,7 @@ public class AssistidoServiceImpl implements AssistidoService {
 	}
 
 	@Override
-	public Assistido findById(Long assistidoId) {
+	public Assistido buscarPorId(Long assistidoId) {
 		return assistidoRepository.findById(assistidoId).orElseThrow(EntityNotFoundException::new);
 	}
 }

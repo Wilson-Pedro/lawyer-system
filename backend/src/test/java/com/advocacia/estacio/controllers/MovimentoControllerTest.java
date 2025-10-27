@@ -110,7 +110,7 @@ class MovimentoControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.processoId").value(assistidoId.intValue()))
+				.andExpect(jsonPath("$.processoId").value(processoId.intValue()))
 				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
 				.andExpect(jsonPath("$.movimento", equalTo(movimentoDto.getMovimento())));
 		

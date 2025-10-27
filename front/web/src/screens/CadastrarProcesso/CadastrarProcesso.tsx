@@ -359,7 +359,7 @@ export default function CadastrarProcesso() {
           </select>
         </div>
 
-        <div className={styles.inputGroup}>
+        <div >
           <label className={styles.label}>Tribunal</label>
           <select className={styles.input} onChange={selecionarTribunal} required>
             <option value="" disabled selected></option>

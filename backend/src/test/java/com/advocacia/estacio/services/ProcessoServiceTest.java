@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -18,7 +19,8 @@ import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.dto.ProcessoUpdate;
+import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
@@ -116,15 +118,34 @@ class ProcessoServiceTest {
 	@Test
 	void deveAtualzar_Estagiario_noProcesso_PeloService() {
 		
-		Long estagiarioId1 = estagiarioRepository.findAll().get(0).getId();
+		assertEquals(1, processoRepository.count());
+		
 		Processo processo = processoRepository.findAll().get(0);
-		Long estagiarioId2 = estagiarioRepository.save(estagiario2).getId();
+		Advogado advogado = advogadoService.buscarPorId(processo.getAdvogado().getId());
+		Assistido assistido = assistidoService.buscarPorId(processo.getAssistido().getId());
+		Estagiario estagiario = estagiarioRepository.save(estagiario2);
+		String ultimaAtualizacao = localDateTimeToString(processo.getUltimaAtualizacao());
 		
-		assertEquals(processo.getEstagiario().getId(), estagiarioId1);
+		ProcessoDto dto = new ProcessoDto(null, processo.getAssistido().getId(), 
+				"23232323", "32323232", "Seguro de celular", "132132", "11/12/2025", advogado.getNome(), 
+				advogado.getId(), estagiario.getId(), advogado.getNome(), "Previdenciário", "Federal", 
+				"Suspenso", null, ultimaAtualizacao);
 		
-		processo = processoService.atualizarProcesso(
-				processo.getId(), new ProcessoUpdate(processo.getId(), estagiarioId2));
+		processo = processoService.atualizarProcesso(processo.getId(), dto);
 		
-		assertEquals(processo.getEstagiario().getId(), estagiarioId2);
+		assertEquals(processo.getAssistido(), assistido);
+		assertEquals(processo.getNumeroDoProcesso(), "23232323");
+		assertEquals(processo.getNumeroDoProcessoPje(), "32323232");
+		assertEquals(processo.getAssunto(), "Seguro de celular");
+		assertEquals(processo.getVara(), "132132");
+		assertEquals(processo.getPrazoFinal().toString(), "2025-12-11");
+		assertEquals(processo.getResponsavel(), advogado.getNome());
+		assertEquals(processo.getAdvogado(), advogado);
+		assertEquals(processo.getEstagiario(), estagiario);
+		assertEquals(processo.getAreaDoDireito().getDescricao(), "Previdenciário");
+		assertEquals(processo.getTribunal().getDescricao(), "Federal");
+		assertEquals(processo.getStatusDoProcesso().getStatus(), "Suspenso");
+		
+		assertEquals(1, processoRepository.count());
 	}
 }

@@ -1,5 +1,6 @@
 package com.advocacia.estacio.controllers;
 
+import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,8 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.dto.ProcessoUpdate;
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
@@ -144,21 +146,25 @@ class ProcessoControllerTest {
 	@Order(5)
 	void deveAtualzar_Estagiario_noProcesso_PeloService() throws Exception {
 		
-		Long estagiarioId1 = estagiarioRepository.findAll().get(0).getId();
+		assertEquals(1, processoRepository.count());
+		
 		Processo processo = processoRepository.findAll().get(0);
-		Long estagiarioId2 = estagiarioRepository.save(estagiario2).getId();
+		Advogado advogado = advogadoService.buscarPorId(processo.getAdvogado().getId());
+		Estagiario estagiario = estagiarioRepository.save(estagiario2);
+		String ultimaAtualizacao = localDateTimeToString(processo.getUltimaAtualizacao());
 		
-		assertEquals(processo.getEstagiario().getId(), estagiarioId1);
+		ProcessoDto dto = new ProcessoDto(null, processo.getAssistido().getId(), 
+				"23232323", "32323232", "Seguro de celular", "132132", "11/12/2025", advogado.getNome(), 
+				advogado.getId(), estagiario.getId(), advogado.getNome(), "Previdenciário", "Federal", 
+				"Suspenso", null, ultimaAtualizacao);
 		
-		String jsonRequest = objectMapper.writeValueAsString(new ProcessoUpdate(processo.getId(), estagiarioId2));
+		String jsonRequest = objectMapper.writeValueAsString(dto);
 		
 		mockMvc.perform(put(URI + "/" + processo.getId())
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isNoContent());
 		
-		processo = processoRepository.findAll().get(0);
-		
-		assertEquals(processo.getEstagiario().getId(), estagiarioId2);
+		assertEquals(1, processoRepository.count());
 	}
 }
