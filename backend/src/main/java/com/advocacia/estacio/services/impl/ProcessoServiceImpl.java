@@ -1,5 +1,7 @@
 package com.advocacia.estacio.services.impl;
 
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
@@ -24,8 +27,6 @@ import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.ProcessoService;
-import static com.advocacia.estacio.utils.Utils.localDateToString;
-import static com.advocacia.estacio.utils.Utils.stringToLocalDateTime;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -63,6 +64,11 @@ public class ProcessoServiceImpl implements ProcessoService {
 		return String.format("%d%d", LocalDate.now().getYear(), processoRepository.count()+1);
 	}
 	
+	@Override
+	public List<Processo> findAll() {
+		return processoRepository.findAll();
+	}
+	
 	public List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus) {
 		return processoRepository.buscarProcessosPorStatusDoProcesso(processoStatus).stream()
 				.map(ProcessoDto::new).toList();
@@ -85,7 +91,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 	}
 
 	@Override
-	public Processo atualizarProcesso(Long id, ProcessoDto processoUpdate) {
+	public Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate) {
 		Processo processo = buscarPorId(id);
 		processo.setId(id);
 		processo = dtoParaEntidade(processo, processoUpdate);
@@ -98,7 +104,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 		return processoRepository.save(processo);
 	}
 	
-	private Processo dtoParaEntidade(Processo processo, ProcessoDto dto) {
+	private Processo dtoParaEntidade(Processo processo, ProcessoUpdate dto) {
 		processo.setNumeroDoProcesso(dto.getNumeroDoProcesso());
 		processo.setNumeroDoProcessoPje(dto.getNumeroDoProcessoPje());
 		processo.setAssunto(dto.getAssunto());

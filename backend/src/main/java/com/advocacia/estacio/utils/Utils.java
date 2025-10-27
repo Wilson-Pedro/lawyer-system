@@ -7,6 +7,14 @@ import java.time.format.DateTimeFormatter;
 public class Utils {
 
 	public static LocalDate localDateToString(String string) {
+		String[] stringFormat = string.split("/");
+		if(stringFormat[0].length() == 1) {
+			stringFormat[0] = "0" + stringFormat[0];
+		}
+		if(stringFormat[1].length() == 1) {
+			stringFormat[1] = "0" + stringFormat[1];
+		}
+		string = String.format("%s/%s/%s", stringFormat[0], stringFormat[1], stringFormat[2]);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(string, formatter);
 	}

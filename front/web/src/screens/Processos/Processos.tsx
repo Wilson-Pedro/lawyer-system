@@ -26,7 +26,7 @@ export default function Processos() {
   useEffect(() => {
     const fetchProcessos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/Tramitando`);
+        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}`);
         setProcessos(response.data);
         setFilteredProcessos(response.data);
       } catch (error) {
@@ -34,14 +34,10 @@ export default function Processos() {
       }
     };
     fetchProcessos();
-  }, []);
+  }, [statusFiltro]);
 
   useEffect(() => {
     let dados = [...processos];
-
-    if (statusFiltro !== "Todos") {
-      dados = dados.filter((p) => p.statusDoProcesso === statusFiltro);
-    }
 
     if (busca.trim() !== "") {
       dados = dados.filter(
@@ -53,7 +49,7 @@ export default function Processos() {
     }
 
     setFilteredProcessos(dados);
-  }, [busca, statusFiltro, processos]);
+  }, [busca, processos]);
 
   const getStatusClass = (status: string): string => {
     switch (status) {
@@ -91,6 +87,7 @@ export default function Processos() {
           />
 
           
+          {statusFiltro}
           <select
             className="form-select w-auto"
             value={statusFiltro}
@@ -132,7 +129,7 @@ export default function Processos() {
                     <td className="text-center">
                       <button
                         className="btn btn-sm btn-outline-primary me-2"
-                        onClick={() => navigate(`/processos`)}
+                        onClick={() => navigate(`/processos/editar/${proc.id}`)}
                       >
                         <EditIcon />
                       </button>

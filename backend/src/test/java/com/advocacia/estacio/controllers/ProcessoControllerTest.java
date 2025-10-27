@@ -1,6 +1,5 @@
 package com.advocacia.estacio.controllers;
 
-import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -151,12 +150,11 @@ class ProcessoControllerTest {
 		Processo processo = processoRepository.findAll().get(0);
 		Advogado advogado = advogadoService.buscarPorId(processo.getAdvogado().getId());
 		Estagiario estagiario = estagiarioRepository.save(estagiario2);
-		String ultimaAtualizacao = localDateTimeToString(processo.getUltimaAtualizacao());
 		
 		ProcessoDto dto = new ProcessoDto(null, processo.getAssistido().getId(), 
 				"23232323", "32323232", "Seguro de celular", "132132", "11/12/2025", advogado.getNome(), 
-				advogado.getId(), estagiario.getId(), advogado.getNome(), "Previdenciário", "Federal", 
-				"Suspenso", null, ultimaAtualizacao);
+				advogado.getId(), estagiario.getId(), "Previdenciário", "Federal", 
+				"Suspenso", null);
 		
 		String jsonRequest = objectMapper.writeValueAsString(dto);
 		

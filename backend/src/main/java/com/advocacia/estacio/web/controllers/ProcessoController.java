@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
+import com.advocacia.estacio.domain.dto.ProcessoUpdate;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.services.ProcessoService;
 
@@ -35,9 +36,19 @@ public class ProcessoController {
 		return ResponseEntity.status(201).body(new ProcessoDto(processo));
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<ProcessoDto> buscarPorId(@PathVariable Long id) {
+		Processo processo = processoService.buscarPorId(id);
+		return ResponseEntity.ok(new ProcessoDto(processo));
+	}
+	
 	@GetMapping("/statusDoProcesso/{processoStatus}")
-	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso
-	(@PathVariable String processoStatus) {
+	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso(
+			@PathVariable String processoStatus) {
+		if(processoStatus.toLowerCase().equals("todos")) {
+			return ResponseEntity.ok(processoService.findAll().stream()
+					.map(x -> new ProcessoDto(x)).toList());
+		}
 		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus);
 		return ResponseEntity.ok(processos);
 	}
@@ -63,7 +74,9 @@ public class ProcessoController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> atualizarProcesso(
 			@PathVariable Long id, 
-			@RequestBody ProcessoDto processoUpdate) {
+			@RequestBody ProcessoUpdate processoUpdate) {
+		System.out.println("============================");
+		System.out.println("CHEGOU");
 		processoService.atualizarProcesso(id, processoUpdate);
 		return ResponseEntity.noContent().build();
 	}
