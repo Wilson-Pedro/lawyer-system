@@ -22,13 +22,12 @@ import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.ProcessoService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProcessoServiceImpl implements ProcessoService {
@@ -81,13 +80,13 @@ public class ProcessoServiceImpl implements ProcessoService {
 
 	@Override
 	public Processo buscarPorId(Long id) {
-		return processoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		return processoRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
 	@Override
 	public Processo buscarPorNumeroDoProcesso(String numeroDoProcesso) {
 		return processoRepository.findByNumeroDoProcesso(numeroDoProcesso)
-				.orElseThrow(EntityNotFoundException::new);
+				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
 	@Override

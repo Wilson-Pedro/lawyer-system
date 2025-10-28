@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.EstagiarioService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
@@ -27,7 +26,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 
 	@Override
 	public Estagiario buscarPorId(Long id) {
-		return estagiarioRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		return estagiarioRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 	
 	@Override

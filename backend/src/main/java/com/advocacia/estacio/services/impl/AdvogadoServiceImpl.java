@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Endereco;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.EnderecoService;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class AdvogadoServiceImpl implements AdvogadoService {
@@ -35,7 +34,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 
 	@Override
 	public Advogado buscarPorId(Long id) {
-		return advogadoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		return advogadoRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 	
 	@Override
