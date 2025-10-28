@@ -30,7 +30,7 @@ public enum AreaDoDireito {
 				.filter(p -> p.getDescricao().equals(descricao))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException
-						("Area DeDireito: " + descricao));
+						("Area De Direito inválido: " + descricao));
 	}
 	
 	public static AreaDoDireito toEnum(Integer codigo) {
@@ -38,6 +38,6 @@ public enum AreaDoDireito {
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException
-						("Código inválido: " + codigo));
+						("Código da Area DeDireito inválido: " + codigo));
 	}
 }

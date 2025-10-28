@@ -1,199 +1,162 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import styles from "./CadastrarMovimento.module.css";
+import { Container, Form, Button, Row, Col, Toast, ToastContainer, Card } from "react-bootstrap";
+import { ArrowLeftIcon, SaveIcon } from "../../Icons/Icon";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_URL = process.env.REACT_APP_API;
 
-interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-interface Entity {
-  id: number;
-  nome: string;
-}
-
-interface Assistido extends Entity {
-}
-
-interface Advogado extends Entity {
-}
-
-interface Processo {
-  id:number;
-  numeroDoProcesso:string;
-}
-
-
 export default function CadastrarMovimento() {
-
   const navigate = useNavigate();
 
   const [numeroDoProcesso, setNumeroDoProcesso] = useState("");
-  const [numeroDoProcessoSearch, setNumeroDoProcessoSearch] = useState("");
   const [processoId, setProcessoId] = useState<number>(0);
-  const [processos, setProcesos] = useState<Processo[]>([]);
-
   const [nomeAdvogado, setNomeAdvogado] = useState("");
-  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
   const [advogadoId, setAdvogadoId] = useState<number>(0);
-  const [advogados, setAdvogados] = useState<Advogado[]>([]);
-
   const [movimento, setMovimento] = useState("");
 
-  const page = 0;
-  const size = 20;
+  const [mostrarToast, setMostrarToast] = useState<boolean>(false);
+  const [mensagemToast, setMesagemToast] = useState("");
+  const [toastVariante, setToastVariant] = useState<"success" | "danger">("success");
 
   const params = useParams();
-  const numeroDoProcessoParams = params.numeroDoProcesso || '';
+  const numeroDoProcessoParams = params.numeroDoProcesso || "";
 
+  // Buscar processo por número do processo
   useEffect(() => {
-    const buscarAssistido = async () => {
-      if (numeroDoProcessoSearch.length < 2) {
-        setProcesos([]);
-        return;
-      }
+    const buscarProcessoPorNumeroDoProcesso = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/buscar/${numeroDoProcessoSearch}?page=${page}&size=${size}`);
-        const pageData: Page<Processo> = response.data;
-        setProcesos(pageData.content);
+        const response = await axios.get(
+          `${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`
+        );
+        setNumeroDoProcesso(response.data.numeroDoProcesso);
+        setProcessoId(response.data.id);
+        setNomeAdvogado(response.data.advogadoNome);
+        setAdvogadoId(response.data.advogadoId);
       } catch (error) {
-        console.log('Error ao tentar buscar processos ', error);
+        console.error("Erro ao buscar processo pelo número do processo", error);
       }
-
     };
 
-    const delay = setTimeout(buscarAssistido, 100);
+    buscarProcessoPorNumeroDoProcesso();
+  }, [numeroDoProcessoParams]);
 
-    return () => clearTimeout(delay);
-  }, [numeroDoProcessoSearch]);
-
-  useEffect(() => {
-    const buscarAdvogado = async () => {
-      if (nomeAdvogadoSearch.length < 2) {
-        setAdvogados([]);
-        return;
-      }
-      try {
-        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
-        const pageData: Page<Advogado> = response.data;
-        setAdvogados(pageData.content);
-      } catch (error) {
-        console.log('Error ao tentar buscar advogados ', error);
-      }
-
-    };
-
-    const delay = setTimeout(buscarAdvogado, 100);
-
-    return () => clearTimeout(delay);
-  }, [nomeAdvogadoSearch]);
-
-
-  const cadastrarMovimento = async () => {
+  const cadastrarMovimento = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       await axios.post(`${API_URL}/movimentos/`, {
         processoId,
         advogadoId,
-        movimento
+        movimento,
       });
-      alert("Movimento cadastrado com sucesso!");
+      
+      setMesagemToast("Movimento cadastrado com sucesso.");
+      setToastVariant("success");
+      setMostrarToast(true);
       limparCampos();
     } catch (error) {
       console.error(error);
-      alert("Erro ao cadastrar processo.");
+      alert("Erro ao cadastrar movimento.");
     }
   };
-
-  const setProcesso = (processo: Processo) => {
-    setNumeroDoProcesso(processo.numeroDoProcesso);
-    setProcessoId(processo.id);
-    setNumeroDoProcessoSearch("");
-  }
-
-  const setAdvogado = (advogado: Advogado) => {
-    setNomeAdvogado(advogado.nome);
-    setAdvogadoId(advogado.id);
-    setNomeAdvogadoSearch("");
-  }
 
   const limparCampos = () => {
     setMovimento("");
   };
 
   return (
+    <Container className="py-5">
+      {/* Cabeçalho */}
+      <div className="d-flex align-items-center justify-content-between mb-4">
+        <Button
+          variant="outline-secondary"
+          className="d-flex align-items-center"
+          onClick={() =>
+            navigate(`/processos/${numeroDoProcessoParams}/movimento`)
+          }
+        >
+          <ArrowLeftIcon className="me-2" /> Voltar
+        </Button>
 
-    <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(`/processos/${numeroDoProcessoParams}/movimento`)}>
-        ← Voltar
-      </button>
+        <h2 className="fw-bold text-dark mb-0">Cadastro de Movimento</h2>
+      </div>
 
-      <h1 className={styles.title}>Cadastro de Movimento</h1>
-      <form className={styles.form} onSubmit={cadastrarMovimento}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Processo</label>
-          <input
-            className={styles.input}
-            placeholder={numeroDoProcessoParams}
-            value={numeroDoProcessoSearch || numeroDoProcesso}
-            onChange={(e) => setNumeroDoProcessoSearch(e.target.value)}
-            required
-          />
-          {processos.length > 0 && (
-            <ul className={styles.ul}>
-              {processos.map((data) => (
-                <li
-                  className={styles.li}
-                  key={data.id}
-                  onClick={() => setProcesso(data)}
-                >{data.numeroDoProcesso}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+      {/* Card de Formulário */}
+      <Card className="shadow-sm p-4 border-0">
+        <Form onSubmit={cadastrarMovimento}>
+          <Row className="mb-3">
+            <Col md={6}>
+              <Form.Group controlId="numeroProcesso">
+                <Form.Label className="fw-semibold">Nº do Processo</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={numeroDoProcesso}
+                  disabled
+                  readOnly
+                  className="bg-light"
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group controlId="advogado">
+                <Form.Label className="fw-semibold">Advogado</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={nomeAdvogado}
+                  disabled
+                  readOnly
+                  className="bg-light"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Advogado</label>
-          <input
-            className={styles.input}
-            placeholder="Digite o nome do advogado"
-            value={nomeAdvogadoSearch || nomeAdvogado}
-            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
-            required
-          />
-          {advogados.length > 0 && (
-            <ul className={styles.ul}>
-              {advogados.map((data) => (
-                <li
-                  className={styles.li}
-                  key={data.id}
-                  onClick={() => setAdvogado(data)}
-                >{data.nome}</li>
-              ))}
-            </ul>
-          )}
-        </div>
+          <Row>
+            <Col md={12}>
+              <Form.Group controlId="movimento">
+                <Form.Label className="fw-semibold">Movimento</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Digite o movimento realizado..."
+                  value={movimento}
+                  onChange={(e) => setMovimento(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Movimento</label>
-          <input
-            className={styles.input}
-            placeholder="Movimento"
-            value={movimento}
-            onChange={(e) => setMovimento(e.target.value)}
-            required
-          />
-        </div>
+          <div className="d-flex justify-content-end mt-4">
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="d-flex align-items-center px-4 shadow-sm"
+            >
+              <SaveIcon className="me-2" /> Cadastrar Movimento
+            </Button>
+          </div>
+        </Form>
+      </Card>
 
-        <button type="submit" className={styles.button}>
-          Cadastrar Movimento
-        </button>
-      </form>
-    </div>
+      <ToastContainer
+        position="top-end"
+        className="p-3"
+        style={{ zIndex: 9999 }}
+      >
+        <Toast
+          onClose={() => setMostrarToast(false)}
+          show={mostrarToast}
+          bg={toastVariante}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body className="text-white fw-semibold">
+            {mensagemToast}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
+    </Container>
   );
 }

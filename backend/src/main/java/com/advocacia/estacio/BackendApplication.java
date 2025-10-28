@@ -15,7 +15,6 @@ import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
-import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 
@@ -46,7 +45,7 @@ public class BackendApplication implements CommandLineRunner {
 		AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 				"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 		
-		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
+		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com", "61946620131",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 				"rua do passeio", 11, "53022-112");
 		
@@ -58,13 +57,13 @@ public class BackendApplication implements CommandLineRunner {
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
 		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
 		
-		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Civil", "Estadual", "25/10/2025");
+		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Previdenciário", "Trabalho", "25/10/2025");
 		
 		Processo processo = processoService.salvar(request);
 		
-		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro1");
-		MovimentoDto movimentoDto2 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro2");
-		MovimentoDto movimentoDto3 = new MovimentoDto(null, processo.getId(), advogadoId, "Seguro de Carro3");
+		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Documentação completa");
+		MovimentoDto movimentoDto2 = new MovimentoDto(null, processo.getId(), advogadoId, "Documentação do processo aprovada");
+		MovimentoDto movimentoDto3 = new MovimentoDto(null, processo.getId(), advogadoId, "Proesso enviado ao juri");
 		
 		movimentoService.salvar(movimentoDto1);
 		movimentoService.salvar(movimentoDto2);

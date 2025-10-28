@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import styles from "./CadastrarProcesso.module.css";
+import { useNavigate, useParams } from "react-router-dom";
+import styles from "./EditarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
+import Select from "react-select"
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -28,23 +29,22 @@ export interface Advogado extends Entity {
 export interface Estagiario extends Entity {
 }
 
-export default function CadastrarProcesso() {
+export default function EditarProcesso() {
   const navigate = useNavigate();
 
-  const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState("");
+  const [numeroDoProcesso, setNumeroDoProcesso] = useState<string | "">("");
+  const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState<string | "">("");
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
-  const [areaDoDireito, setAreaDeDireito] = useState("");
-  const [tribunal, setTribunal] = useState("");
-  const [prazo, setPrazo] = useState("");
+  const [areaDoDireito, setAreaDeDireito] = useState<string | "">("");
+  const [tribunal, setTribunal] = useState<string | "">("");
+  const [prazo, setPrazo] = useState<string | "">("");
 
   const [messageDataError, setMessageDataError] = useState("");
 
   const [nomeAssistido, setNomeAssistido] = useState("");
-  const [nomeAssistidoSearch, setNomeAssistidoSearch] = useState("");
   const [assistidoId, setAssistidoId] = useState<number>(0);
-  const [assistidos, setAssistidos] = useState<Assistido[]>([]);
 
   const [nomeAdvogado, setNomeAdvogado] = useState("");
   const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
@@ -56,36 +56,60 @@ export default function CadastrarProcesso() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
+  const [statusDoProcesso, setStatusDoProcesso] = useState("");
+  const [partesEnvolvidas, setPartesEnvolvidas] = useState("");
+  const [ultimaAtualizacao, setUltimaAtualizacao] = useState("");
+
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
-  
+
+  //const [processoDto, setProcessoDto] = useState<ProcessoDto | null>(null);
+
+  const params = useParams();
+  const processoId = params.processoId || '';
+
   const page = 0;
   const size = 20;
 
-
   useEffect(() => {
-    const buscarAssistido = async () => {
-      if (nomeAssistidoSearch.length < 2) {
-        setAssistidos([]);
-        return;
-      }
+
+    const buscarProcessoPorId = async () => {
       try {
-        const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeAssistidoSearch}?page=${page}&size=${size}`);
-        const pageData: Page<Assistido> = response.data;
-        setAssistidos(pageData.content);
+        const response = await axios.get(`${API_URL}/processos/${processoId}`);
+        const processo = response.data;
+        setAssistidoId(processo.assistidoId);
+        setNomeAssistido(processo.assistidoNome);
+        setAssunto(processo.assunto);
+        setVara(processo.vara);
+        setNumeroDoProcesso(processo.numeroDoProcesso);
+        setNumeroDoProcessoPje(processo.numeroDoProcessoPje);
+        setResponsavel(processo.responsavel);
 
-        limparCampos();
-      } catch (error) {
-        setMensagemToast("Error ao buscar assistidos");
+        setAdvogadoId(processo.advogadoId);
+        setNomeAdvogadoSearch(processo.advogadoNome);
+
+        setEstagiarioId(processo.estagiarioId);
+        setNomeEstagiarioSearch(processo.estagiarioNome);
+
+        setStatusDoProcesso(processo.statusDoProcesso);
+        setAreaDeDireito(processo.areaDoDireito);
+        setTribunal(processo.tribunal);
+        setPrazo(processo.prazoFinal);
+        setPartesEnvolvidas(processo.partesEnvolvidas);
+        setUltimaAtualizacao(processo.ultimaAtualizacao);
+
+      } catch(error) {
+          console.log(error);
+          setMostrarToast(true);
+          setMensagemToast("Error ao buscar processo");
+          setVarianteToast("danger")
       }
+  }
 
-    };
+  buscarProcessoPorId();
 
-    const delay = setTimeout(buscarAssistido, 100);
-
-    return () => clearTimeout(delay);
-  }, [nomeAssistidoSearch]);
+  }, [processoId])
 
   useEffect(() => {
     const buscarAdvogado = async () => {
@@ -130,24 +154,27 @@ export default function CadastrarProcesso() {
   }, [nomeEstagiarioSearch]);
 
 
-  const cadastrarProcesso = async () => {
+  const atualizarProcesso = async () => {
 
     try {
-      await axios.post(`${API_URL}/processos/`, {
+      await axios.put(`${API_URL}/processos/${processoId}`, {
         assistidoId,
+        numeroDoProcesso,
         numeroDoProcessoPje,
         assunto,
         vara,
+        prazoFinal: prazo,
         responsavel,
         advogadoId,
         estagiarioId,
         areaDoDireito,
         tribunal,
-        prazo,
+        statusDoProcesso,
+        partesEnvolvidas,
       });
       
       setMostrarToast(true);
-      setMensagemToast("Processo cadastrado com sucesso.");
+      setMensagemToast("Processo atualizado com sucesso.");
       setVarianteToast("success");
 
       limparCampos();
@@ -155,7 +182,7 @@ export default function CadastrarProcesso() {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar Processo");
+      setMensagemToast("Falha ao cadastrar Processo.");
       setVarianteToast("danger");
     }
   };
@@ -195,12 +222,6 @@ export default function CadastrarProcesso() {
     setPrazo(formatado);
   }
 
-  const setAssistido = (assistido: Assistido) => {
-    setNomeAssistido(assistido.nome);
-    setAssistidoId(assistido.id);
-    setNomeAssistidoSearch("");
-  }
-
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
@@ -211,14 +232,6 @@ export default function CadastrarProcesso() {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
     setNomeEstagiarioSearch("");
-  }
-
-  const selecionarAreaDoDireito = async (e:any) => {
-    setAreaDeDireito(e.target.value);
-  }
-
-  const selecionarTribunal = async (e:any) => {
-    setTribunal(e.target.value);
   }
 
   const limparCampos = () => {
@@ -234,32 +247,32 @@ export default function CadastrarProcesso() {
   return (
 
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate("/admin")}>
+      <button className={styles.backButton} onClick={() => navigate("/processos")}>
         ← Voltar
       </button>
 
-      <h1 className={styles.title}>Cadastro de Processo</h1>
-      <form className={styles.form} onSubmit={cadastrarProcesso}>
+      <h1 className={styles.title}>Editar Processo</h1>
+      <form className={styles.form} onSubmit={atualizarProcesso}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Assistido</label>
           <input
             className={styles.input}
             placeholder="Digite o nome do assistido"
-            value={nomeAssistidoSearch || nomeAssistido}
-            onChange={(e) => setNomeAssistidoSearch(e.target.value)}
+            value={nomeAssistido}
             required
+            disabled
           />
-          {assistidos.length > 0 && (
-            <ul className={styles.ul}>
-              {assistidos.map((data) => (
-                <li
-                  className={styles.li}
-                  key={data.id}
-                  onClick={() => setAssistido(data)}
-                >{data.nome}</li>
-              ))}
-            </ul>
-          )}
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Nº do Processo</label>
+          <input
+            className={styles.input}
+            placeholder="Nº do Processo"
+            value={numeroDoProcesso}
+            required
+            disabled
+          />
         </div>
 
         <div className={styles.inputGroup}>
@@ -351,22 +364,48 @@ export default function CadastrarProcesso() {
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
-          <select className={styles.input} onChange={selecionarAreaDoDireito} required>
-            <option value="" disabled selected></option>
-            <option value="Civil">Civil</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Previdenciário">Previdenciário</option>
-          </select>
+          <Select 
+              options={[
+                { value: "Civil", label: "Civil" },
+                { value: "Trabalho", label: "Trabalho" },
+                { value: "Previdenciário", label: "Previdenciário" }
+              ]}
+              value={ areaDoDireito ? { value: areaDoDireito, label: areaDoDireito } : null}
+              onChange={(e) => {
+                if (e) setAreaDeDireito(e.value)} 
+              }
+          />
+
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
-          <select className={styles.input} onChange={selecionarTribunal} required>
-            <option value="" disabled selected></option>
-            <option value="Estadual">Estadual</option>
-            <option value="Federal">Federal</option>
-            <option value="Trabalho">Trabalho</option>
-          </select>
+          <Select 
+              options={[
+                { value: "Estadual", label: "Estadual" },
+                { value: "Federal", label: "Federal" },
+                { value: "Trabalho", label: "Trabalho" }
+              ]}
+              value={ tribunal ? { value: tribunal, label: tribunal } : null}
+              onChange={(e) => {
+                if (e) setTribunal(e.value)} 
+              }
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Status Do Processo</label>
+          <Select 
+              options={[
+                { value: "Tramitando", label: "Tramitando" },
+                { value: "Suspenso", label: "Suspenso" },
+                { value: "Arquivado", label: "Arquivado" }
+              ]}
+              value={ statusDoProcesso ? { value: statusDoProcesso, label: statusDoProcesso } : null}
+              onChange={(e) => {
+                if (e) setStatusDoProcesso(e.value)} 
+              }
+          />
         </div>
 
         <div className={styles.inputGroup}>
@@ -379,9 +418,29 @@ export default function CadastrarProcesso() {
             required
           />
         </div>
+     
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Partes Envolvidas</label>
+          <input
+            className={styles.input}
+            placeholder="Partes Envolvidas"
+            value={partesEnvolvidas}
+            onChange={(e) => setPartesEnvolvidas(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Última atualização</label>
+          <input
+            className={styles.input}
+            placeholder="Última atualização"
+            value={ultimaAtualizacao}
+            disabled
+          />
+        </div>
 
         <button type="submit" className={styles.button}>
-          Cadastrar Processo
+          Atualizar Processo
         </button>
 
         <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>

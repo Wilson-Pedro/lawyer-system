@@ -1,8 +1,9 @@
 package com.advocacia.estacio.domain.dto;
 
+import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.projections.ProcessoProjection;
@@ -12,43 +13,68 @@ public class ProcessoDto implements Serializable{
 
 	private Long id;
 	
-	private Long assistidoId;
+	private Long assistidoId;//
+	
+	private String assistidoNome;
 	
 	private String numeroDoProcesso;
 	
-	private String numeroDoProcessoPje;
+	private String numeroDoProcessoPje;//
 	
-	private String assunto;
+	private String assunto;//
 	
-	private String vara;
+	private String vara;//
 	
-	private String prazoFinal;
+	private String prazoFinal;//
 	
-	private String responsavel;
+	private String responsavel;//
 	
-	private Long advogadoId;
+	private Long advogadoId;//
 	
-	private Long estagiarioId;
+	private Long estagiarioId;//
 	
-	private String advogadoNome;
+	private String estagiarioNome;
 	
-	private String areaDoDireito;
+	private String advogadoNome;//
 	
-	private String tribunal;
+	private String areaDoDireito;//
+	
+	private String tribunal;//
 	
 	private String statusDoProcesso;
 	
 	private String partesEnvolvidas;
 	
-	private LocalDateTime ultimaAtualizacao;
+	private String ultimaAtualizacao;
 	
 	public ProcessoDto() {
 	}
 	
+//	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
+//			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId, String advogadoNome,
+//			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas,
+//			String ultimaAtualizacao) {
+//		this.id = id;
+//		this.assistidoId = assistidoId;
+//		this.numeroDoProcesso = numeroDoProcesso;
+//		this.numeroDoProcessoPje = numeroDoProcessoPje;
+//		this.assunto = assunto;
+//		this.vara = vara;
+//		this.prazoFinal = prazoFinal;
+//		this.responsavel = responsavel;
+//		this.advogadoId = advogadoId;
+//		this.estagiarioId = estagiarioId;
+//		this.advogadoNome = advogadoNome;
+//		this.areaDoDireito = areaDoDireito;
+//		this.tribunal = tribunal;
+//		this.statusDoProcesso = statusDoProcesso;
+//		this.partesEnvolvidas = partesEnvolvidas;
+//		this.ultimaAtualizacao = ultimaAtualizacao;
+//	}
+	
 	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
-			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId, String advogadoNome,
-			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas,
-			LocalDateTime ultimaAtualizacao) {
+			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId,
+			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas) {
 		this.id = id;
 		this.assistidoId = assistidoId;
 		this.numeroDoProcesso = numeroDoProcesso;
@@ -59,12 +85,10 @@ public class ProcessoDto implements Serializable{
 		this.responsavel = responsavel;
 		this.advogadoId = advogadoId;
 		this.estagiarioId = estagiarioId;
-		this.advogadoNome = advogadoNome;
 		this.areaDoDireito = areaDoDireito;
 		this.tribunal = tribunal;
 		this.statusDoProcesso = statusDoProcesso;
 		this.partesEnvolvidas = partesEnvolvidas;
-		this.ultimaAtualizacao = ultimaAtualizacao;
 	}
 
 	public ProcessoDto(Long id, Long assistidoId, String assunto, String vara, String prazoFinal, String responsavel) {
@@ -79,19 +103,22 @@ public class ProcessoDto implements Serializable{
 	public ProcessoDto(Processo processo) {
 		this.id = processo.getId();
 		this.assistidoId = processo.getAssistido().getId();
+		this.assistidoNome = processo.getAssistido().getNome();
 		this.numeroDoProcesso = processo.getNumeroDoProcesso();
 		this.numeroDoProcessoPje = processo.getNumeroDoProcessoPje();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = toDateString(processo.getPrazoFinal());
+		this.prazoFinal = localDateToString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
+		this.estagiarioId = processo.getEstagiario().getId();
+		this.estagiarioNome = processo.getEstagiario().getNome();
 		this.advogadoNome = processo.getAdvogado().getNome();
 		this.areaDoDireito = processo.getAreaDoDireito().getDescricao();
 		this.tribunal = processo.getTribunal().getDescricao();
 		this.statusDoProcesso = processo.getStatusDoProcesso().getStatus();
 		this.partesEnvolvidas = processo.getPartesEnvolvidas();
-		this.ultimaAtualizacao = processo.getUltimaAtualizacao();
+		this.ultimaAtualizacao = localDateTimeToString(processo.getUltimaAtualizacao());
 	}
 	
 	public ProcessoDto(ProcessoProjection projection) {
@@ -103,10 +130,6 @@ public class ProcessoDto implements Serializable{
 		this.advogadoId = projection.getAdvogadoId();
 		this.advogadoNome = projection.getAdvogadoNome();
 	}
-	
-	private String toDateString(LocalDate localDate) {
-		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
-	}
 
 	public Long getId() {
 		return id;
@@ -114,6 +137,10 @@ public class ProcessoDto implements Serializable{
 
 	public Long getAssistidoId() {
 		return assistidoId;
+	}
+
+	public String getAssistidoNome() {
+		return assistidoNome;
 	}
 
 	public Long getEstagiarioId() {
@@ -148,6 +175,10 @@ public class ProcessoDto implements Serializable{
 		return advogadoId;
 	}
 
+	public String getEstagiarioNome() {
+		return estagiarioNome;
+	}
+
 	public String getAdvogadoNome() {
 		return advogadoNome;
 	}
@@ -168,7 +199,7 @@ public class ProcessoDto implements Serializable{
 		return partesEnvolvidas;
 	}
 
-	public LocalDateTime getUltimaAtualizacao() {
+	public String getUltimaAtualizacao() {
 		return ultimaAtualizacao;
 	}
 }

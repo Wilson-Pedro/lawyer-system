@@ -1,78 +1,154 @@
 .container {
-  padding: 30px 20px;
-  background-color: #f4f6f8;
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #1a2e66;
-  margin-bottom: 25px;
   text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1d3557;
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #457b9d;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  align-self: flex-start;
+  transition: color 0.3s ease;
+}
+
+.backButton:hover {
+  color: #1d3557;
 }
 
 .inputGroup {
-  width: 92%;
-  max-width: 500px;
-  margin-bottom: 14px;
   display: flex;
   flex-direction: column;
+  margin-bottom: 1.2rem;
 }
 
 .label {
-  font-size: 15px;
-  margin-bottom: 6px;
-  color: #333;
+  font-size: 0.95rem;
+  color: #1d3557;
+  margin-bottom: 0.4rem;
   font-weight: 500;
 }
 
 .input {
-  height: 46px;
-  background-color: #fff;
-  border: 1px solid #ccd1d9;
+  padding: 0.9rem 1rem;
+  border: 1.5px solid #ccc;
   border-radius: 8px;
-  padding: 0 12px;
-  font-size: 15px;
-  color: #000;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: #457b9d;
+  box-shadow: 0 0 0 3px rgba(69, 123, 157, 0.2);
 }
 
 .button {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  background-color: #1a2e66;
-  padding: 14px 30px;
-  border-radius: 8px;
-  width: 92%;
-  max-width: 500px;
-  color: #fff;
-  font-size: 16px;
+  padding: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
+  background-color: #1d3557;
+  color: #fff;
   border: none;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .button:hover {
-  opacity: 0.9;
+  background-color: #457b9d;
+  transform: scale(1.02);
 }
 
-.backButton {
-  background-color: #2a3a7f;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
+.toastMessage {
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.ul {
+  background: #fff;
+  border: 1px solid #ccd1d9;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 100%;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  margin: auto;
+}
+
+.li {
+  padding: 10px 14px;
   cursor: pointer;
-  margin-bottom: 20px;
-  align-self: flex-start;
-  transition: 0.2s ease-in-out;
+  font-size: 15px;
+  color: #333;
+  transition: 0.2s;
+  list-style-type: none;
+  max-width: 100%;
 }
 
-.backButton:hover {
-  opacity: 0.9;
+
+li:hover {
+  background-color: lightgray;
+}
+
+@media (max-width: 700px) {
+  .container {
+    margin: 30px 15px;
+    padding: 1.8rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .input {
+    font-size: 0.95rem;
+  }
+
+  .button {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .inputRow {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .inputRow .inputGroup {
+    flex: 1;
+  }
+}
+
+
+
+.input:invalid:focus {
+  border-color: #e63946;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
 }

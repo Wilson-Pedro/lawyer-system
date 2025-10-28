@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.services.AssistidoService;
 
@@ -31,12 +32,12 @@ public class AssistidoController {
 	}
 	
 	@GetMapping("/buscar/{nome}")
-	public ResponseEntity<Page<AssistidoDto>> buscarAssistido(
+	public ResponseEntity<PageResponseDto<AssistidoDto>> buscarAssistido(
 			@PathVariable String nome,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<AssistidoDto> dtos = assistidoService.buscarAssistido(nome, page, size)
 				.map(x -> new AssistidoDto(x));
-		return ResponseEntity.ok(dtos);
+		return ResponseEntity.ok(new PageResponseDto<>(dtos));
 	}
 }

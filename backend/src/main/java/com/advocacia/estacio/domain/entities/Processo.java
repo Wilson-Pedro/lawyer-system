@@ -3,7 +3,6 @@ package com.advocacia.estacio.domain.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +12,8 @@ import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -112,7 +113,7 @@ public class Processo implements Serializable{
 		this.tribunal = Tribunal.toEnum(dto.getTribunal());
 		this.statusDoProcesso = StatusProcesso.toEnum(dto.getStatusDoProcesso());
 		this.partesEnvolvidas = dto.getPartesEnvolvidas();
-		this.ultimaAtualizacao = dto.getUltimaAtualizacao();
+		this.ultimaAtualizacao = stringToLocalDateTime(dto.getUltimaAtualizacao());
 	}
 	
 	public Processo(ProcessoRequestDto request) {
@@ -127,11 +128,6 @@ public class Processo implements Serializable{
 	
 	public void tramitando() {
 		this.statusDoProcesso = StatusProcesso.TRAMITANDO;
-	}
-	
-	private LocalDate localDateToString(String string) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		return LocalDate.parse(string, formatter);
 	}
 
 	public Long getId() {

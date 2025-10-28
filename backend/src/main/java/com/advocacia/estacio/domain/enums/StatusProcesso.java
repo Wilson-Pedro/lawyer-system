@@ -6,7 +6,8 @@ public enum StatusProcesso {
 	
 	TRAMITANDO(1, "Tramitando"),
 	SUSPENSO(2, "Suspenso"),
-	ARQUIVADO(3, "Arquivado");
+	ARQUIVADO(3, "Arquivado"),
+	TODOS(4, "Todos");
 	
 	private Integer codigo;
 	
