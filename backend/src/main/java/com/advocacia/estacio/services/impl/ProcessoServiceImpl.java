@@ -23,6 +23,7 @@ import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
+import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
@@ -56,9 +57,10 @@ public class ProcessoServiceImpl implements ProcessoService {
 		processo.tramitando();
 		processo.setEstagiario(estagiario);
 		processo.setUltimaAtualizacao(LocalDateTime.now());
+		validarProcesso(processo);
 		return processoRepository.save(processo);
 	}
-	
+
 	private String gerarNumeroProcesso() {
 		return String.format("%d%d", LocalDate.now().getYear(), processoRepository.count()+1);
 	}
@@ -115,5 +117,11 @@ public class ProcessoServiceImpl implements ProcessoService {
 		processo.setStatusDoProcesso(StatusProcesso.toEnum(dto.getStatusDoProcesso()));
 		processo.setPartesEnvolvidas(dto.getPartesEnvolvidas());
 		return processo;
+	}
+	
+	public void validarProcesso(Processo processo) {
+		if(processoRepository.existsByNumeroDoProcesso(processo.getNumeroDoProcesso())) {
+			throw new NumeroDoProcessoExistenteException();
+		}
 	}
 }

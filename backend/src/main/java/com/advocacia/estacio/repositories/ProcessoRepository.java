@@ -26,4 +26,6 @@ public interface ProcessoRepository extends JpaRepository<Processo, Long> {
 	Page<Processo> findByNumeroDoProcessoContainingIgnoreCase(String numeroDoProcesso, Pageable pageable);
 
 	Optional<Processo> findByNumeroDoProcesso(String numeroDoProcesso);	
+	
+	boolean existsByNumeroDoProcesso(String numeroDoProcesso);
 }

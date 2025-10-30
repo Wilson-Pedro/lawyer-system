@@ -13,33 +13,33 @@ public class ProcessoDto implements Serializable{
 
 	private Long id;
 	
-	private Long assistidoId;//
+	private Long assistidoId;
 	
 	private String assistidoNome;
 	
 	private String numeroDoProcesso;
 	
-	private String numeroDoProcessoPje;//
+	private String numeroDoProcessoPje;
 	
-	private String assunto;//
+	private String assunto;
 	
-	private String vara;//
+	private String vara;
 	
-	private String prazoFinal;//
+	private String prazoFinal;
 	
-	private String responsavel;//
+	private String responsavel;
 	
-	private Long advogadoId;//
+	private Long advogadoId;
 	
-	private Long estagiarioId;//
+	private Long estagiarioId;
 	
 	private String estagiarioNome;
 	
-	private String advogadoNome;//
+	private String advogadoNome;
 	
-	private String areaDoDireito;//
+	private String areaDoDireito;
 	
-	private String tribunal;//
+	private String tribunal;
 	
 	private String statusDoProcesso;
 	
