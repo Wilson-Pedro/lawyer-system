@@ -62,6 +62,18 @@ public class TestUtil {
 	@Autowired
 	EstagiarioService estagiarioService;
 	
+	private AssistidoDto assistidoDto;
+	
+	private AdvogadoDto advogadoDto;
+	
+	private Estagiario estagiario;
+	
+	private Estagiario estagiario2;
+	
+	private Assistido assistido;
+	
+	private Advogado advogado;
+	
 	public void deleteAll() {
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
@@ -74,20 +86,9 @@ public class TestUtil {
 	
 	public Processo getProcesso() {
 		
-		AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com","Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
-		
-		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
-				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-				"rua do passeio", 11, "53022-112");
-		
-		Estagiario estagiario2 = new Estagiario(
-				"João Lucas", "lucas@gmail.com", "20251209", 
-				PeriodoEstagio.ESTAGIO_II, "1234");
-		
-		Assistido assistido = assistidoService.salvar(assistidoDto);
-		Advogado advogado = advogadoService.salvar(advogadoDto);
-		Estagiario estagiario = estagiarioRepository.save(estagiario2);
+		assistido = assistidoService.salvar(getAssistidoDto());
+		advogado = advogadoService.salvar(getAdvogadoDto());
+		estagiario = estagiarioRepository.save(getEstagiario2());
 		
 		return new Processo(null, assistido, "20251", "62354", "Seguro", "3210", 
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 
@@ -118,5 +119,29 @@ public class TestUtil {
 		if(processoRepository.existsByNumeroDoProcesso(processo.getNumeroDoProcesso())) {
 			throw new NumeroDoProcessoExistenteException();
 		}
+	}
+
+	public AssistidoDto getAssistidoDto() {
+		return assistidoDto= new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
+				"ana@gmail.com","Cientista de Dados", "brasileiro", 
+				"São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+	}
+
+	public AdvogadoDto getAdvogadoDto() {
+		return advogadoDto = new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com", "61946620131",
+				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
+				"rua do passeio", 11, "53022-112");
+	}
+
+	public Estagiario getEstagiario() {
+		return estagiario = new Estagiario(
+				"Pedro Lucas", "pedro@gmail.com", "20251208", 
+				PeriodoEstagio.ESTAGIO_I, "1234");
+	}
+
+	public Estagiario getEstagiario2() {
+		return estagiario2 = new Estagiario(
+				"João Lucas", "lucas@gmail.com", "20251209", 
+				PeriodoEstagio.ESTAGIO_II, "1234");
 	}
 }

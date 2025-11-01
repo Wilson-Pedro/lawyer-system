@@ -33,9 +33,7 @@ class EstagiarioServiceTest {
 	
 	@BeforeEach
 	void setUp() {
-		estagiario = new Estagiario(
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I, "1234");
+		estagiario = testUtil.getEstagiario();
 	}
 	
 	@Test

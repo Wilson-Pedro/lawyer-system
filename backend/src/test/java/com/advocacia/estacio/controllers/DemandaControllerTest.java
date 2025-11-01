@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -47,10 +46,6 @@ class DemandaControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	Estagiario estagiario = new Estagiario(
-			"Pedro Lucas", "pedro@gmail.com", "20251208", 
-			PeriodoEstagio.ESTAGIO_I, "1234");
-	
 	private static String URI = "/demandas";
 	
 	@Test
@@ -65,7 +60,7 @@ class DemandaControllerTest {
 		
 		assertEquals(0, demandaRepository.count());
 		
-		Estagiario estagiario = estagiarioRepository.save(this.estagiario);
+		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		
 		DemandaDto demandaDto = new DemandaDto(null, estagiario.getId(), "Atendido", "12/11/2025");
 		

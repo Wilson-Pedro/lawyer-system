@@ -40,10 +40,6 @@ class DemandaServiceTest {
 	@Autowired
 	TestUtil testUtil;
 	
-	Estagiario estagiario = new Estagiario(
-			"Pedro Lucas", "pedro@gmail.com", "20251208", 
-			PeriodoEstagio.ESTAGIO_I, "1234");
-	
 	@Test
 	@Order(1)
 	void deveDeletar_TodosOsDados_AntesDostestes() {
@@ -53,9 +49,10 @@ class DemandaServiceTest {
 	@Test
 	@Order(2)
 	void deveSalvar_Demanda_NoBancoDeDadosPeloService() {
+		
 		assertEquals(0, demandaRepository.count());
 		
-		Estagiario estagiario = estagiarioRepository.save(this.estagiario);
+		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		
 		DemandaDto demandaDto = new DemandaDto(null, estagiario.getId(), "Atendido", "12/11/2025");
 		

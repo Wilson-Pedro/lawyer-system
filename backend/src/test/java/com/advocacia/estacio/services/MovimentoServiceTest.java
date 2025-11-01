@@ -10,13 +10,9 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Movimento;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.MovimentoRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -46,17 +42,6 @@ class MovimentoServiceTest {
 	@Autowired
 	TestUtil testUtil;
 	
-	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-			"ana@gmail.com","Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
-	
-	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
-			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-			"rua do passeio", 11, "53022-112");
-	
-	Estagiario estagiario = new Estagiario(
-			"Pedro Lucas", "pedro@gmail.com", "20251208", 
-			PeriodoEstagio.ESTAGIO_I, "1234");
-	
 	@Test
 	@Order(1)
 	void deveDeletar_TodosOsDados_AntesDostestes() {
@@ -68,9 +53,9 @@ class MovimentoServiceTest {
 	void deveSalvar_Processo_NoBancoDeDadosPeloService() {
 		assertEquals(0, movimentoRepository.count());
 		
-		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
-		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
-		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
+		Long assistidoId = assistidoService.salvar(testUtil.getAssistidoDto()).getId();
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
+		Long estagiarioId = estagiarioRepository.save(testUtil.getEstagiario()).getId();
 		
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, estagiarioId, "Civil", "Estadual", "25/10/2025");
 		

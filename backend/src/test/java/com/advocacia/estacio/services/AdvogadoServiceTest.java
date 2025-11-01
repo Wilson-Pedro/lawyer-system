@@ -34,13 +34,17 @@ class AdvogadoServiceTest {
 	
 	@BeforeEach
 	void setUp() {
-		advogadoDto = new AdvogadoDto(null, "Júlio Silva", "julio@gmail.com", "61946620131",
-				"88566519808", "25/09/1996", "São Luís", "Vila Palmeira", 
-				"rua dos nobres", 12, "43012-232");
+		advogadoDto = testUtil.getAdvogadoDto();
+	}
+	
+	@Test
+	@Order(1)
+	void deletando_TodosOsDados_DepoisDostestes() {
+		testUtil.deleteAll();
 	}
 
 	@Test
-	@Order(1)
+	@Order(2)
 	void deveSalvar_Advogado_NoBancoDeDados_PeloService() {
 		assertEquals(0, advogadoRepository.count());
 		
@@ -48,8 +52,8 @@ class AdvogadoServiceTest {
 		
 		assertNotNull(advogado);
 		assertNotNull(advogado.getId());
-		assertEquals("Júlio Silva", advogado.getNome());
-		assertEquals("julio@gmail.com", advogado.getEmail());
+		assertEquals("Carlos Silva", advogado.getNome());
+		assertEquals("carlos@gmail.com", advogado.getEmail());
 		assertEquals("61946620131", advogado.getCpf());
 		assertEquals("88566519808", advogado.getTelefone());
 		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
@@ -59,7 +63,7 @@ class AdvogadoServiceTest {
 	}
 	
 	@Test
-	@Order(2)
+	@Order(3)
 	void deveBuscar_Advogado_peloNome_PeloService() {
 		
 		String nome = "il";
@@ -68,13 +72,7 @@ class AdvogadoServiceTest {
 		
 		assertNotNull(advogados);
 		assertEquals(advogados.getContent().size(), 1);
-		assertEquals(advogados.getContent().get(0).getNome(), "Júlio Silva");
+		assertEquals(advogados.getContent().get(0).getNome(), "Carlos Silva");
 
-	}
-
-	@Test
-	@Order(3)
-	void deletando_TodosOsDados_DepoisDostestes() {
-		testUtil.deleteAll();
 	}
 }

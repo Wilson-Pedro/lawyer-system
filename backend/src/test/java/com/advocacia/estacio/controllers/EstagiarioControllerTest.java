@@ -19,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -51,9 +50,7 @@ class EstagiarioControllerTest {
 	
 	@BeforeEach
 	void setUp() {
-		estagiario = new Estagiario(
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I, "1234");
+		estagiario = testUtil.getEstagiario();
 	}
 	
 	@Test

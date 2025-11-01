@@ -39,8 +39,7 @@ class AssistidoServiceServiceTest {
 	
 	@BeforeEach
 	void setUp() {
-		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+		assistidoDto = testUtil.getAssistidoDto();
 	}
 	
 	@Test
