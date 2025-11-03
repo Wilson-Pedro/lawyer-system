@@ -2,10 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { 
+    UsersIcon, 
+    UserPlusIcon, 
+    GavelIcon, 
     FileAltIcon, 
-    SingOutAltIcon,
-    FileCirclePlusIcon,
-    PlusCircleIcon
+    SingOutAltIcon, 
 } from "../../Icons/Icon";
 
 interface MenuItem {
@@ -15,25 +16,25 @@ interface MenuItem {
   variant: string;
 }
 
-export default function HomeAdmin() {
+export default function Cadastros() {
   const navigate = useNavigate();
 
   const menuItems: MenuItem[] = [
-    { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
-    { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
-    { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "info" },
-    { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
+    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrarAssistido", variant: "success" },
+    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrarEstagiario", variant: "info" },
+    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrarAdvogado", variant: "warning" },
+    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrarProcesso", variant: "secondary" },
   ];
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel Administrativo</span>
+        <span className="navbar-brand fw-bold fs-4">Cadastrar</span>
         <button
           className="btn btn-outline-light ms-auto"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/admin")}
         >
-          <SingOutAltIcon className="me-2" /> Sair
+          <SingOutAltIcon className="me-2" /> Voltar
         </button>
       </nav>
 

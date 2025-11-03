@@ -75,8 +75,6 @@ public class ProcessoController {
 	public ResponseEntity<Void> atualizarProcesso(
 			@PathVariable Long id, 
 			@RequestBody ProcessoUpdate processoUpdate) {
-		System.out.println("============================");
-		System.out.println("CHEGOU");
 		processoService.atualizarProcesso(id, processoUpdate);
 		return ResponseEntity.noContent().build();
 	}

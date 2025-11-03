@@ -30,7 +30,7 @@ export default function Movimento() {
   const { numeroDoProcesso } = useParams<{ numeroDoProcesso: string }>();
 
   useEffect(() => {
-    const fetchMovimentos = async () => {
+    const movimentos = async () => {
       try {
         const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`);
         const pageData: Page<Movimento> = response.data;
@@ -40,7 +40,7 @@ export default function Movimento() {
       }
     };
 
-    fetchMovimentos();
+    movimentos();
   }, [numeroDoProcesso]);
 
   const movimentosFiltrados = movimentos.filter(
@@ -73,7 +73,6 @@ export default function Movimento() {
         </Button>
       </div>
 
-      {/* Área de Busca */}
       <Row className="mb-4">
         <Col md={6}>
           <Form.Control
@@ -86,7 +85,7 @@ export default function Movimento() {
         </Col>
       </Row>
 
-      {/* Tabela de Movimentos */}
+
       {movimentosFiltrados.length > 0 ? (
         <Table striped bordered hover responsive className="shadow-sm align-middle">
           <thead className="table-dark text-center">
@@ -107,22 +106,12 @@ export default function Movimento() {
                 <td>{item.movimento}</td>
                 <td>{item.advogado}</td>
                 <td className="text-center">{item.registro}</td>
-                {/* <td className="text-center">
-                  <Button
-                    variant="outline-primary"
-                    size="sm"
-                    className="me-2 d-inline-flex align-items-center"
-                    onClick={() => navigate(`/processos/${item.numeroDoProcesso}/movimento`)}
-                  >
-                    <EditIcon />
-                  </Button>
-                </td> */}
               </tr>
             ))}
           </tbody>
         </Table>
       ) : (
-        <div className="text-center mt-5">
+        <div className="alert alert-secondary text-center mt-5">
           <p className="text-muted fs-5">Nenhum movimento encontrado.</p>
         </div>
       )}

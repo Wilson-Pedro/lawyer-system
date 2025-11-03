@@ -10,6 +10,8 @@ import CadastrarAdvogado from './screens/CadastrarAdvogado/CadastrarAdvogado';
 import CadastrarMovimento from './screens/CadastrarMovimento/CadastrarMovimento';
 import Movimento from './screens/Movimento/Movimento';
 import EditarProcesso from './screens/EditarProcesso/EditarProcesso';
+import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
+import Cadastros from './screens/Cadastros/Cadastros';
 
 export default function Rotas() {
     return(
@@ -25,6 +27,8 @@ export default function Rotas() {
                 <Route path="/processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
                 <Route path="/cadastrarMovimento/:numeroDoProcesso" element={ <CadastrarMovimento /> } />
                 <Route path="/processos/editar/:processoId"  element={ <EditarProcesso /> }/>
+                <Route path="/movimentar" element={ <MovimentarProcesso />} />
+                <Route path="/cadastrar" element={ <Cadastros />} />
             </Routes>
         </BrowserRouter>
     );
