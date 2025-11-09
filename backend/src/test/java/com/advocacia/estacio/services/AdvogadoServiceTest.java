@@ -54,7 +54,6 @@ class AdvogadoServiceTest {
 		assertNotNull(advogado.getId());
 		assertEquals("Carlos Silva", advogado.getNome());
 		assertEquals("carlos@gmail.com", advogado.getEmail());
-		assertEquals("61946620131", advogado.getCpf());
 		assertEquals("88566519808", advogado.getTelefone());
 		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
 		

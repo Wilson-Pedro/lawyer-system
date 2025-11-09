@@ -79,7 +79,6 @@ class AdvogadoControllerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.nome", equalTo("Carlos Silva")))
 				.andExpect(jsonPath("$.email", equalTo("carlos@gmail.com")))
-				.andExpect(jsonPath("$.cpf", equalTo("61946620131")))
 				.andExpect(jsonPath("$.telefone", equalTo("88566519808")))
 				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
 				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))

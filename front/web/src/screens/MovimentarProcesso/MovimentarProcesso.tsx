@@ -1,8 +1,8 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
-import { ArrowLeftIcon, PlusIcon } from "../../Icons/Icon";
+import { Table, Button, Form, Row, Col } from "react-bootstrap";
+import { PlusIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './MovimentarProcesso.module.css';
 

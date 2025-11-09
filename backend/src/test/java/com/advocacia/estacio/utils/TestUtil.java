@@ -2,12 +2,14 @@ package com.advocacia.estacio.utils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.AtorDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
@@ -20,6 +22,7 @@ import com.advocacia.estacio.domain.enums.Tribunal;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
@@ -54,6 +57,9 @@ public class TestUtil {
 	DemandaRepository demandaRepository;
 	
 	@Autowired
+	AtorRepository atorRepository;
+	
+	@Autowired
 	AdvogadoService advogadoService;
 	
 	@Autowired
@@ -61,20 +67,15 @@ public class TestUtil {
 	
 	@Autowired
 	EstagiarioService estagiarioService;
-	
-	private AssistidoDto assistidoDto;
-	
-	private AdvogadoDto advogadoDto;
-	
+
 	private Estagiario estagiario;
-	
-	private Estagiario estagiario2;
 	
 	private Assistido assistido;
 	
 	private Advogado advogado;
 	
 	public void deleteAll() {
+		atorRepository.deleteAll();
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();
@@ -122,13 +123,13 @@ public class TestUtil {
 	}
 
 	public AssistidoDto getAssistidoDto() {
-		return assistidoDto= new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
+		return new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
 				"ana@gmail.com","Cientista de Dados", "brasileiro", 
 				"São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
 	}
 
 	public AdvogadoDto getAdvogadoDto() {
-		return advogadoDto = new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com", "61946620131",
+		return new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 				"rua do passeio", 11, "53022-112");
 	}
@@ -140,8 +141,16 @@ public class TestUtil {
 	}
 
 	public Estagiario getEstagiario2() {
-		return estagiario2 = new Estagiario(
+		return new Estagiario(
 				"João Lucas", "lucas@gmail.com", "20251209", 
 				PeriodoEstagio.ESTAGIO_II, "1234");
+	}
+	
+	public List<AtorDto> getAtores() {
+		return List.of(
+				new AtorDto(null, "Roberto Carlos", "roberto@gmail.com", "Coordenador do curso", "1234"),
+				new AtorDto(null, "José Augusto", "jose@gmail.com", "Secretário", "1234"),
+				new AtorDto(null, "Fabio Junior", "fabio@gmail.com", "Professor", "1234")
+				);
 	}
 }

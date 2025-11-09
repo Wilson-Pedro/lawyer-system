@@ -10,7 +10,7 @@ export default function CadastrarAdvogado() {
 
   const [nome, setNome] = useState("Júlio Silva");
   const [email, setEmail] = useState("julio@gmail.com");
-  const [cpf, setCpf] = useState("23423423234");
+  //const [cpf, setCpf] = useState("23423423234");
   const [telefone, setTelefone] = useState("8893545325");
   const [dataDeNascimento, setDataDeNascimento] = useState("");
   const [cidade, setCidade] = useState("Belo Horizonte");
@@ -32,7 +32,6 @@ export default function CadastrarAdvogado() {
       await axios.post(`${API_URL}/advogados/`, {
         nome,
         email,
-        cpf,
         telefone,
         dataDeNascimento,
         cidade,
@@ -79,7 +78,6 @@ export default function CadastrarAdvogado() {
   const limparCampos = () => {
     setNome("");
     setEmail("");
-    setCpf("");
     setTelefone("");
     setDataDeNascimento("");
     setCidade("");
@@ -116,17 +114,6 @@ export default function CadastrarAdvogado() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>CPF</label>
-        <input
-          className={styles.input}
-          placeholder="Cpf"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
           required
         />
       </div>
