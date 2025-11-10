@@ -2,17 +2,16 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./CadastrarEstagiario.module.css";
+import styles from "./CadastrarUsuario.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
-export default function CadastrarEstagiario() {
+export default function CadastrarUsuario() {
   const navigate = useNavigate();
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [matricula, setMatricula] = useState("");
-  const [periodo, setPeriodo] = useState("");
+  const [tipoAtor, setTipoAtor] = useState("");
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -21,15 +20,14 @@ export default function CadastrarEstagiario() {
 
   const cadastrarEstagiario = async () => {
     try {
-      await axios.post(`${API_URL}/estagiarios/`, {
+      await axios.post(`${API_URL}/atores/`, {
         nome,
         email,
-        matricula,
-        periodo,
+        tipoAtor,
         senha,
       });
 
-      setMensagemToast("Estagiário cadastrado com sucesso!");
+      setMensagemToast("Usuário cadastrado com sucesso!");
       setVarianteToast("success");
       setMostrarToast(true);
 
@@ -37,21 +35,20 @@ export default function CadastrarEstagiario() {
     } catch (error) {
       console.error(error);
 
-      setMensagemToast("Erro ao cadastrar estagiário.");
+      setMensagemToast("Erro ao cadastrar usuário.");
       setVarianteToast("danger");
       setMostrarToast(true);
     }
   };
 
-  const selecionarPeriodo = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPeriodo(e.target.value);
+  const selecionarTipoAtor = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTipoAtor(e.target.value);
   };
 
   const limparCampos = () => {
     setNome("");
     setEmail("");
-    setMatricula("");
-    setPeriodo("Estágio I");
+    setTipoAtor("");
     setSenha("");
   };
 
@@ -62,7 +59,7 @@ export default function CadastrarEstagiario() {
         ← Voltar
       </button>
 
-      <h1 className={styles.title}>Cadastrar Estagiário</h1>
+      <h1 className={styles.title}>Cadastrar Usuário</h1>
 
       <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
         <div className={styles.inputGroup}>
@@ -87,27 +84,16 @@ export default function CadastrarEstagiario() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Matrícula</label>
-          <input
-            className={styles.input}
-            placeholder="Matrícula"
-            value={matricula}
-            onChange={(e) => setMatricula(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Período</label>
+          <label className={styles.label}>Função</label>
           <select
             className={styles.input}
-            value={periodo}
-            onChange={selecionarPeriodo}
+            value={tipoAtor}
+            onChange={selecionarTipoAtor}
           >
             <option value="" disabled selected></option>
-            <option value="Estágio I">Estágio I</option>
-            <option value="Estágio II">Estágio II</option>
-            <option value="Estágio III">Estágio III</option>
-            <option value="Estágio IV">Estágio IV</option>
+            <option value="Coordenador do curso">Coordenador(a) do curso</option>
+            <option value="Secretário">Secretário(a)</option>
+            <option value="Professor">Professor(a)</option>
           </select>
         </div>
 

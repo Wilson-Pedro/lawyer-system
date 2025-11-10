@@ -146,7 +146,7 @@ export default function MovimentarProcesso() {
                             <Button
                                 variant="success"
                                 className="d-flex align-items-center shadow-sm"
-                                onClick={() => navigate(`/cadastrarMovimento/${numeroDoProcesso}`)}
+                                onClick={() => navigate(`/processos/${numeroDoProcesso}/movimento/cadastrar`)}
                             >
                                 <PlusIcon className="me-2" /> Novo Movimento
                             </Button>

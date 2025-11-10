@@ -111,7 +111,7 @@ export default function Processos() {
                   <th>Advogado</th>
                   <th>Status</th>
                   <th className="text-center">Editar</th>
-                  <th className="text-center">Movimentar</th>
+                  <th className="text-center">Movimento</th>
                 </tr>
               </thead>
               <tbody>

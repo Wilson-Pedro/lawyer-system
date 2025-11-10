@@ -20,10 +20,11 @@ export default function Cadastros() {
   const navigate = useNavigate();
 
   const menuItems: MenuItem[] = [
-    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrarAssistido", variant: "success" },
-    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrarEstagiario", variant: "info" },
-    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrarAdvogado", variant: "warning" },
-    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrarProcesso", variant: "secondary" },
+    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrar/assistido", variant: "success" },
+    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrar/estagiario", variant: "info" },
+    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrar/advogado", variant: "warning" },
+    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrar/processo", variant: "secondary" },
+    { label: "Cadastrar Usuario", icon: <UserPlusIcon />, path: "/cadastrar/usuario", variant: "primary" },
   ];
 
   return (

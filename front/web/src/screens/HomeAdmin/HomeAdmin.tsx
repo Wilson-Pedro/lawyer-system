@@ -21,7 +21,7 @@ export default function HomeAdmin() {
   const menuItems: MenuItem[] = [
     { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
-    { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "info" },
+    { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 
