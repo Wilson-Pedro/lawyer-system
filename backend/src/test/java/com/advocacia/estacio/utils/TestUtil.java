@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
@@ -15,10 +16,14 @@ import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
+import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.records.AuthenticationDto;
+import com.advocacia.estacio.domain.records.RegisterDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
@@ -28,12 +33,16 @@ import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.MovimentoRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
 
 @Component
 public class TestUtil {
+	
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
@@ -76,6 +85,7 @@ public class TestUtil {
 	
 	public void deleteAll() {
 		atorRepository.deleteAll();
+		usuarioAuthRepository.deleteAll();
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();
@@ -144,6 +154,19 @@ public class TestUtil {
 		return new Estagiario(
 				"João Lucas", "lucas@gmail.com", "20251209", 
 				PeriodoEstagio.ESTAGIO_II, "1234");
+	}
+	
+	public UsuarioAuth getUsuarioAuth() {
+		String senha = new BCryptPasswordEncoder().encode("1234");
+		return new UsuarioAuth("pedro@gmail.com", senha, UserRole.ADMIN);
+	}
+	
+	public AuthenticationDto getAuthenticationDto() {
+		return new AuthenticationDto("pedro@gmail.com", "1234");
+	}
+	
+	public RegisterDto getRegisterDto() {
+		return new RegisterDto("pedro@gmail.com", "1234", UserRole.ADMIN);
 	}
 	
 	public List<AtorDto> getAtores() {
