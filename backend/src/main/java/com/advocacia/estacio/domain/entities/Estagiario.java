@@ -112,6 +112,12 @@ public class Estagiario implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Estagiario [id=" + id + ", nome=" + nome + ", email=" + email + ", matricula=" + matricula
+				+ ", periodo=" + periodo + ", senha=" + senha + ", registro=" + registro + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(email, matricula, nome, periodo, senha);
 	}

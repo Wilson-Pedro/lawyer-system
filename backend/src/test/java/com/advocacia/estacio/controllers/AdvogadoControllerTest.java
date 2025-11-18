@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -53,16 +52,14 @@ class AdvogadoControllerTest {
 	
 	private static String URI = "/advogados";
 	
-	@BeforeEach
-	void setUp() {
-		advogadoDto = testUtil.getAdvogadoDto();
-	}
+	private static String TOKEN = "";
 	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
-		demandaRepository.deleteAll();
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -71,9 +68,12 @@ class AdvogadoControllerTest {
 		
 		assertEquals(0, advogadoRepository.count());
 		
+		advogadoDto = testUtil.getAdvogadoDto();
+		
 		String jsonRequest = objectMapper.writeValueAsString(advogadoDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -96,6 +96,7 @@ class AdvogadoControllerTest {
 		String nome = "il";
 		
 		mockMvc.perform(get(URI + "/buscar/" + nome)
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))

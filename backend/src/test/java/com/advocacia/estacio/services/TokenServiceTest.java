@@ -23,7 +23,7 @@ import com.advocacia.estacio.utils.TestUtil;
 class TokenServiceTest {
 	
 	@Autowired
-	UsuarioAuthRepository authRepository;
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -45,7 +45,7 @@ class TokenServiceTest {
 	@Test
 	@Order(2)
 	void deve_gerar_token() {
-		authRepository.save(testUtil.getUsuarioAuth());
+		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
 		
 		RegisterDto dto = testUtil.getRegisterDto();
 		
@@ -63,7 +63,7 @@ class TokenServiceTest {
 	void deve_validar_token() {
 		String login = tokenService.validateToken(TOKEN);
 		
-		UsuarioAuth userAuth = (UsuarioAuth) authRepository.findByLogin(login);
+		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);
 		
 		assertEquals(userAuth.getLogin(), testUtil.getRegisterDto().login());
 	}

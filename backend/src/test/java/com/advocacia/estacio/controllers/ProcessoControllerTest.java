@@ -59,10 +59,14 @@ class ProcessoControllerTest {
 	
 	private static String URI = "/processos";
 	
+	private static String TOKEN = "";
+	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -80,6 +84,7 @@ class ProcessoControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(request);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -98,6 +103,7 @@ class ProcessoControllerTest {
 	void deveBuscar_Processos_PorStatusDoProcesso_PeloController() throws Exception {
 		
 		mockMvc.perform(get(URI + "/statusDoProcesso/TRAMITANDO")
+				.header("Authorization", "Bearer " + TOKEN)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -111,11 +117,23 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(4)
+	void deveBuscar_todos_Processos_PorStatusDoProcesso_PeloController() throws Exception {
+		
+		mockMvc.perform(get(URI + "/statusDoProcesso/todos")
+				.header("Authorization", "Bearer " + TOKEN)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+	}
+	
+	@Test
+	@Order(5)
 	void deveBuscar_Processo_pelo_NumeroDoProcesso_PeloController() throws Exception {
 		
 		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
 		
 		mockMvc.perform(get(URI + "/buscar/" + numeroDoProcesso)
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -124,7 +142,7 @@ class ProcessoControllerTest {
 	}
 	
 	@Test
-	@Order(5)
+	@Order(6)
 	void deveAtualzar_Estagiario_noProcesso_PeloService() throws Exception {
 		
 		assertEquals(1, processoRepository.count());
@@ -141,6 +159,7 @@ class ProcessoControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(dto);
 		
 		mockMvc.perform(put(URI + "/" + processo.getId())
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isNoContent());

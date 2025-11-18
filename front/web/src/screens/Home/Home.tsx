@@ -19,15 +19,12 @@ export default function Home() {
       </p>
 
       <button
-        className={`${styles.button} ${styles.secondaryButton}`}
-        onClick={() => navigate("/admin")}
+        className={`${styles.button}`}
+        onClick={() => navigate("/login")}
       >
-        Já tenho conta
+        Fazer Login
       </button>
 
-      <button className={styles.button} onClick={() => navigate("/admin")}>
-        Fazer Cadastro
-      </button>
     </div>
   );
 }

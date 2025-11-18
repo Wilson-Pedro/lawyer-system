@@ -13,6 +13,7 @@ import CadastrarUsuario from './screens/CadastrarUsuario/CadastrarUsuario';
 import Movimento from './screens/Movimento/Movimento';
 import EditarProcesso from './screens/EditarProcesso/EditarProcesso';
 import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
+import Login from './screens/Login/Login';
 
 export default function Rotas() {
     return(
@@ -31,6 +32,7 @@ export default function Rotas() {
                 <Route path="/movimentar" element={ <MovimentarProcesso />} />
                 <Route path="/cadastrar" element={ <Cadastros />} />
                 <Route path="/cadastrar/usuario" element={ <CadastrarUsuario />} />
+                <Route path='/login' element={ <Login /> } />
             </Routes>
         </BrowserRouter>
     );

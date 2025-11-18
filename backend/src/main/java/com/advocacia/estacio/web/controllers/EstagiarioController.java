@@ -34,7 +34,7 @@ public class EstagiarioController {
 	@GetMapping("/buscar/{nome}")
 	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarEstagiario(
 			@PathVariable String nome,
-			@RequestParam(defaultValue = "10") int page,
+			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<Estagiario> pages = estagiarioService.buscarEstagiario(nome, page, size);
 		Page<EstagiarioDto> pagesDto = pages.map(x -> new EstagiarioDto(x));

@@ -48,10 +48,14 @@ class DemandaControllerTest {
 	
 	private static String URI = "/demandas";
 	
+	private static String TOKEN = "";
+	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -67,6 +71,7 @@ class DemandaControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())

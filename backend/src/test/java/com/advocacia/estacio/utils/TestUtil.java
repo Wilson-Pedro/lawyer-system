@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.RegisterDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
+import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.AtorRepository;
@@ -76,6 +79,12 @@ public class TestUtil {
 	
 	@Autowired
 	EstagiarioService estagiarioService;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
+	@Autowired
+	TokenService tokenService;
 
 	private Estagiario estagiario;
 	
@@ -175,5 +184,18 @@ public class TestUtil {
 				new AtorDto(null, "José Augusto", "jose@gmail.com", "Secretário", "1234"),
 				new AtorDto(null, "Fabio Junior", "fabio@gmail.com", "Professor", "1234")
 				);
+	}
+	
+	public String getToken() {
+		usuarioAuthRepository.save(getUsuarioAuth());
+		
+		RegisterDto dto = getRegisterDto();
+		
+		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
+		
+		var auth = authenticationManager.authenticate(usernamePassword);
+		
+		String token = tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
+		return token;
 	}
 }

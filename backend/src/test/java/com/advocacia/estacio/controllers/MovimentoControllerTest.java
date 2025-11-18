@@ -2,7 +2,9 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,10 +67,14 @@ class MovimentoControllerTest {
 	
 	private static String URI = "/movimentos";
 	
+	private static String TOKEN = "";
+	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -90,6 +96,7 @@ class MovimentoControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(movimentoDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -98,5 +105,20 @@ class MovimentoControllerTest {
 				.andExpect(jsonPath("$.movimento", equalTo(movimentoDto.getMovimento())));
 		
 		assertEquals(1, movimentoRepository.count());
+	}
+	
+	@Test
+	@Order(3)
+	void deveBuscar_Processo_pelo_numeroDoProcesso_PeloController() throws Exception {
+		
+		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
+		
+		mockMvc.perform(get(URI + "/buscar/" + numeroDoProcesso)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].numeroDoProcesso").value("20251"));
 	}
 }

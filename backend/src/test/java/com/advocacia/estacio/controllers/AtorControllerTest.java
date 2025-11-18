@@ -44,10 +44,14 @@ class AtorControllerTest {
 	
 	private static String URI = "/atores";
 	
+	private static String TOKEN = "";
+	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_Antes_dos_testes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -61,6 +65,7 @@ class AtorControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(atorDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -80,6 +85,7 @@ class AtorControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(atorDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -99,6 +105,7 @@ class AtorControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(atorDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())

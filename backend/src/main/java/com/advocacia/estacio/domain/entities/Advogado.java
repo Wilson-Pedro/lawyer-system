@@ -122,6 +122,12 @@ public class Advogado implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Advogado [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone
+				+ ", dataDeNascimeto=" + dataDeNascimeto + ", endereco=" + endereco + ", registro=" + registro + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(dataDeNascimeto, email, endereco, id, nome, registro, telefone);
 	}
