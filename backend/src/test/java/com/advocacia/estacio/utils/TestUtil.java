@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +38,7 @@ import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
+import com.advocacia.estacio.services.impl.UsuarioAuthService;
 
 @Component
 public class TestUtil {
@@ -81,7 +80,7 @@ public class TestUtil {
 	EstagiarioService estagiarioService;
 	
 	@Autowired
-	AuthenticationManager authenticationManager;
+	UsuarioAuthService usuarioAuthService;
 	
 	@Autowired
 	TokenService tokenService;
@@ -167,15 +166,15 @@ public class TestUtil {
 	
 	public UsuarioAuth getUsuarioAuth() {
 		String senha = new BCryptPasswordEncoder().encode("1234");
-		return new UsuarioAuth("pedro@gmail.com", senha, UserRole.ADMIN);
+		return new UsuarioAuth("professor@gmail.com", senha, UserRole.ADMIN);
 	}
 	
 	public AuthenticationDto getAuthenticationDto() {
-		return new AuthenticationDto("pedro@gmail.com", "1234");
+		return new AuthenticationDto("professor@gmail.com", "1234");
 	}
 	
 	public RegisterDto getRegisterDto() {
-		return new RegisterDto("pedro@gmail.com", "1234", UserRole.ADMIN);
+		return new RegisterDto("professor@gmail.com", "1234", UserRole.ADMIN);
 	}
 	
 	public List<AtorDto> getAtores() {
@@ -187,15 +186,7 @@ public class TestUtil {
 	}
 	
 	public String getToken() {
-		usuarioAuthRepository.save(getUsuarioAuth());
-		
-		RegisterDto dto = getRegisterDto();
-		
-		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
-		
-		var auth = authenticationManager.authenticate(usernamePassword);
-		
-		String token = tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
-		return token;
+		usuarioAuthRepository.save(getUsuarioAuth());		
+		return usuarioAuthService.login(getAuthenticationDto());
 	}
 }

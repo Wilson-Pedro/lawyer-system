@@ -8,20 +8,49 @@ const API_URL = process.env.REACT_APP_API;
 export default function Login() {
     const navigate = useNavigate();
 
+    localStorage.clear();
+
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
 
+    const login = async (e:any) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`${API_URL}/auth/login`, {
+                login: email,
+                password: senha
+            }, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
 
-    const limparCampos = () => {
-        setEmail("");
-        setEmail("");
-    };
+            if(response.data !== null) {
+                localStorage.setItem('token', response.data.token);
+                goToHomeAdmin();
+            }
+
+        } catch(error) {
+            console.log(error)
+        }
+
+    }
+
+    const goToHomeAdmin = () => {
+        navigate("/admin")
+    }
+
+    // const limparCampos = () => {
+    //     setEmail("");
+    //     setEmail("");
+    // };
 
     return (
 
         <div className={styles.container}>
             <h1 className={styles.title}>Login</h1>
-            <form>
+            <form onSubmit={login}>
                 <div className={styles.inputGroup}>
                     <label className={styles.label}>Email</label>
                     <input
@@ -43,7 +72,7 @@ export default function Login() {
                     />
                 </div>
                 <div className={styles.divBtn}>
-                    <button type="button" onClick={() => navigate('/admin')} className={styles.button}>
+                    <button type="submit" className={styles.button}>
                         Entrar
                     </button>
                     <button type="button" onClick={() => navigate('/')} className={styles.button}>

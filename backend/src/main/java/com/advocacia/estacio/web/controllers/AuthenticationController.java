@@ -2,31 +2,23 @@ package com.advocacia.estacio.web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.LoginResponseDto;
-import com.advocacia.estacio.infra.security.TokenService;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.services.impl.UsuarioAuthService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin("http://localhost:3000")
 public class AuthenticationController {
-
-	@Autowired
-	private AuthenticationManager authenticationManger;
 	
 	@Autowired
-	private UsuarioAuthRepository repository;
-	
-	@Autowired
-	TokenService tokenService;
+	UsuarioAuthService usuarioAuthService;
 	
 //	@PostMapping("/register")
 //	public ResponseEntity register(@RequestBody RegisterDto dto) {
@@ -39,12 +31,8 @@ public class AuthenticationController {
 //	}
 	
 	@PostMapping("/login")
-	public ResponseEntity login(@RequestBody AuthenticationDto dto) {
-		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
-		var auth = this.authenticationManger.authenticate(usernamePassword);
-		
-		var token = tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
-		
+	public ResponseEntity<LoginResponseDto> login(@RequestBody AuthenticationDto dto) {
+		String token = usuarioAuthService.login(dto);
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 }

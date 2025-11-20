@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { 
     FileAltIcon, 
@@ -18,6 +18,9 @@ interface MenuItem {
 export default function HomeAdmin() {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   const menuItems: MenuItem[] = [
     { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
@@ -31,7 +34,10 @@ export default function HomeAdmin() {
         <span className="navbar-brand fw-bold fs-4">Painel Administrativo</span>
         <button
           className="btn btn-outline-light ms-auto"
-          onClick={() => navigate("/")}
+          onClick={() => {
+            localStorage.clear();
+            navigate("/");
+          }}
         >
           <SingOutAltIcon className="me-2" /> Sair
         </button>

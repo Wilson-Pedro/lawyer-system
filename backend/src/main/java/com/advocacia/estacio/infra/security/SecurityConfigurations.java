@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -24,9 +26,12 @@ public class SecurityConfigurations {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity
+				.cors(cors -> {})
 				.csrf(csrf -> csrf.disable())
+				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/h2-console/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.POST, "/advogados/").hasRole("ADMIN")
@@ -44,7 +49,6 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/processos/buscar/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/numeroDoProcesso/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/processos/{id}").hasRole("ADMIN")
-						//.requestMatchers(HttpMethod.POST, "/estagiarios").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
@@ -58,5 +62,17 @@ public class SecurityConfigurations {
 	@Bean
 	PasswordEncoder passworddEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	WebMvcConfigurer corsConfig() {
+		return new WebMvcConfigurer() {
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**")
+				.allowedOrigins("http://localhost:3000")
+				.allowedMethods("*")
+				.allowCredentials(true);
+			}
+		};
 	}
 }

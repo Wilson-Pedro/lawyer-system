@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 
 @Service
-public class AuthorizationServiceImpl implements UserDetailsService {
+public class AuthorizationService implements UserDetailsService {
 	
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
@@ -18,6 +18,4 @@ public class AuthorizationServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		return usuarioAuthRepository.findByLogin(username);
 	}
-
-	
 }

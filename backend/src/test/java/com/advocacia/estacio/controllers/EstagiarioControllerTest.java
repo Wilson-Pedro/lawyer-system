@@ -51,11 +51,6 @@ class EstagiarioControllerTest {
 	
 	Estagiario estagiario;
 	
-//	@BeforeEach
-//	void setUp() {
-//		estagiario = testUtil.getEstagiario();
-//	}
-	
 	@Test
 	@Order(1)
 	void preparando_ambiente_de_testes() {

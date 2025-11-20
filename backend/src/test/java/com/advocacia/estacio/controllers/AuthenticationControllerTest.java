@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.services.impl.UsuarioAuthService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class AuthenticationControllerTest {
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+	UsuarioAuthService usuarioAuthService;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -51,34 +52,11 @@ class AuthenticationControllerTest {
 		testUtil.deleteAll();
 	}
 	
-//	@Test
-//	@Order(2)
-//	void deveSalvar_registrar_usuario_PeloController() throws Exception {
-//		
-//		RegisterDto registerDto = testUtil.getRegisterDto();
-//		
-//		assertEquals(0, usuarioAuthRepository.count());
-//		
-//		String jsonRequest = objectMapper.writeValueAsString(registerDto);
-//		
-//		mockMvc.perform(post(URI + "/register")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(jsonRequest))
-//				.andExpect(status().isOk());
-//		
-//		String login = registerDto.login();
-//		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);
-//		
-//		assertTrue(registerDto.password() != userAuth.getPassword());
-//		assertEquals(1, usuarioAuthRepository.count());
-//	}
-	
-	
 	@Test
 	@Order(2)
 	void deve_realizer_login_PeloController() throws Exception {
 		
-		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
+		usuarioAuthService.registrar(testUtil.getRegisterDto());
 				
 		AuthenticationDto authenticationDto = testUtil.getAuthenticationDto();
 		

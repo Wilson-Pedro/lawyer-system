@@ -12,11 +12,14 @@ import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.records.RegisterDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
+import com.advocacia.estacio.services.impl.UsuarioAuthService;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -35,6 +38,9 @@ public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
+	
+	@Autowired
+	UsuarioAuthService usuarioAuthService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -68,5 +74,9 @@ public class BackendApplication implements CommandLineRunner {
 		movimentoService.salvar(movimentoDto1);
 		movimentoService.salvar(movimentoDto2);
 		movimentoService.salvar(movimentoDto3);
+		
+		RegisterDto registroDto = new RegisterDto("professor@gmail.com", "1234", UserRole.ADMIN);
+		
+		usuarioAuthService.registrar(registroDto);
 	}
 }
