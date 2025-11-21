@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,9 +30,15 @@ export default function Movimento() {
   const { numeroDoProcesso } = useParams<{ numeroDoProcesso: string }>();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    
     const movimentos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`);
+        const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
         const pageData: Page<Movimento> = response.data;
         setMovimentos(pageData.content);
       } catch (error) {
@@ -48,6 +54,9 @@ export default function Movimento() {
       item.movimento.toLowerCase().includes(busca.toLowerCase()) ||
       item.advogado.toLowerCase().includes(busca.toLowerCase())
   );
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   return (
     <Container className="py-5">

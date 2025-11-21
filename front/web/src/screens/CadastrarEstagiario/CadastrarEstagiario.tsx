@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarEstagiario.module.css";
 
@@ -19,6 +19,9 @@ export default function CadastrarEstagiario() {
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   const cadastrarEstagiario = async () => {
     try {
       await axios.post(`${API_URL}/estagiarios/`, {
@@ -27,6 +30,10 @@ export default function CadastrarEstagiario() {
         matricula,
         periodo,
         senha,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMensagemToast("Estagiário cadastrado com sucesso!");

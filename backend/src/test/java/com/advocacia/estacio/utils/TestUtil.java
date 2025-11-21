@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.AtorDto;
+import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
@@ -23,7 +24,7 @@ import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.domain.records.RegisterDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
@@ -92,12 +93,12 @@ public class TestUtil {
 	private Advogado advogado;
 	
 	public void deleteAll() {
-		atorRepository.deleteAll();
-		usuarioAuthRepository.deleteAll();
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();
 		estagiarioRepository.deleteAll();
+		atorRepository.deleteAll();
+		usuarioAuthRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
@@ -151,17 +152,29 @@ public class TestUtil {
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 				"rua do passeio", 11, "53022-112");
 	}
-
+	
 	public Estagiario getEstagiario() {
-		return estagiario = new Estagiario(
+		return new Estagiario(
 				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I, "1234");
+				PeriodoEstagio.ESTAGIO_I);
 	}
-
+	
 	public Estagiario getEstagiario2() {
 		return new Estagiario(
 				"João Lucas", "lucas@gmail.com", "20251209", 
-				PeriodoEstagio.ESTAGIO_II, "1234");
+				PeriodoEstagio.ESTAGIO_II);
+	}
+
+	public EstagiarioDto getEstagiarioDto() {
+		return new EstagiarioDto(null,
+				"Pedro Lucas", "pedro@gmail.com", "20251208", 
+				"Estágio I", "1234");
+	}
+
+	public EstagiarioDto getEstagiarioDto2() {
+		return new EstagiarioDto(null,
+				"João Lucas", "lucas@gmail.com", "20251209", 
+				"Estágio II", "1234");
 	}
 	
 	public UsuarioAuth getUsuarioAuth() {
@@ -173,8 +186,8 @@ public class TestUtil {
 		return new AuthenticationDto("professor@gmail.com", "1234");
 	}
 	
-	public RegisterDto getRegisterDto() {
-		return new RegisterDto("professor@gmail.com", "1234", UserRole.ADMIN);
+	public RegistroDto getRegistroDto() {
+		return new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
 	}
 	
 	public List<AtorDto> getAtores() {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import styles from "./EditarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 import Select from "react-select"
@@ -76,7 +76,11 @@ export default function EditarProcesso() {
 
     const buscarProcessoPorId = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/${processoId}`);
+        const response = await axios.get(`${API_URL}/processos/${processoId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         const processo = response.data;
         setAssistidoId(processo.assistidoId);
         setNomeAssistido(processo.assistidoNome);
@@ -118,7 +122,11 @@ export default function EditarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         const pageData: Page<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
@@ -139,7 +147,11 @@ export default function EditarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+       });
         const pageData: Page<Estagiario> = response.data;
         setEstagiarios(pageData.content);
 
@@ -171,6 +183,10 @@ export default function EditarProcesso() {
         tribunal,
         statusDoProcesso,
         partesEnvolvidas,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       setMostrarToast(true);
@@ -213,7 +229,7 @@ export default function EditarProcesso() {
       const hoje = new Date();
 
       if (dataDigitada.getTime() < hoje.getTime()) {
-        setMessageDataError("*Data inválida");
+        setMessageDataError("*Prazo inválida");
       } else {
         setMessageDataError("");
       }
@@ -243,6 +259,9 @@ export default function EditarProcesso() {
     setTribunal("");
     setNumeroDoProcessoPje("");
   };
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   return (
 

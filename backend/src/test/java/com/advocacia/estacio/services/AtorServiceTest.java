@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.repositories.AtorRepository;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
@@ -23,6 +24,9 @@ class AtorServiceTest {
 	
 	@Autowired
 	AtorRepository atorRepository;
+	
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -37,17 +41,19 @@ class AtorServiceTest {
 	@Order(2)
 	void deveSalvar_Ator_Coordenador_NoBancoDeDados_PeloService() {
 		assertEquals(0, atorRepository.count());
+		assertEquals(0, usuarioAuthRepository.count());
 		
 		Ator ator = atorService.salvar(testUtil.getAtores().get(0));
 		
 		assertNotNull(ator);
 		assertNotNull(ator.getId());
+		assertNotNull(ator.getUsuarioAuth());
 		assertEquals("Roberto Carlos", ator.getNome());
 		assertEquals("roberto@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
 		
 		assertEquals(1, atorRepository.count());
-
+		assertEquals(1, usuarioAuthRepository.count());
 	}
 
 	@Test
@@ -58,12 +64,13 @@ class AtorServiceTest {
 		
 		assertNotNull(ator);
 		assertNotNull(ator.getId());
+		assertNotNull(ator.getUsuarioAuth());
 		assertEquals("José Augusto", ator.getNome());
 		assertEquals("jose@gmail.com", ator.getEmail());
 		assertEquals("Secretário", ator.getTipoDoAtor().getTipo());
 		
 		assertEquals(2, atorRepository.count());
-
+		assertEquals(2, usuarioAuthRepository.count());
 	}
 	
 	@Test
@@ -74,10 +81,12 @@ class AtorServiceTest {
 		
 		assertNotNull(ator);
 		assertNotNull(ator.getId());
+		assertNotNull(ator.getUsuarioAuth());
 		assertEquals("Fabio Junior", ator.getNome());
 		assertEquals("fabio@gmail.com", ator.getEmail());
 		assertEquals("Professor", ator.getTipoDoAtor().getTipo());
 		
 		assertEquals(3, atorRepository.count());
+		assertEquals(3, usuarioAuthRepository.count());
 	}
 }

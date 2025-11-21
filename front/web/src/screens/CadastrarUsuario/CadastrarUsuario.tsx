@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarUsuario.module.css";
 
@@ -25,6 +25,10 @@ export default function CadastrarUsuario() {
         email,
         tipoAtor,
         senha,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMensagemToast("Usuário cadastrado com sucesso!");
@@ -52,10 +56,13 @@ export default function CadastrarUsuario() {
     setSenha("");
   };
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   return (
     <div className={styles.container}>
       {/* Botão de Voltar */}
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate("/cadastrar")}>
         ← Voltar
       </button>
 

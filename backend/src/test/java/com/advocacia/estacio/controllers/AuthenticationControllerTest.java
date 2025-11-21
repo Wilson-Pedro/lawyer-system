@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.infra.security.TokenService;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +55,7 @@ class AuthenticationControllerTest {
 	@Order(2)
 	void deve_realizer_login_PeloController() throws Exception {
 		
-		usuarioAuthService.registrar(testUtil.getRegisterDto());
+		usuarioAuthService.salvar(testUtil.getRegistroDto());
 				
 		AuthenticationDto authenticationDto = testUtil.getAuthenticationDto();
 		

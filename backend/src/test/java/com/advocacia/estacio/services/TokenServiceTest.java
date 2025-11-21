@@ -13,7 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.records.RegisterDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -47,7 +47,7 @@ class TokenServiceTest {
 	void deve_gerar_token() {
 		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
 		
-		RegisterDto dto = testUtil.getRegisterDto();
+		RegistroDto dto = testUtil.getRegistroDto();
 		
 		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
 		
@@ -65,7 +65,7 @@ class TokenServiceTest {
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);
 		
-		assertEquals(userAuth.getLogin(), testUtil.getRegisterDto().login());
+		assertEquals(userAuth.getLogin(), testUtil.getRegistroDto().login());
 	}
 
 }

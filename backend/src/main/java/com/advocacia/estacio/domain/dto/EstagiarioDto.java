@@ -37,7 +37,6 @@ public class EstagiarioDto implements Serializable {
 		this.email = estagiario.getEmail();
 		this.matricula = estagiario.getMatricula();
 		this.periodo = estagiario.getPeriodo().getTipo();
-		this.senha = estagiario.getSenha();
 	}
 	
 	public Long getId() {

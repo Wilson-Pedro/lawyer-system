@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Toast, ToastContainer, Card } from "react-bootstrap";
 import { ArrowLeftIcon, SaveIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,7 +28,11 @@ export default function CadastrarMovimento() {
     const buscarProcessoPorNumeroDoProcesso = async () => {
       try {
         const response = await axios.get(
-          `${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`
+          `${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         setNumeroDoProcesso(response.data.numeroDoProcesso);
         setProcessoId(response.data.id);
@@ -44,11 +48,16 @@ export default function CadastrarMovimento() {
 
   const cadastrarMovimento = async (e: React.FormEvent) => {
     e.preventDefault();
+    //const token = localStorage.getItem('token');
     try {
       await axios.post(`${API_URL}/movimentos/`, {
         processoId,
         advogadoId,
         movimento,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       setMesagemToast("Movimento cadastrado com sucesso.");
@@ -64,6 +73,9 @@ export default function CadastrarMovimento() {
   const limparCampos = () => {
     setMovimento("");
   };
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   return (
     <Container className="py-5">

@@ -13,10 +13,11 @@ import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.domain.records.RegisterDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.services.AtorService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
@@ -35,6 +36,9 @@ public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	MovimentoService movimentoService;
+	
+	@Autowired
+	AtorService atorService;
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
@@ -57,7 +61,7 @@ public class BackendApplication implements CommandLineRunner {
 		
 		Estagiario estagiario = new Estagiario(
 				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I, "1234");
+				PeriodoEstagio.ESTAGIO_I);
 		
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
@@ -75,8 +79,16 @@ public class BackendApplication implements CommandLineRunner {
 		movimentoService.salvar(movimentoDto2);
 		movimentoService.salvar(movimentoDto3);
 		
-		RegisterDto registroDto = new RegisterDto("professor@gmail.com", "1234", UserRole.ADMIN);
+//		AtorDto ator1 = new AtorDto(null, "Roberto Carlos", "roberto@gmail.com", "Coordenador do curso", "1234");
+//		AtorDto ator2 = new AtorDto(null, "José Augusto", "jose@gmail.com", "Secretário", "1234");
+//		AtorDto ator3 = new AtorDto(null, "Fabio Junior", "fabio@gmail.com", "Professor", "1234");
+//		
+//		atorService.salvar(ator1);
+//		atorService.salvar(ator2);
+//		atorService.salvar(ator3);
 		
-		usuarioAuthService.registrar(registroDto);
+		RegistroDto registroDto = new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
+		
+		usuarioAuthService.salvar(registroDto);
 	}
 }

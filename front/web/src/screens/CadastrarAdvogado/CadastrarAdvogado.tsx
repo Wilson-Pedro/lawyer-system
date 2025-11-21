@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarAdvogado.module.css";
@@ -25,6 +25,9 @@ export default function CadastrarAdvogado() {
 
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   const cadastrarAssistido = async (e:any) => {
     e.preventDefault();
 
@@ -39,6 +42,10 @@ export default function CadastrarAdvogado() {
         rua,
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMostrarToast(true);

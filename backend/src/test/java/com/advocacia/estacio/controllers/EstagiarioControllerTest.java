@@ -65,7 +65,7 @@ class EstagiarioControllerTest {
 		
 		assertEquals(0, estagiarioRepository.count());
 		
-		EstagiarioDto dto = new EstagiarioDto(testUtil.getEstagiario());
+		EstagiarioDto dto = testUtil.getEstagiarioDto();
 		
 		String jsonRequest = objectMapper.writeValueAsString(dto);
 		

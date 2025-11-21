@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap"
 import styles from "./CadastrarAssistido.module.css";
@@ -13,7 +13,7 @@ export default function CadastrarAssistido() {
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [profissao, setProfissao] = useState("");
-  const [nacionalidade, setNacionalidade] = useState("");
+  const [nacionalidade, setNacionalidade] = useState("brasileiro");
   const [naturalidade, setnaturalidade] = useState("");
   const [estadoCivil, setEstadoCivil] = useState("");
   const [cidade, setCidade] = useState("");
@@ -27,6 +27,9 @@ export default function CadastrarAssistido() {
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
 
   const navigate = useNavigate();
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   const cadastrarAssistido = async (e:any) => {
     e.preventDefault();
@@ -46,6 +49,10 @@ export default function CadastrarAssistido() {
         rua,
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMostrarToast(true);

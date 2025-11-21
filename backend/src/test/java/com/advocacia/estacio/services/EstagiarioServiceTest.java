@@ -1,6 +1,8 @@
 package com.advocacia.estacio.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -14,6 +16,7 @@ import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
@@ -26,15 +29,11 @@ class EstagiarioServiceTest {
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
 	
-	Estagiario estagiario;
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	TestUtil testUtil;
-	
-	@BeforeEach
-	void setUp() {
-		estagiario = testUtil.getEstagiario();
-	}
 	
 	@Test
 	@Order(1)
@@ -46,15 +45,17 @@ class EstagiarioServiceTest {
 	@Order(2)
 	void deveSalvar_Estagiario_NoBancoDeDadosPeloService() {
 		assertEquals(0, estagiarioRepository.count());
+		assertEquals(0, usuarioAuthRepository.count());
 		
-		Estagiario estagiarioSalvo = estagiarioService.salvar(new EstagiarioDto(estagiario));
+		Estagiario estagiarioSalvo = estagiarioService.salvar(testUtil.getEstagiarioDto());
 		
 		assertEquals("Pedro Lucas", estagiarioSalvo.getNome());
 		assertEquals("pedro@gmail.com", estagiarioSalvo.getEmail());
 		assertEquals("20251208", estagiarioSalvo.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_I, estagiarioSalvo.getPeriodo());
-		assertEquals("1234", estagiarioSalvo.getSenha());
+		assertFalse("1234".equals(estagiarioSalvo.getSenha()));
 		assertEquals(1, estagiarioRepository.count());
 
+		assertEquals(1, usuarioAuthRepository.count());
 	}
 }

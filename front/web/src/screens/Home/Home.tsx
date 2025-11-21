@@ -5,6 +5,8 @@ import styles from "./Home.module.css"; // estilos separados em CSS
 export default function Home() {
   const navigate = useNavigate();
 
+  localStorage.clear();
+
   return (
     <div className={styles.container}>
       <img

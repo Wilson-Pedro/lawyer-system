@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import styles from "./CadastrarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 
@@ -71,7 +71,11 @@ export default function CadastrarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeAssistidoSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/assistidos/buscar/${nomeAssistidoSearch}?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
         const pageData: Page<Assistido> = response.data;
         setAssistidos(pageData.content);
 
@@ -94,7 +98,11 @@ export default function CadastrarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
         const pageData: Page<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
@@ -115,7 +123,11 @@ export default function CadastrarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`);
+        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
         const pageData: Page<Estagiario> = response.data;
         setEstagiarios(pageData.content);
 
@@ -130,7 +142,8 @@ export default function CadastrarProcesso() {
   }, [nomeEstagiarioSearch]);
 
 
-  const cadastrarProcesso = async () => {
+  const cadastrarProcesso = async (e:any) => {
+    e.preventDefault();
 
     try {
       await axios.post(`${API_URL}/processos/`, {
@@ -144,6 +157,10 @@ export default function CadastrarProcesso() {
         areaDoDireito,
         tribunal,
         prazo,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       setMostrarToast(true);
@@ -162,6 +179,10 @@ export default function CadastrarProcesso() {
 
   const formatarData = (dataValue: string) => {
     let numeros = dataValue.replace(/\D/g, "");
+
+    if (numeros.length === 0) {
+      setMessageDataError("");
+    }
 
     if (numeros.length > 8) {
       numeros = numeros.substring(0, 8);
@@ -186,7 +207,7 @@ export default function CadastrarProcesso() {
       const hoje = new Date();
 
       if (dataDigitada.getTime() < hoje.getTime()) {
-        setMessageDataError("*Data inválida");
+        setMessageDataError("*Prazo inválido");
       } else {
         setMessageDataError("");
       }
@@ -231,10 +252,13 @@ export default function CadastrarProcesso() {
     setNumeroDoProcessoPje("");
   };
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   return (
 
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate(-1)}>
+      <button className={styles.backButton} onClick={() => navigate("/cadastrar")}>
         ← Voltar
       </button>
 

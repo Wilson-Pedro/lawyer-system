@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.domain.records.RegisterDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 
@@ -25,13 +25,13 @@ public class UsuarioAuthService  {
 	TokenService tokenService;
 
 	
-	public void registrar(RegisterDto dto) {
+	public UsuarioAuth salvar(RegistroDto dto) {
 		if(this.usuarioAuthRepository.findByLogin(dto.login()) != null) {
 			throw new RuntimeException("Usuário já cadastrado.");
 		}
 		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
 		UsuarioAuth user = new UsuarioAuth(dto.login(), encryptedPassword, dto.role());
-		this.usuarioAuthRepository.save(user);
+		return this.usuarioAuthRepository.save(user);
 	}
 
 	public String login(AuthenticationDto dto) {

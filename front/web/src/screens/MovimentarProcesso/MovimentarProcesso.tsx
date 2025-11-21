@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { Table, Button, Form, Row, Col } from "react-bootstrap";
 import { PlusIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -41,6 +41,8 @@ export default function MovimentarProcesso() {
     const [busca, setBusca] = useState("");
     const [processos, setProcessos] = useState<Processo[]>([]);
     const [movimentos, setMovimentos] = useState<Movimento[]>([]);
+    
+    const [disabled, setDisabled] = useState(true);
 
     const navigate = useNavigate();
 
@@ -51,11 +53,14 @@ export default function MovimentarProcesso() {
         const buscarProcessos = async () => {
             if (numeroDoProcessoSearch.trim.length < 2) {
                 setProcessos([]);
-                
             }
 
             try {
-                const response = await axios.get(`${API_URL}/processos/buscar/${numeroDoProcessoSearch}?page=${page}&size=${size}`);
+                const response = await axios.get(`${API_URL}/processos/buscar/${numeroDoProcessoSearch}?page=${page}&size=${size}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                    }
+                });
                 const pageData: Page<Processo> = response.data;
                 setProcessos(pageData.content);
 
@@ -74,9 +79,15 @@ export default function MovimentarProcesso() {
 
         const movimentos = async () => {
             try {
-                const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`);
+                const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`, {
+                    headers: {
+                    Authorization: `Bearer ${token}`
+                    }
+                });
+
                 const pageData: Page<Movimento> = response.data;
                 setMovimentos(pageData.content);
+                setDisabled(false);
             } catch (error) {
                 console.error("Erro ao buscar movimentos:", error);
             }
@@ -95,6 +106,9 @@ export default function MovimentarProcesso() {
             movimento.movimento.toLocaleLowerCase().includes(busca.toLocaleLowerCase()) ||
             movimento.advogado.toLowerCase().includes(busca.toLocaleLowerCase())
     );
+
+    const token = localStorage.getItem('token');
+    if(!token) return <Navigate to="/login" />
 
     return (
         <div className="min-vh-100 d-flex flex-column bg-light">
@@ -123,7 +137,10 @@ export default function MovimentarProcesso() {
                                 <li
                                     className={styles.li}
                                     key={data.id}
-                                    onClick={() => setProcessoSearch(data)}
+                                    onClick={() => {
+                                        setProcessoSearch(data)
+                                        setDisabled(false)
+                                    }}
                                 >
                                     {data.numeroDoProcesso}
                                 </li>
@@ -135,8 +152,6 @@ export default function MovimentarProcesso() {
 
                 <br /><br />
 
-                {movimentos.length > 0 ? (
-                    <>
                         <div className="d-flex align-items-center justify-content-between mb-4">
                             <div className="d-flex align-items-center gap-3">
 
@@ -147,11 +162,13 @@ export default function MovimentarProcesso() {
                                 variant="success"
                                 className="d-flex align-items-center shadow-sm"
                                 onClick={() => navigate(`/processos/${numeroDoProcesso}/movimento/cadastrar`)}
+                                disabled={disabled}
                             >
                                 <PlusIcon className="me-2" /> Novo Movimento
                             </Button>
                         </div>
-
+                {movimentos.length > 0 ? (
+                    <>
                         <Row className="mb-4">
                             <Col md={6}>
                                 <Form.Control

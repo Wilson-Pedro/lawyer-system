@@ -2,6 +2,7 @@ package com.advocacia.estacio.domain.entities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +12,8 @@ import com.advocacia.estacio.domain.enums.UserRole;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,6 +33,7 @@ public class UsuarioAuth implements UserDetails{
 	
 	private String password;
 	
+	@Enumerated(EnumType.STRING)
 	private UserRole role;
 	
 	public UsuarioAuth() {
@@ -69,5 +73,23 @@ public class UsuarioAuth implements UserDetails{
 
 	public UserRole getRole() {
 		return role;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, login, password, role);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UsuarioAuth other = (UsuarioAuth) obj;
+		return Objects.equals(id, other.id) && Objects.equals(login, other.login)
+				&& Objects.equals(password, other.password) && role == other.role;
 	}
 }

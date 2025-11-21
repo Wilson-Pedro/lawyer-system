@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
 
@@ -24,9 +24,15 @@ export default function Processos() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    
     const fetchProcessos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}`);
+        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
         setProcessos(response.data);
         setFilteredProcessos(response.data);
       } catch (error) {
@@ -63,6 +69,9 @@ export default function Processos() {
         return "";
     }
   };
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">

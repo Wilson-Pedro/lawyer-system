@@ -7,5 +7,4 @@ public class Secretario extends Ator {
 	
 	public Secretario() {
 	}
-	
 }

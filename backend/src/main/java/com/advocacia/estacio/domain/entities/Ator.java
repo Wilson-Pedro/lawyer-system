@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "tbl_ator")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -34,24 +35,25 @@ public abstract class Ator {
 	
 	private String senha;
 	
+	@OneToOne
+	private UsuarioAuth usuarioAuth;
+	
 	@CreationTimestamp
 	private LocalDateTime registro;
 	
 	public Ator() {
 	}
 
-	public Ator(String nome, String email, TipoDoAtor tipoDoAtor, String senha) {
+	public Ator(String nome, String email, TipoDoAtor tipoDoAtor) {
 		this.nome = nome;
 		this.email = email;
 		this.tipoDoAtor = tipoDoAtor;
-		this.senha = senha;
 	}
 	
 	public Ator(AtorDto dto) {
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
 		this.tipoDoAtor = TipoDoAtor.toEnum(dto.getTipoAtor());
-		this.senha = dto.getSenha();
 	}
 
 	public Long getId() {
@@ -87,13 +89,17 @@ public abstract class Ator {
 	}
 
 	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
+		return usuarioAuth.getPassword();
 	}
 	
+	public UsuarioAuth getUsuarioAuth() {
+		return usuarioAuth;
+	}
+
+	public void setUsuarioAuth(UsuarioAuth usuarioAuth) {
+		this.usuarioAuth = usuarioAuth;
+	}
+
 	public LocalDateTime getRegistro() {
 		return registro;
 	}

@@ -5,7 +5,7 @@ import styles from "./Login.module.css";
 
 const API_URL = process.env.REACT_APP_API;
 
-export default function Login() {
+export default function Login() { 
     const navigate = useNavigate();
 
     localStorage.clear();

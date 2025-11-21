@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.domain.records.RegisterDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
 import com.advocacia.estacio.utils.TestUtil;
@@ -43,9 +43,9 @@ class UsuarioAuthServiceTest {
 		
 		assertEquals(0, usuarioAuthRepository.count());
 		
-		RegisterDto registroDto = testUtil.getRegisterDto();
+		RegistroDto registroDto = testUtil.getRegistroDto();
 		
-		usuarioAuthService.registrar(registroDto);
+		usuarioAuthService.salvar(registroDto);
 		
 		assertEquals(1, usuarioAuthRepository.count());
 		

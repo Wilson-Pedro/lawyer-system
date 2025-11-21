@@ -15,6 +15,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,7 +36,8 @@ public class Estagiario implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private PeriodoEstagio periodo;
 	
-	private String senha;
+	@OneToOne
+	private UsuarioAuth usuarioAuth;
 	
 	@CreationTimestamp
 	private LocalDateTime registro;
@@ -43,12 +45,11 @@ public class Estagiario implements Serializable {
 	public Estagiario() {
 	}
 
-	public Estagiario(String nome, String email, String matricula, PeriodoEstagio periodo, String senha) {
+	public Estagiario(String nome, String email, String matricula, PeriodoEstagio periodo) {
 		this.nome = nome;
 		this.email = email;
 		this.matricula = matricula;
 		this.periodo = periodo;
-		this.senha = senha;
 	}
 	
 	public Estagiario(EstagiarioDto dto) {
@@ -56,7 +57,6 @@ public class Estagiario implements Serializable {
 		this.email = dto.getEmail();
 		this.matricula = dto.getMatricula();
 		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
-		this.senha = dto.getSenha();
 	}
 
 	public Long getId() {
@@ -100,26 +100,24 @@ public class Estagiario implements Serializable {
 	}
 
 	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
+		return usuarioAuth.getPassword();
 	}
 	
+	public UsuarioAuth getUsuarioAuth() {
+		return usuarioAuth;
+	}
+
+	public void setUsuarioAuth(UsuarioAuth usuarioAuth) {
+		this.usuarioAuth = usuarioAuth;
+	}
+
 	public LocalDateTime getRegistro() {
 		return registro;
 	}
 
 	@Override
-	public String toString() {
-		return "Estagiario [id=" + id + ", nome=" + nome + ", email=" + email + ", matricula=" + matricula
-				+ ", periodo=" + periodo + ", senha=" + senha + ", registro=" + registro + "]";
-	}
-
-	@Override
 	public int hashCode() {
-		return Objects.hash(email, matricula, nome, periodo, senha);
+		return Objects.hash(email, id, matricula, nome, periodo, registro, usuarioAuth);
 	}
 
 	@Override
@@ -131,8 +129,9 @@ public class Estagiario implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Estagiario other = (Estagiario) obj;
-		return Objects.equals(email, other.email) && Objects.equals(matricula, other.matricula)
-				&& Objects.equals(nome, other.nome) && Objects.equals(periodo, other.periodo)
-				&& Objects.equals(senha, other.senha);
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(matricula, other.matricula) && Objects.equals(nome, other.nome)
+				&& periodo == other.periodo && Objects.equals(registro, other.registro)
+				&& Objects.equals(usuarioAuth, other.usuarioAuth);
 	}
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { 
     UsersIcon, 
@@ -18,6 +18,9 @@ interface MenuItem {
 
 export default function Cadastros() {
   const navigate = useNavigate();
+
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
     { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrar/assistido", variant: "success" },
