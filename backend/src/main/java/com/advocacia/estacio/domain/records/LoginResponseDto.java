@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.records;
 
-public record LoginResponseDto(String token) {
+import com.advocacia.estacio.domain.enums.UserRole;
+
+public record LoginResponseDto(String token, UserRole role) {
 
 }

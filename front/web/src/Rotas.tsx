@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './screens/Home/Home';
-import HomeAdmin from './screens/HomeAdmin/HomeAdmin';
+import HomeAdmin from './screens/Home/HomeAdmin';
+import HomeEstagiario from './screens/Home/HomeEstagiario';
 import Processos from './screens/Processos/Processos';
 import Cadastros from './screens/Cadastros/Cadastros';
 import CadastrarAssistido from './screens/CadastrarAssistido/CadastrarAssistido';
@@ -20,7 +21,8 @@ export default function Rotas() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<HomeAdmin />} />
+                <Route path="/home/admin" element={<HomeAdmin />} />
+                <Route path="/home/estagiario" element={<HomeEstagiario />} />
                 <Route path="/processos" element={<Processos />} />
                 <Route path="/cadastrar/assistido" element={<CadastrarAssistido />} />
                 <Route path="/cadastrar/estagiario" element={<CadastrarEstagiario />} />

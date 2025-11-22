@@ -27,8 +27,13 @@ export default function Login() {
             })
 
             if(response.data !== null) {
-                localStorage.setItem('token', response.data.token);
-                goToHomeAdmin();
+                const data = response.data;
+                localStorage.setItem('token', data.token);
+                if(data.role === 'ADMIN') {
+                    goToHomeAdmin();
+                } else if(data.role === 'ESTAGIARIO') {
+                    goToHomeEstagiario();
+                }
             }
 
         } catch(error) {
@@ -38,7 +43,11 @@ export default function Login() {
     }
 
     const goToHomeAdmin = () => {
-        navigate("/admin")
+        navigate("/home/admin")
+    }
+
+    const goToHomeEstagiario = () => {
+        navigate("/home/estagiario")
     }
 
     // const limparCampos = () => {

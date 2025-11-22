@@ -51,10 +51,28 @@ public class UsuarioAuth implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if(this.role == UserRole.ADMIN) 
-			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-		else
-			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		return switch(this.role) {
+			case ADMIN -> List.of(
+					new SimpleGrantedAuthority("ROLE_ADMIN"), 
+					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"),
+					new SimpleGrantedAuthority("ROLE_SECRETARIO"),
+					new SimpleGrantedAuthority("ROLE_PROFESSOR"),
+					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+			
+			case COORDENADOR_DO_CURSO -> List.of(
+					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"));
+			
+			case SECRETARIO -> List.of(
+					new SimpleGrantedAuthority("ROLE_SECRETARIO"));
+			
+			case PROFESSOR -> List.of(
+					new SimpleGrantedAuthority("ROLE_PROFESSOR"));
+			
+			case ESTAGIARIO -> List.of(
+					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+			
+			default -> throw new IllegalArgumentException("Role Inválida");
+		};
 	}
 
 	@Override

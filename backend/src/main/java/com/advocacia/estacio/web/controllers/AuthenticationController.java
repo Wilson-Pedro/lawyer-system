@@ -20,19 +20,8 @@ public class AuthenticationController {
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
 	
-//	@PostMapping("/register")
-//	public ResponseEntity register(@RequestBody RegisterDto dto) {
-//		if(this.repository.findByLogin(dto.login()) != null) return ResponseEntity.badRequest().build();
-//		
-//		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
-//		UsuarioAuth user = new UsuarioAuth(dto.login(), encryptedPassword, dto.role());
-//		this.repository.save(user);
-//		return ResponseEntity.ok().build();		
-//	}
-	
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDto> login(@RequestBody AuthenticationDto dto) {
-		String token = usuarioAuthService.login(dto);
-		return ResponseEntity.ok(new LoginResponseDto(token));
+		return ResponseEntity.ok(usuarioAuthService.login(dto));
 	}
 }

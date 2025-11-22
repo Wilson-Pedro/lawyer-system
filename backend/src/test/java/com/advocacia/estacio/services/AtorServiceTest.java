@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.advocacia.estacio.domain.entities.Ator;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -52,8 +53,11 @@ class AtorServiceTest {
 		assertEquals("roberto@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
 		
+		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		
 		assertEquals(1, atorRepository.count());
 		assertEquals(1, usuarioAuthRepository.count());
+		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 
 	@Test
@@ -69,8 +73,11 @@ class AtorServiceTest {
 		assertEquals("jose@gmail.com", ator.getEmail());
 		assertEquals("Secretário", ator.getTipoDoAtor().getTipo());
 		
+		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		
 		assertEquals(2, atorRepository.count());
 		assertEquals(2, usuarioAuthRepository.count());
+		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 	
 	@Test
@@ -86,7 +93,10 @@ class AtorServiceTest {
 		assertEquals("fabio@gmail.com", ator.getEmail());
 		assertEquals("Professor", ator.getTipoDoAtor().getTipo());
 		
+		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		
 		assertEquals(3, atorRepository.count());
 		assertEquals(3, usuarioAuthRepository.count());
+		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 }

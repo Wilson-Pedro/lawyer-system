@@ -78,7 +78,7 @@ export default function Processos() {
       
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
         <span className="navbar-brand fw-bold fs-4">Lista de Processos</span>
-        <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/admin")}>
+        <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
           ← Voltar
         </button>
       </nav>

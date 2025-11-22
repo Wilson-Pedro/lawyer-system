@@ -28,9 +28,13 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	@Override
 	public Estagiario salvar(EstagiarioDto estagiarioDto) {
 		Estagiario estagiario = new Estagiario(estagiarioDto);
-		RegistroDto registro = new RegistroDto(estagiarioDto.getEmail(), estagiarioDto.getSenha(), UserRole.ADMIN);
-		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		
+		RegistroDto registro = new RegistroDto(
+				estagiarioDto.getEmail(), 
+				estagiarioDto.getSenha(), 
+				UserRole.ESTAGIARIO);
+		
+		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
 		return estagiarioRepository.save(estagiario);
 	}

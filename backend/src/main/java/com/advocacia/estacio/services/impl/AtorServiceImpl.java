@@ -28,7 +28,11 @@ public class AtorServiceImpl implements AtorService {
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
 
-		UsuarioAuth auth = usuarioAuthService.salvar(new RegistroDto(atorDto.getEmail(), atorDto.getSenha(), UserRole.ADMIN));
+		UsuarioAuth auth = usuarioAuthService.salvar(new RegistroDto(
+				atorDto.getEmail(), 
+				atorDto.getSenha(), 
+				UserRole.toEnum(ator.getTipoDoAtor())));
+		
 		ator.setUsuarioAuth(auth);
 		return atorRepository.save(ator);
 	}

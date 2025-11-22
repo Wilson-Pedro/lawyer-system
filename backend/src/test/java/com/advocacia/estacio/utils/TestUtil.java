@@ -200,6 +200,6 @@ public class TestUtil {
 	
 	public String getToken() {
 		usuarioAuthRepository.save(getUsuarioAuth());		
-		return usuarioAuthService.login(getAuthenticationDto());
+		return usuarioAuthService.login(getAuthenticationDto()).token();
 	}
 }

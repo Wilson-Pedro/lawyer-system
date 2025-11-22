@@ -1,9 +1,14 @@
 package com.advocacia.estacio.domain.enums;
 
+import java.util.stream.Stream;
+
 public enum UserRole {
 
 	ADMIN(1, "admin"),
-	USER(2, "user");
+	COORDENADOR_DO_CURSO(2, "Coordenador do curso"),
+	SECRETARIO(3, "Secretário"),
+	PROFESSOR(4, "Professor"),
+	ESTAGIARIO(5, "Estagiário");
 	
 	private int codigo;
 	
@@ -20,5 +25,12 @@ public enum UserRole {
 
 	public String getRole() {
 		return role;
+	}
+	
+	public static UserRole toEnum(TipoDoAtor tipoAtor) {
+		return Stream.of(UserRole.values())
+				.filter(role -> role.getRole().equals(tipoAtor.getTipo()))
+				.findFirst()
+				.orElseThrow(IllegalArgumentException::new);
 	}
 }

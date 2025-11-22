@@ -115,7 +115,7 @@ export default function MovimentarProcesso() {
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
                 <span className="navbar-brand fw-bold fs-4">Movimentar Processo</span>
-                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/admin")}>
+                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
                     ← Voltar
                 </button>
             </nav>
@@ -144,7 +144,7 @@ export default function MovimentarProcesso() {
                                 >
                                     {data.numeroDoProcesso}
                                 </li>
-                            ))}
+                            ))} 
                         </ul>
                     )}
 

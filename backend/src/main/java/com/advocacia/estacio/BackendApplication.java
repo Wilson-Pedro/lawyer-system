@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
@@ -18,6 +19,7 @@ import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.AtorService;
+import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
@@ -44,6 +46,9 @@ public class BackendApplication implements CommandLineRunner {
 	EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
+	EstagiarioService estagiarioService;
+	
+	@Autowired
 	UsuarioAuthService usuarioAuthService;
 
 	public static void main(String[] args) {
@@ -59,13 +64,13 @@ public class BackendApplication implements CommandLineRunner {
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 				"rua do passeio", 11, "53022-112");
 		
-		Estagiario estagiario = new Estagiario(
+		EstagiarioDto estagiario = new EstagiarioDto(null,
 				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I);
+				"Estágio I", "1234");
 		
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
 		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
-		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
+		Long estagiarioId = estagiarioService.salvar(estagiario).getId();
 		
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Previdenciário", "Trabalho", "25/10/2025");
 		

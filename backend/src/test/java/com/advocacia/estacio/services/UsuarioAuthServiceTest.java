@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
+import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
@@ -60,9 +61,10 @@ class UsuarioAuthServiceTest {
 	void deve_realizar_login_e_retornar_token_pelo_service() {
 		AuthenticationDto auth = testUtil.getAuthenticationDto();
 		
-		String token = usuarioAuthService.login(auth);
+		LoginResponseDto loginResponse = usuarioAuthService.login(auth);
 		
-		assertNotNull(token);
+		assertNotNull(loginResponse.token());
+		assertEquals(UserRole.ADMIN, loginResponse.role());
 	}
 
 }
