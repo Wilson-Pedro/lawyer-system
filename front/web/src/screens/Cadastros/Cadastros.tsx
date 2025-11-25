@@ -7,6 +7,7 @@ import {
     GavelIcon, 
     FileAltIcon, 
     SingOutAltIcon, 
+    FileCirclePlusIcon
 } from "../../Icons/Icon";
 
 interface MenuItem {
@@ -28,6 +29,7 @@ export default function Cadastros() {
     { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrar/advogado", variant: "warning" },
     { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrar/processo", variant: "secondary" },
     { label: "Cadastrar Usuario", icon: <UserPlusIcon />, path: "/cadastrar/usuario", variant: "primary" },
+    { label: "Cadastrar Demanda", icon: <FileCirclePlusIcon />, path: "/cadastrar/demanda", variant: "danger" },
   ];
 
   return (

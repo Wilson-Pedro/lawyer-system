@@ -19,7 +19,9 @@ export default function HomeEstagiario() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
   if(!token) return <Navigate to="/login" />
+  if(role !== 'ESTAGIARIO') return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
     // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },

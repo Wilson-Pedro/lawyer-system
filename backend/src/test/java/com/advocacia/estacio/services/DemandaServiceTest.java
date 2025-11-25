@@ -54,13 +54,14 @@ class DemandaServiceTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		
-		DemandaDto demandaDto = new DemandaDto(null, estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
 		
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
 		assertNotNull(demanda.getId());
 		assertNotNull(demanda.getRegistro());
+		assertEquals(demanda.getDemanda(), "Atualizar Documentos");
 		assertEquals(demanda.getEstagiario(), estagiario);
 		assertEquals(demanda.getPrazo().toString(), "2025-11-12");
 

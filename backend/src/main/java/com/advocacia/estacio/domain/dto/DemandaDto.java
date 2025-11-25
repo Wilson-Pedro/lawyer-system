@@ -8,6 +8,8 @@ public class DemandaDto {
 
 	private Long id;
 	
+	private String demanda;
+	
 	private Long estagiarioId;
 	
 	private String demandaStatus;
@@ -17,8 +19,9 @@ public class DemandaDto {
 	public DemandaDto() {
 	}
 
-	public DemandaDto(Long id, Long estagiarioId, String demandaStatus, String prazo) {
+	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazo) {
 		this.id = id;
+		this.demanda = demanda;
 		this.estagiarioId = estagiarioId;
 		this.demandaStatus = demandaStatus;
 		this.prazo = prazo;
@@ -26,6 +29,7 @@ public class DemandaDto {
 	
 	public DemandaDto(Demanda demanda) {
 		this.id = demanda.getId();
+		this.demanda = demanda.getDemanda();
 		this.estagiarioId = demanda.getEstagiario().getId();
 		this.demandaStatus = demanda.getDemandaStatus().getStatus();
 		this.prazo = toDateString(demanda.getPrazo());
@@ -37,6 +41,10 @@ public class DemandaDto {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getDemanda() {
+		return demanda;
 	}
 
 	public Long getEstagiarioId() {

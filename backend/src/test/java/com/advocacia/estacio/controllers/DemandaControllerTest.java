@@ -66,7 +66,7 @@ class DemandaControllerTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		
-		DemandaDto demandaDto = new DemandaDto(null, estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), "Atendido", "12/11/2025");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -75,6 +75,7 @@ class DemandaControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
+				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
 				.andExpect(jsonPath("$.demandaStatus", equalTo("Atendido")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")));
