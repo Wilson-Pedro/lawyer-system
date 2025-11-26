@@ -2,6 +2,7 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -76,10 +77,37 @@ class DemandaControllerTest {
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
+				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
 				.andExpect(jsonPath("$.demandaStatus", equalTo("Atendido")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")));
 		
 		assertEquals(1, demandaRepository.count());
+	}
+	
+	@Test
+	@Order(3)
+	void deve_buscar_Demandas_NoBancoDeDados_PeloController() throws Exception {
+		
+		mockMvc.perform(get(URI)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
+	}
+	
+	@Test
+	@Order(4)
+	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloController() throws Exception {
+		
+		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
+		
+		mockMvc.perform(get(URI + "/estagiario/" + estagiarioId)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].estagiarioNome").value("Pedro Lucas"));
 	}
 }

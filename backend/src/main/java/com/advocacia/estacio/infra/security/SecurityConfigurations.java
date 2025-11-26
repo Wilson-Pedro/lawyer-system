@@ -39,6 +39,7 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").permitAll()
 						.requestMatchers(HttpMethod.POST, "/estagiarios/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscar/{nome}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.POST, "/movimentos/").hasRole("ADMIN")

@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -66,5 +66,31 @@ class DemandaServiceTest {
 		assertEquals(demanda.getPrazo().toString(), "2025-11-12");
 
 		assertEquals(1, demandaRepository.count());
+	}
+	
+	@Test
+	@Order(3)
+	void deve_buscar_Demandas_NoBancoDeDados_PeloService() {
+		
+		Page<DemandaDto> demandas = demandaService.buscarTodos(0, 20);
+		
+		assertNotNull(demandas);
+		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
+		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
+		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
+	}
+	
+	@Test
+	@Order(4)
+	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloService() {
+		
+		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
+		
+		Page<DemandaDto> demandas = demandaService.buscarTodosPorEstagiarioId(estagiarioId, 0, 20);
+		
+		assertNotNull(demandas);
+		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
+		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
+		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
 	}
 }

@@ -1,6 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.DemandaDto;
@@ -25,5 +28,17 @@ public class DemandaServiceImpl implements DemandaService {
 		Demanda demanda = new Demanda(damandaDto);
 		demanda.setEstagiario(estagiario);
 		return demandaRepository.save(demanda);
+	}
+	
+	@Override
+	public Page<DemandaDto> buscarTodos(int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return demandaRepository.buscarTodos(pageable);
+	}
+	
+	@Override
+	public Page<DemandaDto> buscarTodosPorEstagiarioId(Long estagiarioId, int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return demandaRepository.buscarTodosPorEstagiarioId(estagiarioId, pageable);
 	}
 }

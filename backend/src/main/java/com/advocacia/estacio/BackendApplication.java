@@ -7,18 +7,19 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.AtorDto;
+import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.AtorService;
+import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
@@ -47,6 +48,9 @@ public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	EstagiarioService estagiarioService;
+	
+	@Autowired
+	DemandaService demandaService;
 	
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
@@ -84,13 +88,16 @@ public class BackendApplication implements CommandLineRunner {
 		movimentoService.salvar(movimentoDto2);
 		movimentoService.salvar(movimentoDto3);
 		
-//		AtorDto ator1 = new AtorDto(null, "Roberto Carlos", "roberto@gmail.com", "Coordenador do curso", "1234");
-//		AtorDto ator2 = new AtorDto(null, "José Augusto", "jose@gmail.com", "Secretário", "1234");
-//		AtorDto ator3 = new AtorDto(null, "Fabio Junior", "fabio@gmail.com", "Professor", "1234");
-//		
-//		atorService.salvar(ator1);
-//		atorService.salvar(ator2);
-//		atorService.salvar(ator3);
+		AtorDto ator1 = new AtorDto(null, "Roberto Carlos", "roberto@gmail.com", "Coordenador do curso", "1234");
+		AtorDto ator2 = new AtorDto(null, "José Augusto", "jose@gmail.com", "Secretário", "1234");
+		AtorDto ator3 = new AtorDto(null, "Fabio Junior", "fabio@gmail.com", "Professor", "1234");
+		
+		atorService.salvar(ator1);
+		atorService.salvar(ator2);
+		atorService.salvar(ator3);
+		
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, "Atendido", "12/11/2025");
+		demandaService.salvar(demandaDto);
 		
 		RegistroDto registroDto = new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
 		
