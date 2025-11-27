@@ -12,4 +12,6 @@ public interface DemandaService {
 	Page<DemandaDto> buscarTodos(int page, int size);
 	
 	Page<DemandaDto> buscarTodosPorEstagiarioId(Long estagiarioId, int page, int size);
+	
+	Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size);
 }

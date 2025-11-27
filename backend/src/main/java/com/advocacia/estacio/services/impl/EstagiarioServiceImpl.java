@@ -49,4 +49,10 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
 		return estagiarioRepository.findByNomeContainingIgnoreCase(nome, pageable);
 	}
+
+	@Override
+	public Long buscarIdPorEmail(String email) {
+		return estagiarioRepository.buscarIdPorEmail(email)
+				.orElseThrow(EntidadeNaoEncontradaException::new);
+	}
 }

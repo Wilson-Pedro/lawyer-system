@@ -15,6 +15,8 @@ import CadastrarDemanda from './screens/CadastrarDemanda/CadastrarDemanda';
 import Movimento from './screens/Movimento/Movimento';
 import EditarProcesso from './screens/EditarProcesso/EditarProcesso';
 import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
+import Demandas from './screens/Demandas/Demandas';
+import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import Login from './screens/Login/Login';
 
 export default function Rotas() {
@@ -36,6 +38,8 @@ export default function Rotas() {
                 <Route path="/processos/editar/:processoId"  element={ <EditarProcesso /> }/>
                 <Route path="/movimentar" element={ <MovimentarProcesso />} />
                 <Route path="/cadastrar" element={ <Cadastros />} />
+                <Route path="/demandas" element={ <Demandas />} />
+                <Route path="/demandas/:estagiarioId" element={ <DemandasEstagiario />} />
                 <Route path='/login' element={ <Login /> } />
             </Routes>
         </BrowserRouter>

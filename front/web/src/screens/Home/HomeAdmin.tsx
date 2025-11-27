@@ -28,6 +28,7 @@ export default function HomeAdmin() {
     { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
     { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
+    { label: "Demandas", icon: <FileAltIcon />, path: "/demandas", variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

@@ -42,8 +42,6 @@ public class UsuarioAuthService  {
 		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(dto.login());
 		String token =  tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
 		
-		return new LoginResponseDto(token, user.getRole());
-		
-		
+		return new LoginResponseDto(token, dto.login(), user.getRole());
 	}
 }

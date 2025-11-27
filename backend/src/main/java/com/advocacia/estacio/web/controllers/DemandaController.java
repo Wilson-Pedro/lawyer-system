@@ -40,6 +40,18 @@ public class DemandaController {
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 	
+	@GetMapping("/status/{demandaStatus}")
+	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorStatus(
+			@PathVariable String demandaStatus,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		if(demandaStatus.toLowerCase().equals("todos")) {
+			return ResponseEntity.ok(new PageResponseDto<>(demandaService.buscarTodos(page, size)));
+		}
+		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorStatus(demandaStatus, page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+	}
+	
 	@GetMapping
 	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodos(
 			@RequestParam(defaultValue = "0") int page,

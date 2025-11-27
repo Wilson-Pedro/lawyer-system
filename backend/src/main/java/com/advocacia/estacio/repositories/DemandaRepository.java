@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.domain.enums.DemandaStatus;
 
 public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 	
@@ -40,4 +41,20 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 			""")
 	Page<DemandaDto> buscarTodosPorEstagiarioId(
 			@Param("estagiarioId") Long estagiarioId, Pageable pageable);
+	
+	@Query("""
+			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
+				d.id, 
+				d.demanda, 
+				e.nome, 
+				e.id, 
+				d.demandaStatus, 
+				d.prazo
+			) 
+			FROM Demanda d 
+			JOIN d.estagiario e 
+			WHERE d.demandaStatus = :demandaStatus
+			""")
+	Page<DemandaDto> buscarTodosPorStatus(
+			@Param("demandaStatus") DemandaStatus demandaStatus, Pageable pageable);
 }

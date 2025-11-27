@@ -30,6 +30,7 @@ export default function Login() {
                 const data = response.data;
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);
+                localStorage.setItem('login', data.login)
                 if(data.role === 'ADMIN') {
                     goToHomeAdmin();
                 } else if(data.role === 'ESTAGIARIO') {

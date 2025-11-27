@@ -1,12 +1,14 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { 
     FileAltIcon, 
     SingOutAltIcon,
-    FileCirclePlusIcon,
-    PlusCircleIcon
 } from "../../Icons/Icon";
+
+import axios from  'axios';
+
+const API_URL = process.env.REACT_APP_API;
 
 interface MenuItem {
   label: string;
@@ -15,11 +17,38 @@ interface MenuItem {
   variant: string;
 }
 
+interface Response {
+  response: number;
+}
+
 export default function HomeEstagiario() {
+
+  const [estagiarioId, setEstagiarioId] = useState<number | null>(null);
+
   const navigate = useNavigate();
+
+    useEffect(() => {
+      const token = localStorage.getItem('token') || '';
+      const email = localStorage.getItem('login') || '';
+      
+      const fetchIdUser = async () => {
+          try {
+              const response = await axios.get<Response>(`${API_URL}/estagiarios/buscarId/email/${email}`, {
+                  headers: {
+                      Authorization: `Bearer ${token}`
+                  }
+              });
+              setEstagiarioId(response.data.response);
+          } catch (error) {
+                console.error(error);
+            }
+      };
+      fetchIdUser();
+  }, []);
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
+
   if(!token) return <Navigate to="/login" />
   if(role !== 'ESTAGIARIO') return <Navigate to="/login" />
 
@@ -27,13 +56,14 @@ export default function HomeEstagiario() {
     // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     // { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
     // { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/${estagiarioId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel Administrativo</span>
+        <span className="navbar-brand fw-bold fs-4">Painel Administrativo {estagiarioId}</span>
         <button
           className="btn btn-outline-light ms-auto"
           onClick={() => {
