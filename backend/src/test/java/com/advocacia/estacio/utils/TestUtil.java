@@ -173,7 +173,7 @@ public class TestUtil {
 
 	public EstagiarioDto getEstagiarioDto2() {
 		return new EstagiarioDto(null,
-				"João Lucas", "lucas@gmail.com", "20251209", 
+				"Carlos Miguel", "carlos@gmail.com", "20251309",
 				"Estágio II", "1234");
 	}
 	
