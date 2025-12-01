@@ -3,6 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -87,9 +88,10 @@ class EstagiarioServiceTest {
 	@Test
 	void deve_buscar_Estagiario_id_pelo_email_PeloService() {
 
-		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
-		Long id = estagiarioService.buscarIdPorEmail("pedro@gmail.com");
+		Estagiario estagiario = estagiarioRepository.findAll().get(0);
+		EstagiarioMinDto dto = estagiarioService.buscarIdPorEmail("pedro@gmail.com");
 
-		assertEquals(estagiarioId, id);
+		assertEquals(estagiario.getId(), dto.id());
+		assertEquals(estagiario.getNome(), dto.nome());
 	}
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.records.ResponseDto;
+import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import com.advocacia.estacio.services.EstagiarioService;
 
 @RequestMapping("/estagiarios")
@@ -43,8 +43,8 @@ public class EstagiarioController {
 	}
 	
 	@GetMapping("/buscarId/email/{email}")
-	public ResponseEntity<ResponseDto> buscarIdPorEmail(@PathVariable String email) {
-		Long id = estagiarioService.buscarIdPorEmail(email);
-		return ResponseEntity.ok(new ResponseDto(id));
+	public ResponseEntity<EstagiarioMinDto> buscarIdPorEmail(@PathVariable String email) {
+		EstagiarioMinDto dto = estagiarioService.buscarIdPorEmail(email);
+		return ResponseEntity.ok(dto);
 	}
 }

@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -100,13 +101,14 @@ class EstagiarioControllerTest {
 	@Test
 	void deveSalvar_buscar_estagiarioId_PeloController() throws Exception {
 		var email = estagiarioRepository.findAll().get(0).getEmail();
-		var id = estagiarioRepository.findAll().get(0).getId();
+		Estagiario estagiario = estagiarioRepository.findAll().get(0);
 
 		mockMvc.perform(get(URI + "/buscarId/email/" + email)
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.response").value(id.intValue()));
+				.andExpect(jsonPath("$.id").value(estagiario.getId().intValue()))
+				.andExpect(jsonPath("$.nome").value(estagiario.getNome()));
 	}
 }

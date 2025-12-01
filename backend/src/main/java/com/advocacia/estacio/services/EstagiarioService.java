@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
@@ -12,6 +13,6 @@ public interface EstagiarioService {
 	Estagiario buscarPorId(Long id);
 	
 	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
-	
-	Long buscarIdPorEmail(String email);
+
+	EstagiarioMinDto buscarIdPorEmail(String email);
 }

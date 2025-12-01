@@ -12,6 +12,7 @@ import CadastrarAdvogado from './screens/CadastrarAdvogado/CadastrarAdvogado';
 import CadastrarMovimento from './screens/CadastrarMovimento/CadastrarMovimento';
 import CadastrarUsuario from './screens/CadastrarUsuario/CadastrarUsuario';
 import CadastrarDemanda from './screens/CadastrarDemanda/CadastrarDemanda';
+import CadastrarDemandaResposta from './screens/CadastrarDemanda/CadastrarDemandaResposta';
 import Movimento from './screens/Movimento/Movimento';
 import EditarProcesso from './screens/EditarProcesso/EditarProcesso';
 import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
@@ -32,6 +33,7 @@ export default function Rotas() {
                 <Route path="/cadastrar/processo" element={<CadastrarProcesso />} />
                 <Route path="/cadastrar/advogado" element={<CadastrarAdvogado />} />
                 <Route path="/cadastrar/demanda" element={<CadastrarDemanda />} />
+                <Route path="/cadastrar/demanda/:demandaId/resposta" element={<CadastrarDemandaResposta />} />
                 <Route path="/cadastrar/usuario" element={ <CadastrarUsuario />} />
                 <Route path="/processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
                 <Route path="/processos/:numeroDoProcesso/movimento/cadastrar" element={ <CadastrarMovimento /> } />

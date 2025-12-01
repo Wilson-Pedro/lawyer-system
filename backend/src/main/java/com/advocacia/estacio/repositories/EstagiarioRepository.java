@@ -2,6 +2,7 @@ package com.advocacia.estacio.repositories;
 
 import java.util.Optional;
 
+import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,11 @@ public interface EstagiarioRepository extends JpaRepository<Estagiario, Long> {
 	Page<Estagiario> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 	
 	@Query("""
-			SELECT e.id FROM Estagiario e WHERE e.email = :email
+			SELECT new com.advocacia.estacio.domain.records.EstagiarioMinDto(
+					e.id,
+					e.nome
+			)
+			FROM Estagiario e WHERE e.email = :email
 			""")
-	Optional<Long> buscarIdPorEmail(@Param("email") String email);
+	Optional<EstagiarioMinDto> buscarEstagiarioMinPorEmail(@Param("email") String email);
 }
