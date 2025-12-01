@@ -4,15 +4,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.advocacia.estacio.domain.dto.*;
+import com.advocacia.estacio.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.dto.AtorDto;
-import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
@@ -27,15 +24,6 @@ import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.infra.security.TokenService;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
-import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.repositories.AtorRepository;
-import com.advocacia.estacio.repositories.DemandaRepository;
-import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.MovimentoRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
@@ -82,6 +70,9 @@ public class TestUtil {
 	
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
+
+	@Autowired
+	DemandaRespondeRepository demandaRespondeRepository;
 	
 	@Autowired
 	TokenService tokenService;
@@ -93,6 +84,7 @@ public class TestUtil {
 	private Advogado advogado;
 	
 	public void deleteAll() {
+		demandaRespondeRepository.deleteAll();
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
 		processoRepository.deleteAll();

@@ -8,6 +8,8 @@ import com.advocacia.estacio.domain.entities.Demanda;
 public interface DemandaService {
 	
 	Demanda salvar(DemandaDto damandaDto);
+
+	Demanda buscarPorId(Long id);
 	
 	Page<DemandaDto> buscarTodos(int page, int size);
 	

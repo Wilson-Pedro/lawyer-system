@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.services.DemandaService;
+import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,12 @@ class DemandaControllerTest {
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
+
+	@Autowired
+	EstagiarioService estagiarioService;
+
+	@Autowired
+	DemandaService demandaService;
 	
 	AdvogadoDto advogadoDto;
 	
@@ -84,21 +92,44 @@ class DemandaControllerTest {
 		
 		assertEquals(1, demandaRepository.count());
 	}
-	
+
 	@Test
 	@Order(3)
+	void deve_buscar_Demandas_pelo_status_PeloController() throws Exception {
+
+		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
+		demandaService.salvar(demandaDto2);
+
+		mockMvc.perform(get(URI + "/status/Atendido?page=0&size=20")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
+	}
+
+	@Test
+	void deve_buscar_todas_as_Demandas_pelo_status_PeloController() throws Exception {
+
+		mockMvc.perform(get(URI + "/status/todos?page=0&size=20")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(2));
+	}
+	
+	@Test
 	void deve_buscar_Demandas_NoBancoDeDados_PeloController() throws Exception {
 		
 		mockMvc.perform(get(URI)
 				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
+				.andExpect(jsonPath("$.content.length()").value(2));
 	}
 	
 	@Test
-	@Order(4)
 	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloController() throws Exception {
 		
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();

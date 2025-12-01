@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,7 +31,12 @@ public class DemandaServiceImpl implements DemandaService {
 		demanda.setEstagiario(estagiario);
 		return demandaRepository.save(demanda);
 	}
-	
+
+	@Override
+	public Demanda buscarPorId(Long id) {
+		return demandaRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
+	}
+
 	@Override
 	public Page<DemandaDto> buscarTodos(int page, int size) {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());

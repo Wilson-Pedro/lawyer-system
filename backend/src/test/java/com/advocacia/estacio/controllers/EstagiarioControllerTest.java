@@ -83,7 +83,6 @@ class EstagiarioControllerTest {
 	}
 	
 	@Test
-	@Order(3)
 	void deveSalvar_buscar_estagiario_PeloController() throws Exception {
 		var estagiario = estagiarioRepository.findAll().get(0);
 		String nome = estagiario.getNome();
@@ -96,5 +95,18 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("$.content[0].nome").value("Pedro Lucas"));
 		
+	}
+
+	@Test
+	void deveSalvar_buscar_estagiarioId_PeloController() throws Exception {
+		var email = estagiarioRepository.findAll().get(0).getEmail();
+		var id = estagiarioRepository.findAll().get(0).getId();
+
+		mockMvc.perform(get(URI + "/buscarId/email/" + email)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.response").value(id.intValue()));
 	}
 }

@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 public enum DemandaStatus {
 
 	ATENDIDO(1, "Atendido"),
-	NÃO_ATENDIDO(2, "Não Atendido"),
+	NAO_ATENDIDO(2, "Não Atendido"),
 	PROROGADA(3, "Prorrogada");
 	
 	private Integer codigo;
