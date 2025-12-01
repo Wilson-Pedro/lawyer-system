@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.domain.records.ResponseDto;
 import com.advocacia.estacio.services.EstagiarioService;
 
 @RequestMapping("/estagiarios")
@@ -34,10 +35,16 @@ public class EstagiarioController {
 	@GetMapping("/buscar/{nome}")
 	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarEstagiario(
 			@PathVariable String nome,
-			@RequestParam(defaultValue = "10") int page,
+			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<Estagiario> pages = estagiarioService.buscarEstagiario(nome, page, size);
 		Page<EstagiarioDto> pagesDto = pages.map(x -> new EstagiarioDto(x));
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+	}
+	
+	@GetMapping("/buscarId/email/{email}")
+	public ResponseEntity<ResponseDto> buscarIdPorEmail(@PathVariable String email) {
+		Long id = estagiarioService.buscarIdPorEmail(email);
+		return ResponseEntity.ok(new ResponseDto(id));
 	}
 }

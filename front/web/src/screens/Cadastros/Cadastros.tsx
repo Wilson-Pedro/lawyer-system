@@ -1,13 +1,13 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { 
-    EyeIcon, 
     UsersIcon, 
     UserPlusIcon, 
     GavelIcon, 
     FileAltIcon, 
-    SingOutAltIcon 
+    SingOutAltIcon, 
+    FileCirclePlusIcon
 } from "../../Icons/Icon";
 
 interface MenuItem {
@@ -17,27 +17,30 @@ interface MenuItem {
   variant: string;
 }
 
-export default function HomeAdmin() {
+export default function Cadastros() {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   const menuItems: MenuItem[] = [
-    { label: "Ver Processos", icon: <EyeIcon />, path: "/processos", variant: "primary" },
-    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrarAssistido", variant: "success" },
-    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrarEstagiario", variant: "info" },
-    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrarAdvogado", variant: "warning" },
-    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrarProcesso", variant: "secondary" },
-    { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
+    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrar/assistido", variant: "success" },
+    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrar/estagiario", variant: "info" },
+    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrar/advogado", variant: "warning" },
+    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrar/processo", variant: "secondary" },
+    { label: "Cadastrar Usuario", icon: <UserPlusIcon />, path: "/cadastrar/usuario", variant: "primary" },
+    { label: "Cadastrar Demanda", icon: <FileCirclePlusIcon />, path: "/cadastrar/demanda", variant: "danger" },
   ];
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel Administrativo</span>
+        <span className="navbar-brand fw-bold fs-4">Cadastrar</span>
         <button
           className="btn btn-outline-light ms-auto"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/home/admin")}
         >
-          <SingOutAltIcon className="me-2" /> Sair
+          <SingOutAltIcon className="me-2" /> Voltar
         </button>
       </nav>
 

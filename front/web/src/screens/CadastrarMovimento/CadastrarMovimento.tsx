@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Toast, ToastContainer, Card } from "react-bootstrap";
 import { ArrowLeftIcon, SaveIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,7 +28,11 @@ export default function CadastrarMovimento() {
     const buscarProcessoPorNumeroDoProcesso = async () => {
       try {
         const response = await axios.get(
-          `${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`
+          `${API_URL}/processos/numeroDoProcesso/${numeroDoProcessoParams}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
         setNumeroDoProcesso(response.data.numeroDoProcesso);
         setProcessoId(response.data.id);
@@ -44,11 +48,16 @@ export default function CadastrarMovimento() {
 
   const cadastrarMovimento = async (e: React.FormEvent) => {
     e.preventDefault();
+    //const token = localStorage.getItem('token');
     try {
       await axios.post(`${API_URL}/movimentos/`, {
         processoId,
         advogadoId,
         movimento,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       
       setMesagemToast("Movimento cadastrado com sucesso.");
@@ -65,15 +74,18 @@ export default function CadastrarMovimento() {
     setMovimento("");
   };
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   return (
     <Container className="py-5">
-      {/* Cabeçalho */}
+      
       <div className="d-flex align-items-center justify-content-between mb-4">
         <Button
           variant="outline-secondary"
           className="d-flex align-items-center"
           onClick={() =>
-            navigate(`/processos/${numeroDoProcessoParams}/movimento`)
+            navigate(-1)
           }
         >
           <ArrowLeftIcon className="me-2" /> Voltar
@@ -82,7 +94,7 @@ export default function CadastrarMovimento() {
         <h2 className="fw-bold text-dark mb-0">Cadastro de Movimento</h2>
       </div>
 
-      {/* Card de Formulário */}
+     
       <Card className="shadow-sm p-4 border-0">
         <Form onSubmit={cadastrarMovimento}>
           <Row className="mb-3">

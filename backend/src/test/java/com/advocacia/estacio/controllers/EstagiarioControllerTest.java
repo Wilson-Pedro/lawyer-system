@@ -2,11 +2,12 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EnderecoRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -47,19 +47,16 @@ class EstagiarioControllerTest {
 	
 	private static String URI = "/estagiarios";
 	
-	Estagiario estagiario;
+	private static String TOKEN = "";
 	
-	@BeforeEach
-	void setUp() {
-		estagiario = new Estagiario(
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				PeriodoEstagio.ESTAGIO_I, "1234");
-	}
+	Estagiario estagiario;
 	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -68,11 +65,12 @@ class EstagiarioControllerTest {
 		
 		assertEquals(0, estagiarioRepository.count());
 		
-		EstagiarioDto dto = new EstagiarioDto(estagiario);
+		EstagiarioDto dto = testUtil.getEstagiarioDto();
 		
 		String jsonRequest = objectMapper.writeValueAsString(dto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -82,5 +80,33 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.periodo", equalTo("Estágio I")));
 		
 		assertEquals(1, estagiarioRepository.count());
+	}
+	
+	@Test
+	void deveSalvar_buscar_estagiario_PeloController() throws Exception {
+		var estagiario = estagiarioRepository.findAll().get(0);
+		String nome = estagiario.getNome();
+		
+		mockMvc.perform(get(URI + "/buscar/" + nome)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("$.content[0].nome").value("Pedro Lucas"));
+		
+	}
+
+	@Test
+	void deveSalvar_buscar_estagiarioId_PeloController() throws Exception {
+		var email = estagiarioRepository.findAll().get(0).getEmail();
+		var id = estagiarioRepository.findAll().get(0).getId();
+
+		mockMvc.perform(get(URI + "/buscarId/email/" + email)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.response").value(id.intValue()));
 	}
 }

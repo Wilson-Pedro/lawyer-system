@@ -5,6 +5,8 @@ import styles from "./Home.module.css"; // estilos separados em CSS
 export default function Home() {
   const navigate = useNavigate();
 
+  localStorage.clear();
+
   return (
     <div className={styles.container}>
       <img
@@ -19,15 +21,12 @@ export default function Home() {
       </p>
 
       <button
-        className={`${styles.button} ${styles.secondaryButton}`}
-        onClick={() => navigate("/admin")}
+        className={`${styles.button}`}
+        onClick={() => navigate("/login")}
       >
-        Já tenho conta
+        Fazer Login
       </button>
 
-      <button className={styles.button} onClick={() => navigate("/admin")}>
-        Fazer Cadastro
-      </button>
     </div>
   );
 }

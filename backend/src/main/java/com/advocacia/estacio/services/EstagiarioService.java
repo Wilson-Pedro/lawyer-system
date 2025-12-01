@@ -12,4 +12,6 @@ public interface EstagiarioService {
 	Estagiario buscarPorId(Long id);
 	
 	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
+	
+	Long buscarIdPorEmail(String email);
 }

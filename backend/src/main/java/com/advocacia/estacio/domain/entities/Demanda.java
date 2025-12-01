@@ -30,6 +30,8 @@ public class Demanda implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private String demanda;
+	
 	@ManyToOne
 	@JoinColumn(name = "estagiario_id")
 	private Estagiario estagiario;
@@ -45,14 +47,16 @@ public class Demanda implements Serializable {
 	public Demanda() {
 	}
 
-	public Demanda(Long id, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazo) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazo) {
 		this.id = id;
+		this.demanda = demanda;
 		this.estagiario = estagiario;
 		this.demandaStatus = demandaStatus;
 		this.prazo = prazo;
 	}
 	
 	public Demanda(DemandaDto demandaDto) {
+		this.demanda = demandaDto.getDemanda();
 		this.demandaStatus = DemandaStatus.toEnum(demandaDto.getDemandaStatus());
 		this.prazo = localDateToString(demandaDto.getPrazo());
 	}
@@ -68,6 +72,14 @@ public class Demanda implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getDemanda() {
+		return demanda;
+	}
+
+	public void setDemanda(String demanda) {
+		this.demanda = demanda;
 	}
 
 	public Estagiario getEstagiario() {
@@ -100,7 +112,7 @@ public class Demanda implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(demandaStatus, estagiario, id, prazo, registro);
+		return Objects.hash(demanda, demandaStatus, estagiario, id, prazo, registro);
 	}
 
 	@Override
@@ -112,8 +124,8 @@ public class Demanda implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Demanda other = (Demanda) obj;
-		return demandaStatus == other.demandaStatus && Objects.equals(estagiario, other.estagiario)
-				&& Objects.equals(id, other.id) && Objects.equals(prazo, other.prazo)
-				&& Objects.equals(registro, other.registro);
+		return Objects.equals(demanda, other.demanda) && demandaStatus == other.demandaStatus
+				&& Objects.equals(estagiario, other.estagiario) && Objects.equals(id, other.id)
+				&& Objects.equals(prazo, other.prazo) && Objects.equals(registro, other.registro);
 	}
 }

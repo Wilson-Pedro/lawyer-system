@@ -45,20 +45,22 @@ class AssistidoControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
+	AssistidoDto assistidoDto;
+	
 	private static String URI = "/assistidos";
 	
-	AssistidoDto assistidoDto;
+	private static String TOKEN = "";
 	
 	@BeforeEach
 	void setUp() {
-		assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-				"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
+		assistidoDto = testUtil.getAssistidoDto();
 	}
 	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -70,6 +72,7 @@ class AssistidoControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(assistidoDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -97,6 +100,7 @@ class AssistidoControllerTest {
 		String nome = "Car";
 		
 		mockMvc.perform(get(URI + "/buscar/" + nome)
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))

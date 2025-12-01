@@ -24,4 +24,6 @@ public interface ProcessoService {
 	Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size);
 	
 	Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate);
+	
+	void validarProcesso(Processo processo);
 }

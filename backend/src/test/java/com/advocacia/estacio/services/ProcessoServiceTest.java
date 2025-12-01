@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.ProcessoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.dto.ProcessoUpdate;
@@ -23,7 +21,6 @@ import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.Processo;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -49,21 +46,6 @@ class ProcessoServiceTest {
 	
 	@Autowired
 	TestUtil testUtil;
-	
-	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-			"ana@gmail.com","Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
-	
-	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
-			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-			"rua do passeio", 11, "53022-112");
-	
-	Estagiario estagiario = new Estagiario(
-			"Pedro Lucas", "pedro@gmail.com", "20251208", 
-			PeriodoEstagio.ESTAGIO_I, "1234");
-	
-	Estagiario estagiario2 = new Estagiario(
-			"João Lucas", "lucas@gmail.com", "20251209", 
-			PeriodoEstagio.ESTAGIO_II, "1234");
 
 	@Test
 	@Order(1)
@@ -76,9 +58,9 @@ class ProcessoServiceTest {
 	void deveSalvar_Processo_NoBancoDeDados_PeloService() {
 		assertEquals(0, processoRepository.count());
 		
-		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
-		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
-		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
+		Long assistidoId = assistidoService.salvar(testUtil.getAssistidoDto()).getId();
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
+		Long estagiarioId = estagiarioRepository.save(testUtil.getEstagiario()).getId();
 		
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, estagiarioId, "Civil", "Estadual", "25/10/2025");
 		
@@ -123,7 +105,7 @@ class ProcessoServiceTest {
 		Processo processo = processoRepository.findAll().get(0);
 		Advogado advogado = advogadoService.buscarPorId(processo.getAdvogado().getId());
 		Assistido assistido = assistidoService.buscarPorId(processo.getAssistido().getId());
-		Estagiario estagiario = estagiarioRepository.save(estagiario2);
+		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario2());
 		
 		ProcessoUpdate dto = new ProcessoUpdate(processo.getAssistido().getId(), 
 				"23232323", "32323232", "Seguro de celular", "132132", "11/12/2025", advogado.getNome(), 

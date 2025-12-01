@@ -1,0 +1,47 @@
+package com.advocacia.estacio.services.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.domain.records.AuthenticationDto;
+import com.advocacia.estacio.domain.records.LoginResponseDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
+import com.advocacia.estacio.infra.security.TokenService;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+
+@Service
+public class UsuarioAuthService  {
+	
+	@Autowired
+	AuthenticationManager authenticationManger;
+	
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;	
+	
+	@Autowired
+	TokenService tokenService;
+
+	
+	public UsuarioAuth salvar(RegistroDto dto) {
+		if(this.usuarioAuthRepository.findByLogin(dto.login()) != null) {
+			throw new RuntimeException("Usuário já cadastrado.");
+		}
+		String encryptedPassword = new BCryptPasswordEncoder().encode(dto.password());
+		UsuarioAuth user = new UsuarioAuth(dto.login(), encryptedPassword, dto.role());
+		return this.usuarioAuthRepository.save(user);
+	}
+
+	public LoginResponseDto login(AuthenticationDto dto) {
+		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
+		var auth = this.authenticationManger.authenticate(usernamePassword);
+		
+		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(dto.login());
+		String token =  tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
+		
+		return new LoginResponseDto(token, dto.login(), user.getRole());
+	}
+}

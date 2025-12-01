@@ -31,8 +31,6 @@ public class Advogado implements Serializable {
 	
 	private String email;
 	
-	private String cpf;
-	
 	private String telefone;
 	
 	private LocalDate dataDeNascimeto;
@@ -52,7 +50,6 @@ public class Advogado implements Serializable {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpf = cpf;
 		this.telefone = telefone;
 		this.dataDeNascimeto = dataDeNascimeto;
 		this.endereco = endereco;
@@ -63,7 +60,6 @@ public class Advogado implements Serializable {
 		this.id = dto.getId();
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
-		this.cpf = dto.getCpf();
 		this.telefone = dto.getTelefone();
 		this.dataDeNascimeto = localDateToString(dto.getDataDeNascimento());
 	}
@@ -97,14 +93,6 @@ public class Advogado implements Serializable {
 		this.email = email;
 	}
 
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}
@@ -134,8 +122,14 @@ public class Advogado implements Serializable {
 	}
 
 	@Override
+	public String toString() {
+		return "Advogado [id=" + id + ", nome=" + nome + ", email=" + email + ", telefone=" + telefone
+				+ ", dataDeNascimeto=" + dataDeNascimeto + ", endereco=" + endereco + ", registro=" + registro + "]";
+	}
+
+	@Override
 	public int hashCode() {
-		return Objects.hash(cpf, dataDeNascimeto, email, endereco, id, nome, registro, telefone);
+		return Objects.hash(dataDeNascimeto, email, endereco, id, nome, registro, telefone);
 	}
 
 	@Override
@@ -147,9 +141,9 @@ public class Advogado implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Advogado other = (Advogado) obj;
-		return Objects.equals(cpf, other.cpf) && Objects.equals(dataDeNascimeto, other.dataDeNascimeto)
-				&& Objects.equals(email, other.email) && Objects.equals(endereco, other.endereco)
-				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
-				&& Objects.equals(registro, other.registro) && Objects.equals(telefone, other.telefone);
+		return Objects.equals(dataDeNascimeto, other.dataDeNascimeto) && Objects.equals(email, other.email)
+				&& Objects.equals(endereco, other.endereco) && Objects.equals(id, other.id)
+				&& Objects.equals(nome, other.nome) && Objects.equals(registro, other.registro)
+				&& Objects.equals(telefone, other.telefone);
 	}
 }

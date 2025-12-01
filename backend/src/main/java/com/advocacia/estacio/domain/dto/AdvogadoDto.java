@@ -14,8 +14,6 @@ public class AdvogadoDto implements Serializable {
 	
 	private String email;
 	
-	private String cpf;
-	
 	private String telefone;
 	
 	private String dataDeNascimento;
@@ -33,13 +31,12 @@ public class AdvogadoDto implements Serializable {
 	public AdvogadoDto() {
 	}
 
-	public AdvogadoDto(Long id, String nome, String email, String cpf, String telefone, 
+	public AdvogadoDto(Long id, String nome, String email, String telefone, 
 			String dataDeNascimento, String cidade, String bairro, String rua, 
 			Integer numeroDaCasa, String cep) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.cpf = cpf;
 		this.telefone = telefone;
 		this.dataDeNascimento = dataDeNascimento;
 		this.cidade = cidade;
@@ -53,7 +50,6 @@ public class AdvogadoDto implements Serializable {
 		this.id = advogado.getId();
 		this.nome = advogado.getNome();
 		this.email = advogado.getEmail();
-		this.cpf = advogado.getCpf();
 		this.telefone = advogado.getTelefone();
 		this.dataDeNascimento = toDateString(advogado.getDataDeNascimeto());
 		this.cidade = advogado.getEndereco().getCidade();
@@ -77,10 +73,6 @@ public class AdvogadoDto implements Serializable {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getCpf() {
-		return cpf;
 	}
 
 	public String getTelefone() {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarAdvogado.module.css";
@@ -10,7 +10,7 @@ export default function CadastrarAdvogado() {
 
   const [nome, setNome] = useState("Júlio Silva");
   const [email, setEmail] = useState("julio@gmail.com");
-  const [cpf, setCpf] = useState("23423423234");
+  //const [cpf, setCpf] = useState("23423423234");
   const [telefone, setTelefone] = useState("8893545325");
   const [dataDeNascimento, setDataDeNascimento] = useState("");
   const [cidade, setCidade] = useState("Belo Horizonte");
@@ -25,6 +25,9 @@ export default function CadastrarAdvogado() {
 
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+  if(!token) return <Navigate to="/login" />
+
   const cadastrarAssistido = async (e:any) => {
     e.preventDefault();
 
@@ -32,7 +35,6 @@ export default function CadastrarAdvogado() {
       await axios.post(`${API_URL}/advogados/`, {
         nome,
         email,
-        cpf,
         telefone,
         dataDeNascimento,
         cidade,
@@ -40,6 +42,10 @@ export default function CadastrarAdvogado() {
         rua,
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       setMostrarToast(true);
@@ -79,7 +85,6 @@ export default function CadastrarAdvogado() {
   const limparCampos = () => {
     setNome("");
     setEmail("");
-    setCpf("");
     setTelefone("");
     setDataDeNascimento("");
     setCidade("");
@@ -92,7 +97,7 @@ export default function CadastrarAdvogado() {
   return (
 
     <form className={styles.container} onSubmit={cadastrarAssistido}>
-      <button className={styles.backButton} onClick={() => navigate("/admin")}>
+      <button className={styles.backButton} onClick={() => navigate(-1)}>
         ← Voltar
       </button>
       <h1 className={styles.title}>Cadastrar Advogado</h1>
@@ -116,17 +121,6 @@ export default function CadastrarAdvogado() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>CPF</label>
-        <input
-          className={styles.input}
-          placeholder="Cpf"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
           required
         />
       </div>

@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -53,18 +52,14 @@ class AdvogadoControllerTest {
 	
 	private static String URI = "/advogados";
 	
-	@BeforeEach
-	void setUp() {
-		advogadoDto = new AdvogadoDto(null, "Júlio Silva", "julio@gmail.com", "61946620131",
-				"88566519808", "25/09/1996", "São Luís", "Vila Palmeira", 
-				"rua dos nobres", 12, "43012-232");
-	}
+	private static String TOKEN = "";
 	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
-		demandaRepository.deleteAll();
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -73,21 +68,23 @@ class AdvogadoControllerTest {
 		
 		assertEquals(0, advogadoRepository.count());
 		
+		advogadoDto = testUtil.getAdvogadoDto();
+		
 		String jsonRequest = objectMapper.writeValueAsString(advogadoDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.nome", equalTo("Júlio Silva")))
-				.andExpect(jsonPath("$.email", equalTo("julio@gmail.com")))
-				.andExpect(jsonPath("$.cpf", equalTo("61946620131")))
+				.andExpect(jsonPath("$.nome", equalTo("Carlos Silva")))
+				.andExpect(jsonPath("$.email", equalTo("carlos@gmail.com")))
 				.andExpect(jsonPath("$.telefone", equalTo("88566519808")))
 				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
-				.andExpect(jsonPath("$.bairro", equalTo("Vila Palmeira")))
-				.andExpect(jsonPath("$.rua", equalTo("rua dos nobres")))
-				.andExpect(jsonPath("$.numeroDaCasa", equalTo(12)))
-				.andExpect(jsonPath("$.cep", equalTo("43012-232")));
+				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))
+				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
+				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -96,14 +93,15 @@ class AdvogadoControllerTest {
 	@Order(3)
 	void deveBuscar_Advogado_peloNome_PeloController() throws Exception {
 		
-		String nome = "li";
+		String nome = "il";
 		
 		mockMvc.perform(get(URI + "/buscar/" + nome)
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("content[0].nome").value("Júlio Silva"));
+				.andExpect(jsonPath("content[0].nome").value("Carlos Silva"));
 		
 		assertEquals(1, advogadoRepository.count());
 	}

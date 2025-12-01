@@ -18,12 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.MovimentoDto;
 import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.MovimentoRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
@@ -71,21 +67,14 @@ class MovimentoControllerTest {
 	
 	private static String URI = "/movimentos";
 	
-	AssistidoDto assistidoDto = new AssistidoDto(null, "Ana Carla", "20250815", "86766523354", 
-			"ana@gmail.com", "Cientista de Dados", "brasileiro", "São Luís/MA", "Solteiro(a)", "São Luís", "Vila Palmeira", "rua dos nobres", 12, "43012-232");
-	
-	AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "julio@gmail.com", "61946620131",
-			"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-			"rua do passeio", 11, "53022-112");
-	
-	Estagiario estagiario = new Estagiario(
-			"Pedro Lucas", "pedro@gmail.com", "20251208", 
-			PeriodoEstagio.ESTAGIO_I, "1234");
+	private static String TOKEN = "";
 	
 	@Test
 	@Order(1)
-	void deletando_TodosOsDados_AntesDostestes() {
+	void preparando_ambiente_de_testes() {
 		testUtil.deleteAll();
+		
+		TOKEN = testUtil.getToken();
 	}
 	
 	@Test
@@ -94,9 +83,9 @@ class MovimentoControllerTest {
 		
 		assertEquals(0, movimentoRepository.count());
 		
-		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
-		Long advogadoId = advogadoService.salvar(advogadoDto).getId();
-		Long estagiarioId = estagiarioRepository.save(estagiario).getId();
+		Long assistidoId = assistidoService.salvar(testUtil.getAssistidoDto()).getId();
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
+		Long estagiarioId = estagiarioRepository.save(testUtil.getEstagiario()).getId();
 		
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId, estagiarioId, "Civil", "Estadual", "25/10/2025");
 		
@@ -107,6 +96,7 @@ class MovimentoControllerTest {
 		String jsonRequest = objectMapper.writeValueAsString(movimentoDto);
 		
 		mockMvc.perform(post(URI + "/")
+				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
@@ -115,5 +105,20 @@ class MovimentoControllerTest {
 				.andExpect(jsonPath("$.movimento", equalTo(movimentoDto.getMovimento())));
 		
 		assertEquals(1, movimentoRepository.count());
+	}
+	
+	@Test
+	@Order(3)
+	void deveBuscar_Processo_pelo_numeroDoProcesso_PeloController() throws Exception {
+		
+		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
+		
+		mockMvc.perform(get(URI + "/buscar/" + numeroDoProcesso)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].numeroDoProcesso").value("20251"));
 	}
 }
