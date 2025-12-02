@@ -1,9 +1,5 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -24,6 +20,8 @@ import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -83,7 +81,7 @@ class ProcessoServiceTest {
 		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
 		
 		assertNotNull(processos);
-		assertTrue(processos.size() > 0);
+        assertFalse(processos.isEmpty());
 	}
 	
 	@Test
@@ -93,7 +91,7 @@ class ProcessoServiceTest {
 		Page<Processo> processos = processoService.buscarProcesso(numeroDoProcesso, 0, 10);
 		
 		assertNotNull(processos);
-		assertTrue(processos.getContent().size() > 0);
+        assertFalse(processos.getContent().isEmpty());
 		assertNotNull(processos.getContent().get(0).getAssunto(), "Seguro de Carro");
 	}
 	
@@ -115,17 +113,17 @@ class ProcessoServiceTest {
 		processo = processoService.atualizarProcesso(processo.getId(), dto);
 		
 		assertEquals(processo.getAssistido(), assistido);
-		assertEquals(processo.getNumeroDoProcesso(), "23232323");
-		assertEquals(processo.getNumeroDoProcessoPje(), "32323232");
-		assertEquals(processo.getAssunto(), "Seguro de celular");
-		assertEquals(processo.getVara(), "132132");
-		assertEquals(processo.getPrazoFinal().toString(), "2025-12-11");
+		assertEquals("23232323", processo.getNumeroDoProcesso());
+		assertEquals("32323232", processo.getNumeroDoProcessoPje());
+		assertEquals("Seguro de celular", processo.getAssunto());
+		assertEquals("132132", processo.getVara());
+		assertEquals("2025-12-11", processo.getPrazoFinal().toString());
 		assertEquals(processo.getResponsavel(), advogado.getNome());
 		assertEquals(processo.getAdvogado(), advogado);
 		assertEquals(processo.getEstagiario(), estagiario);
-		assertEquals(processo.getAreaDoDireito().getDescricao(), "Previdenciário");
-		assertEquals(processo.getTribunal().getDescricao(), "Federal");
-		assertEquals(processo.getStatusDoProcesso().getStatus(), "Suspenso");
+		assertEquals("Previdenciário", processo.getAreaDoDireito().getDescricao());
+		assertEquals("Federal", processo.getTribunal().getDescricao());
+		assertEquals("Suspenso", processo.getStatusDoProcesso().getStatus());
 		
 		assertEquals(1, processoRepository.count());
 	}

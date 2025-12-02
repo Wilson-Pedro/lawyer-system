@@ -5,7 +5,7 @@ import com.advocacia.estacio.domain.dto.DemandaRespondeDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.DemandaResponde;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.repositories.DemandaRepository;
+import com.advocacia.estacio.domain.enums.RespondidoPor;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -56,7 +56,7 @@ class DemandaRespondeServiceTest {
 		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
-		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa");
+		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");
 		DemandaResponde demandaResponde = demandaRespondeService.salvar(demandaRespondeDto);
 
 		assertNotNull(demandaResponde);
@@ -64,7 +64,18 @@ class DemandaRespondeServiceTest {
 		assertEquals(demandaRespondeDto.getResposta(), demandaResponde.getResposta());
 		assertEquals(estagiario.getId(), demandaResponde.getEstagiario().getId());
 		assertEquals(demanda.getId(), demandaResponde.getDemanda().getId());
+		assertEquals(RespondidoPor.ESTAGIARIO, demandaResponde.getRespondidoPor());
 
 		assertEquals(1, demandaRespondeRepository.count());
+	}
+
+	@Test
+	void deve_buscar_demandasRespostas_por_demandaId() {
+
+		Long demandaId = demandaRespondeRepository.findAll().get(0).getDemanda().getId();
+		Page<DemandaRespondeDto> pages = demandaRespondeService.buscarDemandasRespostasPorDemandaId(demandaId, 0, 20);
+
+		assertNotNull(pages);
+		assertEquals(1, pages.getContent().size());
 	}
 }

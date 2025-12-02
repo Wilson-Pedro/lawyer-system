@@ -92,8 +92,8 @@ class ProcessoControllerTest {
 				.andExpect(jsonPath("$.assunto", equalTo("Seguro de Carro")))
 				.andExpect(jsonPath("$.vara", equalTo("23423ee23")))
 				.andExpect(jsonPath("$.responsavel", equalTo("Júlio")))
-				.andExpect(jsonPath("$.prazoFinal".toString(), equalTo("25/10/2025")))
-				.andExpect(jsonPath("$.advogadoId".toString(), equalTo(advogadoId.intValue())));
+				.andExpect(jsonPath("$.prazoFinal", equalTo("25/10/2025")))
+				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())));
 		
 		assertEquals(1, processoRepository.count());
 	}

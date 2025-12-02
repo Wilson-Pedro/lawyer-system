@@ -85,7 +85,7 @@ class DemandaRespondeControllerTest {
 		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
-		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa");
+		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");
 
 		String jsonRequest = objectMapper.writeValueAsString(demandaRespondeDto);
 
@@ -94,8 +94,20 @@ class DemandaRespondeControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.resposta", equalTo(demandaRespondeDto.getResposta())));
+				.andExpect(jsonPath("$.resposta", equalTo(demandaRespondeDto.getResposta())))
+				.andExpect(jsonPath("$.respondidoPor", equalTo(demandaRespondeDto.getRespondidoPor())));
 		
 		assertEquals(1, demandaRespondeRepository.count());
+	}
+
+	void deve_buscar_DemandaResponde_por_demandaId_PeloController() throws Exception {
+
+		Long demandaId = demandaRepository.findAll().get(0).getId();
+
+		mockMvc.perform(post(URI + "/demanda/" + demandaId)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)));
 	}
 }

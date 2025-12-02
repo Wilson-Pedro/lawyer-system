@@ -57,9 +57,9 @@ class DemandaServiceTest {
 		assertNotNull(demanda);
 		assertNotNull(demanda.getId());
 		assertNotNull(demanda.getRegistro());
-		assertEquals(demanda.getDemanda(), "Atualizar Documentos");
+		assertEquals("Atualizar Documentos", demanda.getDemanda());
 		assertEquals(demanda.getEstagiario(), estagiario);
-		assertEquals(demanda.getPrazo().toString(), "2025-11-12");
+		assertEquals("2025-11-12", demanda.getPrazo().toString());
 
 		assertEquals(1, demandaRepository.count());
 	}
@@ -71,9 +71,9 @@ class DemandaServiceTest {
 		Page<DemandaDto> demandas = demandaService.buscarTodos(0, 20);
 		
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
+		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
 	}
 	
 	@Test
@@ -85,9 +85,9 @@ class DemandaServiceTest {
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorEstagiarioId(estagiarioId, 0, 20);
 		
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
+		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
 	}
 
 	@Test
@@ -99,8 +99,8 @@ class DemandaServiceTest {
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Não Atendido", 0, 20);
 
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Organizar Processos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Carlos Miguel");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-12-15");
+		assertEquals("Organizar Processos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Carlos Miguel", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-12-15", demandas.getContent().get(0).getPrazo());
 	}
 }

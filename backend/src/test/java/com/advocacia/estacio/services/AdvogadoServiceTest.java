@@ -70,8 +70,8 @@ class AdvogadoServiceTest {
 		Page<Advogado> advogados = advogadoService.buscarAdvogado(nome, 0, 10);
 		
 		assertNotNull(advogados);
-		assertEquals(advogados.getContent().size(), 1);
-		assertEquals(advogados.getContent().get(0).getNome(), "Carlos Silva");
+		assertEquals(1, advogados.getContent().size());
+		assertEquals("Carlos Silva", advogados.getContent().get(0).getNome());
 
 	}
 }

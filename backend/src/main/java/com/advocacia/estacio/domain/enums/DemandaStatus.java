@@ -38,6 +38,6 @@ public enum DemandaStatus {
 				.filter(d -> d.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new IllegalArgumentException
-						("Status inválido: " + codigo));
+						("Código inválido: " + codigo));
 	}
 }

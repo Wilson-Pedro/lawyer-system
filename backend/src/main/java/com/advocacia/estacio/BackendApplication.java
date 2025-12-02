@@ -1,28 +1,17 @@
 package com.advocacia.estacio;
 
+import com.advocacia.estacio.domain.dto.*;
+import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.dto.AtorDto;
-import com.advocacia.estacio.domain.dto.DemandaDto;
-import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.dto.MovimentoDto;
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.AdvogadoService;
-import com.advocacia.estacio.services.AssistidoService;
-import com.advocacia.estacio.services.AtorService;
-import com.advocacia.estacio.services.DemandaService;
-import com.advocacia.estacio.services.EstagiarioService;
-import com.advocacia.estacio.services.MovimentoService;
-import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
 
 @SpringBootApplication
@@ -51,6 +40,9 @@ public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired
 	DemandaService demandaService;
+
+	@Autowired
+	DemandaRespondeService demandaRespondeService;
 	
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
@@ -103,9 +95,12 @@ public class BackendApplication implements CommandLineRunner {
 		
 		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, "Atendido", "12/12/2025");
 		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
-		demandaService.salvar(demandaDto);
+		Demanda demanda = demandaService.salvar(demandaDto);
 		demandaService.salvar(demandaDto2);
-		
+
+		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
+		demandaRespondeService.salvar(demandaRespondeDto);
+
 		RegistroDto registroDto = new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
 		
 		usuarioAuthService.salvar(registroDto);

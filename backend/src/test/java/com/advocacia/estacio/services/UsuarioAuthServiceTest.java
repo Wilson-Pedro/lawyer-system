@@ -53,7 +53,7 @@ class UsuarioAuthServiceTest {
 		UsuarioAuth user = usuarioAuthRepository.findAll().get(0);
 		
 		assertEquals(user.getUsername(), registroDto.login());
-		assertEquals(user.getRole(), UserRole.ADMIN);
+		assertEquals(UserRole.ADMIN, user.getRole());
 	}
 	
 	@Test
