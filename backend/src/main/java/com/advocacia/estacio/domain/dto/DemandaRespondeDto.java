@@ -2,6 +2,9 @@ package com.advocacia.estacio.domain.dto;
 
 import com.advocacia.estacio.domain.entities.DemandaResponde;
 import com.advocacia.estacio.domain.enums.RespondidoPor;
+import com.advocacia.estacio.utils.Utils;
+
+import java.time.LocalDateTime;
 
 public class DemandaRespondeDto {
 
@@ -17,6 +20,8 @@ public class DemandaRespondeDto {
 
 	private String respondidoPor;
 
+    private String registro;
+
 	public DemandaRespondeDto() {
 	}
 
@@ -28,13 +33,13 @@ public class DemandaRespondeDto {
 		this.respondidoPor = demandaResponde.getRespondidoPor().getDescricao();
 	}
 
-	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String resposta, String respondidoPor) {
-		this.id = id;
-		this.demandaId = demandaId;
-		this.estagiarioId = estagiarioId;
-		this.resposta = resposta;
-		this.respondidoPor = respondidoPor;
-	}
+    public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String resposta, String respondidoPor) {
+        this.id = id;
+        this.demandaId = demandaId;
+        this.estagiarioId = estagiarioId;
+        this.resposta = resposta;
+        this.respondidoPor = respondidoPor;
+    }
 
 	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, RespondidoPor respondidoPor) {
 		this.id = id;
@@ -44,6 +49,11 @@ public class DemandaRespondeDto {
 		this.resposta = resposta;
 		this.respondidoPor = respondidoPor.getDescricao();
 	}
+
+    public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, RespondidoPor respondidoPor, LocalDateTime registro) {
+        this(id, demandaId, estagiarioId, estagiarioNome, resposta, respondidoPor);
+        this.registro = Utils.localDateTimeToString(registro);
+    }
 
 	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, String respondidoPor) {
 		this(demandaId, estagiarioId, id, resposta, respondidoPor);
@@ -73,4 +83,8 @@ public class DemandaRespondeDto {
 	public String getResposta() {
 		return resposta;
 	}
+
+    public String getRegistro() {
+        return registro;
+    }
 }

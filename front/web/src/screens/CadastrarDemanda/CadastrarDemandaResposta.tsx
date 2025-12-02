@@ -54,7 +54,8 @@ export default function CadastrarDemandaResposta() {
       await axios.post(`${API_URL}/demandas/responde/`, {
         demandaId,
         estagiarioId,
-        resposta
+        resposta,
+        respondidoPor: 'Estagiário'
       }, {
         headers: {
           Authorization: `Bearer ${token}`

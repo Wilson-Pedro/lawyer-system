@@ -142,6 +142,7 @@ export default function DemandasEstagiario() {
                                         </td>
                                         <td className="text-center">
                                             <button
+                                            onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
                                                 className="btn btn-sm btn-outline-primary"
                                             >
                                                 <EyeIcon />

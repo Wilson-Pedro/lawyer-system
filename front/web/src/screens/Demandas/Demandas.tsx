@@ -139,6 +139,7 @@ export default function Demandas() {
                                         </td>
                                         <td className="text-center">
                                             <button
+                                            onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <EyeIcon />

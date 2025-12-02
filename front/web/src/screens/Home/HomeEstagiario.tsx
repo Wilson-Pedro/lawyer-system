@@ -57,7 +57,7 @@ export default function HomeEstagiario() {
     // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     // { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
     // { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/${estagiarioId}`, variant: "warning" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/estagiario/${estagiarioId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

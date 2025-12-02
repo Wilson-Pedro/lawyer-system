@@ -17,7 +17,8 @@ public interface DemandaRespondeRepository extends JpaRepository<DemandaResponde
                 dr.estagiario.id,
                 dr.estagiario.nome,
                 dr.resposta,
-                dr.respondidoPor
+                dr.respondidoPor,
+                dr.registro
             )
             FROM DemandaResponde dr
             JOIN dr.demanda d
