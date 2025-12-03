@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum UserRole {
@@ -31,6 +33,6 @@ public enum UserRole {
 		return Stream.of(UserRole.values())
 				.filter(role -> role.getRole().equals(tipoAtor.getTipo()))
 				.findFirst()
-				.orElseThrow(IllegalArgumentException::new);
+				.orElseThrow(() -> new EnumException("role inválida"));
 	}
 }

@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum RespondidoPor {
@@ -25,19 +27,19 @@ public enum RespondidoPor {
 		return descricao;
 	}
 	
-	public static RespondidoPor toEnum(String status) {
+	public static RespondidoPor toEnum(String descricao) {
 		return Stream.of(RespondidoPor.values())
-				.filter(d -> d.getDescricao().equals(status))
+				.filter(d -> d.getDescricao().equals(descricao))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
-						("Descrição inválido: " + status));
+				.orElseThrow(() -> new EnumException
+						("Descrição inválido: " + descricao));
 	}
 	
 	public static RespondidoPor toEnum(Integer codigo) {
 		return Stream.of(RespondidoPor.values())
 				.filter(d -> d.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código inválido: " + codigo));
 	}
 }

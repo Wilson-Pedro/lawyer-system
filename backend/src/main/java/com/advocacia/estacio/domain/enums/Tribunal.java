@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum Tribunal {
@@ -29,7 +31,7 @@ public enum Tribunal {
 		return Stream.of(Tribunal.values())
 				.filter(p -> p.getDescricao().equals(descricao))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Tribunal inválido: " + descricao));
 	}
 	
@@ -37,7 +39,7 @@ public enum Tribunal {
 		return Stream.of(Tribunal.values())
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código de tribunal inválido: " + codigo));
 	}
 }

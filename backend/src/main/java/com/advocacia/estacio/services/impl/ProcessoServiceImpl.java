@@ -77,7 +77,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 	
 	public Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size) {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by("assunto").ascending());
-		return processoRepository.findByNumeroDoProcessoContainingIgnoreCase(numeroDoProcesso.toString(), pageable);
+		return processoRepository.findByNumeroDoProcessoContainingIgnoreCase(numeroDoProcesso, pageable);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 		Processo processo = buscarPorId(id);
 		processo.setId(id);
 		processo = dtoParaEntidade(processo, processoUpdate);
-		
+
 		Estagiario estagiario = estagiarioService.buscarPorId(processoUpdate.getEstagiarioId());
 		Advogado advogado = advogadoService.buscarPorId(processoUpdate.getAdvogadoId());
 		processo.setAdvogado(advogado);

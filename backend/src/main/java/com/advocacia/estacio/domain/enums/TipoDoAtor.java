@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum TipoDoAtor {
@@ -29,7 +31,7 @@ public enum TipoDoAtor {
 		return Stream.of(TipoDoAtor.values())
 				.filter(p -> p.getTipo().equals(tipo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Tipo de ator inválido: " + tipo));
 	}
 	
@@ -37,7 +39,7 @@ public enum TipoDoAtor {
 		return Stream.of(TipoDoAtor.values())
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código de ator inválido: " + codigo));
 	}
 }
