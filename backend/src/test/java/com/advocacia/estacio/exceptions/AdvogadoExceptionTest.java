@@ -2,6 +2,7 @@ package com.advocacia.estacio.exceptions;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,8 @@ class AdvogadoExceptionTest {
 	AdvogadoService advogadoService;
 
 	@Test
-	void deve_lancar_excecao_EntidadeNaoEncontradaException_ao_buscar_advogadoPorId() {
+	@DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao buscar advogado por Id")
+	void entidadeNaoEncontradaException() {
 		assertThrows(EntidadeNaoEncontradaException.class, () -> advogadoService.buscarPorId(70L));
 	}
 }

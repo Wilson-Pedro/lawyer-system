@@ -9,10 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.advocacia.estacio.services.EstagiarioService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,7 +43,7 @@ class EstagiarioControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/estagiarios";
+	private static final String URI = "/estagiarios";
 	
 	private static String TOKEN = "";
 	
@@ -62,7 +59,8 @@ class EstagiarioControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Estagiario_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Estagiario No Banco de Dados Pelo Controller")
+	void salver_estagiario() throws Exception {
 		
 		assertEquals(0, estagiarioRepository.count());
 		
@@ -84,7 +82,8 @@ class EstagiarioControllerTest {
 	}
 	
 	@Test
-	void deveSalvar_buscar_estagiario_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Estagiario Por Nome No Banco de Dados Pelo Controller")
+	void salvar_estagiario() throws Exception {
 		var estagiario = estagiarioRepository.findAll().get(0);
 		String nome = estagiario.getNome();
 		
@@ -99,7 +98,8 @@ class EstagiarioControllerTest {
 	}
 
 	@Test
-	void deveSalvar_buscar_estagiarioId_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Estagiario Por Id No Banco de Dados Pelo Controller")
+	void buscar_estagiario_por_id() throws Exception {
 		var email = estagiarioRepository.findAll().get(0).getEmail();
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
 

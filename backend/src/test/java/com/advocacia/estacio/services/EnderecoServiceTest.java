@@ -3,11 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -48,6 +44,7 @@ class EnderecoServiceTest {
 
 	@Test
 	@Order(2)
+	@DisplayName("Deve Salvar Endereço Pelo Service")
 	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
 		assertEquals(0, enderecoRepository.count());
 		
@@ -61,6 +58,5 @@ class EnderecoServiceTest {
 		assertEquals(12, endereco.getNumeroDaCasa());
 		assertEquals("43012-232", endereco.getCep());
 		assertEquals(1, enderecoRepository.count());
-
 	}
 }

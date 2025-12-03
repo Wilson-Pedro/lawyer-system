@@ -14,10 +14,7 @@ import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,7 +59,7 @@ class DemandaRespondeControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 
-	private static String URI = "/demandas/responde";
+	private static final String URI = "/demandas/responde";
 
 	private static String TOKEN = "";
 	
@@ -76,6 +73,7 @@ class DemandaRespondeControllerTest {
 	
 	@Test
 	@Order(2)
+	@DisplayName("Deve Salvar Demanda Responde No Banco de Dados Pelo Controller")
 	void deveSalvar_DemandaResponde_NoBancoDeDados_PeloController() throws Exception {
 
 		assertEquals(0, demandaRespondeRepository.count());
@@ -100,11 +98,13 @@ class DemandaRespondeControllerTest {
 		assertEquals(1, demandaRespondeRepository.count());
 	}
 
+	@Test
+	@DisplayName("Deve Buscar Demanda Por Id No Banco de Dados Pelo Controller")
 	void deve_buscar_DemandaResponde_por_demandaId_PeloController() throws Exception {
 
 		Long demandaId = demandaRepository.findAll().get(0).getId();
 
-		mockMvc.perform(post(URI + "/demanda/" + demandaId)
+		mockMvc.perform(get(URI + "/demanda/" + demandaId)
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

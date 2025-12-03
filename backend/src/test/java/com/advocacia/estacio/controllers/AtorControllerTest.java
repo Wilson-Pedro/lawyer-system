@@ -6,10 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +39,7 @@ class AtorControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/atores";
+	private static final String URI = "/atores";
 	
 	private static String TOKEN = "";
 	
@@ -56,7 +53,8 @@ class AtorControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Ator_Coordenador_NoBancoDeDados_Pelo_Controller() throws Exception {
+	@DisplayName("Deve Salvar Coordenador No Banco de Dados Pelo Controller")
+	void salvar_coordenador() throws Exception {
 		
 		assertEquals(0, atorRepository.count());
 		
@@ -78,7 +76,8 @@ class AtorControllerTest {
 	
 	@Test
 	@Order(3)
-	void deveSalvar_Ator_Secretario_NoBancoDeDados_Pelo_Controller() throws Exception {
+	@DisplayName("Deve Salvar Secretário No Banco de Dados Pelo Controller")
+	void salvar_secretario() throws Exception {
 		
 		AtorDto atorDto = testUtil.getAtores().get(1);
 		
@@ -98,7 +97,8 @@ class AtorControllerTest {
 	
 	@Test
 	@Order(4)
-	void deveSalvar_Ator_Professor_NoBancoDeDados_Pelo_Controller() throws Exception {
+	@DisplayName("Deve Salvar Professor No Banco de Dados Pelo Controller")
+	void salvar_professor() throws Exception {
 		
 		AtorDto atorDto = testUtil.getAtores().get(2);
 		

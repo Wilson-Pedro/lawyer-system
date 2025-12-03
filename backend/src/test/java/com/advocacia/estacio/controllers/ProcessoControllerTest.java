@@ -9,10 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,7 +54,7 @@ class ProcessoControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/processos";
+	private static final String URI = "/processos";
 	
 	private static String TOKEN = "";
 	
@@ -71,7 +68,8 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Processo_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Processo No Banco de Dados Pelo Controller")
+	void salvar_processo() throws Exception {
 		
 		assertEquals(0, processoRepository.count());
 		
@@ -100,7 +98,8 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(3)
-	void deveBuscar_Processos_PorStatusDoProcesso_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Controller")
+	void buscar_processos_por_status() throws Exception {
 		
 		mockMvc.perform(get(URI + "/statusDoProcesso/TRAMITANDO")
 				.header("Authorization", "Bearer " + TOKEN)
@@ -117,7 +116,8 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(4)
-	void deveBuscar_todos_Processos_PorStatusDoProcesso_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Todos Os Processos No Banco de Dados Pelo Controller")
+	void buscar_todos_os_processos() throws Exception {
 		
 		mockMvc.perform(get(URI + "/statusDoProcesso/todos")
 				.header("Authorization", "Bearer " + TOKEN)
@@ -128,7 +128,8 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(5)
-	void deveBuscar_Processo_pelo_NumeroDoProcesso_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Processo Por Numero Do Processo No Banco de Dados Pelo Controller")
+	void buscar_processo_por_numero_do_processo() throws Exception {
 		
 		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
 		
@@ -143,7 +144,8 @@ class ProcessoControllerTest {
 	
 	@Test
 	@Order(6)
-	void deveAtualzar_Estagiario_noProcesso_PeloService() throws Exception {
+	@DisplayName("Deve Atualizar Estagiario No Processo Pelo Controller")
+	void atualizar_estagiario_no_processo() throws Exception {
 		
 		assertEquals(1, processoRepository.count());
 		

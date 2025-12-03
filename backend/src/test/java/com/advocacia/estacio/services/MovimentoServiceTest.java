@@ -3,10 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -50,7 +47,8 @@ class MovimentoServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Processo_NoBancoDeDadosPeloService() {
+	@DisplayName("Deve Salvar Movimento No Banco de Dados Pelo Service")
+	void salvar_movimento() {
 		assertEquals(0, movimentoRepository.count());
 		
 		Long assistidoId = assistidoService.salvar(testUtil.getAssistidoDto()).getId();

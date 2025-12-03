@@ -8,10 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +22,6 @@ import com.advocacia.estacio.repositories.MovimentoRepository;
 import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
-import com.advocacia.estacio.services.MovimentoService;
 import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,9 +47,6 @@ class MovimentoControllerTest {
 	AssistidoService assistidoService;
 	
 	@Autowired
-	MovimentoService movimentoService;
-	
-	@Autowired
 	EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
@@ -65,7 +58,7 @@ class MovimentoControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/movimentos";
+	private static final String URI = "/movimentos";
 	
 	private static String TOKEN = "";
 	
@@ -79,7 +72,8 @@ class MovimentoControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Processo_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Movimento No Banco de Dados Pelo Controller")
+	void salvar_movimento() throws Exception {
 		
 		assertEquals(0, movimentoRepository.count());
 		
@@ -109,7 +103,8 @@ class MovimentoControllerTest {
 	
 	@Test
 	@Order(3)
-	void deveBuscar_Processo_pelo_numeroDoProcesso_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Movimento Por Numero do Processo No Banco de Dados Pelo Controller")
+	void buscar_movimento_por_numero_do_processo() throws Exception {
 		
 		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
 		

@@ -3,10 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -40,7 +37,8 @@ class AtorServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Ator_Coordenador_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Coordenador No Banco De Dados Pelo Service")
+	void salvar_coordenador() {
 		assertEquals(0, atorRepository.count());
 		assertEquals(0, usuarioAuthRepository.count());
 		
@@ -62,7 +60,8 @@ class AtorServiceTest {
 
 	@Test
 	@Order(3)
-	void deveSalvar_Ator_Secretario_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Secretario No Banco De Dados Pelo Service")
+	void salvar_secretario() {
 		
 		Ator ator = atorService.salvar(testUtil.getAtores().get(1));
 		
@@ -82,7 +81,8 @@ class AtorServiceTest {
 	
 	@Test
 	@Order(4)
-	void deveSalvar_Ator_Professor_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Professor No Banco De Dados Pelo Service")
+	void salvar_professor() {
 		
 		Ator ator = atorService.salvar(testUtil.getAtores().get(2));
 		

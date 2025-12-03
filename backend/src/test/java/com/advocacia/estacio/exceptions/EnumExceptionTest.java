@@ -2,6 +2,7 @@ package com.advocacia.estacio.exceptions;
 
 import com.advocacia.estacio.domain.enums.*;
 import com.advocacia.estacio.services.AdvogadoService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,89 +14,105 @@ class EnumExceptionTest {
 
 	// ÁREA DO DIREITO
 	@Test
-	void deve_lancar_excecao_EnumException_para_AreaDoDireito_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para AreaDoDireito por código")
+	void EnumException_AreaDireito_codigo() {
 		assertThrows(EnumException.class, () -> AreaDoDireito.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_AreaDoDireito_por_descricao() {
+	@DisplayName("Deve lançar exceção EnumException para AreaDoDireito por descricao")
+	void EnumException_AreaDireito_descricao() {
 		assertThrows(EnumException.class, () -> AreaDoDireito.toEnum("error"));
 	}
 
 	// DEMANDA STATUS
 	@Test
-	void deve_lancar_excecao_EnumException_para_DemandaStatus_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
+	void EnumException_DemandaStatus_codigo() {
 		assertThrows(EnumException.class, () -> DemandaStatus.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_DemandaStatus_por_status() {
+	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por status")
+	void EnumException_DemandaStatus_status() {
 		assertThrows(EnumException.class, () -> DemandaStatus.toEnum("error"));
 	}
 
 	// ESTADO CIVIL
 	@Test
-	void deve_lancar_excecao_EnumException_para_EstadoCivil_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para EstadoCivil por código")
+	void EnumException_EstadoCivil_codigo() {
 		assertThrows(EnumException.class, () -> EstadoCivil.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_EstadoCivil_por_estado() {
+	@DisplayName("Deve lançar exceção EnumException para EstadoCivil por estado")
+	void EnumException_EstadoCivil_estado() {
 		assertThrows(EnumException.class, () -> EstadoCivil.toEnum("error"));
 	}
 
 	// PERIODO ESTADO
 	@Test
-	void deve_lancar_excecao_EnumException_para_PeriodoEstagio_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para PeriodoEstagio por codigo")
+	void EnumException_PeriodoEstagio_codigo() {
 		assertThrows(EnumException.class, () -> PeriodoEstagio.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_PeriodoEstagio_por_tipo() {
+	@DisplayName("Deve lançar exceção EnumException para PeriodoEstagio por tipo")
+	void EnumException_PeriodoEstagio_tipo() {
 		assertThrows(EnumException.class, () -> PeriodoEstagio.toEnum("error"));
 	}
 
 	// RESPONDIDO POR
 	@Test
-	void deve_lancar_excecao_EnumException_para_RespondidoPor_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para RespondidoPor por codigo")
+	void EnumException_RespondidoPor_codigo() {
 		assertThrows(EnumException.class, () -> RespondidoPor.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_RespondidoPor_por_tipo() {
+	@DisplayName("Deve lançar exceção EnumException para RespondidoPor por tipo")
+	void EnumException_RespondidoPor_tipo()  {
 		assertThrows(EnumException.class, () -> RespondidoPor.toEnum("error"));
 	}
 
 	// STATUS PROCESSO
 	@Test
-	void deve_lancar_excecao_EnumException_para_StatusProcesso_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para StatusProcesso por tipo")
+	void EnumException_StatusProcesso_codigo() {
 		assertThrows(EnumException.class, () -> StatusProcesso.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_StatusProcesso_por_tipo() {
+	@DisplayName("Deve lançar exceção EnumException para StatusProcesso por tipo")
+	void EnumException_StatusProcesso_tipo() {
 		assertThrows(EnumException.class, () -> StatusProcesso.toEnum("error"));
 	}
 
 	// TIPO DO ATOR
 	@Test
-	void deve_lancar_excecao_EnumException_para_TipoDoAtor_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para TipoDoAtor por codigo")
+	void EnumException_TipoDoAtor_codigo() {
 		assertThrows(EnumException.class, () -> TipoDoAtor.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_TipoDoAtor_por_tipo() {
+	@DisplayName("Deve lançar exceção EnumException para TipoDoAtor por tipo")
+	void EnumException_TipoDoAtor_tipo() {
 		assertThrows(EnumException.class, () -> TipoDoAtor.toEnum("error"));
 	}
 
 	// TRIBUNAL
 	@Test
-	void deve_lancar_excecao_EnumException_para_Tribunal_por_codigo() {
+	@DisplayName("Deve lançar exceção EnumException para Tribunal por codigo")
+	void EnumException_Tribunal_codigo() {
 		assertThrows(EnumException.class, () -> Tribunal.toEnum(6));
 	}
 
 	@Test
-	void deve_lancar_excecao_EnumException_para_Tribunal_por_tipo() {
+	@DisplayName("Deve lançar exceção EnumException para Tribunal por tipo")
+	void EnumException_Tribunal_tipo() {
 		assertThrows(EnumException.class, () -> Tribunal.toEnum("error"));
 	}
 }

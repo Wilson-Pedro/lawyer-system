@@ -1,13 +1,9 @@
 package com.advocacia.estacio.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.advocacia.estacio.domain.records.EstagiarioMinDto;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -44,7 +40,8 @@ class EstagiarioServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Estagiario_NoBancoDeDadosPeloService() {
+	@DisplayName("Deve Salvar Estagiario No Banco de Dados Pelo Service")
+	void salvar_estagiario() {
 		assertEquals(0, estagiarioRepository.count());
 		assertEquals(0, usuarioAuthRepository.count());
 		
@@ -63,7 +60,8 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
-	void deve_buscar_Estagiario_peloId_PeloService() {
+	@DisplayName("Deve Buscar Estagiario Por Id No Banco de Dados Pelo Service")
+	void buscar_estagiario_por_id() {
 
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
 		Estagiario estagiario = estagiarioService.buscarPorId(estagiarioId);
@@ -75,7 +73,8 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
-	void deve_buscar_Estagiario_pelo_nome_PeloService() {
+	@DisplayName("Deve Buscar Estagiario Por Nome No Banco de Dados Pelo Service")
+	void buscar_estagiario_por_nome() {
 
 		Page<Estagiario> estagiarios = estagiarioService.buscarEstagiario("dro", 0, 20);
 
@@ -86,6 +85,7 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
+	@DisplayName("Deve Buscar Estagiario Id Por Email No Banco de Dados Pelo Service")
 	void deve_buscar_Estagiario_id_pelo_email_PeloService() {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);

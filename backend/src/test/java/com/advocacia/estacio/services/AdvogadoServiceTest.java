@@ -3,11 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -45,7 +41,8 @@ class AdvogadoServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Advogado_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Advogado No Banco De Dados Pelo Service")
+	void salvar_advogado() {
 		assertEquals(0, advogadoRepository.count());
 		
 		Advogado advogado = advogadoService.salvar(advogadoDto);
@@ -63,7 +60,8 @@ class AdvogadoServiceTest {
 	
 	@Test
 	@Order(3)
-	void deveBuscar_Advogado_peloNome_PeloService() {
+	@DisplayName("Deve Buscar Advogado Por Nome Pelo Service")
+	void buscar_advogado_pelo_nome() {
 		
 		String nome = "il";
 		
@@ -72,6 +70,5 @@ class AdvogadoServiceTest {
 		assertNotNull(advogados);
 		assertEquals(1, advogados.getContent().size());
 		assertEquals("Carlos Silva", advogados.getContent().get(0).getNome());
-
 	}
 }

@@ -3,11 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -50,7 +46,8 @@ class AssistidoServiceServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Assistido_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Assistido No Banco De Dados Pelo Service")
+	void salvar_assistido() {
 		assertEquals(0, assistidoRepository.count());
 		
 		Assistido assistido = assistidoService.salvar(assistidoDto);
@@ -72,11 +69,11 @@ class AssistidoServiceServiceTest {
 	
 	@Test
 	@Order(3)
-	void deveSalvar_buscar_assistido_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Assistido Por Nome Pelo Service")
+	void buscar_assistido_por_nome() throws Exception {
 		
 		Page<Assistido> pages = assistidoService.buscarAssistido("Car", 0, 20);
-		assertEquals(pages.getContent().size(), 1);
-		assertEquals(pages.getContent().get(0).getNome(), "Ana Carla");
-		
+		assertEquals(1, pages.getContent().size());
+		assertEquals("Ana Carla", pages.getContent().get(0).getNome());
 	}
 }

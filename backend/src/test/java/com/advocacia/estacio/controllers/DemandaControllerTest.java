@@ -9,10 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,7 +52,7 @@ class DemandaControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/demandas";
+	private static final String URI = "/demandas";
 	
 	private static String TOKEN = "";
 	
@@ -69,7 +66,8 @@ class DemandaControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Demanda_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Demanda No Banco de Dados Pelo Controller")
+	void salvar_demanda() throws Exception {
 		
 		assertEquals(0, demandaRepository.count());
 		
@@ -95,7 +93,8 @@ class DemandaControllerTest {
 
 	@Test
 	@Order(3)
-	void deve_buscar_Demandas_pelo_status_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Controller")
+	void buscar_demanda_por_status() throws Exception {
 
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
 		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
@@ -110,7 +109,8 @@ class DemandaControllerTest {
 	}
 
 	@Test
-	void deve_buscar_todas_as_Demandas_pelo_status_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Todas as Demanda Pelo Status No Banco de Dados Pelo Controller")
+	void buscar_todas_as_demandas() throws Exception {
 
 		mockMvc.perform(get(URI + "/status/todos?page=0&size=20")
 						.header("Authorization", "Bearer " + TOKEN)
@@ -120,7 +120,8 @@ class DemandaControllerTest {
 	}
 	
 	@Test
-	void deve_buscar_Demandas_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Demanda No Banco de Dados Pelo Controller")
+	void buscar_demandas() throws Exception {
 		
 		mockMvc.perform(get(URI)
 				.header("Authorization", "Bearer " + TOKEN)
@@ -130,7 +131,8 @@ class DemandaControllerTest {
 	}
 	
 	@Test
-	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Demanda Por Estagiario Id No Banco de Dados Pelo Controller")
+	void buscar_demandas_por_estagiarioId() throws Exception {
 		
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
 		

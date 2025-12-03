@@ -3,10 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,7 +41,8 @@ class TokenServiceTest {
 
 	@Test
 	@Order(2)
-	void deve_gerar_token() {
+	@DisplayName("Deve gerar Token")
+	void gerar_token() {
 		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
 		
 		RegistroDto dto = testUtil.getRegistroDto();
@@ -60,7 +58,8 @@ class TokenServiceTest {
 	
 	@Test
 	@Order(3)
-	void deve_validar_token() {
+	@DisplayName("Deve validar Token")
+	void validar_token() {
 		String login = tokenService.validateToken(TOKEN);
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);

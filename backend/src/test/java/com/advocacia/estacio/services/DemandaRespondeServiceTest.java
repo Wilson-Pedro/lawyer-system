@@ -9,10 +9,7 @@ import com.advocacia.estacio.domain.enums.RespondidoPor;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -47,7 +44,8 @@ class DemandaRespondeServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_DemandaResponde_NoBancoDeDadosPeloService() {
+	@DisplayName("Deve Salvar Demanda Resposta No Banco de Dados Pelo Service")
+	void salvar_demanda_resposta() {
 		
 		assertEquals(0, demandaRespondeRepository.count());
 		
@@ -70,7 +68,8 @@ class DemandaRespondeServiceTest {
 	}
 
 	@Test
-	void deve_buscar_demandasRespostas_por_demandaId() {
+	@DisplayName("Deve Buscar Demanda Por Id No Banco de Dados Pelo Service")
+	void buscar_demanda_por_demandaId() {
 
 		Long demandaId = demandaRespondeRepository.findAll().get(0).getDemanda().getId();
 		Page<DemandaRespondeDto> pages = demandaRespondeService.buscarDemandasRespostasPorDemandaId(demandaId, 0, 20);

@@ -2,10 +2,7 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -53,7 +50,8 @@ class ProcessoServiceTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Processo_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Processo No Banco de Dados Pelo Service")
+	void salvar_processo() {
 		assertEquals(0, processoRepository.count());
 		
 		Long assistidoId = assistidoService.salvar(testUtil.getAssistidoDto()).getId();
@@ -76,7 +74,8 @@ class ProcessoServiceTest {
 	}
 	
 	@Test
-	void deveBuscar_Processo_PorStatusDoProcesso_PeloService() {
+	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Service")
+	void buscar_processos_por_status() {
 		
 		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
 		
@@ -85,7 +84,8 @@ class ProcessoServiceTest {
 	}
 	
 	@Test
-	void deveBuscar_Processo_Pelo_NumeroDoProcesso_PeloService() {
+	@DisplayName("Deve Buscar Processo Por Numero Do Processo No Banco de Dados Pelo Status")
+	void buscar_processo_por_numero_do_processo() {
 		
 		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso().toString();
 		Page<Processo> processos = processoService.buscarProcesso(numeroDoProcesso, 0, 10);
@@ -96,7 +96,8 @@ class ProcessoServiceTest {
 	}
 	
 	@Test
-	void deveAtualzar_Estagiario_noProcesso_PeloService() {
+	@DisplayName("Deve Atualizar Estagiario No Processo Pelo Service")
+	void atualizar_estagiario_no_processo() {
 		
 		assertEquals(1, processoRepository.count());
 		
@@ -108,7 +109,7 @@ class ProcessoServiceTest {
 		ProcessoUpdate dto = new ProcessoUpdate(processo.getAssistido().getId(), 
 				"23232323", "32323232", "Seguro de celular", "132132", "11/12/2025", advogado.getNome(), 
 				advogado.getId(), estagiario.getId(), "Previdenciário", "Federal", 
-				"Suspenso", null);
+				"Tramitando", null);
 		
 		processo = processoService.atualizarProcesso(processo.getId(), dto);
 		
@@ -123,7 +124,7 @@ class ProcessoServiceTest {
 		assertEquals(processo.getEstagiario(), estagiario);
 		assertEquals("Previdenciário", processo.getAreaDoDireito().getDescricao());
 		assertEquals("Federal", processo.getTribunal().getDescricao());
-		assertEquals("Suspenso", processo.getStatusDoProcesso().getStatus());
+		assertEquals("Tramitando", processo.getStatusDoProcesso().getStatus());
 		
 		assertEquals(1, processoRepository.count());
 	}

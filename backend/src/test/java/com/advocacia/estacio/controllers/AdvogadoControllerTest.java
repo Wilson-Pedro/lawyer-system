@@ -8,10 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -50,7 +47,7 @@ class AdvogadoControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 	
-	private static String URI = "/advogados";
+	private static final String URI = "/advogados";
 	
 	private static String TOKEN = "";
 	
@@ -64,7 +61,8 @@ class AdvogadoControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Advogado_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Advogado No Banco de Dados Pelo Controller")
+	void salvar_advogado() throws Exception {
 		
 		assertEquals(0, advogadoRepository.count());
 		
@@ -91,7 +89,8 @@ class AdvogadoControllerTest {
 	
 	@Test
 	@Order(3)
-	void deveBuscar_Advogado_peloNome_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Advogado por Nome Pelo Controller")
+	void buscar_advogado_por_nome() throws Exception {
 		
 		String nome = "il";
 		

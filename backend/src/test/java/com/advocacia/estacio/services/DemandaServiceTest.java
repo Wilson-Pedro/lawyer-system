@@ -3,10 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -45,7 +42,8 @@ class DemandaServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Demanda_NoBancoDeDadosPeloService() {
+	@DisplayName("Deve Salvar Demanda No Banco de Dados Pelo Service")
+	void salvar_demanda() {
 		
 		assertEquals(0, demandaRepository.count());
 		
@@ -66,7 +64,8 @@ class DemandaServiceTest {
 	
 	@Test
 	@Order(3)
-	void deve_buscar_Demandas_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
+	void buscar_demanda_por_status() {
 		
 		Page<DemandaDto> demandas = demandaService.buscarTodos(0, 20);
 		
@@ -78,7 +77,8 @@ class DemandaServiceTest {
 	
 	@Test
 	@Order(4)
-	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Buscar Demandas Pelo Estário Id No Banco de Dados Pelo Service")
+	void buscar_demandas_por_estagiarioId() {
 
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
 		
@@ -91,6 +91,7 @@ class DemandaServiceTest {
 	}
 
 	@Test
+	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
 	void deve_buscar_Demandas_por_status_NoBancoDeDados_PeloService() {
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
 		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");

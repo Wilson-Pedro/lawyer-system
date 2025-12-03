@@ -8,11 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,7 +43,7 @@ class AssistidoControllerTest {
 	
 	AssistidoDto assistidoDto;
 	
-	private static String URI = "/assistidos";
+	private static final String URI = "/assistidos";
 	
 	private static String TOKEN = "";
 	
@@ -65,7 +61,8 @@ class AssistidoControllerTest {
 	
 	@Test
 	@Order(2)
-	void deveSalvar_Assistido_NoBancoDeDados_PeloController() throws Exception {
+	@DisplayName("Deve Salvar Assistido No Banco de Dados Pelo Controller")
+	void salvar_assistido() throws Exception {
 		
 		assertEquals(0, assistidoRepository.count());
 		
@@ -95,7 +92,8 @@ class AssistidoControllerTest {
 	
 	@Test
 	@Order(3)
-	void deveSalvar_buscar_assistido_PeloController() throws Exception {
+	@DisplayName("Deve Buscar Assistido No Banco de Dados Por Nome Pelo Controller")
+	void buscar_por_nome() throws Exception {
 		
 		String nome = "Car";
 		

@@ -3,11 +3,7 @@ package com.advocacia.estacio.exceptions;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -38,17 +34,20 @@ class ProcessoExceptionTest {
 	}
 
 	@Test
-	void deve_lancar_excecao_EntidadeNaoEncontradaException_ao_buscar_processoPorId() {
+	@DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao buscar Processo por Id")
+	void entidadeNaoEncontradaException_por_id() {
 		assertThrows(EntidadeNaoEncontradaException.class, () -> processoService.buscarPorId(70L));
 	}
 	
 	@Test
-	void deve_lancar_excecao_EntidadeNaoEncontradaException_ao_buscar_processoPorNumeroDoProcesso() {
+	@DisplayName("Deve lançar exceção EntidadeNaoEncontradaException ao buscar Processo por Número Do Processo")
+	void entidadeNaoEncontradaException_por_numero_do_processo() {
 		assertThrows(EntidadeNaoEncontradaException.class, () -> processoService.buscarPorNumeroDoProcesso("123432"));
 	}
 	
 	@Test
-	void deve_lancar_excecao_NumeroDoProcessoExistenteException_ao_tentar_validar_NumeroDeProcesso_ja_cadastrado() {
+	@DisplayName("Deve lançar exceção NumeroDoProcessoExistenteException ao tentar validar Numero Do Processo já cadastrado")
+	void NumeroDoProcessoExistenteException_apos_validar() {
 
 		Processo processo = processoRepository.save(testUtil.getProcesso());
 		
@@ -57,7 +56,8 @@ class ProcessoExceptionTest {
 	}
 	
 	@Test
-	void deve_lancar_excecao_NumeroDoProcessoExistenteException_ao_tentar_salvar_NumeroDeProcesso_ja_cadastrado() {
+	@DisplayName("Deve lançar exceção NumeroDoProcessoExistenteException ao tentar salvar Processo Com Numero Do Processo já cadastrado")
+	void NumeroDoProcessoExistenteException_apos_salvar() {
 
 		Processo processo = processoRepository.save(testUtil.getProcesso());
 		ProcessoRequestDto request = new ProcessoRequestDto(processo);
