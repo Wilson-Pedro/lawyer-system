@@ -88,7 +88,6 @@ class AdvogadoControllerTest {
 	}
 	
 	@Test
-	@Order(3)
 	@DisplayName("Deve Buscar Advogado por Nome Pelo Controller")
 	void buscar_advogado_por_nome() throws Exception {
 		
@@ -101,7 +100,17 @@ class AdvogadoControllerTest {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("content[0].nome").value("Carlos Silva"));
-		
-		assertEquals(1, advogadoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Todos os Advogados Pelo Controller")
+	void buscar_todos_os_Advogados() throws Exception {
+
+		mockMvc.perform(get(URI)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1));
 	}
 }

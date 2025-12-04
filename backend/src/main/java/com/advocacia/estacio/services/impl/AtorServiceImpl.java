@@ -1,6 +1,10 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
@@ -21,7 +25,7 @@ public class AtorServiceImpl implements AtorService {
 	
 	@Autowired
 	private UsuarioAuthService usuarioAuthService;
-	
+
 	public Ator salvar(AtorDto atorDto) {
 		Ator ator = AtorFactory.criarAtor(atorDto.getTipoAtor());
 		ator.setNome(atorDto.getNome());
@@ -36,4 +40,10 @@ public class AtorServiceImpl implements AtorService {
 		ator.setUsuarioAuth(auth);
 		return atorRepository.save(ator);
 	}
+
+//	@Autowired
+//	public Page<ResponseMinDto> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size) {
+//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+//		return atorRepository.buscarTodosCoordenadores(TipoDoAtor.toEnum(tipoDoAtor), pageable);
+//	}
 }

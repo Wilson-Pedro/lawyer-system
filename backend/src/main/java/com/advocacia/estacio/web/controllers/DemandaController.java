@@ -45,7 +45,7 @@ public class DemandaController {
 			@PathVariable String demandaStatus,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		if(demandaStatus.toLowerCase().equals("todos")) {
+		if(demandaStatus.equalsIgnoreCase("todos")) {
 			return ResponseEntity.ok(new PageResponseDto<>(demandaService.buscarTodos(page, size)));
 		}
 		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorStatus(demandaStatus, page, size);

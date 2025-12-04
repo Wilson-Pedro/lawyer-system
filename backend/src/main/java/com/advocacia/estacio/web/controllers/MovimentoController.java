@@ -39,7 +39,7 @@ public class MovimentoController {
 			@RequestParam(defaultValue = "10") int size
 			) {
 		Page<Movimento> pages = movimentoService.buscarMovimentosPorProcesso(numeroDoProcesso, page, size);
-		Page<MovimentoResponseDto> pagesDto = pages.map(x -> new MovimentoResponseDto(x));
+		Page<MovimentoResponseDto> pagesDto = pages.map(MovimentoResponseDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 }

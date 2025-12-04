@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,9 +34,15 @@ public class AssistidoServiceImpl implements AssistidoService {
 	}
 	
 	@Override
-	public Page<Assistido> buscarAssistido(String nome, int page, int size) {
+	public Page<Assistido> buscarAssistidoPorNome(String nome, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
 		return assistidoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+	}
+
+	@Override
+	public Page<ResponseMinDto> buscarTodos(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+		return assistidoRepository.buscarTodos(pageable);
 	}
 
 	@Override

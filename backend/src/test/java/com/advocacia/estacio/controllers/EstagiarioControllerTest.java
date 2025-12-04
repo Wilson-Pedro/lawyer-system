@@ -111,4 +111,16 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.id").value(estagiario.getId().intValue()))
 				.andExpect(jsonPath("$.nome").value(estagiario.getNome()));
 	}
+
+	@Test
+	@DisplayName("Deve Buscar Todos os Estagiarios Pelo Controller")
+	void buscar_todos_os_Estagiarios() throws Exception {
+
+		mockMvc.perform(get(URI)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1));
+	}
 }

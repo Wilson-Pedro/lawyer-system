@@ -1,7 +1,9 @@
 package com.advocacia.estacio.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,15 @@ class EstagiarioServiceTest {
 
 		assertEquals(estagiario.getId(), dto.id());
 		assertEquals(estagiario.getNome(), dto.nome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Estagiarios")
+	void buscar_todos() {
+
+		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
 	}
 }

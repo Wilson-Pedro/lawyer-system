@@ -91,7 +91,6 @@ class AssistidoControllerTest {
 	}
 	
 	@Test
-	@Order(3)
 	@DisplayName("Deve Buscar Assistido No Banco de Dados Por Nome Pelo Controller")
 	void buscar_por_nome() throws Exception {
 		
@@ -105,5 +104,17 @@ class AssistidoControllerTest {
 		.andExpect(jsonPath("$.content.length()").value(1))
 		.andExpect(jsonPath("$.content[0].nome").value("Ana Carla"));
 		
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Todos os Assistidos Pelo Controller")
+	void buscar_todos_os_Assistidos() throws Exception {
+
+		mockMvc.perform(get(URI)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.content.length()").value(1));
 	}
 }

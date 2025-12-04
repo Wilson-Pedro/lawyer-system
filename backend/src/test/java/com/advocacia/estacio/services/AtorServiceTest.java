@@ -1,8 +1,6 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +10,9 @@ import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
+import org.springframework.data.domain.Page;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -99,4 +100,15 @@ class AtorServiceTest {
 		assertEquals(3, usuarioAuthRepository.count());
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
+
+//	@Test
+//	@DisplayName("Deve buscar Todos os Assistidos")
+//	void buscar_todos() {
+//
+//		Page<ResponseMinDto> pages = atorService.buscarTodosPorTipoDoAtor("Coordenador do curso",0, 20);
+//
+//		assertFalse(pages.isEmpty());
+//		assertEquals(1, pages.getContent().size());
+//		assertEquals("Roberto Carlos", pages.getContent().get(0).getNome("Roberto Carlos"));
+//	}
 }

@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,14 @@ public class EstagiarioController {
 		Estagiario estagiario = estagiarioService.salvar(estagiarioDto);
 		return ResponseEntity.status(201).body(new EstagiarioDto(estagiario));
 	}
+
+	@GetMapping("")
+	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodos(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
 	
 	@GetMapping("/buscar/{nome}")
 	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarEstagiario(
@@ -38,7 +47,7 @@ public class EstagiarioController {
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<Estagiario> pages = estagiarioService.buscarEstagiario(nome, page, size);
-		Page<EstagiarioDto> pagesDto = pages.map(x -> new EstagiarioDto(x));
+		Page<EstagiarioDto> pagesDto = pages.map(EstagiarioDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 	

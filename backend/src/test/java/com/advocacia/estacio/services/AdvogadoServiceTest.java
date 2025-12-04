@@ -1,8 +1,6 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +10,8 @@ import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,7 +59,6 @@ class AdvogadoServiceTest {
 	}
 	
 	@Test
-	@Order(3)
 	@DisplayName("Deve Buscar Advogado Por Nome Pelo Service")
 	void buscar_advogado_pelo_nome() {
 		
@@ -70,5 +69,15 @@ class AdvogadoServiceTest {
 		assertNotNull(advogados);
 		assertEquals(1, advogados.getContent().size());
 		assertEquals("Carlos Silva", advogados.getContent().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os advogados")
+	void buscar_todos() {
+
+		Page<ResponseMinDto> pages = advogadoService.buscarTodos(0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
 	}
 }

@@ -1,8 +1,6 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,12 +9,10 @@ import org.springframework.data.domain.Page;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.enums.EstadoCivil;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -68,12 +64,21 @@ class AssistidoServiceServiceTest {
 	}
 	
 	@Test
-	@Order(3)
 	@DisplayName("Deve Buscar Assistido Por Nome Pelo Service")
 	void buscar_assistido_por_nome() throws Exception {
 		
-		Page<Assistido> pages = assistidoService.buscarAssistido("Car", 0, 20);
+		Page<Assistido> pages = assistidoService.buscarAssistidoPorNome("Car", 0, 20);
 		assertEquals(1, pages.getContent().size());
 		assertEquals("Ana Carla", pages.getContent().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Assistidos")
+	void buscar_todos() {
+
+		Page<ResponseMinDto> pages = assistidoService.buscarTodos(0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
 	}
 }
