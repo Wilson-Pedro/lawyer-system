@@ -1,17 +1,14 @@
 package com.advocacia.estacio.controllers;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.dto.DemandaRespondeDto;
 import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.DemandaResponde;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.DemandaRespondeService;
+
 import com.advocacia.estacio.services.DemandaService;
-import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
@@ -40,16 +37,11 @@ class DemandaRespondeControllerTest {
 	EstagiarioRepository estagiarioRepository;
 
 	@Autowired
+
 	DemandaRespondeRepository demandaRespondeRepository;
 
 	@Autowired
-	DemandaRespondeService demandaRespondeService;
-
-	@Autowired
 	DemandaService demandaService;
-	
-	AdvogadoDto advogadoDto;
-	
 	@Autowired
 	TestUtil testUtil;
 	

@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,12 +22,6 @@ class AuthenticationControllerTest {
 	
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
-	
-	@Autowired
-	AuthenticationManager authenticationManager;
-	
-	@Autowired
-	TokenService tokenService;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -64,5 +56,4 @@ class AuthenticationControllerTest {
 				.content(jsonRequest))
 				.andExpect(status().isOk());
 	}
-
 }

@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.repositories.DemandaRepository;
@@ -40,8 +39,6 @@ class DemandaControllerTest {
 
 	@Autowired
 	DemandaService demandaService;
-	
-	AdvogadoDto advogadoDto;
 	
 	@Autowired
 	TestUtil testUtil;

@@ -25,12 +25,13 @@ public class AtorController {
 		return ResponseEntity.status(201).body(new AtorDto(ator));
 	}
 
-//	@GetMapping("/{tipoAtor}")
-//	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodosPorTipoAtor(
-//			@PathVariable String tipoAtor,
-//			@RequestParam(defaultValue = "0") int page,
-//			@RequestParam(defaultValue = "20") int size) {
-//		Page<ResponseMinDto> pages = atorService.buscarTodosPorTipoDoAtor(tipoAtor, page, size);
-//		return ResponseEntity.ok(new PageResponseDto<>(pages));
-//	}
+	@GetMapping("/{tipoAtor}")
+	public ResponseEntity<PageResponseDto<Ator>> buscarTodosPorTipoAtor(
+			@PathVariable String tipoAtor,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		Page<Ator> pages = atorService.buscarTodosPorTipoDoAtor(tipoAtor, page, size);
+		Page<ResponseMinDto> pagesDto = pages.map(ResponseMinDto::new);
+		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
 }

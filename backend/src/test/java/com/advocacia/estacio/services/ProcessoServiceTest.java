@@ -87,7 +87,7 @@ class ProcessoServiceTest {
 	@DisplayName("Deve Buscar Processo Por Numero Do Processo No Banco de Dados Pelo Status")
 	void buscar_processo_por_numero_do_processo() {
 		
-		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso().toString();
+		String numeroDoProcesso = processoRepository.findAll().get(0).getNumeroDoProcesso();
 		Page<Processo> processos = processoService.buscarProcesso(numeroDoProcesso, 0, 10);
 		
 		assertNotNull(processos);

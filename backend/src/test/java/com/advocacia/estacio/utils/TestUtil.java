@@ -77,13 +77,7 @@ public class TestUtil {
 	@Autowired
 	TokenService tokenService;
 
-	private Estagiario estagiario;
-	
-	private Assistido assistido;
-	
-	private Advogado advogado;
-	
-	public void deleteAll() {
+    public void deleteAll() {
 		demandaRespondeRepository.deleteAll();
 		demandaRepository.deleteAll();
 		movimentoRepository.deleteAll();
@@ -97,10 +91,10 @@ public class TestUtil {
 	}
 	
 	public Processo getProcesso() {
-		
-		assistido = assistidoService.salvar(getAssistidoDto());
-		advogado = advogadoService.salvar(getAdvogadoDto());
-		estagiario = estagiarioRepository.save(getEstagiario2());
+
+        Assistido assistido = assistidoService.salvar(getAssistidoDto());
+        Advogado advogado = advogadoService.salvar(getAdvogadoDto());
+        Estagiario estagiario = estagiarioRepository.save(getEstagiario2());
 		
 		return new Processo(null, assistido, "20251", "62354", "Seguro", "3210", 
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 

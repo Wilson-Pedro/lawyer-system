@@ -20,7 +20,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity(name = "tbl_ator")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Ator {
+public class Ator {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

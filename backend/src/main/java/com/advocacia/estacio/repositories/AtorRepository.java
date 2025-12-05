@@ -12,15 +12,5 @@ import org.springframework.data.repository.query.Param;
 
 public interface AtorRepository extends JpaRepository<Ator, Long> {
 
-//    @Query("""
-//			SELECT new com.advocacia.estacio.domain.dto.ResponseMinDto(
-//				at.id,
-//				at.nome,
-//				at.email,
-//				at.registro
-//			)
-//			FROM Ator at
-//			WHERE at.tipoDoAtor = :tipoDoAtor
-//			""")
-//    Page<ResponseMinDto> buscarTodosCoordenadores(@Param("tipoDoAtor") TipoDoAtor tipoDoAtor, Pageable pageable);
+    Page<Ator> findAllByTipoDoAtor(TipoDoAtor tipoDoAtor, Pageable pageable);
 }

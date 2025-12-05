@@ -26,6 +26,7 @@ public class AtorServiceImpl implements AtorService {
 	@Autowired
 	private UsuarioAuthService usuarioAuthService;
 
+	@Override
 	public Ator salvar(AtorDto atorDto) {
 		Ator ator = AtorFactory.criarAtor(atorDto.getTipoAtor());
 		ator.setNome(atorDto.getNome());
@@ -41,9 +42,9 @@ public class AtorServiceImpl implements AtorService {
 		return atorRepository.save(ator);
 	}
 
-//	@Autowired
-//	public Page<ResponseMinDto> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size) {
-//		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
-//		return atorRepository.buscarTodosCoordenadores(TipoDoAtor.toEnum(tipoDoAtor), pageable);
-//	}
+	@Override
+	public Page<Ator> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return atorRepository.findAllByTipoDoAtor(TipoDoAtor.toEnum(tipoDoAtor), pageable);
+	}
 }

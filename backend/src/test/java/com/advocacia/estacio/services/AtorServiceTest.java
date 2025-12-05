@@ -1,6 +1,5 @@
 package com.advocacia.estacio.services;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -101,14 +100,36 @@ class AtorServiceTest {
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 
-//	@Test
-//	@DisplayName("Deve buscar Todos os Assistidos")
-//	void buscar_todos() {
-//
-//		Page<ResponseMinDto> pages = atorService.buscarTodosPorTipoDoAtor("Coordenador do curso",0, 20);
-//
-//		assertFalse(pages.isEmpty());
-//		assertEquals(1, pages.getContent().size());
-//		assertEquals("Roberto Carlos", pages.getContent().get(0).getNome("Roberto Carlos"));
-//	}
+	@Test
+	@DisplayName("Deve buscar Todos os Coordenadores Pelo Service")
+	void buscar_coordenadores() {
+
+		Page<Ator> pages = atorService.buscarTodosPorTipoDoAtor("Coordenador do curso",0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
+		assertEquals("Roberto Carlos", pages.getContent().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Secretários Pelo Service")
+	void buscar_secretarios() {
+
+		Page<Ator> pages = atorService.buscarTodosPorTipoDoAtor("Secretário",0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
+		assertEquals("José Augusto", pages.getContent().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Professores Pelo Service")
+	void buscar_professores() {
+
+		Page<Ator> pages = atorService.buscarTodosPorTipoDoAtor("Professor",0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
+		assertEquals("Fabio Junior", pages.getContent().get(0).getNome());
+	}
 }

@@ -1,5 +1,6 @@
 package com.advocacia.estacio.domain.dto;
 
+import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.utils.Utils;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,13 @@ public class ResponseMinDto {
         this.id = id;
         this.nome = nome;
         this.registro = Utils.localDateTimeToString(registro);
+    }
+
+    public ResponseMinDto(Ator ator) {
+        this.id = ator.getId();
+        this.nome = ator.getNome();
+        this.email = ator.getEmail();
+        this.registro = Utils.localDateTimeToString(ator.getRegistro());
     }
 
     public String getEmail() {

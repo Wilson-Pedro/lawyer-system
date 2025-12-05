@@ -9,5 +9,5 @@ public interface AtorService {
 
 	Ator salvar(AtorDto atorDto);
 
-	//Page<ResponseMinDto> buscarTodosPorTipoDoAtor(String buscarTodosPorTipoDoAtor, int page, int size);
+	Page<Ator> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size);
 }

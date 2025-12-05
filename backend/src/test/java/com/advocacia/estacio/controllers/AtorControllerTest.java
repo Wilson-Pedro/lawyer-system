@@ -2,6 +2,7 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
 import com.advocacia.estacio.repositories.AtorRepository;
-import com.advocacia.estacio.services.AtorService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,9 +23,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AtorControllerTest {
-	
-	@Autowired
-	AtorService atorService;
 	
 	@Autowired
 	AtorRepository atorRepository;
@@ -114,5 +111,42 @@ class AtorControllerTest {
 				.andExpect(jsonPath("$.tipoAtor", equalTo("Professor")));
 		
 		assertEquals(3, atorRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Somente Coordenador Pelo Controller")
+	void buscar_coordenadores() throws Exception {
+
+		mockMvc.perform(get(URI + "/Coordenador do curso")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)))
+				.andExpect(jsonPath("content[0].nome").value("Roberto Carlos"));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Somente Secretário Pelo Controller")
+	void buscar_secretarios() throws Exception {
+
+		mockMvc.perform(get(URI + "/Secretário")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)))
+				.andExpect(jsonPath("content[0].nome").value("José Augusto"));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Somente Professor Pelo Controller")
+	void buscar_professor() throws Exception {
+
+
+		mockMvc.perform(get(URI + "/Professor")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)))
+				.andExpect(jsonPath("content[0].nome").value("Fabio Junior"));
 	}
 }

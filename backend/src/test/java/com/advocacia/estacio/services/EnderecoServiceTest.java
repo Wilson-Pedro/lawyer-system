@@ -9,11 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Endereco;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
-import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest

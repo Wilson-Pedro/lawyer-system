@@ -1,6 +1,7 @@
 package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

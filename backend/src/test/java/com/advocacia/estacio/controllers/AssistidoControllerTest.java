@@ -27,9 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class AssistidoControllerTest {
 	
 	@Autowired
-	AssistidoService assistidoService;
-	
-	@Autowired
 	AssistidoRepository assistidoRepository;
 	
 	@Autowired
