@@ -26,12 +26,12 @@ public class AtorController {
 	}
 
 	@GetMapping("/{tipoAtor}")
-	public ResponseEntity<PageResponseDto<Ator>> buscarTodosPorTipoAtor(
+	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodosPorTipoAtor(
 			@PathVariable String tipoAtor,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<Ator> pages = atorService.buscarTodosPorTipoDoAtor(tipoAtor, page, size);
 		Page<ResponseMinDto> pagesDto = pages.map(ResponseMinDto::new);
-		return ResponseEntity.ok(new PageResponseDto<>(pages));
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 }

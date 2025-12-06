@@ -19,6 +19,7 @@ import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso'
 import Demandas from './screens/Demandas/Demandas';
 import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import DemandaResposta from './screens/Demandas/DemandaResposta';
+import Usuarios from './screens/Usuarios/Usuarios';
 import Login from './screens/Login/Login';
 
 export default function Rotas() {
@@ -44,6 +45,7 @@ export default function Rotas() {
                 <Route path="/demandas" element={ <Demandas />} />
                 <Route path="/demandas/estagiario/:estagiarioId" element={ <DemandasEstagiario />} />
                 <Route path="/demandas/:demandaId/respostas" element={ <DemandaResposta />} />
+                <Route path="/usuarios" element={ <Usuarios /> } />
                 <Route path='/login' element={ <Login /> } />
             </Routes>
         </BrowserRouter>

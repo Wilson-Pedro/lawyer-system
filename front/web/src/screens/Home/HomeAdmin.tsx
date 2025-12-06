@@ -5,7 +5,8 @@ import {
     FileAltIcon, 
     SingOutAltIcon,
     FileCirclePlusIcon,
-    PlusCircleIcon
+    PlusCircleIcon,
+    UserCogIcon
 } from "../../Icons/Icon";
 
 interface MenuItem {
@@ -29,6 +30,7 @@ export default function HomeAdmin() {
     { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
     { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
     { label: "Demandas", icon: <FileAltIcon />, path: "/demandas", variant: "warning" },
+    { label: "Usuários", icon: <UserCogIcon />, path: "/usuarios", variant: "info" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

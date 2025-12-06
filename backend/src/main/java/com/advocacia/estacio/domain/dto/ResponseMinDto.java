@@ -37,7 +37,7 @@ public class ResponseMinDto {
         return id;
     }
 
-    public String getNome(String robertoCarlos) {
+    public String getNome() {
         return nome;
     }
 
