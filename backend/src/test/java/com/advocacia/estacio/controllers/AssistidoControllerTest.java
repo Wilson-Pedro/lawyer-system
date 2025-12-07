@@ -8,7 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -85,6 +89,31 @@ class AssistidoControllerTest {
 				.andExpect(jsonPath("$.cep", equalTo("43012-232")));
 		
 		assertEquals(1, assistidoRepository.count());
+	}
+	
+	@Test
+	@DisplayName("Deve Salvar Assistido Por Id No Banco De Dados Pelo Controller")
+	void buscar_por_id() throws Exception {
+		
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		mockMvc.perform(get(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.nome", equalTo("Ana Carla")))
+				.andExpect(jsonPath("$.matricula", equalTo("20250815")))
+				.andExpect(jsonPath("$.telefone", equalTo("86766523354")))
+				.andExpect(jsonPath("$.email", equalTo("ana@gmail.com")))
+				.andExpect(jsonPath("$.profissao", equalTo("Cientista de Dados")))
+				.andExpect(jsonPath("$.nacionalidade", equalTo("brasileiro")))
+				.andExpect(jsonPath("$.naturalidade", equalTo("São Luís/MA")))
+				.andExpect(jsonPath("$.estadoCivil", equalTo("Solteiro(a)")))
+				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
+				.andExpect(jsonPath("$.bairro", equalTo("Vila Palmeira")))
+				.andExpect(jsonPath("$.rua", equalTo("rua dos nobres")))
+				.andExpect(jsonPath("$.numeroDaCasa", equalTo(12)))
+				.andExpect(jsonPath("$.cep", equalTo("43012-232")));
 	}
 	
 	@Test

@@ -40,6 +40,12 @@ public class AdvogadoController {
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<AdvogadoDto> buscarPorId(@PathVariable Long id) {
+		AdvogadoDto dto = advogadoService.buscarPorId(id).toDto();
+		return ResponseEntity.ok(dto);
+	}
+	
 	@GetMapping("/buscar/{nome}")
 	public ResponseEntity<PageResponseDto<AdvogadoDto>> buscarAdvogadoPorNome(
 			@PathVariable String nome,

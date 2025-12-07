@@ -34,9 +34,9 @@ export default function Usuarios() {
     const token = localStorage.getItem('token');
 
     const rotas: Record<string, string> = {
-      "Coordenador do curso":"/atores/Coordenador do curso",
-      "Secretário":"/atores/Secretário",
-      "Professor":"/atores/Professor",
+      "Coordenador do curso":"/atores/tipo/Coordenador do curso",
+      "Secretário":"/atores/tipo/Secretário",
+      "Professor":"/atores/tipo/Professor",
       "Estagiário":"/estagiarios",
       "Advogado":"/advogados",
       "Assistido":"/assistidos"

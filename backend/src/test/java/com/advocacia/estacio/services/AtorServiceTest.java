@@ -1,17 +1,26 @@
 package com.advocacia.estacio.services;
 
-import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.entities.Ator;
+import com.advocacia.estacio.domain.entities.CoordenadorDoCurso;
+import com.advocacia.estacio.domain.entities.Professor;
+import com.advocacia.estacio.domain.entities.Secretario;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
-import org.springframework.data.domain.Page;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -131,5 +140,53 @@ class AtorServiceTest {
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
 		assertEquals("Fabio Junior", pages.getContent().get(0).getNome());
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Coordenador por Id No Banco De Dados Pelo Service")
+	void buscar_coordenador_por_id() {
+		
+		Long id = atorRepository.findAll().get(0).getId();
+		
+		CoordenadorDoCurso coordenador = (CoordenadorDoCurso) atorService.buscarPorId(id);
+		
+		assertNotNull(coordenador);
+		assertNotNull(coordenador.getId());
+		assertNotNull(coordenador.getUsuarioAuth());
+		assertEquals("Roberto Carlos", coordenador.getNome());
+		assertEquals("roberto@gmail.com", coordenador.getEmail());
+		assertEquals("Coordenador do curso", coordenador.getTipoDoAtor().getTipo());
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Secretário por Id No Banco De Dados Pelo Service")
+	void buscar_secretário_por_id() {
+		
+		Long id = atorRepository.findAll().get(1).getId();
+		
+		Secretario secretario = (Secretario) atorService.buscarPorId(id);
+		
+		assertNotNull(secretario);
+		assertNotNull(secretario.getId());
+		assertNotNull(secretario.getUsuarioAuth());
+		assertEquals("José Augusto", secretario.getNome());
+		assertEquals("jose@gmail.com", secretario.getEmail());
+		assertEquals("Secretário", secretario.getTipoDoAtor().getTipo());
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Professor por Id No Banco De Dados Pelo Service")
+	void buscar_professor_por_id() {
+		
+		Long id = atorRepository.findAll().get(2).getId();
+		
+		Professor professor = (Professor) atorService.buscarPorId(id);
+		
+		assertNotNull(professor);
+		assertNotNull(professor.getId());
+		assertNotNull(professor.getUsuarioAuth());
+		assertEquals("Fabio Junior", professor.getNome());
+		assertEquals("fabio@gmail.com", professor.getEmail());
+		assertEquals("Professor", professor.getTipoDoAtor().getTipo());
 	}
 }

@@ -22,12 +22,16 @@ public class EstagiarioDto implements Serializable {
 	public EstagiarioDto() {
 	}
 
-	public EstagiarioDto(Long id, String nome, String email, String matricula, String periodo, String senha) {
+	public EstagiarioDto(Long id, String nome, String email, String matricula, String periodo) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.matricula = matricula;
 		this.periodo = periodo;
+	}
+	
+	public EstagiarioDto(Long id, String nome, String email, String matricula, String periodo, String senha) {
+		this(id, nome, email, matricula, periodo);
 		this.senha = senha;
 	}
 	

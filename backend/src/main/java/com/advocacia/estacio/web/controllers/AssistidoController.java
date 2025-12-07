@@ -1,6 +1,5 @@
 package com.advocacia.estacio.web.controllers;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
-import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.services.AssistidoService;
 
 @RequestMapping("/assistidos")
@@ -28,8 +27,8 @@ public class AssistidoController {
 
 	@PostMapping("/")
 	public ResponseEntity<AssistidoDto> salvar(@RequestBody AssistidoDto assistidoDto) {
-		Assistido assistido = assistidoService.salvar(assistidoDto);
-		return ResponseEntity.status(201).body(new AssistidoDto(assistido));
+		AssistidoDto dto = assistidoService.salvar(assistidoDto).toDto();
+		return ResponseEntity.status(201).body(dto);
 	}
 
 	@GetMapping("")
@@ -38,6 +37,12 @@ public class AssistidoController {
 			@RequestParam(defaultValue = "20") int size) {
 		Page<ResponseMinDto> pages = assistidoService.buscarTodos(page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<AssistidoDto> buscarPorId(@PathVariable Long id) {
+		AssistidoDto dto = assistidoService.buscarPorId(id).toDto();
+		return ResponseEntity.ok(dto);
 	}
 	
 	@GetMapping("/buscar/{nome}")

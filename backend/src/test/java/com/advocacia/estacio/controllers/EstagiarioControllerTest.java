@@ -93,8 +93,8 @@ class EstagiarioControllerTest {
 	}
 
 	@Test
-	@DisplayName("Deve Buscar Estagiario Por Id No Banco de Dados Pelo Controller")
-	void buscar_estagiario_por_id() throws Exception {
+	@DisplayName("Deve Buscar Estagiario Id por email No Banco de Dados Pelo Controller")
+	void buscar_estagiario_id_por_email() throws Exception {
 		var email = estagiarioRepository.findAll().get(0).getEmail();
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
 
@@ -105,6 +105,23 @@ class EstagiarioControllerTest {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.id").value(estagiario.getId().intValue()))
 				.andExpect(jsonPath("$.nome").value(estagiario.getNome()));
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Estagiario por Id No Banco de Dados Pelo Controller")
+	void buscar_estagiarioDto_por_id() throws Exception {
+		Long id = estagiarioRepository.findAll().get(0).getId();
+		Estagiario estagiario = estagiarioRepository.findAll().get(0);
+
+		mockMvc.perform(get(URI + "/" + id)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(estagiario.getId().intValue()))
+				.andExpect(jsonPath("$.nome").value(estagiario.getNome()))
+				.andExpect(jsonPath("$.matricula").value(estagiario.getMatricula()))
+				.andExpect(jsonPath("$.periodo").value(estagiario.getPeriodo().getTipo()));
 	}
 
 	@Test

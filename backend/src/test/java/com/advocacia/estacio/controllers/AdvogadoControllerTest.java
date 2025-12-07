@@ -105,4 +105,24 @@ class AdvogadoControllerTest {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1));
 	}
+	
+	@Test
+	@DisplayName("Deve buscar Advogado Por Id Pelo Controller")
+	void buscar_advogado_por_id() throws Exception {
+		
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		mockMvc.perform(get(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.nome", equalTo("Carlos Silva")))
+				.andExpect(jsonPath("$.email", equalTo("carlos@gmail.com")))
+				.andExpect(jsonPath("$.telefone", equalTo("88566519808")))
+				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
+				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))
+				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
+				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
+	}
 }

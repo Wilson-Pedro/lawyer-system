@@ -55,6 +55,10 @@ public class Ator {
 		this.email = dto.getEmail();
 		this.tipoDoAtor = TipoDoAtor.toEnum(dto.getTipoAtor());
 	}
+	
+	public AtorDto toDto() {
+		return new AtorDto(this);
+	}
 
 	public Long getId() {
 		return id;

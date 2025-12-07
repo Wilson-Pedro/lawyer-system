@@ -80,4 +80,24 @@ class AdvogadoServiceTest {
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
 	}
+	
+	@Test
+	@DisplayName("Deve buscar Advogado Por Id Pelo Service")
+	void buscar_advogado_por_id() {
+
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		Advogado advogado = advogadoService.buscarPorId(id);
+
+		assertNotNull(advogado);
+		assertEquals("Carlos Silva", advogado.getNome());
+		assertEquals("carlos@gmail.com", advogado.getEmail());
+		assertEquals("88566519808", advogado.getTelefone());
+		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
+		assertEquals("São Luís", advogado.getEndereco().getCidade());
+		assertEquals("Vila Lobão", advogado.getEndereco().getBairro());
+		assertEquals("rua do passeio", advogado.getEndereco().getRua());
+		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
+		assertEquals("53022-112", advogado.getEndereco().getCep());
+	}
 }

@@ -1,6 +1,5 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +12,7 @@ import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.factory.AtorFactory;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.services.AtorService;
@@ -46,5 +46,10 @@ public class AtorServiceImpl implements AtorService {
 	public Page<Ator> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size) {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return atorRepository.findAllByTipoDoAtor(TipoDoAtor.toEnum(tipoDoAtor), pageable);
+	}
+
+	@Override
+	public Ator buscarPorId(Long id) {
+		return atorRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 }

@@ -117,7 +117,7 @@ class AtorControllerTest {
 	@DisplayName("Deve Buscar Somente Coordenador Pelo Controller")
 	void buscar_coordenadores() throws Exception {
 
-		mockMvc.perform(get(URI + "/Coordenador do curso")
+		mockMvc.perform(get(URI + "/tipo/Coordenador do curso")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -129,7 +129,7 @@ class AtorControllerTest {
 	@DisplayName("Deve Buscar Somente Secretário Pelo Controller")
 	void buscar_secretarios() throws Exception {
 
-		mockMvc.perform(get(URI + "/Secretário")
+		mockMvc.perform(get(URI + "/tipo/Secretário")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -142,11 +142,26 @@ class AtorControllerTest {
 	void buscar_professor() throws Exception {
 
 
-		mockMvc.perform(get(URI + "/Professor")
+		mockMvc.perform(get(URI + "/tipo/Professor")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()", equalTo(1)))
 				.andExpect(jsonPath("content[0].nome").value("Fabio Junior"));
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Coordenador por Id No Banco De Dados Pelo Service")
+	void buscar_coordenador_por_id() throws Exception {
+		
+		Long id = atorRepository.findAll().get(0).getId();
+		
+		mockMvc.perform(get(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos")))
+				.andExpect(jsonPath("$.email", equalTo("roberto@gmail.com")))
+				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")));
 	}
 }

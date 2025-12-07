@@ -1,6 +1,5 @@
 package com.advocacia.estacio.web.controllers;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import com.advocacia.estacio.services.EstagiarioService;
@@ -29,8 +29,8 @@ public class EstagiarioController {
 
 	@PostMapping("/")
 	public ResponseEntity<EstagiarioDto> salvar(@RequestBody EstagiarioDto estagiarioDto) {
-		Estagiario estagiario = estagiarioService.salvar(estagiarioDto);
-		return ResponseEntity.status(201).body(new EstagiarioDto(estagiario));
+		EstagiarioDto dto = estagiarioService.salvar(estagiarioDto).toDto();
+		return ResponseEntity.status(201).body(dto);
 	}
 
 	@GetMapping("")
@@ -39,6 +39,12 @@ public class EstagiarioController {
 			@RequestParam(defaultValue = "20") int size) {
 		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<EstagiarioDto> buscarPorId(@PathVariable Long id) {
+		EstagiarioDto dto = estagiarioService.buscarPorId(id).toDto();
+		return ResponseEntity.ok(dto);
 	}
 	
 	@GetMapping("/buscar/{nome}")

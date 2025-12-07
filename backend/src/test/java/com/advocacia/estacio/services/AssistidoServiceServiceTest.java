@@ -64,6 +64,25 @@ class AssistidoServiceServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Deve Salvar Assistido Por Id No Banco De Dados Pelo Service")
+	void buscar_por_id() {
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		Assistido assistido = assistidoService.buscarPorId(id);
+		
+		assertNotNull(assistido);
+		assertNotNull(assistido.getId());
+		assertEquals("Ana Carla", assistido.getNome());
+		assertEquals("20250815", assistido.getMatricula());
+		assertEquals("86766523354", assistido.getTelefone());
+		assertEquals("ana@gmail.com", assistido.getEmail());
+		assertEquals("Cientista de Dados", assistido.getProfissao());
+		assertEquals("brasileiro", assistido.getNacionalidade());
+		assertEquals("São Luís/MA", assistido.getNaturalidade());
+		assertEquals(EstadoCivil.SOLTERIO, assistido.getEstadoCivil());
+	}
+	
+	@Test
 	@DisplayName("Deve Buscar Assistido Por Nome Pelo Service")
 	void buscar_assistido_por_nome() throws Exception {
 		
