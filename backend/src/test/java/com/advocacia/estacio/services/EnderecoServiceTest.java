@@ -41,8 +41,7 @@ class EnderecoServiceTest {
 	@Test
 	@Order(2)
 	@DisplayName("Deve Salvar Endereço Pelo Service")
-	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
-		assertEquals(0, enderecoRepository.count());
+	void salvar_endereco() {
 		
 		Endereco endereco = enderecoService.salvar(assistidoDto);
 		
@@ -54,5 +53,23 @@ class EnderecoServiceTest {
 		assertEquals(12, endereco.getNumeroDaCasa());
 		assertEquals("43012-232", endereco.getCep());
 		assertEquals(1, enderecoRepository.count());
+	}
+	
+	@Test
+	@DisplayName("Deve Atualizar Endereço Pelo Service")
+	void atualizar_endereco() {
+		
+		Endereco endereco = new Endereco(
+				null, "São Luís", "Vila dos Nobres", "rua palmeira", 2, "11012-402");
+		
+		Long id = enderecoRepository.findAll().get(0).getId();
+		Endereco enderecoAtualizado = enderecoService.atualizar(id, endereco);
+		
+		assertNotNull(enderecoAtualizado);
+		assertEquals("São Luís", enderecoAtualizado.getCidade());
+		assertEquals("Vila dos Nobres", enderecoAtualizado.getBairro());
+		assertEquals("rua palmeira", enderecoAtualizado.getRua());
+		assertEquals(2, enderecoAtualizado.getNumeroDaCasa());
+		assertEquals("11012-402", enderecoAtualizado.getCep());
 	}
 }

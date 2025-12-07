@@ -52,4 +52,15 @@ public class AtorServiceImpl implements AtorService {
 	public Ator buscarPorId(Long id) {
 		return atorRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
+
+	@Override
+	public Ator atualizar(Long id, AtorDto atorDto) {
+		Ator ator = buscarPorId(id);
+		usuarioAuthService.atualizarLogin(ator.getEmail(), atorDto.getEmail(), atorDto.getSenha());
+		ator.setId(id);
+		ator.setNome(atorDto.getNome());
+		ator.setEmail(atorDto.getEmail());
+		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
+		return atorRepository.save(ator);
+	}
 }

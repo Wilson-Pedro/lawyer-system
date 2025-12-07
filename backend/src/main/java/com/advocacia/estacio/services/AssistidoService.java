@@ -10,7 +10,9 @@ public interface AssistidoService {
 
 	Assistido salvar(AssistidoDto assistidoDto);
 	
-	Assistido buscarPorId(Long assistidoId);
+	Assistido buscarPorId(Long id);
+	
+	Assistido atualizar(Long id, AssistidoDto assistidoDto);
 	
 	Page<Assistido> buscarAssistidoPorNome(String nome, int page, int size);
 

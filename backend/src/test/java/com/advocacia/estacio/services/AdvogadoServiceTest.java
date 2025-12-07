@@ -59,6 +59,29 @@ class AdvogadoServiceTest {
 	}
 	
 	@Test
+	@Order(3)
+	@DisplayName("Deve Atualizar Advogado No Banco De Dados Pelo Service")
+	void atualizar_advogado() {
+		
+		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
+		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
+		"rua do passeio", 11, "53022-112");
+		
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		Advogado advogadoAtualizado = advogadoService.atualizar(id, advogadoDto);
+		
+		assertNotNull(advogadoAtualizado);
+		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
+		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
+		assertEquals("88566519122", advogadoAtualizado.getTelefone());
+		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
+		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		
+		assertEquals(1, advogadoRepository.count());
+	}
+	
+	@Test
 	@DisplayName("Deve Buscar Advogado Por Nome Pelo Service")
 	void buscar_advogado_pelo_nome() {
 		
@@ -68,7 +91,7 @@ class AdvogadoServiceTest {
 		
 		assertNotNull(advogados);
 		assertEquals(1, advogados.getContent().size());
-		assertEquals("Carlos Silva", advogados.getContent().get(0).getNome());
+		assertEquals("Carlos Silva Lima", advogados.getContent().get(0).getNome());
 	}
 
 	@Test
@@ -90,12 +113,12 @@ class AdvogadoServiceTest {
 		Advogado advogado = advogadoService.buscarPorId(id);
 
 		assertNotNull(advogado);
-		assertEquals("Carlos Silva", advogado.getNome());
-		assertEquals("carlos@gmail.com", advogado.getEmail());
-		assertEquals("88566519808", advogado.getTelefone());
-		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
+		assertEquals("Carlos Silva Lima", advogado.getNome());
+		assertEquals("carlos22@gmail.com", advogado.getEmail());
+		assertEquals("88566519122", advogado.getTelefone());
+		assertEquals("1993-08-24", advogado.getDataDeNascimeto().toString());
 		assertEquals("São Luís", advogado.getEndereco().getCidade());
-		assertEquals("Vila Lobão", advogado.getEndereco().getBairro());
+		assertEquals("Vila dos Nobres", advogado.getEndereco().getBairro());
 		assertEquals("rua do passeio", advogado.getEndereco().getRua());
 		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
 		assertEquals("53022-112", advogado.getEndereco().getCep());

@@ -12,10 +12,12 @@ public interface EstagiarioService {
 	Estagiario salvar(EstagiarioDto estagiarioDto);
 	
 	Estagiario buscarPorId(Long id);
-	
-	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
 
 	EstagiarioMinDto buscarIdPorEmail(String email);
 
 	Page<ResponseMinDto> buscarTodos(int page, int size);
+	
+	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
+	
+	Estagiario atualizar(Long id, EstagiarioDto estagiarioDto);
 }

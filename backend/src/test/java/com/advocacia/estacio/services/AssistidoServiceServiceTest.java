@@ -64,6 +64,37 @@ class AssistidoServiceServiceTest {
 	}
 	
 	@Test
+	@Order(3)
+	@DisplayName("Deve Atualizar Assistido No Banco De Dados Pelo Service")
+	void atualizar_assistido() {
+		
+		AssistidoDto assistidoDto = new AssistidoDto(
+				null, "Ana Carla Silva", "20250815", "86766523354",
+		"ana22@gmail.com", "Cientista de Dados", "brasileiro", 
+		"São Luís/MA", "Casado(a)", "São Luís", "Vila dos Nobres", 
+		"rua dos nobres", 12, "43012-232");
+		
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		Assistido assistido = assistidoService.atualizar(id, assistidoDto);
+		
+		assertNotNull(assistido);
+		assertNotNull(assistido.getId());
+		assertEquals("Ana Carla Silva", assistido.getNome());
+		assertEquals("20250815", assistido.getMatricula());
+		assertEquals("86766523354", assistido.getTelefone());
+		assertEquals("ana22@gmail.com", assistido.getEmail());
+		assertEquals("Cientista de Dados", assistido.getProfissao());
+		assertEquals("brasileiro", assistido.getNacionalidade());
+		assertEquals("São Luís/MA", assistido.getNaturalidade());
+		assertEquals(EstadoCivil.CASADO, assistido.getEstadoCivil());
+		assertEquals("Vila dos Nobres", assistido.getEndereco().getBairro());
+		
+		assertEquals(1, assistidoRepository.count());
+
+	}
+	
+	@Test
 	@DisplayName("Deve Salvar Assistido Por Id No Banco De Dados Pelo Service")
 	void buscar_por_id() {
 		Long id = assistidoRepository.findAll().get(0).getId();
@@ -72,14 +103,14 @@ class AssistidoServiceServiceTest {
 		
 		assertNotNull(assistido);
 		assertNotNull(assistido.getId());
-		assertEquals("Ana Carla", assistido.getNome());
+		assertEquals("Ana Carla Silva", assistido.getNome());
 		assertEquals("20250815", assistido.getMatricula());
 		assertEquals("86766523354", assistido.getTelefone());
-		assertEquals("ana@gmail.com", assistido.getEmail());
+		assertEquals("ana22@gmail.com", assistido.getEmail());
 		assertEquals("Cientista de Dados", assistido.getProfissao());
 		assertEquals("brasileiro", assistido.getNacionalidade());
 		assertEquals("São Luís/MA", assistido.getNaturalidade());
-		assertEquals(EstadoCivil.SOLTERIO, assistido.getEstadoCivil());
+		assertEquals(EstadoCivil.CASADO, assistido.getEstadoCivil());
 	}
 	
 	@Test
@@ -88,7 +119,7 @@ class AssistidoServiceServiceTest {
 		
 		Page<Assistido> pages = assistidoService.buscarAssistidoPorNome("Car", 0, 20);
 		assertEquals(1, pages.getContent().size());
-		assertEquals("Ana Carla", pages.getContent().get(0).getNome());
+		assertEquals("Ana Carla Silva", pages.getContent().get(0).getNome());
 	}
 
 	@Test

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
@@ -62,5 +63,20 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	public Page<ResponseMinDto> buscarTodos(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
 		return estagiarioRepository.buscarTodos(pageable);
+	}
+	
+	@Override
+	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
+		Estagiario estagiario = buscarPorId(id);
+		usuarioAuthService.atualizarLogin(
+				estagiario.getEmail(), 
+				estagiarioDto.getEmail(), 
+				estagiarioDto.getSenha());
+		estagiario.setId(id);
+		estagiario.setNome(estagiarioDto.getNome());
+		estagiario.setEmail(estagiarioDto.getEmail());
+		estagiario.setMatricula(estagiarioDto.getMatricula());
+		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
+		return estagiarioRepository.save(estagiario);
 	}
 }

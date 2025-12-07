@@ -1,7 +1,5 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
-import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,8 +8,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.entities.Endereco;
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.services.AssistidoService;
@@ -47,7 +47,23 @@ public class AssistidoServiceImpl implements AssistidoService {
 	}
 
 	@Override
-	public Assistido buscarPorId(Long assistidoId) {
-		return assistidoRepository.findById(assistidoId).orElseThrow(EntidadeNaoEncontradaException::new);
+	public Assistido buscarPorId(Long id) {
+		return assistidoRepository.findById(id).orElseThrow(EntidadeNaoEncontradaException::new);
+	}
+
+	@Override
+	public Assistido atualizar(Long id, AssistidoDto assistidoDto) {
+		Assistido assistido = buscarPorId(id);
+		assistido.setId(id);
+		assistido.setNome(assistidoDto.getNome());
+		assistido.setMatricula(assistidoDto.getMatricula());
+		assistido.setTelefone(assistidoDto.getTelefone());
+		assistido.setEmail(assistidoDto.getEmail());
+		assistido.setProfissao(assistidoDto.getProfissao());
+		assistido.setNacionalidade(assistidoDto.getNacionalidade());
+		assistido.setNaturalidade(assistidoDto.getNaturalidade());
+		assistido.setEstadoCivil(EstadoCivil.toEnum(assistidoDto.getEstadoCivil()));
+		enderecoService.atualizar(assistido.getEndereco().getId(), new Endereco(assistidoDto));
+		return assistidoRepository.save(assistido);
 	}
 }

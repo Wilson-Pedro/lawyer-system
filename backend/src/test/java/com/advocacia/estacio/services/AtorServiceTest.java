@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
+import com.advocacia.estacio.domain.dto.AtorDto;
 import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.domain.entities.CoordenadorDoCurso;
 import com.advocacia.estacio.domain.entities.Professor;
@@ -108,6 +109,26 @@ class AtorServiceTest {
 		assertEquals(3, usuarioAuthRepository.count());
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
+	
+	@Test
+	@Order(5)
+	@DisplayName("Deve Atualizar Coordenador No Banco De Dados Pelo Service")
+	void atualizar_coordenador() {
+		
+		AtorDto atorDto = new AtorDto(
+				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
+				"Coordenador do curso", "1234");
+		
+		Long id = atorRepository.findAll().get(0).getId();
+		
+		Ator ator = atorService.atualizar(id, atorDto);
+		
+		assertNotNull(ator);
+		assertEquals("roberto22@gmail.com", ator.getUsuarioAuth().getLogin());
+		assertEquals("Roberto Carlos Silva", ator.getNome());
+		assertEquals("roberto22@gmail.com", ator.getEmail());
+		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
+	}
 
 	@Test
 	@DisplayName("Deve buscar Todos os Coordenadores Pelo Service")
@@ -117,7 +138,7 @@ class AtorServiceTest {
 
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
-		assertEquals("Roberto Carlos", pages.getContent().get(0).getNome());
+		assertEquals("Roberto Carlos Silva", pages.getContent().get(0).getNome());
 	}
 
 	@Test
@@ -153,8 +174,8 @@ class AtorServiceTest {
 		assertNotNull(coordenador);
 		assertNotNull(coordenador.getId());
 		assertNotNull(coordenador.getUsuarioAuth());
-		assertEquals("Roberto Carlos", coordenador.getNome());
-		assertEquals("roberto@gmail.com", coordenador.getEmail());
+		assertEquals("Roberto Carlos Silva", coordenador.getNome());
+		assertEquals("roberto22@gmail.com", coordenador.getEmail());
 		assertEquals("Coordenador do curso", coordenador.getTipoDoAtor().getTipo());
 	}
 	
