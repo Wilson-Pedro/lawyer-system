@@ -2,13 +2,19 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -80,6 +87,37 @@ class AdvogadoControllerTest {
 	}
 	
 	@Test
+	@Order(3)
+	@DisplayName("Deve Atualizar Advogado No Banco de Dados Pelo Controller")
+	void atualizar_advogado() throws Exception {
+		
+		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
+		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
+		"rua do passeio", 11, "53022-112");
+		
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		String jsonRequest = objectMapper.writeValueAsString(advogadoDto);
+		
+		mockMvc.perform(put(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andExpect(status().isNoContent());
+		
+		
+		Advogado advogadoAtualizado = advogadoRepository.findById(id).get();	
+		assertNotNull(advogadoAtualizado);
+		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
+		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
+		assertEquals("88566519122", advogadoAtualizado.getTelefone());
+		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
+		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		
+		assertEquals(1, advogadoRepository.count());
+	}
+	
+	@Test
 	@DisplayName("Deve Buscar Advogado por Nome Pelo Controller")
 	void buscar_advogado_por_nome() throws Exception {
 		
@@ -91,7 +129,7 @@ class AdvogadoControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("content[0].nome").value("Carlos Silva"));
+				.andExpect(jsonPath("content[0].nome").value("Carlos Silva Lima"));
 	}
 
 	@Test
@@ -116,11 +154,11 @@ class AdvogadoControllerTest {
 				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.nome", equalTo("Carlos Silva")))
-				.andExpect(jsonPath("$.email", equalTo("carlos@gmail.com")))
-				.andExpect(jsonPath("$.telefone", equalTo("88566519808")))
+				.andExpect(jsonPath("$.nome", equalTo("Carlos Silva Lima")))
+				.andExpect(jsonPath("$.email", equalTo("carlos22@gmail.com")))
+				.andExpect(jsonPath("$.telefone", equalTo("88566519122")))
 				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
-				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))
+				.andExpect(jsonPath("$.bairro", equalTo("Vila dos Nobres")))
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
 				.andExpect(jsonPath("$.cep", equalTo("53022-112")));

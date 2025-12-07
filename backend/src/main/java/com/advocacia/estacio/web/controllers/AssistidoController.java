@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,5 +54,13 @@ public class AssistidoController {
 		Page<AssistidoDto> dtos = assistidoService.buscarAssistidoPorNome(nome, page, size)
 				.map(AssistidoDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(dtos));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> atualizarAssistido(
+			@PathVariable Long id, 
+			@RequestBody AssistidoDto assistidoDto) {
+		assistidoService.atualizar(id, assistidoDto);
+		return ResponseEntity.noContent().build();
 	}
 }

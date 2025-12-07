@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,6 +79,36 @@ class EstagiarioControllerTest {
 	}
 	
 	@Test
+	@Order(3)
+	@DisplayName("Deve Atualizar Estagiario No Banco de Dados Pelo Controller")
+	void atualizar_estagiario() throws Exception {
+		
+		Long id = estagiarioRepository.findAll().get(0).getId();
+		
+		EstagiarioDto estagiario = new EstagiarioDto(null,
+		"Pedro Silva Lucas", "pedro22@gmail.com", "20251208",
+		"Estágio II", "12345");
+		
+		String jsonRequest = objectMapper.writeValueAsString(estagiario);
+		
+		mockMvc.perform(put(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andExpect(status().isNoContent());
+		
+		Estagiario estagiarioAtualizado = estagiarioRepository.findById(id).get();
+		
+		assertEquals("Pedro Silva Lucas", estagiarioAtualizado.getNome());
+		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getEmail());
+		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getUsuarioAuth().getLogin());
+		assertEquals("20251208", estagiarioAtualizado.getMatricula());
+		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
+		
+		assertEquals(1, estagiarioRepository.count());
+	}
+	
+	@Test
 	@DisplayName("Deve Buscar Estagiario Por Nome No Banco de Dados Pelo Controller")
 	void salvar_estagiario() throws Exception {
 		var estagiario = estagiarioRepository.findAll().get(0);
@@ -88,7 +120,7 @@ class EstagiarioControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("$.content[0].nome").value("Pedro Lucas"));
+				.andExpect(jsonPath("$.content[0].nome").value("Pedro Silva Lucas"));
 		
 	}
 

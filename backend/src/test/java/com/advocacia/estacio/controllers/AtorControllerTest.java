@@ -2,12 +2,18 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
+import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -112,6 +119,33 @@ class AtorControllerTest {
 		
 		assertEquals(3, atorRepository.count());
 	}
+	
+	@Test
+	@Order(5)
+	@DisplayName("Deve Atualizar Coordenador No Banco de Dados Pelo Controller")
+	void atualizar_coordenador() throws Exception {
+		
+		AtorDto atorDto = new AtorDto(
+				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
+				"Coordenador do curso", "1234");
+		
+		Long id = atorRepository.findAll().get(0).getId();
+		
+		String jsonRequest = objectMapper.writeValueAsString(atorDto);
+		
+		mockMvc.perform(put(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andExpect(status().isNoContent());
+		
+		Ator atorAtualizado = atorRepository.findById(id).get();
+		assertNotNull(atorAtualizado);
+		assertEquals("roberto22@gmail.com", atorAtualizado.getUsuarioAuth().getLogin());
+		assertEquals("Roberto Carlos Silva", atorAtualizado.getNome());
+		assertEquals("roberto22@gmail.com", atorAtualizado.getEmail());
+		assertEquals("Coordenador do curso", atorAtualizado.getTipoDoAtor().getTipo());
+	}
 
 	@Test
 	@DisplayName("Deve Buscar Somente Coordenador Pelo Controller")
@@ -122,7 +156,7 @@ class AtorControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()", equalTo(1)))
-				.andExpect(jsonPath("content[0].nome").value("Roberto Carlos"));
+				.andExpect(jsonPath("content[0].nome").value("Roberto Carlos Silva"));
 	}
 
 	@Test
@@ -160,8 +194,8 @@ class AtorControllerTest {
 				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos")))
-				.andExpect(jsonPath("$.email", equalTo("roberto@gmail.com")))
+				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos Silva")))
+				.andExpect(jsonPath("$.email", equalTo("roberto22@gmail.com")))
 				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")));
 	}
 }

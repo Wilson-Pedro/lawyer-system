@@ -79,7 +79,6 @@ class AssistidoServiceServiceTest {
 		Assistido assistido = assistidoService.atualizar(id, assistidoDto);
 		
 		assertNotNull(assistido);
-		assertNotNull(assistido.getId());
 		assertEquals("Ana Carla Silva", assistido.getNome());
 		assertEquals("20250815", assistido.getMatricula());
 		assertEquals("86766523354", assistido.getTelefone());

@@ -2,8 +2,10 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
+import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,6 +96,42 @@ class AssistidoControllerTest {
 	}
 	
 	@Test
+	@Order(3)
+	@DisplayName("Deve Atualizar Assistido No Banco de Dados Pelo Controller")
+	void atualizar_assistido() throws Exception {
+		
+		AssistidoDto assistidoDto = new AssistidoDto(
+				null, "Ana Carla Silva", "20250815", "86766523354",
+		"ana22@gmail.com", "Cientista de Dados", "brasileiro", 
+		"São Luís/MA", "Casado(a)", "São Luís", "Vila dos Nobres", 
+		"rua dos nobres", 12, "43012-232");
+		
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		String jsonRequest = objectMapper.writeValueAsString(assistidoDto);
+		
+		mockMvc.perform(put(URI + "/" + id)
+				.header("Authorization", "Bearer " + TOKEN)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jsonRequest))
+				.andExpect(status().isNoContent());
+		
+		Assistido assistidoAtualizado = assistidoRepository.findById(id).get();
+		assertNotNull(assistidoAtualizado);
+		assertEquals("Ana Carla Silva", assistidoAtualizado.getNome());
+		assertEquals("20250815", assistidoAtualizado.getMatricula());
+		assertEquals("86766523354", assistidoAtualizado.getTelefone());
+		assertEquals("ana22@gmail.com", assistidoAtualizado.getEmail());
+		assertEquals("Cientista de Dados", assistidoAtualizado.getProfissao());
+		assertEquals("brasileiro", assistidoAtualizado.getNacionalidade());
+		assertEquals("São Luís/MA", assistidoAtualizado.getNaturalidade());
+		assertEquals(EstadoCivil.CASADO, assistidoAtualizado.getEstadoCivil());
+		assertEquals("Vila dos Nobres", assistidoAtualizado.getEndereco().getBairro());
+		
+		assertEquals(1, assistidoRepository.count());
+	}
+	
+	@Test
 	@DisplayName("Deve Salvar Assistido Por Id No Banco De Dados Pelo Controller")
 	void buscar_por_id() throws Exception {
 		
@@ -101,16 +141,16 @@ class AssistidoControllerTest {
 				.header("Authorization", "Bearer " + TOKEN)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.nome", equalTo("Ana Carla")))
+				.andExpect(jsonPath("$.nome", equalTo("Ana Carla Silva")))
 				.andExpect(jsonPath("$.matricula", equalTo("20250815")))
 				.andExpect(jsonPath("$.telefone", equalTo("86766523354")))
-				.andExpect(jsonPath("$.email", equalTo("ana@gmail.com")))
+				.andExpect(jsonPath("$.email", equalTo("ana22@gmail.com")))
 				.andExpect(jsonPath("$.profissao", equalTo("Cientista de Dados")))
 				.andExpect(jsonPath("$.nacionalidade", equalTo("brasileiro")))
 				.andExpect(jsonPath("$.naturalidade", equalTo("São Luís/MA")))
-				.andExpect(jsonPath("$.estadoCivil", equalTo("Solteiro(a)")))
+				.andExpect(jsonPath("$.estadoCivil", equalTo("Casado(a)")))
 				.andExpect(jsonPath("$.cidade", equalTo("São Luís")))
-				.andExpect(jsonPath("$.bairro", equalTo("Vila Palmeira")))
+				.andExpect(jsonPath("$.bairro", equalTo("Vila dos Nobres")))
 				.andExpect(jsonPath("$.rua", equalTo("rua dos nobres")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(12)))
 				.andExpect(jsonPath("$.cep", equalTo("43012-232")));
@@ -128,7 +168,7 @@ class AssistidoControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 		.andExpect(jsonPath("$.content.length()").value(1))
-		.andExpect(jsonPath("$.content[0].nome").value("Ana Carla"));
+		.andExpect(jsonPath("$.content[0].nome").value("Ana Carla Silva"));
 		
 	}
 
