@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./EditarUsuario.module.css";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -45,9 +46,9 @@ export default function EditarUsuario() {
     fetchUsuario();
   }, []);
 
-  const cadastrarEstagiario = async () => {
+  const atualizarUsuario = async () => {
     try {
-      await axios.post(`${API_URL}/atores/`, {
+      await axios.put(`${API_URL}/atores/${usuarioId}`, {
         nome,
         email,
         tipoAtor,
@@ -57,16 +58,17 @@ export default function EditarUsuario() {
           Authorization: `Bearer ${token}`
         }
       });
+      
+      scrollToTop();
 
-      setMensagemToast("Usuário cadastrado com sucesso!");
+      setMensagemToast(`${tipoAtor} atualizado com sucesso!`);
       setVarianteToast("success");
       setMostrarToast(true);
 
-      limparCampos();
     } catch (error) {
       console.error(error);
 
-      setMensagemToast("Erro ao cadastrar usuário.");
+      setMensagemToast(`${tipoAtor} ao atualizar usuário.`);
       setVarianteToast("danger");
       setMostrarToast(true);
     }
@@ -74,13 +76,6 @@ export default function EditarUsuario() {
 
   const selecionarTipoAtor = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTipoAtor(e.target.value);
-  };
-
-  const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setTipoAtor("");
-    setSenha("");
   };
 
   const token = localStorage.getItem('token');
@@ -95,7 +90,7 @@ export default function EditarUsuario() {
 
       <h1 className={styles.title}>Atualizar Usuário</h1>
 
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
+      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); atualizarUsuario(); }}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Nome Completo</label>
           <input

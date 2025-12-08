@@ -3,6 +3,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap"
 import styles from "./EditarAssistido.module.css";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -29,7 +30,7 @@ export default function EditarAssistido() {
   const navigate = useNavigate();
   const params = useParams();
   const assistidoId = params.assistidoId || '';
-
+ 
   useEffect(() => {
 
     const token = localStorage.getItem('token');
@@ -44,8 +45,9 @@ export default function EditarAssistido() {
 
           const dados = response.data;
           setNome(dados.nome);
-          setEmail(dados.email);
+          setMatricula(dados.matricula);
           setTelefone(dados.telefone);
+          setEmail(dados.email);
           setCidade(dados.cidade);
           setBairro(dados.bairro);
           setRua(dados.rua);
@@ -54,7 +56,7 @@ export default function EditarAssistido() {
           setProfissao(dados.profissao);
           setNacionalidade(dados.nacionalidade);
           setnaturalidade(dados.naturalidade);
-          setEstadoCivil(dados.setEstadoCivil);
+          setEstadoCivil(dados.estadoCivil);
       } catch(error) {
         console.log(error)
       }
@@ -63,11 +65,11 @@ export default function EditarAssistido() {
     fetchAssitido();
   }, []);
 
-  const cadastrarAssistido = async (e:any) => {
+  const atualizarAssistido = async (e:any) => {
     e.preventDefault();
     
     try {
-      await axios.post(`${API_URL}/assistidos/`, {
+      await axios.put(`${API_URL}/assistidos/${assistidoId}`, {
         nome,
         matricula,
         telefone,
@@ -87,16 +89,17 @@ export default function EditarAssistido() {
         }
       });
 
+      scrollToTop();
+
       setMostrarToast(true);
-      setMensagemToast("Aassistido cadastrado com sucesso.");
+      setMensagemToast("Aassistido atualizado com sucesso.");
       setVarianteToast("success");
 
-      limparCampos();
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar Assistido");
+      setMensagemToast("Falha ao atualizar assistido");
       setVarianteToast("danger");
     }
   };
@@ -105,27 +108,11 @@ export default function EditarAssistido() {
     setEstadoCivil(e.target.value)
   }
 
-  const limparCampos = () => {
-    setNome("");
-    setMatricula("");
-    setTelefone("");
-    setEmail("");
-    setCidade("");
-    setBairro("");
-    setRua("");
-    setNumeroDaCasa("");
-    setCep("");
-    setProfissao("");
-    setNacionalidade("");
-    setnaturalidade("");
-    setEstadoCivil("");
-  };
-
-    const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
   return (
-    <form className={styles.container} onSubmit={cadastrarAssistido}>
+    <form className={styles.container} onSubmit={atualizarAssistido}>
       <button className={styles.backButton} onClick={() => navigate('/usuarios')}>
         ← Voltar
       </button>
@@ -203,7 +190,7 @@ export default function EditarAssistido() {
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estado Civil</label>
           <select className={styles.input} onChange={selecionarEstadoCivil}>
-            <option value="" disabled selected></option>
+            <option value="" disabled></option>
             <option value="Solteiro(a)">Solteiro(a)</option>
             <option value="Casado(a)">Casado(a)</option>
             <option value="Divorciado(a)">Divorciado(a)</option>

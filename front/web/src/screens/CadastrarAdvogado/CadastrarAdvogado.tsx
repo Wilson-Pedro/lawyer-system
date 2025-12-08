@@ -28,7 +28,7 @@ export default function CadastrarAdvogado() {
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
-  const cadastrarAssistido = async (e:any) => {
+  const cadastrarAdvogado = async (e:any) => {
     e.preventDefault();
 
     try {
@@ -49,7 +49,7 @@ export default function CadastrarAdvogado() {
       });
 
       setMostrarToast(true);
-      setMensagemToast("Aassistido cadastrado com sucesso.");
+      setMensagemToast("Advogado cadastrado com sucesso.");
       setVarianteToast("success");
 
       limparCampos();
@@ -57,7 +57,7 @@ export default function CadastrarAdvogado() {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar Assistido");
+      setMensagemToast("Falha ao Cadastrar advogado");
       setVarianteToast("danger");
     }
   };
@@ -96,7 +96,7 @@ export default function CadastrarAdvogado() {
 
   return (
 
-    <form className={styles.container} onSubmit={cadastrarAssistido}>
+    <form className={styles.container} onSubmit={cadastrarAdvogado}>
       <button className={styles.backButton} onClick={() => navigate(-1)}>
         ← Voltar
       </button>

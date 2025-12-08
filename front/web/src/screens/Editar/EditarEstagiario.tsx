@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./EditarEstagiario.module.css";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -46,9 +47,9 @@ export default function EditarEstagiario() {
     fetchEstagiario();
   }, []);
 
-  const cadastrarEstagiario = async () => {
+  const atualizarEstagiario = async () => {
     try {
-      await axios.post(`${API_URL}/estagiarios/`, {
+      await axios.put(`${API_URL}/estagiarios/${estagiarioId}`, {
         nome,
         email,
         matricula,
@@ -59,16 +60,17 @@ export default function EditarEstagiario() {
           Authorization: `Bearer ${token}`
         }
       });
+      
+      scrollToTop();
 
-      setMensagemToast("Estagiário cadastrado com sucesso!");
+      setMensagemToast("Estagiário atualizado com sucesso!");
       setVarianteToast("success");
       setMostrarToast(true);
 
-      limparCampos();
     } catch (error) {
       console.error(error);
 
-      setMensagemToast("Erro ao cadastrar estagiário.");
+      setMensagemToast("Erro ao atualizar estagiário.");
       setVarianteToast("danger");
       setMostrarToast(true);
     }
@@ -76,14 +78,6 @@ export default function EditarEstagiario() {
 
   const selecionarPeriodo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPeriodo(e.target.value);
-  };
-
-  const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setMatricula("");
-    setPeriodo("Estágio I");
-    setSenha("");
   };
 
   const token = localStorage.getItem('token');
@@ -98,7 +92,7 @@ export default function EditarEstagiario() {
 
       <h1 className={styles.title}>Atualizar Estagiário</h1>
 
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
+      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); atualizarEstagiario(); }}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Nome Completo</label>
           <input

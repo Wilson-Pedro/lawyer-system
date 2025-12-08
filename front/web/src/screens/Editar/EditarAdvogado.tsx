@@ -3,6 +3,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./EditarAdvogado.module.css";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -56,11 +57,11 @@ export default function EditarAdvogado() {
     fecthAdvogado();
   }, []);
 
-  const cadastrarAssistido = async (e:any) => {
+  const atualizarAdvogado = async (e:any) => {
     e.preventDefault();
 
     try {
-      await axios.post(`${API_URL}/advogados/`, {
+      await axios.put(`${API_URL}/advogados/${advogadoId}`, {
         nome,
         email,
         telefone,
@@ -76,16 +77,16 @@ export default function EditarAdvogado() {
         }
       });
 
-      setMostrarToast(true);
-      setMensagemToast("Aassistido cadastrado com sucesso.");
-      setVarianteToast("success");
+      scrollToTop();
 
-      limparCampos();
+      setMostrarToast(true);
+      setMensagemToast("Advogado atualizado com sucesso.");
+      setVarianteToast("success");
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar Assistido");
+      setMensagemToast("Falha ao atualizar advogado");
       setVarianteToast("danger");
     }
   };
@@ -110,24 +111,12 @@ export default function EditarAdvogado() {
     setDataDeNascimento(formatado);
   }
 
-  const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setTelefone("");
-    setDataDeNascimento("");
-    setCidade("");
-    setBairro("");
-    setRua("");
-    setNumeroDaCasa("");
-    setCep("");
-  };
-
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
   return (
 
-    <form className={styles.container} onSubmit={cadastrarAssistido}>
+    <form className={styles.container} onSubmit={atualizarAdvogado}>
       <button className={styles.backButton} onClick={() => navigate('/usuarios')}>
         ← Voltar
       </button>
