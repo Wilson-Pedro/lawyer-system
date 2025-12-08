@@ -1,0 +1,135 @@
+.container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1d3557;
+  margin-bottom: 2rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #457b9d;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.backButton:hover {
+  color: #1d3557;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.95rem;
+  color: #1d3557;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+}
+
+.input {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: #457b9d;
+  box-shadow: 0 0 0 3px rgba(69, 123, 157, 0.2);
+}
+
+.button {
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #1d3557;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #457b9d;
+  transform: scale(1.02);
+}
+
+/* Toast personalizado */
+.toastMessage {
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.ul {
+  background: #fff;
+  border: 1px solid #ccd1d9;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 100%;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  margin: auto;
+}
+
+.li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: 0.2s;
+  list-style-type: none;
+  max-width: 100%;
+}
+
+
+li:hover {
+  background-color: lightgray;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .container {
+    margin: 30px 15px;
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .button {
+    font-size: 0.95rem;
+  }
+}

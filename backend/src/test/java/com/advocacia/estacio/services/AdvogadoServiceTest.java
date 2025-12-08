@@ -1,13 +1,7 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -16,6 +10,8 @@ import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -45,7 +41,8 @@ class AdvogadoServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Advogado_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Advogado No Banco De Dados Pelo Service")
+	void salvar_advogado() {
 		assertEquals(0, advogadoRepository.count());
 		
 		Advogado advogado = advogadoService.salvar(advogadoDto);
@@ -63,15 +60,67 @@ class AdvogadoServiceTest {
 	
 	@Test
 	@Order(3)
-	void deveBuscar_Advogado_peloNome_PeloService() {
+	@DisplayName("Deve Atualizar Advogado No Banco De Dados Pelo Service")
+	void atualizar_advogado() {
+		
+		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
+		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
+		"rua do passeio", 11, "53022-112");
+		
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		Advogado advogadoAtualizado = advogadoService.atualizar(id, advogadoDto);
+		
+		assertNotNull(advogadoAtualizado);
+		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
+		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
+		assertEquals("88566519122", advogadoAtualizado.getTelefone());
+		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
+		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		
+		assertEquals(1, advogadoRepository.count());
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Advogado Por Nome Pelo Service")
+	void buscar_advogado_pelo_nome() {
 		
 		String nome = "il";
 		
 		Page<Advogado> advogados = advogadoService.buscarAdvogado(nome, 0, 10);
 		
 		assertNotNull(advogados);
-		assertEquals(advogados.getContent().size(), 1);
-		assertEquals(advogados.getContent().get(0).getNome(), "Carlos Silva");
+		assertEquals(1, advogados.getContent().size());
+		assertEquals("Carlos Silva Lima", advogados.getContent().get(0).getNome());
+	}
 
+	@Test
+	@DisplayName("Deve buscar Todos os advogados")
+	void buscar_todos() {
+
+		Page<ResponseMinDto> pages = advogadoService.buscarTodos(0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
+	}
+	
+	@Test
+	@DisplayName("Deve buscar Advogado Por Id Pelo Service")
+	void buscar_advogado_por_id() {
+
+		Long id = advogadoRepository.findAll().get(0).getId();
+		
+		Advogado advogado = advogadoService.buscarPorId(id);
+
+		assertNotNull(advogado);
+		assertEquals("Carlos Silva Lima", advogado.getNome());
+		assertEquals("carlos22@gmail.com", advogado.getEmail());
+		assertEquals("88566519122", advogado.getTelefone());
+		assertEquals("1993-08-24", advogado.getDataDeNascimeto().toString());
+		assertEquals("São Luís", advogado.getEndereco().getCidade());
+		assertEquals("Vila dos Nobres", advogado.getEndereco().getBairro());
+		assertEquals("rua do passeio", advogado.getEndereco().getRua());
+		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
+		assertEquals("53022-112", advogado.getEndereco().getCep());
 	}
 }

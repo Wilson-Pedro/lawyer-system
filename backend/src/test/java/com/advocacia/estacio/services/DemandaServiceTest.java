@@ -3,10 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -45,7 +42,8 @@ class DemandaServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Demanda_NoBancoDeDadosPeloService() {
+	@DisplayName("Deve Salvar Demanda No Banco de Dados Pelo Service")
+	void salvar_demanda() {
 		
 		assertEquals(0, demandaRepository.count());
 		
@@ -57,40 +55,43 @@ class DemandaServiceTest {
 		assertNotNull(demanda);
 		assertNotNull(demanda.getId());
 		assertNotNull(demanda.getRegistro());
-		assertEquals(demanda.getDemanda(), "Atualizar Documentos");
+		assertEquals("Atualizar Documentos", demanda.getDemanda());
 		assertEquals(demanda.getEstagiario(), estagiario);
-		assertEquals(demanda.getPrazo().toString(), "2025-11-12");
+		assertEquals("2025-11-12", demanda.getPrazo().toString());
 
 		assertEquals(1, demandaRepository.count());
 	}
 	
 	@Test
 	@Order(3)
-	void deve_buscar_Demandas_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
+	void buscar_demanda_por_status() {
 		
 		Page<DemandaDto> demandas = demandaService.buscarTodos(0, 20);
 		
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
+		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
 	}
 	
 	@Test
 	@Order(4)
-	void deve_buscar_Demandas_por_estagiarioId_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Buscar Demandas Pelo Estário Id No Banco de Dados Pelo Service")
+	void buscar_demandas_por_estagiarioId() {
 
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
 		
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorEstagiarioId(estagiarioId, 0, 20);
 		
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Atualizar Documentos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Pedro Lucas");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-11-12");
+		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
 	}
 
 	@Test
+	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
 	void deve_buscar_Demandas_por_status_NoBancoDeDados_PeloService() {
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
 		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
@@ -99,8 +100,8 @@ class DemandaServiceTest {
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Não Atendido", 0, 20);
 
 		assertNotNull(demandas);
-		assertEquals(demandas.getContent().get(0).getDemanda(), "Organizar Processos");
-		assertEquals(demandas.getContent().get(0).getEstagiarioNome(), "Carlos Miguel");
-		assertEquals(demandas.getContent().get(0).getPrazo(), "2025-12-15");
+		assertEquals("Organizar Processos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Carlos Miguel", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("2025-12-15", demandas.getContent().get(0).getPrazo());
 	}
 }

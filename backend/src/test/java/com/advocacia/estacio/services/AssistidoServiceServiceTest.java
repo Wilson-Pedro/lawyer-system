@@ -1,13 +1,7 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
@@ -15,12 +9,10 @@ import org.springframework.data.domain.Page;
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Assistido;
 import com.advocacia.estacio.domain.enums.EstadoCivil;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AssistidoRepository;
-import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -50,7 +42,8 @@ class AssistidoServiceServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Assistido_NoBancoDeDados_PeloService() {
+	@DisplayName("Deve Salvar Assistido No Banco De Dados Pelo Service")
+	void salvar_assistido() {
 		assertEquals(0, assistidoRepository.count());
 		
 		Assistido assistido = assistidoService.salvar(assistidoDto);
@@ -72,11 +65,69 @@ class AssistidoServiceServiceTest {
 	
 	@Test
 	@Order(3)
-	void deveSalvar_buscar_assistido_PeloController() throws Exception {
+	@DisplayName("Deve Atualizar Assistido No Banco De Dados Pelo Service")
+	void atualizar_assistido() {
 		
-		Page<Assistido> pages = assistidoService.buscarAssistido("Car", 0, 20);
-		assertEquals(pages.getContent().size(), 1);
-		assertEquals(pages.getContent().get(0).getNome(), "Ana Carla");
+		AssistidoDto assistidoDto = new AssistidoDto(
+				null, "Ana Carla Silva", "20250815", "86766523354",
+		"ana22@gmail.com", "Cientista de Dados", "brasileiro", 
+		"São Luís/MA", "Casado(a)", "São Luís", "Vila dos Nobres", 
+		"rua dos nobres", 12, "43012-232");
 		
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		Assistido assistido = assistidoService.atualizar(id, assistidoDto);
+		
+		assertNotNull(assistido);
+		assertEquals("Ana Carla Silva", assistido.getNome());
+		assertEquals("20250815", assistido.getMatricula());
+		assertEquals("86766523354", assistido.getTelefone());
+		assertEquals("ana22@gmail.com", assistido.getEmail());
+		assertEquals("Cientista de Dados", assistido.getProfissao());
+		assertEquals("brasileiro", assistido.getNacionalidade());
+		assertEquals("São Luís/MA", assistido.getNaturalidade());
+		assertEquals(EstadoCivil.CASADO, assistido.getEstadoCivil());
+		assertEquals("Vila dos Nobres", assistido.getEndereco().getBairro());
+		
+		assertEquals(1, assistidoRepository.count());
+
+	}
+	
+	@Test
+	@DisplayName("Deve Salvar Assistido Por Id No Banco De Dados Pelo Service")
+	void buscar_por_id() {
+		Long id = assistidoRepository.findAll().get(0).getId();
+		
+		Assistido assistido = assistidoService.buscarPorId(id);
+		
+		assertNotNull(assistido);
+		assertNotNull(assistido.getId());
+		assertEquals("Ana Carla Silva", assistido.getNome());
+		assertEquals("20250815", assistido.getMatricula());
+		assertEquals("86766523354", assistido.getTelefone());
+		assertEquals("ana22@gmail.com", assistido.getEmail());
+		assertEquals("Cientista de Dados", assistido.getProfissao());
+		assertEquals("brasileiro", assistido.getNacionalidade());
+		assertEquals("São Luís/MA", assistido.getNaturalidade());
+		assertEquals(EstadoCivil.CASADO, assistido.getEstadoCivil());
+	}
+	
+	@Test
+	@DisplayName("Deve Buscar Assistido Por Nome Pelo Service")
+	void buscar_assistido_por_nome() throws Exception {
+		
+		Page<Assistido> pages = assistidoService.buscarAssistidoPorNome("Car", 0, 20);
+		assertEquals(1, pages.getContent().size());
+		assertEquals("Ana Carla Silva", pages.getContent().get(0).getNome());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Assistidos")
+	void buscar_todos() {
+
+		Page<ResponseMinDto> pages = assistidoService.buscarTodos(0, 20);
+
+		assertFalse(pages.isEmpty());
+		assertEquals(1, pages.getContent().size());
 	}
 }

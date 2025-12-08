@@ -1,5 +1,6 @@
 package com.advocacia.estacio.controlleradvice;
 
+import com.advocacia.estacio.exceptions.EnumException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,14 @@ public class ControllerAdviceApi {
 	public ResponseEntity<Problema> numeroDoProcessoExistenteException() {
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Problema problema = new Problema("Esse número do Processo já foi cadastrado", 
+				status.value(), status);
+		return ResponseEntity.status(status).body(problema);
+	}
+
+	@ExceptionHandler(EnumException.class)
+	public ResponseEntity<Problema> enumException(EnumException e) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		Problema problema = new Problema(e.getMessage(),
 				status.value(), status);
 		return ResponseEntity.status(status).body(problema);
 	}

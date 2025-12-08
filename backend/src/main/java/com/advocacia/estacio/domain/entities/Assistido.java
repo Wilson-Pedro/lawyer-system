@@ -80,6 +80,10 @@ public class Assistido implements Serializable {
 		this.naturalidade = dto.getNaturalidade();
 		this.estadoCivil = EstadoCivil.toEnum(dto.getEstadoCivil());
 	}
+	
+	public AssistidoDto toDto() {
+		return new AssistidoDto(this);
+	}
 
 	public Long getId() {
 		return id;

@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum AreaDoDireito {
@@ -29,15 +31,15 @@ public enum AreaDoDireito {
 		return Stream.of(AreaDoDireito.values())
 				.filter(p -> p.getDescricao().equals(descricao))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
-						("Area De Direito inválido: " + descricao));
+				.orElseThrow(() -> new EnumException
+						("Área De Direito inválido: " + descricao));
 	}
 	
 	public static AreaDoDireito toEnum(Integer codigo) {
 		return Stream.of(AreaDoDireito.values())
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código da Area DeDireito inválido: " + codigo));
 	}
 }

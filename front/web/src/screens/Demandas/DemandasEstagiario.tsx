@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EyeIcon } from "../../Icons/Icon";
+import { EyeIcon, PlusIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -127,7 +127,8 @@ export default function DemandasEstagiario() {
                                     <th>Estagiario</th>
                                     <th>Status</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Ver</th>
+                                    <th className="text-center">Respostas</th>
+                                    <th className="text-center">Responder</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -141,9 +142,18 @@ export default function DemandasEstagiario() {
                                         </td>
                                         <td className="text-center">
                                             <button
-                                                className="btn btn-sm btn-outline-primary me-2"
+                                            onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
+                                                className="btn btn-sm btn-outline-primary"
                                             >
                                                 <EyeIcon />
+                                            </button>
+                                        </td>
+                                        <td className="text-center">
+                                            <button
+                                                onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
+                                                className="btn btn-sm btn-outline-primary me-2"
+                                            >
+                                                <PlusIcon />
                                             </button>
                                         </td>
                                     </tr>

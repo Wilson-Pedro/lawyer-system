@@ -59,6 +59,10 @@ public class Estagiario implements Serializable {
 		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
 	}
 
+	public EstagiarioDto toDto() {
+		return new EstagiarioDto(this);
+	}
+	
 	public Long getId() {
 		return id;
 	}

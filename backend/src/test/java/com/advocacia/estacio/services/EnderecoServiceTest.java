@@ -3,21 +3,13 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.entities.Endereco;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
-import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.repositories.EnderecoRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
@@ -48,8 +40,8 @@ class EnderecoServiceTest {
 
 	@Test
 	@Order(2)
-	void deveSalvar_Endereco_NoBancoDeDados_PeloService() {
-		assertEquals(0, enderecoRepository.count());
+	@DisplayName("Deve Salvar Endereço Pelo Service")
+	void salvar_endereco() {
 		
 		Endereco endereco = enderecoService.salvar(assistidoDto);
 		
@@ -61,6 +53,23 @@ class EnderecoServiceTest {
 		assertEquals(12, endereco.getNumeroDaCasa());
 		assertEquals("43012-232", endereco.getCep());
 		assertEquals(1, enderecoRepository.count());
-
+	}
+	
+	@Test
+	@DisplayName("Deve Atualizar Endereço Pelo Service")
+	void atualizar_endereco() {
+		
+		Endereco endereco = new Endereco(
+				null, "São Luís", "Vila dos Nobres", "rua palmeira", 2, "11012-402");
+		
+		Long id = enderecoRepository.findAll().get(0).getId();
+		Endereco enderecoAtualizado = enderecoService.atualizar(id, endereco);
+		
+		assertNotNull(enderecoAtualizado);
+		assertEquals("São Luís", enderecoAtualizado.getCidade());
+		assertEquals("Vila dos Nobres", enderecoAtualizado.getBairro());
+		assertEquals("rua palmeira", enderecoAtualizado.getRua());
+		assertEquals(2, enderecoAtualizado.getNumeroDaCasa());
+		assertEquals("11012-402", enderecoAtualizado.getCep());
 	}
 }

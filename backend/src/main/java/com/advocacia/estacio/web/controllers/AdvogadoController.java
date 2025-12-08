@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.services.AdvogadoService;
 
@@ -30,15 +32,37 @@ public class AdvogadoController {
 		Advogado advogado = advogadoService.salvar(advogadoDto);
 		return ResponseEntity.status(201).body(new AdvogadoDto(advogado));
 	}
+
+	@GetMapping("")
+	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodos(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		Page<ResponseMinDto> pages = advogadoService.buscarTodos(page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<AdvogadoDto> buscarPorId(@PathVariable Long id) {
+		AdvogadoDto dto = advogadoService.buscarPorId(id).toDto();
+		return ResponseEntity.ok(dto);
+	}
 	
 	@GetMapping("/buscar/{nome}")
-	public ResponseEntity<PageResponseDto<AdvogadoDto>> buscarAdvogado(
+	public ResponseEntity<PageResponseDto<AdvogadoDto>> buscarAdvogadoPorNome(
 			@PathVariable String nome,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size
 			) {
 		Page<Advogado> pages = advogadoService.buscarAdvogado(nome, page, size);
-		Page<AdvogadoDto> pagesDto = pages.map(x -> new AdvogadoDto(x));
+		Page<AdvogadoDto> pagesDto = pages.map(AdvogadoDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> atualizarAdvogado(
+			@PathVariable Long id, 
+			@RequestBody AdvogadoDto advogadoDto) {
+		advogadoService.atualizar(id, advogadoDto);
+		return ResponseEntity.noContent().build();
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
-import com.advocacia.estacio.domain.entities.Assistido;
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.services.AssistidoService;
 
 @RequestMapping("/assistidos")
@@ -27,8 +28,22 @@ public class AssistidoController {
 
 	@PostMapping("/")
 	public ResponseEntity<AssistidoDto> salvar(@RequestBody AssistidoDto assistidoDto) {
-		Assistido assistido = assistidoService.salvar(assistidoDto);
-		return ResponseEntity.status(201).body(new AssistidoDto(assistido));
+		AssistidoDto dto = assistidoService.salvar(assistidoDto).toDto();
+		return ResponseEntity.status(201).body(dto);
+	}
+
+	@GetMapping("")
+	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodos(
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
+		Page<ResponseMinDto> pages = assistidoService.buscarTodos(page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<AssistidoDto> buscarPorId(@PathVariable Long id) {
+		AssistidoDto dto = assistidoService.buscarPorId(id).toDto();
+		return ResponseEntity.ok(dto);
 	}
 	
 	@GetMapping("/buscar/{nome}")
@@ -36,8 +51,16 @@ public class AssistidoController {
 			@PathVariable String nome,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<AssistidoDto> dtos = assistidoService.buscarAssistido(nome, page, size)
-				.map(x -> new AssistidoDto(x));
+		Page<AssistidoDto> dtos = assistidoService.buscarAssistidoPorNome(nome, page, size)
+				.map(AssistidoDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(dtos));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Void> atualizarAssistido(
+			@PathVariable Long id, 
+			@RequestBody AssistidoDto assistidoDto) {
+		assistidoService.atualizar(id, assistidoDto);
+		return ResponseEntity.noContent().build();
 	}
 }

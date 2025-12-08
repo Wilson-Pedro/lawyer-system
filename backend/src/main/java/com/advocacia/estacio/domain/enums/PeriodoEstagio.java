@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum PeriodoEstagio {
@@ -30,7 +32,7 @@ public enum PeriodoEstagio {
 		return Stream.of(PeriodoEstagio.values())
 				.filter(p -> p.getTipo().equals(tipo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Período inválido: " + tipo));
 	}
 	
@@ -38,7 +40,7 @@ public enum PeriodoEstagio {
 		return Stream.of(PeriodoEstagio.values())
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código inválido: " + codigo));
 	}
 }

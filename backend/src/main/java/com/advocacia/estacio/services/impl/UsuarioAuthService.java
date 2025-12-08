@@ -44,4 +44,21 @@ public class UsuarioAuthService  {
 		
 		return new LoginResponseDto(token, dto.login(), user.getRole());
 	}
+	
+	public void atualizarLogin(String loginAntigo, String loginNovo, String senha) {
+		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(loginAntigo);
+		boolean atualizar = false;
+		
+		if(loginAntigo.trim() != loginNovo.trim()) {
+			user.setLogin(loginNovo);
+			atualizar = true;
+		}
+		
+		if(!senha.isEmpty() || !senha.isBlank()) {
+			String encryptedPassword = new BCryptPasswordEncoder().encode(senha);
+			user.setPassword(encryptedPassword);	
+			atualizar = true;
+		}
+		if(atualizar) this.usuarioAuthRepository.save(user);
+	}
 }

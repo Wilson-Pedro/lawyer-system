@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.EnderecoService;
+import com.advocacia.estacio.utils.Utils;
 
 @Service
 public class AdvogadoServiceImpl implements AdvogadoService {
@@ -41,5 +43,23 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	public Page<Advogado> buscarAdvogado(String nome, int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
 		return advogadoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+	}
+
+	@Override
+	public Page<ResponseMinDto> buscarTodos(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return advogadoRepository.buscarTodos(pageable);
+	}
+
+	@Override
+	public Advogado atualizar(Long id, AdvogadoDto advogadoDto) {
+		Advogado advogado = buscarPorId(id);
+		advogado.setId(id);
+		advogado.setNome(advogadoDto.getNome());
+		advogado.setEmail(advogadoDto.getEmail());
+		advogado.setTelefone(advogadoDto.getTelefone());
+		advogado.setDataDeNascimeto(Utils.localDateToString(advogadoDto.getDataDeNascimento()));
+		enderecoService.atualizar(advogado.getEndereco().getId(), new Endereco(advogadoDto));
+		return advogadoRepository.save(advogado);
 	}
 }

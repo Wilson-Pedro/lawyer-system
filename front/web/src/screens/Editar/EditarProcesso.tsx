@@ -3,7 +3,8 @@ import axios from "axios";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import styles from "./EditarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
-import Select from "react-select"
+import Select from "react-select";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -189,16 +190,17 @@ export default function EditarProcesso() {
         }
       });
       
+      scrollToTop();
+      
       setMostrarToast(true);
       setMensagemToast("Processo atualizado com sucesso.");
       setVarianteToast("success");
 
-      limparCampos();
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao cadastrar Processo.");
+      setMensagemToast("Falha ao atualizar Processo.");
       setVarianteToast("danger");
     }
   };
@@ -250,16 +252,6 @@ export default function EditarProcesso() {
     setNomeEstagiarioSearch("");
   }
 
-  const limparCampos = () => {
-    setAssunto("");
-    setVara("");
-    setResponsavel("");
-    setPrazo("");
-    setAreaDeDireito("");
-    setTribunal("");
-    setNumeroDoProcessoPje("");
-  };
-
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
@@ -271,7 +263,7 @@ export default function EditarProcesso() {
       </button>
 
       <h1 className={styles.title}>Editar Processo</h1>
-      <form className={styles.form} onSubmit={atualizarProcesso}>
+      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); atualizarProcesso(); }}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Assistido</label>
           <input

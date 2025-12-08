@@ -18,7 +18,8 @@ interface MenuItem {
 }
 
 interface Response {
-  response: number;
+  id: number;
+  nome: string;
 }
 
 export default function HomeEstagiario() {
@@ -38,13 +39,13 @@ export default function HomeEstagiario() {
                       Authorization: `Bearer ${token}`
                   }
               });
-              setEstagiarioId(response.data.response);
+              setEstagiarioId(response.data.id);
           } catch (error) {
                 console.error(error);
             }
       };
       fetchIdUser();
-  }, []);
+    }, []);
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
@@ -56,14 +57,14 @@ export default function HomeEstagiario() {
     // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
     // { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
     // { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/${estagiarioId}`, variant: "warning" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/estagiario/${estagiarioId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel Administrativo {estagiarioId}</span>
+        <span className="navbar-brand fw-bold fs-4">Painel Administrativo</span>
         <button
           className="btn btn-outline-light ms-auto"
           onClick={() => {

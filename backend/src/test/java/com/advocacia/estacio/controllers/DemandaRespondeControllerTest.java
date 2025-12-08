@@ -1,23 +1,17 @@
 package com.advocacia.estacio.controllers;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.dto.DemandaRespondeDto;
 import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.DemandaResponde;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.DemandaRespondeService;
+
 import com.advocacia.estacio.services.DemandaService;
-import com.advocacia.estacio.services.EstagiarioService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,16 +37,11 @@ class DemandaRespondeControllerTest {
 	EstagiarioRepository estagiarioRepository;
 
 	@Autowired
+
 	DemandaRespondeRepository demandaRespondeRepository;
 
 	@Autowired
-	DemandaRespondeService demandaRespondeService;
-
-	@Autowired
 	DemandaService demandaService;
-	
-	AdvogadoDto advogadoDto;
-	
 	@Autowired
 	TestUtil testUtil;
 	
@@ -62,7 +51,7 @@ class DemandaRespondeControllerTest {
 	@Autowired
 	ObjectMapper objectMapper;
 
-	private static String URI = "/demandas/responde";
+	private static final String URI = "/demandas/responde";
 
 	private static String TOKEN = "";
 	
@@ -76,6 +65,7 @@ class DemandaRespondeControllerTest {
 	
 	@Test
 	@Order(2)
+	@DisplayName("Deve Salvar Demanda Responde No Banco de Dados Pelo Controller")
 	void deveSalvar_DemandaResponde_NoBancoDeDados_PeloController() throws Exception {
 
 		assertEquals(0, demandaRespondeRepository.count());
@@ -85,7 +75,7 @@ class DemandaRespondeControllerTest {
 		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
-		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa");
+		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");
 
 		String jsonRequest = objectMapper.writeValueAsString(demandaRespondeDto);
 
@@ -94,8 +84,22 @@ class DemandaRespondeControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$.resposta", equalTo(demandaRespondeDto.getResposta())));
+				.andExpect(jsonPath("$.resposta", equalTo(demandaRespondeDto.getResposta())))
+				.andExpect(jsonPath("$.respondidoPor", equalTo(demandaRespondeDto.getRespondidoPor())));
 		
 		assertEquals(1, demandaRespondeRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demanda Por Id No Banco de Dados Pelo Controller")
+	void deve_buscar_DemandaResponde_por_demandaId_PeloController() throws Exception {
+
+		Long demandaId = demandaRepository.findAll().get(0).getId();
+
+		mockMvc.perform(get(URI + "/demanda/" + demandaId)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)));
 	}
 }

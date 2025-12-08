@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AssistidoDto;
@@ -9,7 +10,11 @@ public interface AssistidoService {
 
 	Assistido salvar(AssistidoDto assistidoDto);
 	
-	Assistido buscarPorId(Long assistidoId);
+	Assistido buscarPorId(Long id);
 	
-	Page<Assistido> buscarAssistido(String nome, int page, int size);
+	Assistido atualizar(Long id, AssistidoDto assistidoDto);
+	
+	Page<Assistido> buscarAssistidoPorNome(String nome, int page, int size);
+
+	Page<ResponseMinDto> buscarTodos(int page, int size);
 }

@@ -64,6 +64,10 @@ public class Advogado implements Serializable {
 		this.dataDeNascimeto = localDateToString(dto.getDataDeNascimento());
 	}
 	
+	public AdvogadoDto toDto() {
+		return new AdvogadoDto(this);
+	}
+	
 	private LocalDate localDateToString(String string) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(string, formatter);

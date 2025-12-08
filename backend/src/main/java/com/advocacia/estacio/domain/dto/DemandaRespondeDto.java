@@ -1,7 +1,10 @@
 package com.advocacia.estacio.domain.dto;
 
-import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.DemandaResponde;
+import com.advocacia.estacio.domain.enums.RespondidoPor;
+import com.advocacia.estacio.utils.Utils;
+
+import java.time.LocalDateTime;
 
 public class DemandaRespondeDto {
 
@@ -15,6 +18,10 @@ public class DemandaRespondeDto {
 
 	private String resposta;
 
+	private String respondidoPor;
+
+    private String registro;
+
 	public DemandaRespondeDto() {
 	}
 
@@ -23,17 +30,33 @@ public class DemandaRespondeDto {
 		this.estagiarioId = demandaResponde.getEstagiario().getId();
 		this.estagiarioNome = demandaResponde.getEstagiario().getNome();
 		this.resposta = demandaResponde.getResposta();
+		this.respondidoPor = demandaResponde.getRespondidoPor().getDescricao();
 	}
 
-	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String resposta) {
+    public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String resposta, String respondidoPor) {
+        this.id = id;
+        this.demandaId = demandaId;
+        this.estagiarioId = estagiarioId;
+        this.resposta = resposta;
+        this.respondidoPor = respondidoPor;
+    }
+
+	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, RespondidoPor respondidoPor) {
 		this.id = id;
 		this.demandaId = demandaId;
 		this.estagiarioId = estagiarioId;
+		this.estagiarioNome = estagiarioNome;
 		this.resposta = resposta;
+		this.respondidoPor = respondidoPor.getDescricao();
 	}
 
-	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta) {
-		this(demandaId, estagiarioId, id, resposta);
+    public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, RespondidoPor respondidoPor, LocalDateTime registro) {
+        this(id, demandaId, estagiarioId, estagiarioNome, resposta, respondidoPor);
+        this.registro = Utils.localDateTimeToString(registro);
+    }
+
+	public DemandaRespondeDto(Long id, Long demandaId, Long estagiarioId, String estagiarioNome, String resposta, String respondidoPor) {
+		this(demandaId, estagiarioId, id, resposta, respondidoPor);
 		this.estagiarioNome = estagiarioNome;
 	}
 
@@ -41,39 +64,27 @@ public class DemandaRespondeDto {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public Long getDemandaId() {
 		return demandaId;
-	}
-
-	public void setDemandaId(Long demandaId) {
-		this.demandaId = demandaId;
 	}
 
 	public Long getEstagiarioId() {
 		return estagiarioId;
 	}
 
-	public void setEstagiarioId(Long estagiarioId) {
-		this.estagiarioId = estagiarioId;
-	}
-
 	public String getEstagiarioNome() {
 		return estagiarioNome;
 	}
 
-	public void setEstagiarioNome(String estagiarioNome) {
-		this.estagiarioNome = estagiarioNome;
+	public String getRespondidoPor() {
+		return respondidoPor;
 	}
 
 	public String getResposta() {
 		return resposta;
 	}
 
-	public void setResposta(String resposta) {
-		this.resposta = resposta;
-	}
+    public String getRegistro() {
+        return registro;
+    }
 }

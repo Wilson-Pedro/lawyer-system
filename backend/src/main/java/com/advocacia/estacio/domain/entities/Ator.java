@@ -20,7 +20,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity(name = "tbl_ator")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Ator {
+public class Ator {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +54,10 @@ public abstract class Ator {
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
 		this.tipoDoAtor = TipoDoAtor.toEnum(dto.getTipoAtor());
+	}
+	
+	public AtorDto toDto() {
+		return new AtorDto(this);
 	}
 
 	public Long getId() {

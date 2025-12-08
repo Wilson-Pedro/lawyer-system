@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum StatusProcesso {
@@ -30,7 +32,7 @@ public enum StatusProcesso {
 		return Stream.of(StatusProcesso.values())
 				.filter(p -> p.getStatus().equals(status))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Status inválido: " + status));
 	}
 	
@@ -38,7 +40,7 @@ public enum StatusProcesso {
 		return Stream.of(StatusProcesso.values())
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código inválido: " + codigo));
 	}
 }

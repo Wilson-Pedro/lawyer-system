@@ -18,7 +18,7 @@ export default function CadastrarUsuario() {
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
 
-  const cadastrarEstagiario = async () => {
+  const cadastrarUsuario = async () => {
     try {
       await axios.post(`${API_URL}/atores/`, {
         nome,
@@ -68,7 +68,7 @@ export default function CadastrarUsuario() {
 
       <h1 className={styles.title}>Cadastrar Usuário</h1>
 
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
+      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarUsuario(); }}>
         <div className={styles.inputGroup}>
           <label className={styles.label}>Nome Completo</label>
           <input

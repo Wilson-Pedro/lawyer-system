@@ -1,5 +1,7 @@
 package com.advocacia.estacio.domain.enums;
 
+import com.advocacia.estacio.exceptions.EnumException;
+
 import java.util.stream.Stream;
 
 public enum EstadoCivil {
@@ -31,7 +33,7 @@ public enum EstadoCivil {
 		return Stream.of(EstadoCivil.values())
 				.filter(e -> e.getEstado().equals(estado))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Estado inválido: " + estado));
 	}
 	
@@ -39,7 +41,7 @@ public enum EstadoCivil {
 		return Stream.of(EstadoCivil.values())
 				.filter(e -> e.getCodigo().equals(codigo))
 				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException
+				.orElseThrow(() -> new EnumException
 						("Código inválido: " + codigo));
 	}
 }
