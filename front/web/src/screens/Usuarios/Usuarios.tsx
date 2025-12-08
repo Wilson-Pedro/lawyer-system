@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
+import { EditIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -27,6 +27,7 @@ export default function Usuarios() {
   const [usuariosFiltrados, setUsuariosFiltrados] = useState<ResponseMinDto[]>([]);
   const [busca, setBusca] = useState("");
   const [usuariosFiltro, setUsuariosFiltro] = useState<string>("Estagiário");
+  const [uriEdit, setUriEdit] = useState("/usuarios/estagiario/editar/");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,12 +43,24 @@ export default function Usuarios() {
       "Assistido":"/assistidos"
     }
 
+    const uris: Record<string, string> = {
+      "Coordenador do curso":"/usuarios/editar/",
+      "Secretário":"/usuarios/editar/",
+      "Professor":"/usuarios/editar/",
+      "Estagiário":"/usuarios/estagiario/editar/",
+      "Advogado":"/usuarios/advogado/editar/",
+      "Assistido":"/usuarios/assistido/editar/"
+    }
+
     const rota = rotas[usuariosFiltro];
     if(!rota) {
       setUsuarios([]);
       setUsuariosFiltrados([]);
       return;
     }
+
+    const uri = uris[usuariosFiltro];
+    setUriEdit(uri);
 
     const fecthUsuarios = async () => {
       try {
@@ -64,7 +77,7 @@ export default function Usuarios() {
       }
     }
     fecthUsuarios();
-  }, [usuariosFiltro])
+  }, [usuariosFiltro]);
 
   useEffect(() => {
     let dados = [...usuarios];
@@ -129,8 +142,7 @@ export default function Usuarios() {
                   <th>Nome</th>
                   <th>E-mail</th>
                   <th>Registro</th>
-                  {/* <th className="text-center">Editar</th>
-                  <th className="text-center">Movimento</th> */}
+                  <th className="text-center">Editar</th>
                 </tr>
               </thead>
               <tbody>
@@ -139,26 +151,14 @@ export default function Usuarios() {
                     <td>{usuario.nome}</td>
                     <td>{usuario.email}</td>
                     <td>{usuario.registro}</td>
-                    {/* <td className={getStatusClass(proc.statusDoProcesso)}>
-                      {proc.statusDoProcesso}
-                    </td> */}
-                    {/* <td className="text-center">
+                   <td className="text-center">
                         <button
                           className="btn btn-sm btn-outline-primary me-2"
-                          onClick={() => navigate(`/processos/editar/${proc.id}`)}
+                          onClick={() => navigate(`${uriEdit}${usuario.id}`)}
                         >
                           <EditIcon />
                         </button>
                       </td>
-
-                      <td className="text-center">
-                        <button
-                          className="btn btn-sm btn-outline-success"
-                          onClick={() => navigate(`/processos/${proc.numeroDoProcesso}/movimento`)}
-                        >
-                          <FileCirclePlusIcon />
-                        </button>
-                    </td> */}
                   </tr>
                 ))}
               </tbody>

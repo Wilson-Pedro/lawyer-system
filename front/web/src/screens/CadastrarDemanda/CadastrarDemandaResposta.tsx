@@ -102,7 +102,7 @@ export default function CadastrarDemandaResposta() {
           <Row className="mb-3">
             <Col md={6}>
               <Form.Group controlId="advogado">
-                <Form.Label className="fw-semibold">Estagiario</Form.Label>
+                <Form.Label className="fw-semibold">Respondido Por</Form.Label>
                 <Form.Control
                   type="text"
                   value={estagiarioNome}

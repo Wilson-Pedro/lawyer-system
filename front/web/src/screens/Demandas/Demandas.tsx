@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EyeIcon } from "../../Icons/Icon";
+import { EyeIcon, PlusIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -126,6 +126,7 @@ export default function Demandas() {
                                     <th>Status</th>
                                     <th>Prazo</th>
                                     <th className="text-center">Ver</th>
+                                    {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -139,12 +140,20 @@ export default function Demandas() {
                                         </td>
                                         <td className="text-center">
                                             <button
-                                            onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
+                                                onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <EyeIcon />
                                             </button>
                                         </td>
+                                        {/* <td className="text-center">
+                                            <button
+                                                onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
+                                                className="btn btn-sm btn-outline-primary me-2"
+                                            >
+                                                <PlusIcon />
+                                            </button>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
