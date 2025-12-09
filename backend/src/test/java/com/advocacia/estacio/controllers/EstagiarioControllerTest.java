@@ -86,7 +86,7 @@ class EstagiarioControllerTest {
 		Long id = estagiarioRepository.findAll().get(0).getId();
 		
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-		"Pedro Silva Lucas", "pedro22@gmail.com", "20251208",
+		"Pedro Silva Lucas", "pedro22@gmail.com", "92921421224", "20251208",
 		"Estágio II", "12345");
 		
 		String jsonRequest = objectMapper.writeValueAsString(estagiario);

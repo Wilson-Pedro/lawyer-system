@@ -75,6 +75,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		estagiario.setId(id);
 		estagiario.setNome(estagiarioDto.getNome());
 		estagiario.setEmail(estagiarioDto.getEmail());
+		estagiario.setTelefone(estagiarioDto.getTelefone());
 		estagiario.setMatricula(estagiarioDto.getMatricula());
 		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
 		return estagiarioRepository.save(estagiario);

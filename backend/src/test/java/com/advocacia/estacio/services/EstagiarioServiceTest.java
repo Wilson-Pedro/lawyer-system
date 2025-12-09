@@ -74,7 +74,7 @@ class EstagiarioServiceTest {
 		Long id = estagiarioRepository.findAll().get(0).getId();
 		
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-		"Pedro Silva Lucas", "pedro22@gmail.com", "20251208",
+		"Pedro Silva Lucas", "pedro22@gmail.com", "92921421224","20251208",
 		"Estágio II", "12345");
 		
 		Estagiario estagiarioAtualizado = estagiarioService.atualizar(id, estagiario);
@@ -113,6 +113,7 @@ class EstagiarioServiceTest {
 
 		assertEquals("Pedro Silva Lucas", estagiarios.getContent().get(0).getNome());
 		assertEquals("pedro22@gmail.com", estagiarios.getContent().get(0).getEmail());
+		assertEquals("92921421224", estagiarios.getContent().get(0).getTelefone());
 		assertEquals("20251208", estagiarios.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarios.getContent().get(0).getPeriodo());
 	}

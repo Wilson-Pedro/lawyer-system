@@ -12,6 +12,8 @@ public class EstagiarioDto implements Serializable {
 	private String nome;
 	
 	private String email;
+
+	private String telefone;
 	
 	private String matricula;
 	
@@ -22,16 +24,17 @@ public class EstagiarioDto implements Serializable {
 	public EstagiarioDto() {
 	}
 
-	public EstagiarioDto(Long id, String nome, String email, String matricula, String periodo) {
+	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, String periodo) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.telefone = telefone;
 		this.matricula = matricula;
 		this.periodo = periodo;
 	}
 	
-	public EstagiarioDto(Long id, String nome, String email, String matricula, String periodo, String senha) {
-		this(id, nome, email, matricula, periodo);
+	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, String periodo, String senha) {
+		this(id, nome, email, telefone, matricula, periodo);
 		this.senha = senha;
 	}
 	
@@ -39,6 +42,7 @@ public class EstagiarioDto implements Serializable {
 		this.id = estagiario.getId();
 		this.nome = estagiario.getNome();
 		this.email = estagiario.getEmail();
+		this.telefone = estagiario.getTelefone();
 		this.matricula = estagiario.getMatricula();
 		this.periodo = estagiario.getPeriodo().getTipo();
 	}
@@ -65,6 +69,14 @@ public class EstagiarioDto implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public String getMatricula() {

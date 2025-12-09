@@ -141,26 +141,26 @@ public class TestUtil {
 	
 	public Estagiario getEstagiario() {
 		return new Estagiario(
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
+				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
 				PeriodoEstagio.ESTAGIO_I);
 	}
 	
 	public Estagiario getEstagiario2() {
 		return new Estagiario(
-				"João Lucas", "lucas@gmail.com", "20251209", 
+				"João Lucas", "lucas@gmail.com", "92921421224", "20251209",
 				PeriodoEstagio.ESTAGIO_II);
 	}
 
 	public EstagiarioDto getEstagiarioDto() {
 		return new EstagiarioDto(null,
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				"Estágio I", "1234");
+				"Pedro Lucas", "pedro@gmail.com", "92921421224",
+				"20251208", "Estágio I", "1234");
 	}
 
 	public EstagiarioDto getEstagiarioDto2() {
 		return new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "20251309",
-				"Estágio II", "1234");
+				"Carlos Miguel", "carlos@gmail.com", "92921421224",
+				"20251208", "Estágio II", "1234");
 	}
 	
 	public UsuarioAuth getUsuarioAuth() {

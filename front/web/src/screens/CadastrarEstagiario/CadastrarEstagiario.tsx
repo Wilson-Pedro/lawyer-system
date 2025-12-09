@@ -11,6 +11,7 @@ export default function CadastrarEstagiario() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [matricula, setMatricula] = useState("");
   const [periodo, setPeriodo] = useState("");
   const [senha, setSenha] = useState("");
@@ -27,6 +28,7 @@ export default function CadastrarEstagiario() {
       await axios.post(`${API_URL}/estagiarios/`, {
         nome,
         email,
+        telefone,
         matricula,
         periodo,
         senha,
@@ -90,6 +92,17 @@ export default function CadastrarEstagiario() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Telefone</label>
+          <input
+            className={styles.input}
+            placeholder="Telefone"
+            type="text"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
           />
         </div>
 

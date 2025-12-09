@@ -61,11 +61,11 @@ public class BackendApplication implements CommandLineRunner {
 				"rua do passeio", 11, "53022-112");
 
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-				"Pedro Lucas", "pedro@gmail.com", "20251208",
+				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
 				"Estágio I", "1234");
 
 		EstagiarioDto estagiario2 = new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "20251309",
+				"Carlos Miguel", "carlos@gmail.com", "92921421224", "20251309",
 				"Estágio II", "1234");
 
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();

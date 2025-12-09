@@ -123,8 +123,8 @@ export default function Demandas() {
                                 <tr>
                                     <th>Demanda</th>
                                     <th>Estagiario</th>
-                                    <th>Status</th>
                                     <th>Prazo</th>
+                                    <th>Status</th>
                                     <th className="text-center">Ver</th>
                                     {/* <th className="text-center">Responder</th> */}
                                 </tr>
