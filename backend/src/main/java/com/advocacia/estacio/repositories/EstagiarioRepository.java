@@ -25,26 +25,27 @@ public interface EstagiarioRepository extends JpaRepository<Estagiario, Long> {
 			""")
 	Optional<EstagiarioMinDto> buscarEstagiarioMinPorEmail(@Param("email") String email);
 
-	@Query("""
-			SELECT new com.advocacia.estacio.domain.dto.ResponseMinDto(
-				est.id,
-				est.nome,
-				est.email,
-				est.registro
-			)
-			FROM Estagiario est
-			""")
-	Page<ResponseMinDto> buscarTodos(Pageable pageable);
-
 //	@Query("""
-//			SELECT new com.advocacia.estacio.domain.dto.EstagiarioDto(
+//			SELECT new com.advocacia.estacio.domain.dto.ResponseMinDto(
 //				est.id,
 //				est.nome,
-//				est.matricula,
 //				est.email,
 //				est.registro
 //			)
 //			FROM Estagiario est
 //			""")
 //	Page<ResponseMinDto> buscarTodos(Pageable pageable);
+
+	@Query("""
+			SELECT new com.advocacia.estacio.domain.entities.Estagiario(
+				est.id,
+				est.nome,
+				est.email,
+				est.telefone,
+				est.matricula,
+				est.periodo
+			)
+			FROM Estagiario est
+			""")
+	Page<Estagiario> buscarTodos(Pageable pageable);
 }

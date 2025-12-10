@@ -3,6 +3,7 @@ package com.advocacia.estacio.domain.dto;
 import java.io.Serializable;
 
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 
 public class EstagiarioDto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +32,15 @@ public class EstagiarioDto implements Serializable {
 		this.telefone = telefone;
 		this.matricula = matricula;
 		this.periodo = periodo;
+	}
+
+	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
+		this.matricula = matricula;
+		this.periodo = periodo.getTipo();
 	}
 	
 	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, String periodo, String senha) {

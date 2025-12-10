@@ -133,9 +133,14 @@ class EstagiarioServiceTest {
 	@DisplayName("Deve buscar Todos os Estagiarios")
 	void buscar_todos() {
 
-		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(0, 20);
+		Page<Estagiario> pages = estagiarioService.buscarTodos(0, 20);
 
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
+		assertEquals("Pedro Silva Lucas", pages.getContent().get(0).getNome());
+		assertEquals("pedro22@gmail.com", pages.getContent().get(0).getEmail());
+		assertEquals("92921421224", pages.getContent().get(0).getTelefone());
+		assertEquals("20251208", pages.getContent().get(0).getMatricula());
+		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
 	}
 }

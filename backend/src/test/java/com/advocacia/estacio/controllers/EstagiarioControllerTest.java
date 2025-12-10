@@ -165,6 +165,11 @@ class EstagiarioControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.content.length()").value(1));
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("$.content[0].nome").value("Pedro Silva Lucas"))
+				.andExpect(jsonPath("$.content[0].email").value("pedro22@gmail.com"))
+				.andExpect(jsonPath("$.content[0].telefone").value("92921421224"))
+				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
+				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"));
 	}
 }

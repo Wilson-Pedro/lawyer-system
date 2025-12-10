@@ -15,7 +15,7 @@ public interface EstagiarioService {
 
 	EstagiarioMinDto buscarIdPorEmail(String email);
 
-	Page<ResponseMinDto> buscarTodos(int page, int size);
+	Page<Estagiario> buscarTodos(int page, int size);
 	
 	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
 	

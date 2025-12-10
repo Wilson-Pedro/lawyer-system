@@ -35,10 +35,10 @@ public class EstagiarioController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodos(
+	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarTodos(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(page, size);
+		Page<EstagiarioDto> pages = estagiarioService.buscarTodos(page, size).map(EstagiarioDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
 	}
 	

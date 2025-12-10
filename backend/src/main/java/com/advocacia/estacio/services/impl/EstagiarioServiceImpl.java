@@ -60,7 +60,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	}
 
 	@Override
-	public Page<ResponseMinDto> buscarTodos(int page, int size) {
+	public Page<Estagiario> buscarTodos(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
 		return estagiarioRepository.buscarTodos(pageable);
 	}

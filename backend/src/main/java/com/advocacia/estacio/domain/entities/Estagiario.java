@@ -47,6 +47,16 @@ public class Estagiario implements Serializable {
 	public Estagiario() {
 	}
 
+	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo) {
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
+		this.matricula = matricula;
+		this.periodo = periodo;
+	}
+
+
 	public Estagiario(String nome, String email, String telefone, String matricula, PeriodoEstagio periodo) {
 		this.nome = nome;
 		this.email = email;
