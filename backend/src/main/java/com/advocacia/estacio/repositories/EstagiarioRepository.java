@@ -2,7 +2,6 @@ package com.advocacia.estacio.repositories;
 
 import java.util.Optional;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.records.EstagiarioMinDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

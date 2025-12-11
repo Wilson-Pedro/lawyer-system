@@ -31,7 +31,6 @@ export default function Usuarios() {
   const [usuariosFiltro, setUsuariosFiltro] = useState<string>("Estagiário");
   const [uriEdit, setUriEdit] = useState("/usuarios/estagiario/editar/");
   const [tableLabels, setTableLabes] = useState<string[]>([]);
-  const [respostas, setRespostas] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -169,12 +168,21 @@ export default function Usuarios() {
               <tbody>
                 {usuariosFiltrados.map((usuario) => (
                   <tr key={usuario.id}>
-                    {usuario.nome !== "" && <td>{usuario.nome}</td>}
-                    {usuario.matricula !== "" && <td>{usuario.matricula}</td>}
-                    {usuario.email !== "" && <td>{usuario.email}</td>}
-                    {usuario.telefone !== "" && <td>{usuario.telefone}</td>}
-                    {usuario.periodo !== "" && <td>{usuario.periodo}</td>}
-                    {usuario.registro !== "" && <td>{usuario.registro}</td>}
+                    {usuariosFiltro === "Estagiário" ? (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.matricula}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.telefone}</td>
+                        <td>{usuario.periodo}</td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.registro}</td>
+                      </>
+                    )}
                    <td className="text-center">
                         <button
                           className="btn btn-sm btn-outline-primary me-2"
