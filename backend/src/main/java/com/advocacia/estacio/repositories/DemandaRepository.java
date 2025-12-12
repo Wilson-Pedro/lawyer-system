@@ -14,29 +14,31 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.demandaStatus,
+				d.prazoDocumentos,
 				d.prazo
-			) 
-			FROM Demanda d 
+			)
+			FROM Demanda d
 			JOIN d.estagiario e
 			""")
 	Page<DemandaDto> buscarTodos(Pageable pageable);
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.demandaStatus,
+				d.prazoDocumentos,
 				d.prazo
-			) 
-			FROM Demanda d 
-			JOIN d.estagiario e 
+			)
+			FROM Demanda d
+			JOIN d.estagiario e
 			WHERE e.id = :estagiarioId
 			""")
 	Page<DemandaDto> buscarTodosPorEstagiarioId(
@@ -44,15 +46,16 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.demandaStatus,
+				d.prazoDocumentos,
 				d.prazo
-			) 
-			FROM Demanda d 
-			JOIN d.estagiario e 
+			)
+			FROM Demanda d
+			JOIN d.estagiario e
 			WHERE d.demandaStatus = :demandaStatus
 			""")
 	Page<DemandaDto> buscarTodosPorStatus(

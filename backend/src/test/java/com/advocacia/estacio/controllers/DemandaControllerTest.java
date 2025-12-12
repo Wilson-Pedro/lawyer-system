@@ -70,7 +70,7 @@ class DemandaControllerTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), "Corrigido", "02/11/2025", 10);
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -82,7 +82,7 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
 				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
-				.andExpect(jsonPath("$.demandaStatus", equalTo("Atendido")))
+				.andExpect(jsonPath("$.demandaStatus", equalTo("Corrigido")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")));
 		
 		assertEquals(1, demandaRepository.count());
@@ -94,10 +94,10 @@ class DemandaControllerTest {
 	void buscar_demanda_por_status() throws Exception {
 
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção","02/11/2025", 13);
 		demandaService.salvar(demandaDto2);
 
-		mockMvc.perform(get(URI + "/status/Atendido?page=0&size=20")
+		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

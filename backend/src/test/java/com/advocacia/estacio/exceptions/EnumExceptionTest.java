@@ -29,7 +29,7 @@ class EnumExceptionTest {
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
 	void EnumException_DemandaStatus_codigo() {
-		assertThrows(EnumException.class, () -> DemandaStatus.toEnum(6));
+		assertThrows(EnumException.class, () -> DemandaStatus.toEnum(9));
 	}
 
 	@Test

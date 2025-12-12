@@ -49,7 +49,7 @@ class DemandaServiceTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Corrigido", "02/11/2025", 10);
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
@@ -58,6 +58,7 @@ class DemandaServiceTest {
 		assertEquals("Atualizar Documentos", demanda.getDemanda());
 		assertEquals(demanda.getEstagiario(), estagiario);
 		assertEquals("2025-11-12", demanda.getPrazo().toString());
+		assertEquals("2025-11-02", demanda.getPrazoDocumentos().toString());
 
 		assertEquals(1, demandaRepository.count());
 	}
@@ -73,6 +74,7 @@ class DemandaServiceTest {
 		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
 		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
 		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
+		assertEquals("2025-11-02", demandas.getContent().get(0).getPrazoDocumentos());
 	}
 	
 	@Test
@@ -88,20 +90,22 @@ class DemandaServiceTest {
 		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
 		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
 		assertEquals("2025-11-12", demandas.getContent().get(0).getPrazo());
+		assertEquals("2025-11-02", demandas.getContent().get(0).getPrazoDocumentos());
 	}
 
 	@Test
 	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
 	void deve_buscar_Demandas_por_status_NoBancoDeDados_PeloService() {
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção", "02/11/2025", 13);
 		demandaService.salvar(demandaDto2);
 
-		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Não Atendido", 0, 20);
+		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Em Correção", 0, 20);
 
 		assertNotNull(demandas);
 		assertEquals("Organizar Processos", demandas.getContent().get(0).getDemanda());
 		assertEquals("Carlos Miguel", demandas.getContent().get(0).getEstagiarioNome());
-		assertEquals("2025-12-15", demandas.getContent().get(0).getPrazo());
+		assertEquals("2025-11-02", demandas.getContent().get(0).getPrazoDocumentos());
+		assertEquals("2025-11-15", demandas.getContent().get(0).getPrazo());
 	}
 }

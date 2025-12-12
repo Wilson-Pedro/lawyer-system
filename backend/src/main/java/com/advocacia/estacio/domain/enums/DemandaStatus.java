@@ -6,9 +6,13 @@ import java.util.stream.Stream;
 
 public enum DemandaStatus {
 
-	ATENDIDO(1, "Atendido"),
-	NAO_ATENDIDO(2, "Não Atendido"),
-	PROROGADA(3, "Prorrogada");
+	CORRIGIDO(1, "Corrigido"),
+	EM_CORRECAO(2, "Em Correção"),
+	DEVOLVIDO(3, "Devolvido"),
+	DENTRO_DO_PRAZO(4, "Dentro do Prazo"),
+	FORA_DO_PRAZO(5, "Fora do Prazo"),
+	RECEBIDO(6, "Recebido"),
+	PROTOCOLADO(7, "Protocolado");
 	
 	private Integer codigo;
 	

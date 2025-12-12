@@ -15,6 +15,8 @@ import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 
+import java.time.LocalDate;
+
 @Service
 public class DemandaServiceImpl implements DemandaService {
 	
@@ -28,6 +30,8 @@ public class DemandaServiceImpl implements DemandaService {
 	public Demanda salvar(DemandaDto damandaDto) {
 		Estagiario estagiario = estagiarioService.buscarPorId(damandaDto.getEstagiarioId());
 		Demanda demanda = new Demanda(damandaDto);
+		LocalDate prazo = demanda.getPrazoDocumentos().plusDays(damandaDto.getDiasPrazo());
+		demanda.setPrazo(prazo);
 		demanda.setEstagiario(estagiario);
 		return demandaRepository.save(demanda);
 	}

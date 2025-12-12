@@ -38,27 +38,30 @@ public class Demanda implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private DemandaStatus demandaStatus;
-	
+
+	private LocalDate prazoDocumentos;
+
 	private LocalDate prazo;
-	
+
 	@CreationTimestamp
 	private LocalDateTime registro;
 
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazo) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
 		this.demandaStatus = demandaStatus;
+		this.prazoDocumentos = prazoDocumentos;
 		this.prazo = prazo;
 	}
 	
 	public Demanda(DemandaDto demandaDto) {
 		this.demanda = demandaDto.getDemanda();
 		this.demandaStatus = DemandaStatus.toEnum(demandaDto.getDemandaStatus());
-		this.prazo = localDateToString(demandaDto.getPrazo());
+		this.prazoDocumentos = localDateToString(demandaDto.getPrazoDocumentos());
 	}
 	
 	private LocalDate localDateToString(String string) {
@@ -96,6 +99,14 @@ public class Demanda implements Serializable {
 
 	public void setDemandaStatus(DemandaStatus demandaStatus) {
 		this.demandaStatus = demandaStatus;
+	}
+
+	public LocalDate getPrazoDocumentos() {
+		return prazoDocumentos;
+	}
+
+	public void setPrazoDocumentos(LocalDate prazoDocumentos) {
+		this.prazoDocumentos = prazoDocumentos;
 	}
 
 	public LocalDate getPrazo() {

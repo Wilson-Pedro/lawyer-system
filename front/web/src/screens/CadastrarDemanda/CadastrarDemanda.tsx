@@ -33,7 +33,9 @@ export default function CadastrarDemanda() {
 
   const [demanda, setDemanda] = useState<string>("");
   const [demandaStatus, setDemandaStatus] = useState<string>("");
+  const [prazoDocumentos, setPrazoDocumentos] = useState<string>("");
   const [prazo, setPrazo] = useState<string>("");
+  const [prazoDias, setPrazoDias] = useState<number>();
 
   const [messageDataError, setMessageDataError] = useState<string>("");
 
@@ -83,7 +85,8 @@ export default function CadastrarDemanda() {
             demanda,
             estagiarioId,
             demandaStatus,
-            prazo
+            prazoDocumentos,
+            diasPrazo: prazoDias
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -140,7 +143,7 @@ export default function CadastrarDemanda() {
       }
     }
 
-    setPrazo(formatado);
+    setPrazoDocumentos(formatado);
   }
 
   const setEstagiario = (estagiario: Estagiario) => {
@@ -209,21 +212,47 @@ export default function CadastrarDemanda() {
           <label className={styles.label}>Status da demanda</label>
           <select className={styles.input} onChange={selecionarDemandaStatus} required>
             <option value="" disabled selected></option>
-            <option value="Atendido">Atendido</option>
-            <option value="Não Atendido">Não Atendido</option>
-            <option value="Prorrogada">Prorrogada</option>
+                <option value="todos">Todos</option>
+                <option value="Corrigido">Corrigido</option>
+                <option value="Em Correção">Em Correção</option>
+                <option value="Devolvido">Devolvido</option>
+                <option value="Dentro do Prazo">Dentro do Prazo</option>
+                <option value="Fora do Prazo">Fora do Prazo</option>
           </select>
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Prazo <span className={styles.messageError}>{messageDataError}</span></label>
+          <label className={styles.label}>Prazo dos Documentos<span className={styles.messageError}>{messageDataError}</span></label>
+          <input
+            className={styles.input}
+            placeholder="Prazo dos Documentos (DD/MM/AAAA)"
+            value={prazoDocumentos}
+            onChange={(e) => formatarData(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* <div className={styles.inputGroup}>
+          <label className={styles.label}>Prazo<span className={styles.messageError}>{messageDataError}</span></label>
           <input
             className={styles.input}
             placeholder="Prazo (DD/MM/AAAA)"
             value={prazo}
-            onChange={(e) => formatarData(e.target.value)}
+            onChange={(e) => formatarData(e.target.value, setPrazo)}
             required
           />
+        </div> */}
+
+        <div className={styles.inputGroup}>
+            <label className={styles.label}>Dias para o Prazo</label>
+            <input
+              type="number"
+              className={styles.input}
+              placeholder="Digite a quantidade de dias para o prazo"
+              value={prazoDias}
+              onChange={(e:any) => setPrazoDias(e.target.value)}
+              required
+            />
         </div>
 
         <button type="submit" className={styles.button}>

@@ -51,7 +51,7 @@ class DemandaRespondeServiceTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Corrigido", "02/11/2025", 10);
 		Demanda demanda = demandaService.salvar(demandaDto);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");

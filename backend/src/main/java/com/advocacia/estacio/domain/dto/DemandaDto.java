@@ -16,27 +16,33 @@ public class DemandaDto {
 	private Long estagiarioId;
 	
 	private String demandaStatus;
-	
+
+	private String prazoDocumentos;
+
 	private String prazo;
+
+	private Integer diasPrazo;
 
 	public DemandaDto() {
 	}
 	
-	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazo) {
+	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazoDocumentos, Integer diasPrazo) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioId = estagiarioId;
 		this.demandaStatus = demandaStatus;
-		this.prazo = prazo;
+		this.prazoDocumentos = prazoDocumentos;
+		this.diasPrazo = diasPrazo;
 	}
 
 	public DemandaDto(Long id, String demanda, String estagiarioNome, Long estagiarioId, 
-			DemandaStatus demandaStatus, LocalDate prazo) {
+			DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioNome = estagiarioNome;
 		this.estagiarioId = estagiarioId;
 		this.demandaStatus = demandaStatus.getStatus();
+		this.prazoDocumentos = prazoDocumentos.toString();
 		this.prazo = prazo.toString();
 	}
 	
@@ -46,10 +52,11 @@ public class DemandaDto {
 		this.estagiarioNome = demanda.getEstagiario().getNome();
 		this.estagiarioId = demanda.getEstagiario().getId();
 		this.demandaStatus = demanda.getDemandaStatus().getStatus();
-		this.prazo = toDateString(demanda.getPrazo());
+		this.prazoDocumentos = DateToString(demanda.getPrazoDocumentos());
+		this.prazo = DateToString(demanda.getPrazo());
 	}
 	
-	private String toDateString(LocalDate date) {
+	private String DateToString(LocalDate date) {
 		return String.format("%s/%s/%s", date.getDayOfMonth(), date.getMonthValue(), date.getYear());
 	}
 
@@ -73,7 +80,19 @@ public class DemandaDto {
 		return demandaStatus;
 	}
 
+	public String getPrazoDocumentos() {
+		return prazoDocumentos;
+	}
+
 	public String getPrazo() {
 		return prazo;
+	}
+
+	public Integer getDiasPrazo() {
+		return diasPrazo;
+	}
+
+	public void setDiasPrazo(Integer diasPrazo) {
+		this.diasPrazo = diasPrazo;
 	}
 }

@@ -67,11 +67,15 @@ export default function Demandas() {
 
     const getStatusClass = (status: string): string => {
         switch (status) {
-            case "Atendido":
+            case "Corrigido":
                 return "bg-success bg-opacity-25 text-success fw-semibold";
-            case "Não Atendido":
+            case "Em Correção":
                 return "bg-warning bg-opacity-25 text-warning fw-semibold";
             case "Prorrogada":
+                return "bg-danger bg-opacity-25 text-danger fw-semibold";
+            case "Dentro do Prazo":
+                return "bg-success bg-opacity-25 text-success fw-semibold";
+            case "Fora do Prazo":
                 return "bg-danger bg-opacity-25 text-danger fw-semibold";
             default:
                 return "";
@@ -109,9 +113,11 @@ export default function Demandas() {
                         onChange={(e) => setStatusFiltro(e.target.value)}
                     >
                         <option value="todos">Todos</option>
-                        <option value="Atendido">Atendido</option>
-                        <option value="Não Atendido">Não Atendido</option>
-                        <option value="Prorrogada">Prorrogada</option>
+                        <option value="Corrigido">Corrigido</option>
+                        <option value="Em Correção">Em Correção</option>
+                        <option value="Devolvido">Devolvido</option>
+                        <option value="Dentro do Prazo">Dentro do Prazo</option>
+                        <option value="Fora do Prazo">Fora do Prazo</option>
                     </select>
                 </div>
 
