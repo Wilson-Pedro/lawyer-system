@@ -35,6 +35,17 @@
   margin-bottom: 2rem;
 }
 
+.inputDivGroup {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.inputDivGroup div {
+  width: 48%;
+}
+
+
 .inputGroup {
   display: flex;
   flex-direction: column;
