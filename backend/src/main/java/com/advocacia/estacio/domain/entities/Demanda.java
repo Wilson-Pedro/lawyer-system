@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.Tempestividade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.DemandaDto;
@@ -43,25 +44,30 @@ public class Demanda implements Serializable {
 
 	private LocalDate prazo;
 
+	@Enumerated(EnumType.STRING)
+	private Tempestividade tempestividade;
+
 	@CreationTimestamp
 	private LocalDateTime registro;
 
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
 		this.demandaStatus = demandaStatus;
 		this.prazoDocumentos = prazoDocumentos;
 		this.prazo = prazo;
+		this.tempestividade = tempestividade;
 	}
 	
 	public Demanda(DemandaDto demandaDto) {
 		this.demanda = demandaDto.getDemanda();
 		this.demandaStatus = DemandaStatus.toEnum(demandaDto.getDemandaStatus());
 		this.prazoDocumentos = localDateToString(demandaDto.getPrazoDocumentos());
+		this.tempestividade = Tempestividade.toEnum(demandaDto.getTempestividade());
 	}
 	
 	private LocalDate localDateToString(String string) {
@@ -111,6 +117,18 @@ public class Demanda implements Serializable {
 
 	public LocalDate getPrazo() {
 		return prazo;
+	}
+
+	public void setRegistro(LocalDateTime registro) {
+		this.registro = registro;
+	}
+
+	public Tempestividade getTempestividade() {
+		return tempestividade;
+	}
+
+	public void setTempestividade(Tempestividade tempestividade) {
+		this.tempestividade = tempestividade;
 	}
 
 	public void setPrazo(LocalDate prazo) {

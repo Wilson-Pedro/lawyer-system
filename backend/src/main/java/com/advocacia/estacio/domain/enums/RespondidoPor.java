@@ -14,9 +14,9 @@ public enum RespondidoPor {
 
 	private String descricao;
 
-	private RespondidoPor(Integer codigo, String status) {
+	private RespondidoPor(Integer codigo, String descricao) {
 		this.codigo = codigo;
-		this.descricao = status;
+		this.descricao = descricao;
 	}
 
 	public Integer getCodigo() {

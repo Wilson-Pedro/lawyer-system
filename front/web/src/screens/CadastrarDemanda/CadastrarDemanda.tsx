@@ -33,9 +33,9 @@ export default function CadastrarDemanda() {
   const [demandaStatus, setDemandaStatus] = useState<string>("");
   const [prazoDocumentos, setPrazoDocumentos] = useState<string>("");
   const [dataHoje, setDataHoje] = useState<Date>(new Date());
-  //const [prazo, setPrazo] = useState<string>("");
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
   const [prazoDias, setPrazoDias] = useState<number>();
-  const [prazoFinal, setPrazoFinal] = useState<string>(dataHoje.toLocaleDateString('pt-BR'));
+  const [prazoFinal, setPrazoFinal] = useState<string>("");
 
   const [messageDataError, setMessageDataError] = useState<string>("");
 
@@ -103,6 +103,7 @@ export default function CadastrarDemanda() {
       setMostrarToast(true);
       setMensagemToast("Demanda cadastrada com sucesso.");
       setVarianteToast("success");
+      limparCampos();
 
       limparCampos();
     } catch (error) {
@@ -117,8 +118,11 @@ export default function CadastrarDemanda() {
   const formatarData = (dataValue: string) => {
     let numeros = dataValue.replace(/\D/g, "");
 
+    setPrazoDias(0);
+
     if (numeros.length === 0) {
       setMessageDataError("");
+      setPrazoFinal("");
     }
 
     if (numeros.length > 8) {
@@ -149,21 +153,33 @@ export default function CadastrarDemanda() {
       const hoje = new Date();
 
       if (dataDigitada.getTime() < hoje.getTime()) {
+        setPrazoFinal("")
         setMessageDataError("*Prazo inválido");
+        setBtnDisabled(true);
+        setPrazoDias(0);
       } else {
         setMessageDataError("");
+        setBtnDisabled(false);
+        setPrazoFinal(dataDigitada.toLocaleDateString('pt-BR'));
       }
     }
+
 
     setPrazoDocumentos(formatado);
   };
 
   const setPrazoFinalPorDias = (dias:number) => {
-    if(dias === 0) setPrazoFinal(dataHoje.toLocaleDateString('pt-BR'));
-    const dataMoment = moment();
-    const dataAdicionada = dataMoment.add(dias, 'days');
+    if(dias === 0 || dias < 0) return;
     setPrazoDias(dias);
+    const dataMoment = moment(toDateStringUs(prazoDocumentos));
+    const dataAdicionada = dataMoment.add(dias, 'days');
     setPrazoFinal(dataAdicionada.format('DD/MM/YYYY'));
+
+  }
+
+  const toDateStringUs = (data:string) => {
+    let diaMesAno = data.split("/");
+    return diaMesAno[2] + "-" + diaMesAno[1] + "-" + diaMesAno[0];
   }
 
   const setEstagiario = (estagiario: Estagiario) => {
@@ -179,6 +195,8 @@ export default function CadastrarDemanda() {
   const limparCampos = () => {
     setNomeEstagiarioSearch("");
     setDemandaStatus("");
+    setPrazoDocumentos("");
+    setPrazoDias(0);
   };
 
   const token = localStorage.getItem("token");
@@ -238,7 +256,6 @@ export default function CadastrarDemanda() {
             required
           >
             <option value="" disabled selected></option>
-            <option value="todos">Todos</option>
             <option value="Corrigido">Corrigido</option>
             <option value="Em Correção">Em Correção</option>
             <option value="Devolvido">Devolvido</option>
@@ -281,6 +298,7 @@ export default function CadastrarDemanda() {
               placeholder="Digite a quantidade de dias para o prazo"
               value={prazoDias}
               onChange={(e: any) => setPrazoFinalPorDias(e.target.value)}
+              disabled={btnDisabled}
               required
             />
           </div>

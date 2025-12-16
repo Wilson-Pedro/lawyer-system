@@ -93,8 +93,8 @@ public class BackendApplication implements CommandLineRunner {
 		atorService.salvar(ator2);
 		atorService.salvar(ator3);
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, "Corrigido", "02/12/2025", 10);
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção","03/12/2025", 12);
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, "Corrigido", "02/12/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção","03/12/2025", 12, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		demandaService.salvar(demandaDto2);
 

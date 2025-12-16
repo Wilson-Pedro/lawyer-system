@@ -20,7 +20,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
-				d.prazo
+				d.prazo,
+				d.tempestividade
 			)
 			FROM Demanda d
 			JOIN d.estagiario e
@@ -35,7 +36,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
-				d.prazo
+				d.prazo,
+				d.tempestividade
 			)
 			FROM Demanda d
 			JOIN d.estagiario e
@@ -52,7 +54,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
-				d.prazo
+				d.prazo,
+				d.tempestividade
 			)
 			FROM Demanda d
 			JOIN d.estagiario e

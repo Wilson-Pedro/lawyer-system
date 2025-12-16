@@ -36,7 +36,7 @@ public enum DemandaStatus {
 				.filter(d -> d.getStatus().equals(status))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Status inválido: " + status));
+						("demanda status inválido: " + status));
 	}
 	
 	public static DemandaStatus toEnum(Integer codigo) {
@@ -44,6 +44,6 @@ public enum DemandaStatus {
 				.filter(d -> d.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Código inválido: " + codigo));
+						("Código da demanda status inválido: " + codigo));
 	}
 }

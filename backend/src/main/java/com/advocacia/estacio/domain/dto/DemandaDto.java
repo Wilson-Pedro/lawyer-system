@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.domain.enums.Tempestividade;
+import com.advocacia.estacio.utils.Utils;
 
 public class DemandaDto {
 
@@ -23,27 +25,31 @@ public class DemandaDto {
 
 	private Integer diasPrazo;
 
+	private String tempestividade;
+
 	public DemandaDto() {
 	}
 	
-	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazoDocumentos, Integer diasPrazo) {
+	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazoDocumentos, Integer diasPrazo, String tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioId = estagiarioId;
 		this.demandaStatus = demandaStatus;
 		this.prazoDocumentos = prazoDocumentos;
 		this.diasPrazo = diasPrazo;
+		this.tempestividade = tempestividade;
 	}
 
-	public DemandaDto(Long id, String demanda, String estagiarioNome, Long estagiarioId, 
-			DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo) {
+	public DemandaDto(Long id, String demanda, String estagiarioNome, Long estagiarioId,
+					  DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioNome = estagiarioNome;
 		this.estagiarioId = estagiarioId;
 		this.demandaStatus = demandaStatus.getStatus();
-		this.prazoDocumentos = prazoDocumentos.toString();
-		this.prazo = prazo.toString();
+		this.prazoDocumentos = Utils.localDateToString(prazoDocumentos);
+		this.prazo = Utils.localDateToString(prazo);
+		this.tempestividade = tempestividade.getStatus();
 	}
 	
 	public DemandaDto(Demanda demanda) {
@@ -52,8 +58,9 @@ public class DemandaDto {
 		this.estagiarioNome = demanda.getEstagiario().getNome();
 		this.estagiarioId = demanda.getEstagiario().getId();
 		this.demandaStatus = demanda.getDemandaStatus().getStatus();
-		this.prazoDocumentos = DateToString(demanda.getPrazoDocumentos());
-		this.prazo = DateToString(demanda.getPrazo());
+		this.prazoDocumentos = Utils.localDateToString(demanda.getPrazoDocumentos());
+		this.prazo = Utils.localDateToString(demanda.getPrazo());
+		this.tempestividade = demanda.getTempestividade().getStatus();
 	}
 	
 	private String DateToString(LocalDate date) {
@@ -94,5 +101,9 @@ public class DemandaDto {
 
 	public void setDiasPrazo(Integer diasPrazo) {
 		this.diasPrazo = diasPrazo;
+	}
+
+	public String getTempestividade() {
+		return tempestividade;
 	}
 }

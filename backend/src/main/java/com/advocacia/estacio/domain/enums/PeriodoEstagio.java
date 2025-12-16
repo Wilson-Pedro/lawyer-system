@@ -41,6 +41,6 @@ public enum PeriodoEstagio {
 				.filter(p -> p.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Código inválido: " + codigo));
+						("Código do Perido inválido: " + codigo));
 	}
 }

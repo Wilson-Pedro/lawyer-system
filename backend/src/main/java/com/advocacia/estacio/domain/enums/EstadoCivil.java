@@ -34,7 +34,7 @@ public enum EstadoCivil {
 				.filter(e -> e.getEstado().equals(estado))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Estado inválido: " + estado));
+						("Estado Civil inválido: " + estado));
 	}
 	
 	public static EstadoCivil toEnum(int codigo) {
@@ -42,6 +42,6 @@ public enum EstadoCivil {
 				.filter(e -> e.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Código inválido: " + codigo));
+						("Código do Estado Civil inválido: " + codigo));
 	}
 }
