@@ -16,4 +16,6 @@ public interface DemandaService {
 	Page<DemandaDto> buscarTodosPorEstagiarioId(Long estagiarioId, int page, int size);
 	
 	Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size);
+
+	void mudarDemandaStatus(Long id, String status);
 }

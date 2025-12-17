@@ -3,6 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.Tempestividade;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ class DemandaServiceTest {
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Recebido", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
@@ -79,9 +80,23 @@ class DemandaServiceTest {
 		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
 	}
-	
+
 	@Test
 	@Order(4)
+	@DisplayName("Deve Mudar Demanda Status Pelo Service")
+	void mudar_demanda_status() {
+
+		Long id = demandaRepository.findAll().get(0).getId();
+		String status = "Devolvido";
+
+		demandaService.mudarDemandaStatus(id, status);
+
+		Demanda demanda = demandaRepository.findById(id).get();
+
+		assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatus());
+	}
+	
+	@Test
 	@DisplayName("Deve Buscar Demandas Pelo Estário Id No Banco de Dados Pelo Service")
 	void buscar_demandas_por_estagiarioId() {
 

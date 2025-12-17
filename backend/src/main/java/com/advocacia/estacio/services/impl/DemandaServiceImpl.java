@@ -58,4 +58,11 @@ public class DemandaServiceImpl implements DemandaService {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return demandaRepository.buscarTodosPorStatus(DemandaStatus.toEnum(demandaStatus), pageable);
 	}
+
+	@Override
+	public void mudarDemandaStatus(Long id, String status) {
+		Demanda demanda = buscarPorId(id);
+		demanda.setDemandaStatus(DemandaStatus.toEnum(status));
+		demandaRepository.save(demanda);
+	}
 }

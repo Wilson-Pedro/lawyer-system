@@ -2,11 +2,12 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.*;
@@ -105,6 +106,23 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
 	}
+
+    @Test
+    @Order(4)
+    @DisplayName("Deve Mudar Demanda Status Pelo Controller")
+    void mudar_demanda_status() throws Exception {
+
+        Long id = demandaRepository.findAll().get(0).getId();
+        String status = "Devolvido";
+
+        mockMvc.perform(patch(URI + "/" + id + "/status/change?status=" + status)
+                        .header("Authorization", "Bearer " + TOKEN))
+                .andExpect(status().isNoContent());
+
+        Demanda demanda = demandaRepository.findById(id).get();
+
+        assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatus());
+    }
 
 	@Test
 	@DisplayName("Deve Buscar Todas as Demanda Pelo Status No Banco de Dados Pelo Controller")
