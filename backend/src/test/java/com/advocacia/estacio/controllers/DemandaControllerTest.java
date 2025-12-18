@@ -115,7 +115,7 @@ class DemandaControllerTest {
         Long id = demandaRepository.findAll().get(0).getId();
         String status = "Devolvido";
 
-        mockMvc.perform(patch(URI + "/" + id + "/status/change?status=" + status)
+        mockMvc.perform(patch(URI + "/" + id + "/change?status=" + status)
                         .header("Authorization", "Bearer " + TOKEN))
                 .andExpect(status().isNoContent());
 

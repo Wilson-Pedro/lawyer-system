@@ -23,6 +23,18 @@ public class DemandaController {
 		Demanda demanda = demandaService.salvar(demandaDto);
 		return ResponseEntity.status(201).body(new DemandaDto(demanda));
 	}
+
+    @GetMapping("/{demandaId}")
+    public ResponseEntity<DemandaDto> buscarPorId(@PathVariable Long demandaId) {
+        DemandaDto demandaDto = demandaService.buscarPorId(demandaId).toDto();
+        return ResponseEntity.ok(demandaDto);
+    }
+
+    @PatchMapping("/{id}/change")
+    public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam(defaultValue = "Em Correção") String status) {
+        demandaService.mudarDemandaStatus(id, status);
+        return ResponseEntity.noContent().build();
+    }
 	
 	@GetMapping("/estagiario/{estagiarioId}")
 	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodos(
@@ -51,11 +63,5 @@ public class DemandaController {
 			@RequestParam(defaultValue = "20") int size) {
 		Page<DemandaDto> pagesDto = demandaService.buscarTodos(page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
-	}
-
-	@PatchMapping("/{id}/status/change")
-	public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam String status) {
-		demandaService.mudarDemandaStatus(id, status);
-		return ResponseEntity.noContent().build();
 	}
 }

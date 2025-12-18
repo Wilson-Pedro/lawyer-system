@@ -24,6 +24,7 @@ import EditarUsuario from './screens/Editar/EditarUsuario';
 
 import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
 import Demandas from './screens/Demandas/Demandas';
+import EditarDemanda from './screens/Editar/EditarDemanda';
 import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import DemandaResposta from './screens/Demandas/DemandaResposta';
 import Usuarios from './screens/Usuarios/Usuarios';
@@ -50,6 +51,7 @@ export default function Rotas() {
                 <Route path="/movimentar" element={ <MovimentarProcesso />} />
                 <Route path="/cadastrar" element={ <Cadastros />} />
                 <Route path="/demandas" element={ <Demandas />} />
+                <Route path="/demandas/:demandaId/editar" element={ <EditarDemanda />} />
                 <Route path="/demandas/estagiario/:estagiarioId" element={ <DemandasEstagiario />} />
                 <Route path="/demandas/:demandaId/respostas" element={ <DemandaResposta />} />
                 <Route path="/usuarios" element={ <Usuarios /> } />

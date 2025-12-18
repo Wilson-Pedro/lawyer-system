@@ -110,7 +110,7 @@ export default function DemandasEstagiario() {
                                     <th>Prazo</th>
                                     <th className="text-center">Status</th>
                                     <th className="text-center">Tempestividade</th>
-                                    <th className="text-center">Respostas</th>
+                                    <th className="text-center">Comentários</th>
                                     {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>

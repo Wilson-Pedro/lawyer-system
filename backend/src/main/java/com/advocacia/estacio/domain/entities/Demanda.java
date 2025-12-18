@@ -75,6 +75,10 @@ public class Demanda implements Serializable {
 		return LocalDate.parse(string, formatter);
 	}
 
+	public DemandaDto toDto() {
+		return new DemandaDto(this);
+	}
+
 	public Long getId() {
 		return id;
 	}

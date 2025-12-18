@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EyeIcon, PlusIcon } from "../../Icons/Icon";
+import { EditIcon, PlusIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -77,6 +77,8 @@ export default function Demandas() {
                 return "bg-success bg-opacity-25 text-success fw-semibold";
             case "Fora do Prazo":
                 return "bg-danger bg-opacity-25 text-danger fw-semibold";
+            case "Devolvido":
+                return "bg-danger bg-opacity-25 text-danger fw-semibold";
             default:
                 return "";
         }
@@ -130,8 +132,9 @@ export default function Demandas() {
                                     <th>Demanda</th>
                                     <th>Estagiario</th>
                                     <th>Prazo</th>
-                                    <th>Status</th>
-                                    <th className="text-center">Ver</th>
+                                    <th className="text-center">Status</th>
+                                    <th className="text-center">Editar</th>
+                                    <th className="text-center">Comentar</th>
                                     {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
@@ -146,20 +149,20 @@ export default function Demandas() {
                                         </td>
                                         <td className="text-center">
                                             <button
-                                                onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
+                                                onClick={() => navigate(`/demandas/${demanda.id}/editar`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
-                                                <EyeIcon />
+                                                <EditIcon />
                                             </button>
                                         </td>
-                                        {/* <td className="text-center">
+                                        <td className="text-center">
                                             <button
                                                 onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <PlusIcon />
                                             </button>
-                                        </td> */}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

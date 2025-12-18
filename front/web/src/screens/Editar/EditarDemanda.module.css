@@ -1,0 +1,163 @@
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #0056b3;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: color 0.2s;
+}
+
+.backButton:hover {
+  color: #003f80;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #1d3557;
+  margin-bottom: 2rem;
+}
+
+.inputDivGroup {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.inputDivGroup div {
+  width: 48%;
+}
+
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 15px;
+}
+
+.input {
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: all 0.2s;
+}
+
+.input:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 6px rgba(0, 86, 179, 0.3);
+  outline: none;
+}
+
+select.input {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.button {
+  margin-top: 20px;
+  background-color: #0056b3;
+  color: white;
+  font-weight: 600;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  background-color: #00408f;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 86, 179, 0.3);
+}
+
+.ul {
+  background: #fff;
+  border: 1px solid #ccd1d9;
+  border-radius: 8px;
+  width: 92%;
+  max-width: 100%;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  margin: auto;
+}
+
+.li {
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: 0.2s;
+  list-style-type: none;
+  max-width: 100%;
+}
+
+
+li:hover {
+  background-color: lightgray;
+}
+
+.messageError {
+  color: red;
+  font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .container {
+    padding: 25px;
+    margin: 20px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .button {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
