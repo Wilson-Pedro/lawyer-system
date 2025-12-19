@@ -1,6 +1,8 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,9 @@ class AdvogadoServiceTest {
 	
 	@Autowired
 	AdvogadoRepository advogadoRepository;
+
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -55,6 +60,7 @@ class AdvogadoServiceTest {
 		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
 		
 		assertEquals(1, advogadoRepository.count());
+		assertEquals(1, usuarioAuthRepository.count());
 
 	}
 	
@@ -65,7 +71,7 @@ class AdvogadoServiceTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112");
+		"rua do passeio", 11, "53022-112", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		

@@ -93,7 +93,7 @@ class AdvogadoControllerTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112");
+		"rua do passeio", 11, "53022-112", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		

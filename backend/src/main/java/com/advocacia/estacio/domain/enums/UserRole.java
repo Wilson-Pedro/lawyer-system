@@ -10,7 +10,8 @@ public enum UserRole {
 	COORDENADOR_DO_CURSO(2, "Coordenador do curso"),
 	SECRETARIO(3, "Secretário"),
 	PROFESSOR(4, "Professor"),
-	ESTAGIARIO(5, "Estagiário");
+	ESTAGIARIO(5, "Estagiário"),
+	ADVOGADO(6, "Advogado");
 	
 	private int codigo;
 	

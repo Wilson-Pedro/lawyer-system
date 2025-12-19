@@ -58,14 +58,14 @@ public class BackendApplication implements CommandLineRunner {
 
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão",
-				"rua do passeio", 11, "53022-112");
+				"rua do passeio", 11, "53022-112", "1234");
 
 		EstagiarioDto estagiario = new EstagiarioDto(null,
 				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
 				"Estágio I", "1234");
 
 		EstagiarioDto estagiario2 = new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "92921421224", "20251309",
+				"João Miguel", "joao@gmail.com", "92921421224", "20251309",
 				"Estágio II", "1234");
 
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
@@ -101,7 +101,7 @@ public class BackendApplication implements CommandLineRunner {
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
 
-		RegistroDto registroDto = new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
+		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 
 		usuarioAuthService.salvar(registroDto);
 	}

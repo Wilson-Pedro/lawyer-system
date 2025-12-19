@@ -1,6 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.records.RegistroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,11 +29,19 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	@Autowired
 	private EnderecoService enderecoService;
 
+	@Autowired
+	private UsuarioAuthService usuarioAuthService;
+
 	@Override
 	public Advogado salvar(AdvogadoDto advogadoDto) {
+		RegistroDto registroDto = new RegistroDto(advogadoDto.getEmail(), advogadoDto.getSenha(), UserRole.ADVOGADO);
+		UsuarioAuth auth = usuarioAuthService.salvar(registroDto);
+
 		Endereco endereco = enderecoService.salvar(advogadoDto);
 		Advogado advogado = new Advogado(advogadoDto);
+
 		advogado.setEndereco(endereco);
+		advogado.setUsurioAuth(auth);
 		return advogadoRepository.save(advogado);
 	}
 

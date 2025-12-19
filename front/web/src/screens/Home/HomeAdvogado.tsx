@@ -22,7 +22,7 @@ interface Response {
   nome: string;
 }
 
-export default function HomeEstagiario() {
+export default function HomeAdvogado() {
 
   const [estagiarioId, setEstagiarioId] = useState<number | null>(null);
 
@@ -51,12 +51,9 @@ export default function HomeEstagiario() {
   const role = localStorage.getItem('role');
 
   if(!token) return <Navigate to="/login" />
-  if(role !== 'ESTAGIARIO') return <Navigate to="/login" />
+  if(role !== 'ADVOGADO') return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
-    // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
-    // { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
-    // { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
     { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/estagiario/${estagiarioId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from './screens/Home/Home';
 import HomeAdmin from './screens/Home/HomeAdmin';
 import HomeEstagiario from './screens/Home/HomeEstagiario';
+import HomeAdvogado from './screens/Home/HomeAdvogado';
 import Processos from './screens/Processos/Processos';
 
 import Cadastros from './screens/Cadastros/Cadastros';
@@ -27,6 +28,7 @@ import Demandas from './screens/Demandas/Demandas';
 import EditarDemanda from './screens/Editar/EditarDemanda';
 import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import DemandaResposta from './screens/Demandas/DemandaResposta';
+import DemandasAdvogado from './screens/Demandas/DemandasAdvogado';
 import Usuarios from './screens/Usuarios/Usuarios';
 import Login from './screens/Login/Login';
 
@@ -37,6 +39,7 @@ export default function Rotas() {
                 <Route path="/" element={<Home />} />
                 <Route path="/home/admin" element={<HomeAdmin />} />
                 <Route path="/home/estagiario" element={<HomeEstagiario />} />
+                <Route path="/home/advogado" element={<HomeAdvogado />} />
                 <Route path="/processos" element={<Processos />} />
                 <Route path="/cadastrar/assistido" element={<CadastrarAssistido />} />
                 <Route path="/cadastrar/estagiario" element={<CadastrarEstagiario />} />
@@ -53,6 +56,7 @@ export default function Rotas() {
                 <Route path="/demandas" element={ <Demandas />} />
                 <Route path="/demandas/:demandaId/editar" element={ <EditarDemanda />} />
                 <Route path="/demandas/estagiario/:estagiarioId" element={ <DemandasEstagiario />} />
+                <Route path="/demandas/advogado/:advogadoId" element={ <DemandasAdvogado />} />
                 <Route path="/demandas/:demandaId/respostas" element={ <DemandaResposta />} />
                 <Route path="/usuarios" element={ <Usuarios /> } />
                 <Route path="/usuarios/editar/:usuarioId" element={ <EditarUsuario /> } />

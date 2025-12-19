@@ -60,19 +60,19 @@ public class UsuarioAuth implements UserDetails{
 					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
 			
 			case COORDENADOR_DO_CURSO -> List.of(
-					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"),
-					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"));
 			
 			case SECRETARIO -> List.of(
-					new SimpleGrantedAuthority("ROLE_SECRETARIO"),
-					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+					new SimpleGrantedAuthority("ROLE_SECRETARIO"));
 			
 			case PROFESSOR -> List.of(
-					new SimpleGrantedAuthority("ROLE_PROFESSOR"),
-					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+					new SimpleGrantedAuthority("ROLE_PROFESSOR"));
 			
 			case ESTAGIARIO -> List.of(
 					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+
+			case ADVOGADO -> List.of(
+					new SimpleGrantedAuthority("ROLE_ADVOGADO"));
 			
 			default -> throw new IllegalArgumentException("Role Inválida");
 		};

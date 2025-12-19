@@ -6,17 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tbl_advogado")
@@ -38,6 +31,9 @@ public class Advogado implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+
+	@OneToOne
+	UsuarioAuth usurioAuth;
 	
 	@CreationTimestamp
 	private LocalDateTime registro;
@@ -119,6 +115,14 @@ public class Advogado implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public UsuarioAuth getUsurioAuth() {
+		return usurioAuth;
+	}
+
+	public void setUsurioAuth(UsuarioAuth usurioAuth) {
+		this.usurioAuth = usurioAuth;
 	}
 
 	public LocalDateTime getRegistro() {

@@ -84,10 +84,10 @@ public class TestUtil {
 		processoRepository.deleteAll();
 		estagiarioRepository.deleteAll();
 		atorRepository.deleteAll();
-		usuarioAuthRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		usuarioAuthRepository.deleteAll();
 	}
 	
 	public Processo getProcesso() {
@@ -136,7 +136,7 @@ public class TestUtil {
 	public AdvogadoDto getAdvogadoDto() {
 		return new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-				"rua do passeio", 11, "53022-112");
+				"rua do passeio", 11, "53022-112", "1234");
 	}
 	
 	public Estagiario getEstagiario() {
