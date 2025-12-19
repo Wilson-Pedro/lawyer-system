@@ -18,6 +18,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.demanda,
 				e.nome,
 				e.id,
+				d.advogado.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
 				d.prazo,
@@ -34,6 +35,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.demanda,
 				e.nome,
 				e.id,
+				d.advogado.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
 				d.prazo,
@@ -45,6 +47,24 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 			""")
 	Page<DemandaDto> buscarTodosPorEstagiarioId(
 			@Param("estagiarioId") Long estagiarioId, Pageable pageable);
+
+//	@Query("""
+//			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
+//				d.id,
+//				d.demanda,
+//				e.nome,
+//				e.id,
+//				d.demandaStatus,
+//				d.prazoDocumentos,
+//				d.prazo,
+//				d.tempestividade
+//			)
+//			FROM Demanda d
+//			JOIN d.estagiario e
+//			WHERE e.id = :estagiarioId
+//			""")
+//	Page<DemandaDto> buscarTodosPorAdvogadoId(
+//			@Param("advogadoId") Long advogadoId, Pageable pageable);
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
@@ -52,6 +72,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.demanda,
 				e.nome,
 				e.id,
+				d.advogado.id,
 				d.demandaStatus,
 				d.prazoDocumentos,
 				d.prazo,

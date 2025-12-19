@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
@@ -13,6 +14,8 @@ public interface AdvogadoService {
 	Advogado buscarPorId(Long id);
 	
 	Advogado atualizar(Long id, AdvogadoDto advogadoDto);
+
+	Advogado buscarIdPorEmail(String email);
 	
 	Page<Advogado> buscarAdvogado(String nome, int page, int size);
 

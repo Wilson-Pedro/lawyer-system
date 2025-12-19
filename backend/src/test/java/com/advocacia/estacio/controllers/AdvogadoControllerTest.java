@@ -163,4 +163,19 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
 				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
 	}
+
+	@Test
+	@DisplayName("Deve Buscar Advogado Id por email No Banco de Dados Pelo Controller")
+	void buscar_advogado_id_por_email() throws Exception {
+		String email = advogadoRepository.findAll().get(0).getEmail();
+		Advogado advogado = advogadoRepository.findAll().get(0);
+
+		mockMvc.perform(get(URI + "/buscarId/email/" + email)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(advogado.getId().intValue()))
+				.andExpect(jsonPath("$.nome").value(advogado.getNome()));
+	}
 }

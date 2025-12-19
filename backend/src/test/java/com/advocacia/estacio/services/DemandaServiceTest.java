@@ -3,6 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.Tempestividade;
 import org.junit.jupiter.api.*;
@@ -26,6 +27,9 @@ class DemandaServiceTest {
 
 	@Autowired
 	EstagiarioService estagiarioService;
+
+	@Autowired
+	AdvogadoService advogadoService;
 	
 	@Autowired
 	DemandaRepository demandaRepository;
@@ -50,8 +54,9 @@ class DemandaServiceTest {
 		assertEquals(0, demandaRepository.count());
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
+		Advogado advogado = advogadoService.salvar(testUtil.getAdvogadoDto());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Recebido", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), advogado.getId(), "Recebido", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
@@ -59,6 +64,7 @@ class DemandaServiceTest {
 		assertNotNull(demanda.getRegistro());
 		assertEquals("Atualizar Documentos", demanda.getDemanda());
 		assertEquals(demanda.getEstagiario(), estagiario);
+		assertEquals(demanda.getAdvogado(), advogado);
 		assertEquals("2025-11-12", demanda.getPrazo().toString());
 		assertEquals("2025-11-02", demanda.getPrazoDocumentos().toString());
 		assertEquals(Tempestividade.DENTRO_DO_PRAZO, demanda.getTempestividade());
@@ -115,15 +121,19 @@ class DemandaServiceTest {
 	@Test
 	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
 	void deve_buscar_Demandas_por_status_NoBancoDeDados_PeloService() {
+
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção", "02/11/2025", 13, "Dentro do Prazo");
+
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
+
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Em Correção", 0, 20);
 
 		assertNotNull(demandas);
 		assertEquals("Organizar Processos", demandas.getContent().get(0).getDemanda());
-		assertEquals("Carlos Miguel", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("João Miguel", demandas.getContent().get(0).getEstagiarioNome());
 		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
 		assertEquals("15/11/2025", demandas.getContent().get(0).getPrazo());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());

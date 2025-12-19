@@ -41,6 +41,11 @@ public class Advogado implements Serializable {
 	public Advogado() {
 	}
 
+	public Advogado(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
 	public Advogado(Long id, String nome, String email, String cpf, String telefone, LocalDate dataDeNascimeto, 
 			Endereco endereco, LocalDateTime registro) {
 		this.id = id;

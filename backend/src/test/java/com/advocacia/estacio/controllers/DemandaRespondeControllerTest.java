@@ -8,6 +8,7 @@ import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 
+import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,11 +38,14 @@ class DemandaRespondeControllerTest {
 	EstagiarioRepository estagiarioRepository;
 
 	@Autowired
-
 	DemandaRespondeRepository demandaRespondeRepository;
 
 	@Autowired
 	DemandaService demandaService;
+
+	@Autowired
+	AdvogadoService advogadoService;
+
 	@Autowired
 	TestUtil testUtil;
 	
@@ -72,7 +76,9 @@ class DemandaRespondeControllerTest {
 
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
+
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), advogadoId, "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");

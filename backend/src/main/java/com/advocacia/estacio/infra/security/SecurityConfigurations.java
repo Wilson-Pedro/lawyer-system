@@ -38,7 +38,8 @@ public class SecurityConfigurations {
 
 						.requestMatchers(HttpMethod.POST, "/advogados/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/advogados/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/advogados/{id}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/advogados/buscarId/email/{email}").hasRole("ADVOGADO")
 
 						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")

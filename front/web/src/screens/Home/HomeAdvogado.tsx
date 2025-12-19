@@ -24,7 +24,7 @@ interface Response {
 
 export default function HomeAdvogado() {
 
-  const [estagiarioId, setEstagiarioId] = useState<number | null>(null);
+  const [advogadoId, setAdvogadoId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -34,12 +34,12 @@ export default function HomeAdvogado() {
       
       const fetchIdUser = async () => {
           try {
-              const response = await axios.get<Response>(`${API_URL}/estagiarios/buscarId/email/${email}`, {
+              const response = await axios.get<Response>(`${API_URL}/advogados/buscarId/email/${email}`, {
                   headers: {
                       Authorization: `Bearer ${token}`
                   }
               });
-              setEstagiarioId(response.data.id);
+              setAdvogadoId(response.data.id);
           } catch (error) {
                 console.error(error);
             }
@@ -54,7 +54,7 @@ export default function HomeAdvogado() {
   if(role !== 'ADVOGADO') return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/estagiario/${estagiarioId}`, variant: "warning" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/advogado/${advogadoId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

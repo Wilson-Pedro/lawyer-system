@@ -32,14 +32,14 @@ export default function DemandasAdvogado() {
     const navigate = useNavigate();
 
     const params = useParams();
-    const estagiarioId = params.estagiarioId || "";
+    const advogadoId = params.advogadoId || "";
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/estagiario/${estagiarioId}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/advogado/${advogadoId}?page=0&size=20`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -52,7 +52,7 @@ export default function DemandasAdvogado() {
             }
         };
         fetchDemandas();
-    }, [statusFiltro, estagiarioId]);
+    }, [statusFiltro, advogadoId]);
 
     useEffect(() => {
         let dados = [...demandas]
@@ -93,7 +93,7 @@ export default function DemandasAdvogado() {
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
                 <span className="navbar-brand fw-bold fs-4">Demandas</span>
-                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/estagiario")}>
+                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/advogado")}>
                     ← Voltar
                 </button>
             </nav>

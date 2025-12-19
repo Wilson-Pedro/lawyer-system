@@ -1,7 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
-import com.advocacia.estacio.domain.records.EstagiarioMinDto;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,7 +53,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	}
 
 	@Override
-	public EstagiarioMinDto buscarIdPorEmail(String email) {
+	public EntidadeMinDto buscarIdPorEmail(String email) {
 		return estagiarioRepository.buscarEstagiarioMinPorEmail(email)
 				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}

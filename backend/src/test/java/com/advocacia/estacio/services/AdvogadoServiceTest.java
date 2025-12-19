@@ -129,4 +129,20 @@ class AdvogadoServiceTest {
 		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
 		assertEquals("53022-112", advogado.getEndereco().getCep());
 	}
+
+	@Test
+	@DisplayName("Deve buscar Advogado ID e NOME pelo por Email Pelo Service")
+	void buscar_advogado_id_e_nome_por_email() {
+
+		Advogado advogado = advogadoRepository.findAll().get(0);
+		Long id = advogado.getId();
+		String nome = advogado.getNome();
+		String email = advogado.getEmail();
+
+		Advogado advogadoEncontrado = advogadoService.buscarIdPorEmail(email);
+
+		assertNotNull(advogadoEncontrado);
+		assertEquals(id, advogadoEncontrado.getId());
+		assertEquals("Carlos Silva Lima", advogado.getNome());
+	}
 }

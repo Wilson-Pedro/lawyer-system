@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.*;
@@ -37,6 +38,9 @@ class DemandaControllerTest {
 
 	@Autowired
 	EstagiarioService estagiarioService;
+
+	@Autowired
+	AdvogadoService advogadoService;
 
 	@Autowired
 	DemandaService demandaService;
@@ -70,8 +74,10 @@ class DemandaControllerTest {
 		assertEquals(0, demandaRepository.count());
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
+
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), advogadoId, "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -83,6 +89,7 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
 				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
+				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
 				.andExpect(jsonPath("$.demandaStatus", equalTo("Corrigido")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")))
 				.andExpect(jsonPath("$.tempestividade", equalTo("Dentro do Prazo")));
@@ -96,7 +103,10 @@ class DemandaControllerTest {
 	void buscar_demanda_por_status() throws Exception {
 
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Em Correção","02/11/2025", 13, "Dentro do Prazo");
+
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
+
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção","02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
 		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")

@@ -57,7 +57,8 @@ public class UsuarioAuth implements UserDetails{
 					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"),
 					new SimpleGrantedAuthority("ROLE_SECRETARIO"),
 					new SimpleGrantedAuthority("ROLE_PROFESSOR"),
-					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"),
+					new SimpleGrantedAuthority("ROLE_ADVOGADO"));
 			
 			case COORDENADOR_DO_CURSO -> List.of(
 					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"));

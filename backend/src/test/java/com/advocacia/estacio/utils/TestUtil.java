@@ -138,6 +138,12 @@ public class TestUtil {
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
 				"rua do passeio", 11, "53022-112", "1234");
 	}
+
+	public AdvogadoDto getAdvogadoDto2() {
+		return new AdvogadoDto(null, "Mauricio Silva", "mauricio@gmail.com",
+				"88281546889", "25/09/1994", "São Luís", "Vila Lobão",
+				"rua do passeio", 12, "53022-102", "1234");
+	}
 	
 	public Estagiario getEstagiario() {
 		return new Estagiario(
@@ -159,7 +165,7 @@ public class TestUtil {
 
 	public EstagiarioDto getEstagiarioDto2() {
 		return new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "92921421224",
+				"João Miguel", "joao@gmail.com", "92921421224",
 				"20251208", "Estágio II", "1234");
 	}
 	

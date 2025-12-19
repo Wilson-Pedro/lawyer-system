@@ -3,6 +3,7 @@ package com.advocacia.estacio.services.impl;
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,5 +73,10 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 		advogado.setDataDeNascimeto(Utils.localDateToString(advogadoDto.getDataDeNascimento()));
 		enderecoService.atualizar(advogado.getEndereco().getId(), new Endereco(advogadoDto));
 		return advogadoRepository.save(advogado);
+	}
+
+	@Override
+	public Advogado buscarIdPorEmail(String email) {
+		return advogadoRepository.buscarIdPorEmail(email).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 }

@@ -36,6 +36,10 @@ public class Demanda implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "estagiario_id")
 	private Estagiario estagiario;
+
+	@ManyToOne
+	@JoinColumn(name = "advogado_id")
+	private Advogado advogado;
 	
 	@Enumerated(EnumType.STRING)
 	private DemandaStatus demandaStatus;
@@ -53,10 +57,11 @@ public class Demanda implements Serializable {
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, Advogado advogado, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
+		this.advogado = advogado;
 		this.demandaStatus = demandaStatus;
 		this.prazoDocumentos = prazoDocumentos;
 		this.prazo = prazo;
@@ -101,6 +106,14 @@ public class Demanda implements Serializable {
 
 	public void setEstagiario(Estagiario estagiario) {
 		this.estagiario = estagiario;
+	}
+
+	public Advogado getAdvogado() {
+		return advogado;
+	}
+
+	public void setAdvogado(Advogado advogado) {
+		this.advogado = advogado;
 	}
 
 	public DemandaStatus getDemandaStatus() {

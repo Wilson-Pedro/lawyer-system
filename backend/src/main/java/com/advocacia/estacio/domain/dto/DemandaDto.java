@@ -16,6 +16,8 @@ public class DemandaDto {
 	private String estagiarioNome;
 	
 	private Long estagiarioId;
+
+	private Long advogadoId;
 	
 	private String demandaStatus;
 
@@ -30,22 +32,24 @@ public class DemandaDto {
 	public DemandaDto() {
 	}
 	
-	public DemandaDto(Long id, String demanda, Long estagiarioId, String demandaStatus, String prazoDocumentos, Integer diasPrazo, String tempestividade) {
+	public DemandaDto(Long id, String demanda, Long estagiarioId, Long advogadoId, String demandaStatus, String prazoDocumentos, Integer diasPrazo, String tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioId = estagiarioId;
+		this.advogadoId = advogadoId;
 		this.demandaStatus = demandaStatus;
 		this.prazoDocumentos = prazoDocumentos;
 		this.diasPrazo = diasPrazo;
 		this.tempestividade = tempestividade;
 	}
 
-	public DemandaDto(Long id, String demanda, String estagiarioNome, Long estagiarioId,
+	public DemandaDto(Long id, String demanda, String estagiarioNome, Long estagiarioId, Long advogadoId,
 					  DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioNome = estagiarioNome;
 		this.estagiarioId = estagiarioId;
+		this.advogadoId = advogadoId;
 		this.demandaStatus = demandaStatus.getStatus();
 		this.prazoDocumentos = Utils.localDateToString(prazoDocumentos);
 		this.prazo = Utils.localDateToString(prazo);
@@ -57,6 +61,7 @@ public class DemandaDto {
 		this.demanda = demanda.getDemanda();
 		this.estagiarioNome = demanda.getEstagiario().getNome();
 		this.estagiarioId = demanda.getEstagiario().getId();
+		this.advogadoId = demanda.getAdvogado().getId();
 		this.demandaStatus = demanda.getDemandaStatus().getStatus();
 		this.prazoDocumentos = Utils.localDateToString(demanda.getPrazoDocumentos());
 		this.prazo = Utils.localDateToString(demanda.getPrazo());
@@ -81,6 +86,10 @@ public class DemandaDto {
 
 	public Long getEstagiarioId() {
 		return estagiarioId;
+	}
+
+	public Long getAdvogadoId() {
+		return advogadoId;
 	}
 
 	public String getDemandaStatus() {

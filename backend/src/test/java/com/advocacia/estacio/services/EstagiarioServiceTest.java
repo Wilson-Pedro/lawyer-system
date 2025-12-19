@@ -13,12 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.domain.records.EstagiarioMinDto;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -123,7 +122,7 @@ class EstagiarioServiceTest {
 	void deve_buscar_Estagiario_id_pelo_email_PeloService() {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
-		EstagiarioMinDto dto = estagiarioService.buscarIdPorEmail("pedro22@gmail.com");
+		EntidadeMinDto dto = estagiarioService.buscarIdPorEmail("pedro22@gmail.com");
 
 		assertEquals(estagiario.getId(), dto.id());
 		assertEquals(estagiario.getNome(), dto.nome());

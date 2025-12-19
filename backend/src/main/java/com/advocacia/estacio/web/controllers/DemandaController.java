@@ -37,14 +37,23 @@ public class DemandaController {
     }
 	
 	@GetMapping("/estagiario/{estagiarioId}")
-	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodos(
+	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorEstagiario(
 			@PathVariable Long estagiarioId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
 		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorEstagiarioId(estagiarioId, page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
-	
+
+//	@GetMapping("/advogado/{advogadoId}")
+//	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorAdvogado(
+//			@PathVariable Long estagiarioId,
+//			@RequestParam(defaultValue = "0") int page,
+//			@RequestParam(defaultValue = "20") int size) {
+//		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorEstagiarioId(estagiarioId, page, size);
+//		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+//	}
+
 	@GetMapping("/status/{demandaStatus}")
 	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorStatus(
 			@PathVariable String demandaStatus,
