@@ -44,6 +44,12 @@ export default function CadastrarDemanda() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
+  
+  const [nomeAdvogado, setNomeAdvogado] = useState("");
+  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
+  const [advogadoId, setAdvogadoId] = useState<number>(0);
+  const [advogados, setAdvogados] = useState<Advogado[]>([]);
+
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">(
@@ -80,6 +86,32 @@ export default function CadastrarDemanda() {
     return () => clearTimeout(delay);
   }, [nomeEstagiarioSearch]);
 
+  
+  useEffect(() => {
+    const buscarAdvogado = async () => {
+      if (nomeAdvogadoSearch.length < 2) {
+        setAdvogados([]);
+        return;
+      }
+      try {
+        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+        const pageData: Page<Advogado> = response.data;
+        setAdvogados(pageData.content);
+      } catch (error) {
+        setMensagemToast("Error ao tentar buscar advogados");
+      }
+
+    };
+
+    const delay = setTimeout(buscarAdvogado, 100);
+
+    return () => clearTimeout(delay);
+  }, [nomeAdvogadoSearch]);
+
   const cadastrarDemanda = async (e: any) => {
     e.preventDefault();
 
@@ -89,9 +121,11 @@ export default function CadastrarDemanda() {
         {
           demanda,
           estagiarioId,
+          advogadoId,
           demandaStatus,
           prazoDocumentos,
           diasPrazo: prazoDias,
+          tempestividade: "Dentro do Prazo"
         },
         {
           headers: {
@@ -103,8 +137,6 @@ export default function CadastrarDemanda() {
       setMostrarToast(true);
       setMensagemToast("Demanda cadastrada com sucesso.");
       setVarianteToast("success");
-      limparCampos();
-
       limparCampos();
     } catch (error) {
       console.error(error);
@@ -186,14 +218,24 @@ export default function CadastrarDemanda() {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
     setNomeEstagiarioSearch("");
-  };
+  }; 
 
   const selecionarDemandaStatus = async (e: any) => {
     setDemandaStatus(e.target.value);
   };
 
+  const setAdvogado = (advogado: Advogado) => {
+    setNomeAdvogado(advogado.nome);
+    setAdvogadoId(advogado.id);
+    setNomeAdvogadoSearch("");
+  }
+
   const limparCampos = () => {
     setNomeEstagiarioSearch("");
+    setNomeEstagiario("")
+    setDemanda("Em Correção")
+    setNomeAdvogadoSearch("")
+    setNomeAdvogado("")
     setDemandaStatus("");
     setPrazoDocumentos("");
     setPrazoDias(0);
@@ -243,6 +285,28 @@ export default function CadastrarDemanda() {
                 >
                   {data.nome}
                 </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Advogado</label>
+          <input
+            className={styles.input}
+            placeholder="Digite o nome do advogado"
+            value={nomeAdvogadoSearch || nomeAdvogado}
+            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            required
+          />
+          {advogados.length > 0 && (
+            <ul className={styles.ul}>
+              {advogados.map((data) => (
+                <li
+                  className={styles.li}
+                  key={data.id}
+                  onClick={() => setAdvogado(data)}
+                >{data.nome}</li>
               ))}
             </ul>
           )}
