@@ -74,7 +74,7 @@ public class DemandaServiceImpl implements DemandaService {
 	@Override
 	public void mudarDemandaStatus(Long id, String status) {
 		Demanda demanda = buscarPorId(id);
-		demanda.setDemandaStatus(DemandaStatus.toEnum(status));
+		demanda.setDemandaStatusAluno(DemandaStatus.toEnum(status));
 		demandaRepository.save(demanda);
 	}
 }

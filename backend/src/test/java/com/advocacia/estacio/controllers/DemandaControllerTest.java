@@ -77,7 +77,7 @@ class DemandaControllerTest {
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), advogadoId, "Corrigido", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -90,7 +90,8 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
 				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
-				.andExpect(jsonPath("$.demandaStatus", equalTo("Corrigido")))
+				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Em Correção")))
+				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Professor")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")))
 				.andExpect(jsonPath("$.tempestividade", equalTo("Dentro do Prazo")));
 		
@@ -106,7 +107,7 @@ class DemandaControllerTest {
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
 
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção","02/11/2025", 13, "Dentro do Prazo");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
 		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")
@@ -114,7 +115,8 @@ class DemandaControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
+				.andExpect(jsonPath("content[0].demanda").value("Organizar Processos"))
+				.andExpect(jsonPath("content[0].demandaStatusAluno").value("Corrigido"));
 	}
 
     @Test
@@ -131,7 +133,7 @@ class DemandaControllerTest {
 
         Demanda demanda = demandaRepository.findById(id).get();
 
-        assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatus());
+        assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatusAluno());
     }
 
 	@Test

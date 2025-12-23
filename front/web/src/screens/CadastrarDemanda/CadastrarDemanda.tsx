@@ -122,7 +122,8 @@ export default function CadastrarDemanda() {
           demanda,
           estagiarioId,
           advogadoId,
-          demandaStatus,
+          demandaStatusAluno: "Em Correção",
+          demandaStatusProfessor: "Aguardando Professor",
           prazoDocumentos,
           diasPrazo: prazoDias,
           tempestividade: "Dentro do Prazo"
@@ -312,7 +313,7 @@ export default function CadastrarDemanda() {
           )}
         </div>
 
-        <div className={styles.inputGroup}>
+        {/* <div className={styles.inputGroup}>
           <label className={styles.label}>Status da demanda</label>
           <select
             className={styles.input}
@@ -326,7 +327,7 @@ export default function CadastrarDemanda() {
             <option value="Dentro do Prazo">Dentro do Prazo</option>
             <option value="Fora do Prazo">Fora do Prazo</option>
           </select>
-        </div>
+        </div> */}
 
         <div className={styles.inputDivGroup}>
           <div className={styles.inputGroup}>

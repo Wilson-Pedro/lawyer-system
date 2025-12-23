@@ -19,7 +19,8 @@ interface Demanda {
     demanda: string;
     estagiarioNome: string;
     estagiarioId: string;
-    demandaStatus: string;
+    demandaStatusAluno: string;
+    demandaStatusProfessor: string;
     prazo: string;
 }
 
@@ -57,7 +58,8 @@ export default function Demandas() {
             dados = dados.filter(
                 (d) =>
                     d.demanda.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatus.toLowerCase().includes(busca.toLowerCase()) ||
+                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase()) ||
+                    d.demandaStatusProfessor.toLowerCase().includes(busca.toLowerCase()) ||
                     d.estagiarioNome.toLowerCase().includes(busca.toLowerCase())
             );
         }
@@ -68,17 +70,19 @@ export default function Demandas() {
     const getStatusClass = (status: string): string => {
         switch (status) {
             case "Corrigido":
-                return "bg-success bg-opacity-25 text-success fw-semibold";
+                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Em Correção":
-                return "bg-warning bg-opacity-25 text-warning fw-semibold";
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Professor":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Prorrogada":
-                return "bg-danger bg-opacity-25 text-danger fw-semibold";
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Dentro do Prazo":
-                return "bg-success bg-opacity-25 text-success fw-semibold";
+                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Fora do Prazo":
-                return "bg-danger bg-opacity-25 text-danger fw-semibold";
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Devolvido":
-                return "bg-danger bg-opacity-25 text-danger fw-semibold";
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             default:
                 return "";
         }
@@ -120,6 +124,7 @@ export default function Demandas() {
                         <option value="Devolvido">Devolvido</option>
                         <option value="Dentro do Prazo">Dentro do Prazo</option>
                         <option value="Fora do Prazo">Fora do Prazo</option>
+                        <option value="Aguardando Professor">Aguardando Professor</option>
                     </select>
                 </div>
 
@@ -132,7 +137,8 @@ export default function Demandas() {
                                     <th>Demanda</th>
                                     <th>Estagiario</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Status</th>
+                                    <th className="text-center">Status Aluno</th>
+                                    <th className="text-center">Status Professor</th>
                                     <th className="text-center">Editar</th>
                                     <th className="text-center">Comentar</th>
                                     {/* <th className="text-center">Responder</th> */}
@@ -144,8 +150,11 @@ export default function Demandas() {
                                         <td>{demanda.demanda}</td>
                                         <td>{demanda.estagiarioNome}</td>
                                         <td>{demanda.prazo}</td>
-                                        <td className={getStatusClass(demanda.demandaStatus)}>
-                                            {demanda.demandaStatus}
+                                        <td className={getStatusClass(demanda.demandaStatusAluno)}>
+                                            {demanda.demandaStatusAluno}
+                                        </td>
+                                        <td className={getStatusClass(demanda.demandaStatusProfessor)}>
+                                            {demanda.demandaStatusProfessor}
                                         </td>
                                         <td className="text-center">
                                             <button

@@ -42,7 +42,10 @@ public class Demanda implements Serializable {
 	private Advogado advogado;
 	
 	@Enumerated(EnumType.STRING)
-	private DemandaStatus demandaStatus;
+	private DemandaStatus demandaStatusAluno;
+
+	@Enumerated(EnumType.STRING)
+	private DemandaStatus demandaStatusProfessor;
 
 	private LocalDate prazoDocumentos;
 
@@ -57,12 +60,13 @@ public class Demanda implements Serializable {
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, Advogado advogado, DemandaStatus demandaStatus, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, Advogado advogado, DemandaStatus demandaStatusAluno, DemandaStatus demandaStatusProfessor, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
 		this.advogado = advogado;
-		this.demandaStatus = demandaStatus;
+		this.demandaStatusAluno = demandaStatusAluno;
+		this.demandaStatusProfessor = demandaStatusProfessor;
 		this.prazoDocumentos = prazoDocumentos;
 		this.prazo = prazo;
 		this.tempestividade = tempestividade;
@@ -70,7 +74,8 @@ public class Demanda implements Serializable {
 	
 	public Demanda(DemandaDto demandaDto) {
 		this.demanda = demandaDto.getDemanda();
-		this.demandaStatus = DemandaStatus.toEnum(demandaDto.getDemandaStatus());
+		this.demandaStatusAluno = DemandaStatus.toEnum(demandaDto.getDemandaStatusAluno());
+		this.demandaStatusProfessor = DemandaStatus.toEnum(demandaDto.getDemandaStatusProfessor());
 		this.prazoDocumentos = localDateToString(demandaDto.getPrazoDocumentos());
 		this.tempestividade = Tempestividade.toEnum(demandaDto.getTempestividade());
 	}
@@ -116,12 +121,20 @@ public class Demanda implements Serializable {
 		this.advogado = advogado;
 	}
 
-	public DemandaStatus getDemandaStatus() {
-		return demandaStatus;
+	public DemandaStatus getDemandaStatusAluno() {
+		return demandaStatusAluno;
 	}
 
-	public void setDemandaStatus(DemandaStatus demandaStatus) {
-		this.demandaStatus = demandaStatus;
+	public void setDemandaStatusAluno(DemandaStatus demandaStatusAluno) {
+		this.demandaStatusAluno = demandaStatusAluno;
+	}
+
+	public DemandaStatus getDemandaStatusProfessor() {
+		return demandaStatusProfessor;
+	}
+
+	public void setDemandaStatusProfessor(DemandaStatus demandaStatusProfessor) {
+		this.demandaStatusProfessor = demandaStatusProfessor;
 	}
 
 	public LocalDate getPrazoDocumentos() {
@@ -158,7 +171,7 @@ public class Demanda implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(demanda, demandaStatus, estagiario, id, prazo, registro);
+		return Objects.hash(demanda, demandaStatusAluno, estagiario, id, prazo, registro);
 	}
 
 	@Override
@@ -170,7 +183,7 @@ public class Demanda implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Demanda other = (Demanda) obj;
-		return Objects.equals(demanda, other.demanda) && demandaStatus == other.demandaStatus
+		return Objects.equals(demanda, other.demanda) && demandaStatusAluno == other.demandaStatusAluno
 				&& Objects.equals(estagiario, other.estagiario) && Objects.equals(id, other.id)
 				&& Objects.equals(prazo, other.prazo) && Objects.equals(registro, other.registro);
 	}

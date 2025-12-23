@@ -19,7 +19,7 @@ interface Demanda {
     demanda: string;
     estagiarioNome: string;
     estagiarioId: string;
-    demandaStatus: string;
+    demandaStatusAluno: string;
     prazo: string;
     tempestividade:string;
 }
@@ -61,7 +61,7 @@ export default function DemandasEstagiario() {
             dados = dados.filter(
                 (d) =>
                     d.demanda.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatus.toLowerCase().includes(busca.toLowerCase())
+                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase())
             );
         }
 
@@ -119,8 +119,8 @@ export default function DemandasEstagiario() {
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
                                         <td>{demanda.prazo}</td>
-                                        <td className={getStatusClass(demanda.demandaStatus)}>
-                                            {demanda.demandaStatus}
+                                        <td className={getStatusClass(demanda.demandaStatusAluno)}>
+                                            {demanda.demandaStatusAluno}
                                         </td>
                                         <td className={getStatusClass(demanda.tempestividade)}>
                                             {demanda.tempestividade}

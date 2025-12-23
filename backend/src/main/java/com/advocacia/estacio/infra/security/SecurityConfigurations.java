@@ -48,7 +48,8 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.PATCH, "/demandas/{demandaId}/change").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
-						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
+						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ESTAGIARIO")
 						.requestMatchers("/demandas/responde/**").hasRole("PROFESSOR")
 
 						.requestMatchers(HttpMethod.POST, "/estagiarios/").hasRole("ADMIN")

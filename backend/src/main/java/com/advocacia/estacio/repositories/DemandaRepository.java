@@ -19,7 +19,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.nome,
 				e.id,
 				d.advogado.id,
-				d.demandaStatus,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade
@@ -36,7 +37,8 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.nome,
 				e.id,
 				d.advogado.id,
-				d.demandaStatus,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade
@@ -73,14 +75,15 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				e.nome,
 				e.id,
 				d.advogado.id,
-				d.demandaStatus,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade
 			)
 			FROM Demanda d
 			JOIN d.estagiario e
-			WHERE d.demandaStatus = :demandaStatus
+			WHERE (d.demandaStatusAluno = :demandaStatus OR d.demandaStatusProfessor = :demandaStatus)
 			""")
 	Page<DemandaDto> buscarTodosPorStatus(
 			@Param("demandaStatus") DemandaStatus demandaStatus, Pageable pageable);

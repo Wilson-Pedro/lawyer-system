@@ -19,7 +19,8 @@ interface Demanda {
     demanda: string;
     estagiarioNome: string;
     estagiarioId: string;
-    demandaStatus: string;
+    demandaStatusAluno: string;
+    demandaStatusProfessor: string;
     prazo: string;
     tempestividade:string;
 }
@@ -61,7 +62,7 @@ export default function DemandasAdvogado() {
             dados = dados.filter(
                 (d) =>
                     d.demanda.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatus.toLowerCase().includes(busca.toLowerCase())
+                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase())
             );
         }
 
@@ -73,6 +74,8 @@ export default function DemandasAdvogado() {
             case "Devolvido":
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Em Correção":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Professor":
                 return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Corrigido":
                 return "bg-success text-center bg-opacity-25 text-success fw-semibold";
@@ -108,7 +111,8 @@ export default function DemandasAdvogado() {
                                 <tr>
                                     <th>Demanda</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Status</th>
+                                    <th className="text-center">Status Aluno</th>
+                                    <th className="text-center">Status Corrigido</th>
                                     <th className="text-center">Tempestividade</th>
                                     <th className="text-center">Comentários</th>
                                     {/* <th className="text-center">Responder</th> */}
@@ -119,8 +123,11 @@ export default function DemandasAdvogado() {
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
                                         <td>{demanda.prazo}</td>
-                                        <td className={getStatusClass(demanda.demandaStatus)}>
-                                            {demanda.demandaStatus}
+                                        <td className={getStatusClass(demanda.demandaStatusAluno)}>
+                                            {demanda.demandaStatusAluno}
+                                        </td>
+                                        <td className={getStatusClass(demanda.demandaStatusProfessor)}>
+                                            {demanda.demandaStatusProfessor}
                                         </td>
                                         <td className={getStatusClass(demanda.tempestividade)}>
                                             {demanda.tempestividade}
