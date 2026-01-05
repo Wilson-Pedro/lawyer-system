@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		
 		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
+		estagiario.setUsuarioStatus(UsuarioStatus.ATIVO);
 		return estagiarioRepository.save(estagiario);
 	}
 

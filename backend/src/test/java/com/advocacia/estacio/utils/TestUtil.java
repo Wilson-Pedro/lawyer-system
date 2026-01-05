@@ -95,8 +95,10 @@ public class TestUtil {
         Assistido assistido = assistidoService.salvar(getAssistidoDto());
         Advogado advogado = advogadoService.salvar(getAdvogadoDto());
         Estagiario estagiario = estagiarioRepository.save(getEstagiario2());
-		
-		return new Processo(null, assistido, "20251", "62354", "Seguro", "3210", 
+
+		String numeroDoProcesso =  String.format("%d%s",LocalDate.now().getYear(), "1");
+
+		return new Processo(null, assistido, numeroDoProcesso, "62354", "Seguro", "3210",
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 
 				AreaDoDireito.CIVIL, Tribunal.ESTADUAL, StatusProcesso.TRAMITANDO, "", 
 				null, LocalDateTime.now());

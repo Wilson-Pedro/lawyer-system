@@ -73,7 +73,8 @@ class AtorControllerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos")))
 				.andExpect(jsonPath("$.email", equalTo("roberto@gmail.com")))
-				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")));
+				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(1, atorRepository.count());
 	}
@@ -94,7 +95,8 @@ class AtorControllerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.nome", equalTo("José Augusto")))
 				.andExpect(jsonPath("$.email", equalTo("jose@gmail.com")))
-				.andExpect(jsonPath("$.tipoAtor", equalTo("Secretário")));
+				.andExpect(jsonPath("$.tipoAtor", equalTo("Secretário")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(2, atorRepository.count());
 	}
@@ -115,7 +117,8 @@ class AtorControllerTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.nome", equalTo("Fabio Junior")))
 				.andExpect(jsonPath("$.email", equalTo("fabio@gmail.com")))
-				.andExpect(jsonPath("$.tipoAtor", equalTo("Professor")));
+				.andExpect(jsonPath("$.tipoAtor", equalTo("Professor")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(3, atorRepository.count());
 	}
@@ -145,6 +148,7 @@ class AtorControllerTest {
 		assertEquals("Roberto Carlos Silva", atorAtualizado.getNome());
 		assertEquals("roberto22@gmail.com", atorAtualizado.getEmail());
 		assertEquals("Coordenador do curso", atorAtualizado.getTipoDoAtor().getTipo());
+		assertEquals("Ativo", atorAtualizado.getUsuarioStatus().getDescricao());
 	}
 
 	@Test
@@ -196,6 +200,7 @@ class AtorControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos Silva")))
 				.andExpect(jsonPath("$.email", equalTo("roberto22@gmail.com")))
-				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")));
+				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 	}
 }

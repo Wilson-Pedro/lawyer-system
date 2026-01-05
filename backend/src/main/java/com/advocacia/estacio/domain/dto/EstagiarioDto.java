@@ -19,6 +19,8 @@ public class EstagiarioDto implements Serializable {
 	private String matricula;
 	
 	private String periodo;
+
+	private String usuarioStatus;
 	
 	private String senha;
 	
@@ -55,6 +57,7 @@ public class EstagiarioDto implements Serializable {
 		this.telefone = estagiario.getTelefone();
 		this.matricula = estagiario.getMatricula();
 		this.periodo = estagiario.getPeriodo().getTipo();
+		this.usuarioStatus = estagiario.getUsuarioStatus().getDescricao();
 	}
 	
 	public Long getId() {
@@ -85,31 +88,19 @@ public class EstagiarioDto implements Serializable {
 		return telefone;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
 	public String getMatricula() {
 		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
 	}
 
 	public String getPeriodo() {
 		return periodo;
 	}
 
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
+	public String getUsuarioStatus() {
+		return usuarioStatus;
 	}
 
 	public String getSenha() {
 		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
 	}
 }

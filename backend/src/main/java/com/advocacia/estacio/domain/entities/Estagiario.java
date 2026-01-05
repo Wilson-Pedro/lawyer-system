@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
@@ -37,6 +38,9 @@ public class Estagiario implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private PeriodoEstagio periodo;
+
+	@Enumerated(EnumType.STRING)
+	private UsuarioStatus usuarioStatus;
 	
 	@OneToOne
 	private UsuarioAuth usuarioAuth;
@@ -47,13 +51,14 @@ public class Estagiario implements Serializable {
 	public Estagiario() {
 	}
 
-	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo) {
+	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo, UsuarioStatus usuarioStatus) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
 		this.matricula = matricula;
 		this.periodo = periodo;
+		this.usuarioStatus = usuarioStatus;
 	}
 
 
@@ -135,6 +140,14 @@ public class Estagiario implements Serializable {
 	
 	public UsuarioAuth getUsuarioAuth() {
 		return usuarioAuth;
+	}
+
+	public UsuarioStatus getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	public void setUsuarioAuth(UsuarioAuth usuarioAuth) {

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -31,6 +32,9 @@ public class Advogado implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+
+	@Enumerated(EnumType.STRING)
+	private UsuarioStatus usuarioStatus;
 
 	@OneToOne
 	UsuarioAuth usurioAuth;
@@ -120,6 +124,14 @@ public class Advogado implements Serializable {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public UsuarioStatus getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	public UsuarioAuth getUsurioAuth() {

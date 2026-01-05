@@ -28,6 +28,8 @@ public class AdvogadoDto implements Serializable {
 	
 	private String cep;
 
+	private String usuarioStatus;
+
 	private String senha;
 	
 	public AdvogadoDto() {
@@ -60,6 +62,7 @@ public class AdvogadoDto implements Serializable {
 		this.rua = advogado.getEndereco().getRua();
 		this.numeroDaCasa = advogado.getEndereco().getNumeroDaCasa();
 		this.cep = advogado.getEndereco().getCep();
+		this.usuarioStatus = advogado.getUsuarioStatus().getDescricao();
 	}
 
 	private String toDateString(LocalDate localDate) {
@@ -104,6 +107,10 @@ public class AdvogadoDto implements Serializable {
 
 	public String getCep() {
 		return cep;
+	}
+
+	public String getUsuarioStatus() {
+		return usuarioStatus;
 	}
 
 	public String getSenha() {

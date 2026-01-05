@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -73,7 +74,8 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.nome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.email", equalTo("pedro@gmail.com")))
 				.andExpect(jsonPath("$.matricula", equalTo("20251208")))
-				.andExpect(jsonPath("$.periodo", equalTo("Estágio I")));
+				.andExpect(jsonPath("$.periodo", equalTo("Estágio I")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(1, estagiarioRepository.count());
 	}
@@ -104,6 +106,7 @@ class EstagiarioControllerTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getUsuarioAuth().getLogin());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
+		assertEquals(UsuarioStatus.ATIVO, estagiarioAtualizado.getUsuarioStatus());
 		
 		assertEquals(1, estagiarioRepository.count());
 	}
@@ -153,7 +156,8 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.id").value(estagiario.getId().intValue()))
 				.andExpect(jsonPath("$.nome").value(estagiario.getNome()))
 				.andExpect(jsonPath("$.matricula").value(estagiario.getMatricula()))
-				.andExpect(jsonPath("$.periodo").value(estagiario.getPeriodo().getTipo()));
+				.andExpect(jsonPath("$.periodo").value(estagiario.getPeriodo().getTipo()))
+				.andExpect(jsonPath("$.usuarioStatus").value(estagiario.getUsuarioStatus().getDescricao()));
 	}
 
 	@Test
@@ -170,6 +174,7 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content[0].email").value("pedro22@gmail.com"))
 				.andExpect(jsonPath("$.content[0].telefone").value("92921421224"))
 				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
-				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"));
+				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"))
+				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Ativo"));
 	}
 }

@@ -81,7 +81,8 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
-				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -110,6 +111,7 @@ class AdvogadoControllerTest {
 		assertNotNull(advogadoAtualizado);
 		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
 		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
+		assertEquals("Ativo", advogadoAtualizado.getUsuarioStatus().getDescricao());
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
@@ -161,7 +163,8 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.bairro", equalTo("Vila dos Nobres")))
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
-				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 	}
 
 	@Test

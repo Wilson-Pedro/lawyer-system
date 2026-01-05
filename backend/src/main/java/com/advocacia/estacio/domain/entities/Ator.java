@@ -3,6 +3,7 @@ package com.advocacia.estacio.domain.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
@@ -34,6 +35,9 @@ public class Ator {
 	private TipoDoAtor tipoDoAtor;
 	
 	private String senha;
+
+	@Enumerated(EnumType.STRING)
+	private UsuarioStatus usuarioStatus;
 	
 	@OneToOne
 	private UsuarioAuth usuarioAuth;
@@ -90,6 +94,14 @@ public class Ator {
 
 	public void setTipoDoAtor(TipoDoAtor tipoDoAtor) {
 		this.tipoDoAtor = tipoDoAtor;
+	}
+
+	public UsuarioStatus getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	public String getSenha() {

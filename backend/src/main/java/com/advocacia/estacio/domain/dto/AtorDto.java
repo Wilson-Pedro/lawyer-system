@@ -14,6 +14,8 @@ public class AtorDto implements Serializable {
 	private String email;
 	
 	private String tipoAtor;
+
+	private String usuarioStatus;
 	
 	private String senha;
 	
@@ -33,6 +35,7 @@ public class AtorDto implements Serializable {
 		this.nome = ator.getNome();
 		this.email = ator.getEmail();
 		this.tipoAtor = ator.getTipoDoAtor().getTipo();
+		this.usuarioStatus = ator.getUsuarioStatus().getDescricao();
 	}
 	
 	public Long getId() {
@@ -61,6 +64,10 @@ public class AtorDto implements Serializable {
 
 	public String getTipoAtor() {
 		return tipoAtor;
+	}
+
+	public String getUsuarioStatus() {
+		return usuarioStatus;
 	}
 
 	public String getSenha() {

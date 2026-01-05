@@ -3,6 +3,7 @@ package com.advocacia.estacio.services.impl;
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 
 		advogado.setEndereco(endereco);
 		advogado.setUsurioAuth(auth);
+		advogado.setUsuarioStatus(UsuarioStatus.ATIVO);
 		return advogadoRepository.save(advogado);
 	}
 

@@ -42,7 +42,8 @@ public interface EstagiarioRepository extends JpaRepository<Estagiario, Long> {
 				est.email,
 				est.telefone,
 				est.matricula,
-				est.periodo
+				est.periodo,
+				est.usuarioStatus
 			)
 			FROM Estagiario est
 			""")
