@@ -19,6 +19,9 @@ export default function EditarAdvogado() {
   const [numeroDaCasa, setNumeroDaCasa] = useState("");
   const [cep, setCep] = useState("");
 
+  const [usuarioStatus, setUsuarioStatus] = useState("");
+  const [senha, setSenha] = useState("");
+
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
@@ -49,6 +52,7 @@ export default function EditarAdvogado() {
           setRua(dados.rua);
           setNumeroDaCasa(dados.numeroDaCasa);
           setCep(dados.cep);
+          setUsuarioStatus(dados.usuarioStatus);
       } catch(error) {
         console.log(error)
       }
@@ -71,6 +75,8 @@ export default function EditarAdvogado() {
         rua,
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
+        usuarioStatus,
+        senha
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -110,6 +116,10 @@ export default function EditarAdvogado() {
 
     setDataDeNascimento(formatado);
   }
+
+  const selecionarUsuarioStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUsuarioStatus(e.target.value);
+  };
 
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
@@ -224,6 +234,30 @@ export default function EditarAdvogado() {
           value={cep}
           onChange={(e) => setCep(e.target.value)}
           required
+        />
+      </div>
+
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>Status</label>
+        <select
+          className={styles.input}
+          value={usuarioStatus}
+          onChange={selecionarUsuarioStatus}
+        >
+          <option value="" disabled selected></option>
+          <option value="Ativo">Ativo</option>
+          <option value="Inativo">Inativo</option>
+        </select>
+      </div>
+
+      <div className={styles.inputGroup}>
+        <label className={styles.label}>Senha</label>
+        <input
+          className={styles.input}
+          placeholder="Senha"
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
         />
       </div>
 

@@ -21,6 +21,7 @@ public interface AdvogadoRepository extends JpaRepository<Advogado, Long> {
 				adv.id,
 				adv.nome,
 				adv.email,
+				adv.usuarioStatus,
 				adv.registro
 			)
 			FROM Advogado adv

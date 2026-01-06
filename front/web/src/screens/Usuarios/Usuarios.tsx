@@ -13,6 +13,7 @@ interface ResponseMinDto {
   telefone: string;
   matricula: string;
   periodo: string;
+  usuarioStatus:string;
   registro: string;
 }
 
@@ -56,8 +57,9 @@ export default function Usuarios() {
     }
 
     const tableHeaders: Record<string, string[]> = {
-      "Estagiário": ["Nome", "Matrícula", "E-mail", "Telefone", "Estágio"],
-      "default": ["Nome", "E-mail", "Registro"]
+      "Estagiário": ["Nome", "Matrícula", "E-mail", "Telefone", "Estágio", "Status"],
+      "Assistido": ["Nome", "E-mail", "Registro"],
+      "default": ["Nome", "E-mail", "Status", "Registro"]
     }
 
     const rota = rotas[usuariosFiltro];
@@ -72,6 +74,10 @@ export default function Usuarios() {
 
     if(usuariosFiltro === "Estagiário") {
       setTableLabes(tableHeaders["Estagiário"]);
+
+    } else if (usuariosFiltro === "Assistido") {
+      setTableLabes(tableHeaders["Assistido"]);
+
     } else {
       setTableLabes(tableHeaders["default"]);
     }
@@ -175,11 +181,19 @@ export default function Usuarios() {
                         <td>{usuario.email}</td>
                         <td>{usuario.telefone}</td>
                         <td>{usuario.periodo}</td>
+                        <td>{usuario.usuarioStatus}</td>
+                      </>
+                    ) : usuariosFiltro === "Assistido" ? (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.registro}</td>
                       </>
                     ) : (
                       <>
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
+                        <td>{usuario.usuarioStatus}</td>
                         <td>{usuario.registro}</td>
                       </>
                     )}

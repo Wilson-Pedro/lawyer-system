@@ -121,7 +121,7 @@ class AtorServiceTest {
 		
 		AtorDto atorDto = new AtorDto(
 				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
-				"Coordenador do curso", "1234");
+				"Coordenador do curso", "Inativo", "1234");
 		
 		Long id = atorRepository.findAll().get(0).getId();
 		
@@ -132,7 +132,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", ator.getNome());
 		assertEquals("roberto22@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, ator.getUsuarioStatus());
 	}
 
 	@Test
@@ -182,7 +182,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", coordenador.getNome());
 		assertEquals("roberto22@gmail.com", coordenador.getEmail());
 		assertEquals("Coordenador do curso", coordenador.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, coordenador.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, coordenador.getUsuarioStatus());
 	}
 	
 	@Test

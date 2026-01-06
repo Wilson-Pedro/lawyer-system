@@ -49,7 +49,7 @@ public class UsuarioAuthService  {
 		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(loginAntigo);
 		boolean atualizar = false;
 		
-		if(loginAntigo.trim() != loginNovo.trim()) {
+		if(!loginAntigo.trim().equals(loginNovo.trim())) {
 			user.setLogin(loginNovo);
 			atualizar = true;
 		}

@@ -79,6 +79,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		estagiario.setTelefone(estagiarioDto.getTelefone());
 		estagiario.setMatricula(estagiarioDto.getMatricula());
 		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
+		estagiario.setUsuarioStatus(UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus()));
 		return estagiarioRepository.save(estagiario);
 	}
 }

@@ -49,6 +49,11 @@ public class EstagiarioDto implements Serializable {
 		this(id, nome, email, telefone, matricula, periodo);
 		this.senha = senha;
 	}
+
+	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, String periodo, String usuarioStatus, String senha) {
+		this(id, nome, email, telefone, matricula, periodo, senha);
+		this.usuarioStatus = usuarioStatus;
+	}
 	
 	public EstagiarioDto(Estagiario estagiario) {
 		this.id = estagiario.getId();

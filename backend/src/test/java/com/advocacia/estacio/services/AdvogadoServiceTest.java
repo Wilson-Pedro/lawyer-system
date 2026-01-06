@@ -73,7 +73,7 @@ class AdvogadoServiceTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112", "1234");
+		"rua do passeio", 11, "53022-112", "Inativo", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		
@@ -85,7 +85,7 @@ class AdvogadoServiceTest {
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
-		assertEquals(UsuarioStatus.ATIVO, advogadoAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -131,7 +131,7 @@ class AdvogadoServiceTest {
 		assertEquals("rua do passeio", advogado.getEndereco().getRua());
 		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
 		assertEquals("53022-112", advogado.getEndereco().getCep());
-		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, advogado.getUsuarioStatus());
 	}
 
 	@Test

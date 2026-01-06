@@ -31,7 +31,7 @@ public enum UsuarioStatus {
 				.filter(p -> p.getDescricao().equals(descricao))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Descriçãqo do usuário status inválido: " + descricao));
+						("Descrição do usuário status inválido: " + descricao));
 	}
 	
 	public static UsuarioStatus toEnum(Integer codigo) {

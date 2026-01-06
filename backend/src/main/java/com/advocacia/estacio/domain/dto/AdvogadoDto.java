@@ -65,6 +65,13 @@ public class AdvogadoDto implements Serializable {
 		this.usuarioStatus = advogado.getUsuarioStatus().getDescricao();
 	}
 
+	public AdvogadoDto(Long id, String nome, String email, String telefone,
+					   String dataDeNascimento, String cidade, String bairro, String rua,
+					   Integer numeroDaCasa, String cep, String usuarioStatus, String senha) {
+		this(id, nome, email, telefone, dataDeNascimento, cidade, bairro, rua, numeroDaCasa, cep, senha);
+		this.usuarioStatus = usuarioStatus;
+	}
+
 	private String toDateString(LocalDate localDate) {
 		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
 	}

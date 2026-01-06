@@ -68,11 +68,13 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	@Override
 	public Advogado atualizar(Long id, AdvogadoDto advogadoDto) {
 		Advogado advogado = buscarPorId(id);
+		usuarioAuthService.atualizarLogin(advogado.getEmail(), advogadoDto.getEmail(), advogadoDto.getSenha());
 		advogado.setId(id);
 		advogado.setNome(advogadoDto.getNome());
 		advogado.setEmail(advogadoDto.getEmail());
 		advogado.setTelefone(advogadoDto.getTelefone());
 		advogado.setDataDeNascimeto(Utils.localDateToString(advogadoDto.getDataDeNascimento()));
+		advogado.setUsuarioStatus(UsuarioStatus.toEnum(advogadoDto.getUsuarioStatus()));
 		enderecoService.atualizar(advogado.getEndereco().getId(), new Endereco(advogadoDto));
 		return advogadoRepository.save(advogado);
 	}

@@ -76,7 +76,7 @@ class EstagiarioServiceTest {
 		
 		EstagiarioDto estagiario = new EstagiarioDto(null,
 		"Pedro Silva Lucas", "pedro22@gmail.com", "92921421224","20251208",
-		"Estágio II", "12345");
+		"Estágio II", "Inativo", "12345");
 		
 		Estagiario estagiarioAtualizado = estagiarioService.atualizar(id, estagiario);
 		
@@ -84,7 +84,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getEmail());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
-		assertEquals(UsuarioStatus.ATIVO, estagiarioAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) 
 				usuarioAuthRepository.findByLogin(estagiarioAtualizado.getEmail());
@@ -105,7 +105,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiario.getEmail());
 		assertEquals("20251208", estagiario.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiario.getPeriodo());
-		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioStatus());
 	}
 
 	@Test
@@ -119,7 +119,7 @@ class EstagiarioServiceTest {
 		assertEquals("92921421224", estagiarios.getContent().get(0).getTelefone());
 		assertEquals("20251208", estagiarios.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarios.getContent().get(0).getPeriodo());
-		assertEquals(UsuarioStatus.ATIVO, estagiarios.getContent().get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.getContent().get(0).getUsuarioStatus());
 	}
 
 	@Test
@@ -146,6 +146,6 @@ class EstagiarioServiceTest {
 		assertEquals("92921421224", pages.getContent().get(0).getTelefone());
 		assertEquals("20251208", pages.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
-		//assertEquals(UsuarioStatus.ATIVO, pages.getContent().get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioStatus());
 	}
 }

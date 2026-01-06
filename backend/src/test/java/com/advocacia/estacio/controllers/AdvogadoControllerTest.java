@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -94,7 +95,7 @@ class AdvogadoControllerTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112", "1234");
+		"rua do passeio", 11, "53022-112", "Inativo", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		
@@ -111,10 +112,11 @@ class AdvogadoControllerTest {
 		assertNotNull(advogadoAtualizado);
 		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
 		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
-		assertEquals("Ativo", advogadoAtualizado.getUsuarioStatus().getDescricao());
+		assertEquals("Inativo", advogadoAtualizado.getUsuarioStatus().getDescricao());
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -164,7 +166,7 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
 				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
-				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
 	}
 
 	@Test

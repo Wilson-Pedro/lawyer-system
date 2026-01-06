@@ -89,7 +89,7 @@ class EstagiarioControllerTest {
 		
 		EstagiarioDto estagiario = new EstagiarioDto(null,
 		"Pedro Silva Lucas", "pedro22@gmail.com", "92921421224", "20251208",
-		"Estágio II", "12345");
+		"Estágio II", "Inativo", "12345");
 		
 		String jsonRequest = objectMapper.writeValueAsString(estagiario);
 		
@@ -106,7 +106,7 @@ class EstagiarioControllerTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getUsuarioAuth().getLogin());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
-		assertEquals(UsuarioStatus.ATIVO, estagiarioAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioStatus());
 		
 		assertEquals(1, estagiarioRepository.count());
 	}
@@ -175,6 +175,6 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content[0].telefone").value("92921421224"))
 				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
 				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"))
-				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Ativo"));
+				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Inativo"));
 	}
 }

@@ -63,6 +63,7 @@ public class AtorServiceImpl implements AtorService {
 		ator.setNome(atorDto.getNome());
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
+		ator.setUsuarioStatus(UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		return atorRepository.save(ator);
 	}
 }

@@ -130,7 +130,7 @@ class AtorControllerTest {
 		
 		AtorDto atorDto = new AtorDto(
 				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
-				"Coordenador do curso", "1234");
+				"Coordenador do curso", "Inativo", "1234");
 		
 		Long id = atorRepository.findAll().get(0).getId();
 		
@@ -148,7 +148,7 @@ class AtorControllerTest {
 		assertEquals("Roberto Carlos Silva", atorAtualizado.getNome());
 		assertEquals("roberto22@gmail.com", atorAtualizado.getEmail());
 		assertEquals("Coordenador do curso", atorAtualizado.getTipoDoAtor().getTipo());
-		assertEquals("Ativo", atorAtualizado.getUsuarioStatus().getDescricao());
+		assertEquals("Inativo", atorAtualizado.getUsuarioStatus().getDescricao());
 	}
 
 	@Test
@@ -201,6 +201,6 @@ class AtorControllerTest {
 				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos Silva")))
 				.andExpect(jsonPath("$.email", equalTo("roberto22@gmail.com")))
 				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")))
-				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
 	}
 }
