@@ -61,7 +61,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos", ator.getNome());
 		assertEquals("roberto@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -83,7 +83,7 @@ class AtorServiceTest {
 		assertEquals("José Augusto", ator.getNome());
 		assertEquals("jose@gmail.com", ator.getEmail());
 		assertEquals("Secretário", ator.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -105,7 +105,7 @@ class AtorServiceTest {
 		assertEquals("Fabio Junior", ator.getNome());
 		assertEquals("fabio@gmail.com", ator.getEmail());
 		assertEquals("Professor", ator.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -132,7 +132,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", ator.getNome());
 		assertEquals("roberto22@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.INATIVO, ator.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -182,7 +182,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", coordenador.getNome());
 		assertEquals("roberto22@gmail.com", coordenador.getEmail());
 		assertEquals("Coordenador do curso", coordenador.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.INATIVO, coordenador.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, coordenador.getUsuarioAuth().getUsuarioStatus());
 	}
 	
 	@Test
@@ -199,7 +199,7 @@ class AtorServiceTest {
 		assertEquals("José Augusto", secretario.getNome());
 		assertEquals("jose@gmail.com", secretario.getEmail());
 		assertEquals("Secretário", secretario.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, secretario.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, secretario.getUsuarioAuth().getUsuarioStatus());
 
 	}
 	
@@ -217,6 +217,6 @@ class AtorServiceTest {
 		assertEquals("Fabio Junior", professor.getNome());
 		assertEquals("fabio@gmail.com", professor.getEmail());
 		assertEquals("Professor", professor.getTipoDoAtor().getTipo());
-		assertEquals(UsuarioStatus.ATIVO, professor.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, professor.getUsuarioAuth().getUsuarioStatus());
 	}
 }

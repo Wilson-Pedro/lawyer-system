@@ -40,7 +40,7 @@ public class AtorDto implements Serializable {
 		this.nome = ator.getNome();
 		this.email = ator.getEmail();
 		this.tipoAtor = ator.getTipoDoAtor().getTipo();
-		this.usuarioStatus = ator.getUsuarioStatus().getDescricao();
+		this.usuarioStatus = ator.getUsuarioAuth().getUsuarioStatus().getDescricao();
 	}
 	
 	public Long getId() {

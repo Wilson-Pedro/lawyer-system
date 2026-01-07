@@ -38,9 +38,6 @@ public class Estagiario implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private PeriodoEstagio periodo;
-
-	@Enumerated(EnumType.STRING)
-	private UsuarioStatus usuarioStatus;
 	
 	@OneToOne
 	private UsuarioAuth usuarioAuth;
@@ -51,14 +48,14 @@ public class Estagiario implements Serializable {
 	public Estagiario() {
 	}
 
-	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo, UsuarioStatus usuarioStatus) {
+	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo, UsuarioAuth usuarioAuth) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.telefone = telefone;
 		this.matricula = matricula;
 		this.periodo = periodo;
-		this.usuarioStatus = usuarioStatus;
+		this.usuarioAuth = usuarioAuth;
 	}
 
 
@@ -140,14 +137,6 @@ public class Estagiario implements Serializable {
 	
 	public UsuarioAuth getUsuarioAuth() {
 		return usuarioAuth;
-	}
-
-	public UsuarioStatus getUsuarioStatus() {
-		return usuarioStatus;
-	}
-
-	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
-		this.usuarioStatus = usuarioStatus;
 	}
 
 	public void setUsuarioAuth(UsuarioAuth usuarioAuth) {

@@ -34,7 +34,7 @@ public class ResponseMinDto {
         this.id = ator.getId();
         this.nome = ator.getNome();
         this.email = ator.getEmail();
-        this.usuarioStatus = ator.getUsuarioStatus().getDescricao();
+        this.usuarioStatus = ator.getUsuarioAuth().getUsuarioStatus().getDescricao();
         this.registro = Utils.localDateTimeToString(ator.getRegistro());
     }
 

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +54,7 @@ class UsuarioAuthServiceTest {
 		
 		assertEquals(user.getUsername(), registroDto.login());
 		assertEquals(UserRole.ADMIN, user.getRole());
+		assertEquals(UsuarioStatus.ATIVO, user.getUsuarioStatus());
 	}
 	
 	@Test
@@ -73,7 +75,7 @@ class UsuarioAuthServiceTest {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String senha = usuario.getPassword();
 		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345");
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345", UsuarioStatus.ATIVO);
 		
 		String senhaNova = usuarioAuthRepository.findAll().get(0).getPassword();
 		
@@ -88,7 +90,7 @@ class UsuarioAuthServiceTest {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String loginAntigo = usuario.getLogin();
 		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "");
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "", UsuarioStatus.ATIVO);
 		
 		String loginNovo = usuarioAuthRepository.findAll().get(0).getLogin();
 		
@@ -102,7 +104,7 @@ class UsuarioAuthServiceTest {
 	void nao_atualizar_login() {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "");
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "", UsuarioStatus.ATIVO);
 		
 		UsuarioAuth mesmoUsuario = usuarioAuthRepository.findAll().get(0);
 		

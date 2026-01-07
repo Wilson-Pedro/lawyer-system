@@ -39,7 +39,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		
 		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
-		estagiario.setUsuarioStatus(UsuarioStatus.ATIVO);
+		//estagiario.setUsuarioStatus(UsuarioStatus.ATIVO);
 		return estagiarioRepository.save(estagiario);
 	}
 
@@ -69,17 +69,19 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	@Override
 	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
 		Estagiario estagiario = buscarPorId(id);
+		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
 		usuarioAuthService.atualizarLogin(
 				estagiario.getEmail(), 
 				estagiarioDto.getEmail(), 
-				estagiarioDto.getSenha());
+				estagiarioDto.getSenha(),
+				usuarioStatus);
 		estagiario.setId(id);
 		estagiario.setNome(estagiarioDto.getNome());
 		estagiario.setEmail(estagiarioDto.getEmail());
 		estagiario.setTelefone(estagiarioDto.getTelefone());
 		estagiario.setMatricula(estagiarioDto.getMatricula());
 		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
-		estagiario.setUsuarioStatus(UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus()));
+		//estagiario.setUsuarioStatus(UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus()));
 		return estagiarioRepository.save(estagiario);
 	}
 }

@@ -27,6 +27,7 @@ export default function Login() {
             })
 
             if(response.data !== null) {
+
                 const data = response.data;
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);

@@ -1,7 +1,6 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import org.junit.jupiter.api.*;
@@ -59,7 +58,7 @@ class AdvogadoServiceTest {
 		assertEquals("carlos@gmail.com", advogado.getEmail());
 		assertEquals("88566519808", advogado.getTelefone());
 		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
-		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 		assertEquals(1, usuarioAuthRepository.count());
@@ -85,7 +84,7 @@ class AdvogadoServiceTest {
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
-		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -131,7 +130,7 @@ class AdvogadoServiceTest {
 		assertEquals("rua do passeio", advogado.getEndereco().getRua());
 		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
 		assertEquals("53022-112", advogado.getEndereco().getCep());
-		assertEquals(UsuarioStatus.INATIVO, advogado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test

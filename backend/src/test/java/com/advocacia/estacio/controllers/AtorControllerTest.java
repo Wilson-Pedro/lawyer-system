@@ -148,7 +148,7 @@ class AtorControllerTest {
 		assertEquals("Roberto Carlos Silva", atorAtualizado.getNome());
 		assertEquals("roberto22@gmail.com", atorAtualizado.getEmail());
 		assertEquals("Coordenador do curso", atorAtualizado.getTipoDoAtor().getTipo());
-		assertEquals("Inativo", atorAtualizado.getUsuarioStatus().getDescricao());
+		assertEquals("Inativo", atorAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
 	}
 
 	@Test

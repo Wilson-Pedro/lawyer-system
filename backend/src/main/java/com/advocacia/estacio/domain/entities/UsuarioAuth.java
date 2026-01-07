@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +36,10 @@ public class UsuarioAuth implements UserDetails{
 	
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
-	
+
+	@Enumerated(EnumType.STRING)
+	private UsuarioStatus usuarioStatus;
+
 	public UsuarioAuth() {
 	}
 	
@@ -108,6 +112,14 @@ public class UsuarioAuth implements UserDetails{
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, login, password, role);
+	}
+
+	public UsuarioStatus getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	@Override

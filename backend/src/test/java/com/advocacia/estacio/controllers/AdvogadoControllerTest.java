@@ -112,11 +112,11 @@ class AdvogadoControllerTest {
 		assertNotNull(advogadoAtualizado);
 		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
 		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
-		assertEquals("Inativo", advogadoAtualizado.getUsuarioStatus().getDescricao());
+		assertEquals("Inativo", advogadoAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
-		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}

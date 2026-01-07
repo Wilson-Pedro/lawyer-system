@@ -35,9 +35,6 @@ public class Ator {
 	private TipoDoAtor tipoDoAtor;
 	
 	private String senha;
-
-	@Enumerated(EnumType.STRING)
-	private UsuarioStatus usuarioStatus;
 	
 	@OneToOne
 	private UsuarioAuth usuarioAuth;
@@ -94,14 +91,6 @@ public class Ator {
 
 	public void setTipoDoAtor(TipoDoAtor tipoDoAtor) {
 		this.tipoDoAtor = tipoDoAtor;
-	}
-
-	public UsuarioStatus getUsuarioStatus() {
-		return usuarioStatus;
-	}
-
-	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
-		this.usuarioStatus = usuarioStatus;
 	}
 
 	public String getSenha() {

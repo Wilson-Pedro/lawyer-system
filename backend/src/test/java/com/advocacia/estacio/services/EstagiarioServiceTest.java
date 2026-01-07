@@ -58,7 +58,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro@gmail.com", estagiarioSalvo.getEmail());
 		assertEquals("20251208", estagiarioSalvo.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_I, estagiarioSalvo.getPeriodo());
-		assertEquals(UsuarioStatus.ATIVO, estagiarioSalvo.getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, estagiarioSalvo.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(estagiarioSalvo.getEmail());
 		
@@ -84,7 +84,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getEmail());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) 
 				usuarioAuthRepository.findByLogin(estagiarioAtualizado.getEmail());
@@ -105,7 +105,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiario.getEmail());
 		assertEquals("20251208", estagiario.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiario.getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -119,7 +119,7 @@ class EstagiarioServiceTest {
 		assertEquals("92921421224", estagiarios.getContent().get(0).getTelefone());
 		assertEquals("20251208", estagiarios.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarios.getContent().get(0).getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, estagiarios.getContent().get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -146,6 +146,6 @@ class EstagiarioServiceTest {
 		assertEquals("92921421224", pages.getContent().get(0).getTelefone());
 		assertEquals("20251208", pages.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 }

@@ -120,6 +120,17 @@ export default function Usuarios() {
     setUsuariosFiltrados(dados);
   }, [busca, usuarios]);
 
+  const getUsuarioStatusClass = (status: string) => {
+    switch (status) {
+      case "Ativo":
+        return "text-info fw-bold";
+      case "Inativo":
+        return "text-danger fw-bold";
+      default:
+        return "";
+    }
+  }
+
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
@@ -181,7 +192,9 @@ export default function Usuarios() {
                         <td>{usuario.email}</td>
                         <td>{usuario.telefone}</td>
                         <td>{usuario.periodo}</td>
-                        <td>{usuario.usuarioStatus}</td>
+                        <td className={getUsuarioStatusClass(usuario.usuarioStatus)}>
+                          {usuario.usuarioStatus}
+                          </td>
                       </>
                     ) : usuariosFiltro === "Assistido" ? (
                       <>
@@ -193,7 +206,9 @@ export default function Usuarios() {
                       <>
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
-                        <td>{usuario.usuarioStatus}</td>
+                        <td  className={getUsuarioStatusClass(usuario.usuarioStatus)}>
+                          {usuario.usuarioStatus}
+                        </td>
                         <td>{usuario.registro}</td>
                       </>
                     )}

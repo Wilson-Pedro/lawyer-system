@@ -43,7 +43,7 @@ public interface EstagiarioRepository extends JpaRepository<Estagiario, Long> {
 				est.telefone,
 				est.matricula,
 				est.periodo,
-				est.usuarioStatus
+				est.usuarioAuth
 			)
 			FROM Estagiario est
 			""")

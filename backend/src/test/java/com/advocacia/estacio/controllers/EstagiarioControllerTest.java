@@ -106,7 +106,7 @@ class EstagiarioControllerTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getUsuarioAuth().getLogin());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, estagiarioRepository.count());
 	}
@@ -157,7 +157,7 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.nome").value(estagiario.getNome()))
 				.andExpect(jsonPath("$.matricula").value(estagiario.getMatricula()))
 				.andExpect(jsonPath("$.periodo").value(estagiario.getPeriodo().getTipo()))
-				.andExpect(jsonPath("$.usuarioStatus").value(estagiario.getUsuarioStatus().getDescricao()));
+				.andExpect(jsonPath("$.usuarioStatus").value(estagiario.getUsuarioAuth().getUsuarioStatus().getDescricao()));
 	}
 
 	@Test

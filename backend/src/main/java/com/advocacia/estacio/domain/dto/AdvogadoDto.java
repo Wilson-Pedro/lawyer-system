@@ -62,7 +62,7 @@ public class AdvogadoDto implements Serializable {
 		this.rua = advogado.getEndereco().getRua();
 		this.numeroDaCasa = advogado.getEndereco().getNumeroDaCasa();
 		this.cep = advogado.getEndereco().getCep();
-		this.usuarioStatus = advogado.getUsuarioStatus().getDescricao();
+		this.usuarioStatus = advogado.getUsuarioAuth().getUsuarioStatus().getDescricao();
 	}
 
 	public AdvogadoDto(Long id, String nome, String email, String telefone,

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -33,11 +32,8 @@ public class Advogado implements Serializable {
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 
-	@Enumerated(EnumType.STRING)
-	private UsuarioStatus usuarioStatus;
-
 	@OneToOne
-	UsuarioAuth usurioAuth;
+	private UsuarioAuth usuarioAuth;
 	
 	@CreationTimestamp
 	private LocalDateTime registro;
@@ -126,20 +122,12 @@ public class Advogado implements Serializable {
 		this.endereco = endereco;
 	}
 
-	public UsuarioStatus getUsuarioStatus() {
-		return usuarioStatus;
+	public UsuarioAuth getUsuarioAuth() {
+		return usuarioAuth;
 	}
 
-	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
-		this.usuarioStatus = usuarioStatus;
-	}
-
-	public UsuarioAuth getUsurioAuth() {
-		return usurioAuth;
-	}
-
-	public void setUsurioAuth(UsuarioAuth usurioAuth) {
-		this.usurioAuth = usurioAuth;
+	public void setUsuarioAuth(UsuarioAuth usuarioAuth) {
+		this.usuarioAuth = usuarioAuth;
 	}
 
 	public LocalDateTime getRegistro() {

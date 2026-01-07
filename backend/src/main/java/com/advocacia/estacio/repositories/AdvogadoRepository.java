@@ -1,7 +1,6 @@
 package com.advocacia.estacio.repositories;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
-import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +20,7 @@ public interface AdvogadoRepository extends JpaRepository<Advogado, Long> {
 				adv.id,
 				adv.nome,
 				adv.email,
-				adv.usuarioStatus,
+				adv.usuarioAuth.usuarioStatus,
 				adv.registro
 			)
 			FROM Advogado adv

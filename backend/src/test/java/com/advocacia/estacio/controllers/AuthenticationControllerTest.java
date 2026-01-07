@@ -1,6 +1,8 @@
 package com.advocacia.estacio.controllers;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.*;
@@ -55,5 +57,6 @@ class AuthenticationControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isOk());
+				//.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 	}
 }
