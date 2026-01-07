@@ -22,9 +22,9 @@ interface Response {
   nome: string;
 }
 
-export default function HomeEstagiario() {
+export default function HomeAdvogado() {
 
-  const [estagiarioId, setEstagiarioId] = useState<number | null>(null);
+  const [advogadoId, setAdvogadoId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -34,12 +34,12 @@ export default function HomeEstagiario() {
       
       const fetchIdUser = async () => {
           try {
-              const response = await axios.get<Response>(`${API_URL}/estagiarios/buscarId/email/${email}`, {
+              const response = await axios.get<Response>(`${API_URL}/advogados/buscarId/email/${email}`, {
                   headers: {
                       Authorization: `Bearer ${token}`
                   }
               });
-              setEstagiarioId(response.data.id);
+              setAdvogadoId(response.data.id);
           } catch (error) {
                 console.error(error);
             }
@@ -51,13 +51,10 @@ export default function HomeEstagiario() {
   const role = localStorage.getItem('role');
 
   if(!token) return <Navigate to="/login" />
-  if(role !== 'ESTAGIARIO') return <Navigate to="/login" />
+  if(role !== 'ADVOGADO') return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
-    // { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
-    // { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
-    // { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/estagiario/${estagiarioId}`, variant: "warning" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/advogado/${advogadoId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

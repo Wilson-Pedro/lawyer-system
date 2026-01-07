@@ -1,8 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EditIcon, PlusIcon } from "../../Icons/Icon";
+import { EyeIcon, PlusIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -22,21 +22,25 @@ interface Demanda {
     demandaStatusAluno: string;
     demandaStatusProfessor: string;
     prazo: string;
+    tempestividade:string;
 }
 
-export default function Demandas() {
+export default function DemandasAdvogado() {
     const [demandas, setDemandas] = useState<Demanda[]>([]);
     const [filteredDemandas, setFilteredDemandas] = useState<Demanda[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
     const navigate = useNavigate();
 
+    const params = useParams();
+    const advogadoId = params.advogadoId || "";
+
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/status/${statusFiltro}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/advogado/${advogadoId}?page=0&size=20`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -49,7 +53,7 @@ export default function Demandas() {
             }
         };
         fetchDemandas();
-    }, [statusFiltro]);
+    }, [statusFiltro, advogadoId]);
 
     useEffect(() => {
         let dados = [...demandas]
@@ -58,9 +62,7 @@ export default function Demandas() {
             dados = dados.filter(
                 (d) =>
                     d.demanda.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatusProfessor.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.estagiarioNome.toLowerCase().includes(busca.toLowerCase())
+                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase())
             );
         }
 
@@ -69,19 +71,17 @@ export default function Demandas() {
 
     const getStatusClass = (status: string): string => {
         switch (status) {
-            case "Corrigido":
-                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
+            case "Devolvido":
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Em Correção":
                 return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Aguardando Professor":
                 return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
-            case "Prorrogada":
-                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
+            case "Corrigido":
+                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Dentro do Prazo":
                 return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Fora do Prazo":
-                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
-            case "Devolvido":
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             default:
                 return "";
@@ -96,38 +96,13 @@ export default function Demandas() {
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
                 <span className="navbar-brand fw-bold fs-4">Demandas</span>
-                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
+                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/advogado")}>
                     ← Voltar
                 </button>
             </nav>
 
 
             <div className="container my-5 flex-grow-1">
-                <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-
-                    <input
-                        type="text"
-                        className="form-control w-50 mb-2 mb-sm-0"
-                        placeholder="Buscar por demanda, estgiário, status..."
-                        value={busca}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setBusca(e.target.value)}
-                    />
-
-                    <select
-                        className="form-select w-auto"
-                        value={statusFiltro}
-                        onChange={(e) => setStatusFiltro(e.target.value)}
-                    >
-                        <option value="todos">Todos</option>
-                        <option value="Corrigido">Corrigido</option>
-                        <option value="Em Correção">Em Correção</option>
-                        <option value="Devolvido">Devolvido</option>
-                        <option value="Dentro do Prazo">Dentro do Prazo</option>
-                        <option value="Fora do Prazo">Fora do Prazo</option>
-                        <option value="Aguardando Professor">Aguardando Professor</option>
-                    </select>
-                </div>
-
 
                 {filteredDemandas.length > 0 ? (
                     <div className="table-responsive shadow-sm rounded">
@@ -135,12 +110,11 @@ export default function Demandas() {
                             <thead className="table-dark">
                                 <tr>
                                     <th>Demanda</th>
-                                    <th>Estagiario</th>
                                     <th>Prazo</th>
                                     <th className="text-center">Status Aluno</th>
-                                    <th className="text-center">Status Professor</th>
-                                    <th className="text-center">Editar</th>
-                                    <th className="text-center">Comentar</th>
+                                    <th className="text-center">Status Corrigido</th>
+                                    <th className="text-center">Tempestividade</th>
+                                    <th className="text-center">Comentários</th>
                                     {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
@@ -148,7 +122,6 @@ export default function Demandas() {
                                 {filteredDemandas.map((demanda) => (
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
-                                        <td>{demanda.estagiarioNome}</td>
                                         <td>{demanda.prazo}</td>
                                         <td className={getStatusClass(demanda.demandaStatusAluno)}>
                                             {demanda.demandaStatusAluno}
@@ -156,20 +129,15 @@ export default function Demandas() {
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
                                             {demanda.demandaStatusProfessor}
                                         </td>
+                                        <td className={getStatusClass(demanda.tempestividade)}>
+                                            {demanda.tempestividade}
+                                            </td>
                                         <td className="text-center">
                                             <button
-                                                onClick={() => navigate(`/demandas/${demanda.id}/editar`)}
-                                                className="btn btn-sm btn-outline-primary me-2"
+                                            onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
+                                                className="btn btn-sm btn-outline-primary"
                                             >
-                                                <EditIcon />
-                                            </button>
-                                        </td>
-                                        <td className="text-center">
-                                            <button
-                                                onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
-                                                className="btn btn-sm btn-outline-primary me-2"
-                                            >
-                                                <PlusIcon />
+                                                <EyeIcon />
                                             </button>
                                         </td>
                                     </tr>

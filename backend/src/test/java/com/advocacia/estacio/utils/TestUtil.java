@@ -84,10 +84,10 @@ public class TestUtil {
 		processoRepository.deleteAll();
 		estagiarioRepository.deleteAll();
 		atorRepository.deleteAll();
-		usuarioAuthRepository.deleteAll();
 		assistidoRepository.deleteAll();
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
+		usuarioAuthRepository.deleteAll();
 	}
 	
 	public Processo getProcesso() {
@@ -95,8 +95,10 @@ public class TestUtil {
         Assistido assistido = assistidoService.salvar(getAssistidoDto());
         Advogado advogado = advogadoService.salvar(getAdvogadoDto());
         Estagiario estagiario = estagiarioRepository.save(getEstagiario2());
-		
-		return new Processo(null, assistido, "20251", "62354", "Seguro", "3210", 
+
+		String numeroDoProcesso =  String.format("%d%s",LocalDate.now().getYear(), "1");
+
+		return new Processo(null, assistido, numeroDoProcesso, "62354", "Seguro", "3210",
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 
 				AreaDoDireito.CIVIL, Tribunal.ESTADUAL, StatusProcesso.TRAMITANDO, "", 
 				null, LocalDateTime.now());
@@ -136,31 +138,37 @@ public class TestUtil {
 	public AdvogadoDto getAdvogadoDto() {
 		return new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão", 
-				"rua do passeio", 11, "53022-112");
+				"rua do passeio", 11, "53022-112", "1234");
+	}
+
+	public AdvogadoDto getAdvogadoDto2() {
+		return new AdvogadoDto(null, "Mauricio Silva", "mauricio@gmail.com",
+				"88281546889", "25/09/1994", "São Luís", "Vila Lobão",
+				"rua do passeio", 12, "53022-102", "1234");
 	}
 	
 	public Estagiario getEstagiario() {
 		return new Estagiario(
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
+				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
 				PeriodoEstagio.ESTAGIO_I);
 	}
 	
 	public Estagiario getEstagiario2() {
 		return new Estagiario(
-				"João Lucas", "lucas@gmail.com", "20251209", 
+				"João Lucas", "lucas@gmail.com", "92921421224", "20251209",
 				PeriodoEstagio.ESTAGIO_II);
 	}
 
 	public EstagiarioDto getEstagiarioDto() {
 		return new EstagiarioDto(null,
-				"Pedro Lucas", "pedro@gmail.com", "20251208", 
-				"Estágio I", "1234");
+				"Pedro Lucas", "pedro@gmail.com", "92921421224",
+				"20251208", "Estágio I", "1234");
 	}
 
 	public EstagiarioDto getEstagiarioDto2() {
 		return new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "20251309",
-				"Estágio II", "1234");
+				"João Miguel", "joao@gmail.com", "92921421224",
+				"20251208", "Estágio II", "1234");
 	}
 	
 	public UsuarioAuth getUsuarioAuth() {

@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.records.EstagiarioMinDto;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.services.EstagiarioService;
 
 @RequestMapping("/estagiarios")
@@ -35,10 +34,10 @@ public class EstagiarioController {
 	}
 
 	@GetMapping("")
-	public ResponseEntity<PageResponseDto<ResponseMinDto>> buscarTodos(
+	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarTodos(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(page, size);
+		Page<EstagiarioDto> pages = estagiarioService.buscarTodos(page, size).map(EstagiarioDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
 	}
 	
@@ -59,8 +58,8 @@ public class EstagiarioController {
 	}
 	
 	@GetMapping("/buscarId/email/{email}")
-	public ResponseEntity<EstagiarioMinDto> buscarIdPorEmail(@PathVariable String email) {
-		EstagiarioMinDto dto = estagiarioService.buscarIdPorEmail(email);
+	public ResponseEntity<EntidadeMinDto> buscarIdPorEmail(@PathVariable String email) {
+		EntidadeMinDto dto = estagiarioService.buscarIdPorEmail(email);
 		return ResponseEntity.ok(dto);
 	}
 	

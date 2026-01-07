@@ -13,6 +13,7 @@ export default function EditarUsuario() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [tipoAtor, setTipoAtor] = useState("");
+  const [usuarioStatus, setUsuarioStatus] = useState("");
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -38,6 +39,7 @@ export default function EditarUsuario() {
         setEmail(dados.email);
         setTipoAtor(dados.tipoAtor);
         setSenha("");
+        setUsuarioStatus(dados.usuarioStatus);
       } catch(error) {
 
       }
@@ -52,6 +54,7 @@ export default function EditarUsuario() {
         nome,
         email,
         tipoAtor,
+        usuarioStatus,
         senha,
       }, {
         headers: {
@@ -77,6 +80,11 @@ export default function EditarUsuario() {
   const selecionarTipoAtor = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTipoAtor(e.target.value);
   };
+
+  const selecionarUsuarioStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUsuarioStatus(e.target.value);
+  };
+  
 
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
@@ -123,6 +131,19 @@ export default function EditarUsuario() {
             <option value="Coordenador do curso">Coordenador(a) do curso</option>
             <option value="Secretário">Secretário(a)</option>
             <option value="Professor">Professor(a)</option>
+          </select>
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Status</label>
+          <select
+            className={styles.input}
+            value={usuarioStatus}
+            onChange={selecionarUsuarioStatus}
+          >
+            <option value="" disabled selected></option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
           </select>
         </div>
 

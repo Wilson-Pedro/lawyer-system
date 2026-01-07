@@ -14,46 +14,76 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
-				d.prazo
-			) 
-			FROM Demanda d 
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.advogado.id,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
+				d.prazoDocumentos,
+				d.prazo,
+				d.tempestividade
+			)
+			FROM Demanda d
 			JOIN d.estagiario e
 			""")
 	Page<DemandaDto> buscarTodos(Pageable pageable);
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
-				d.prazo
-			) 
-			FROM Demanda d 
-			JOIN d.estagiario e 
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.advogado.id,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
+				d.prazoDocumentos,
+				d.prazo,
+				d.tempestividade
+			)
+			FROM Demanda d
+			JOIN d.estagiario e
 			WHERE e.id = :estagiarioId
 			""")
 	Page<DemandaDto> buscarTodosPorEstagiarioId(
 			@Param("estagiarioId") Long estagiarioId, Pageable pageable);
+
+//	@Query("""
+//			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
+//				d.id,
+//				d.demanda,
+//				e.nome,
+//				e.id,
+//				d.demandaStatus,
+//				d.prazoDocumentos,
+//				d.prazo,
+//				d.tempestividade
+//			)
+//			FROM Demanda d
+//			JOIN d.estagiario e
+//			WHERE e.id = :estagiarioId
+//			""")
+//	Page<DemandaDto> buscarTodosPorAdvogadoId(
+//			@Param("advogadoId") Long advogadoId, Pageable pageable);
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
-				d.id, 
-				d.demanda, 
-				e.nome, 
-				e.id, 
-				d.demandaStatus, 
-				d.prazo
-			) 
-			FROM Demanda d 
-			JOIN d.estagiario e 
-			WHERE d.demandaStatus = :demandaStatus
+				d.id,
+				d.demanda,
+				e.nome,
+				e.id,
+				d.advogado.id,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
+				d.prazoDocumentos,
+				d.prazo,
+				d.tempestividade
+			)
+			FROM Demanda d
+			JOIN d.estagiario e
+			WHERE (d.demandaStatusAluno = :demandaStatus OR d.demandaStatusProfessor = :demandaStatus)
 			""")
 	Page<DemandaDto> buscarTodosPorStatus(
 			@Param("demandaStatus") DemandaStatus demandaStatus, Pageable pageable);

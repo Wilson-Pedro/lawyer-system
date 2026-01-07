@@ -33,7 +33,7 @@ public enum StatusProcesso {
 				.filter(p -> p.getStatus().equals(status))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Status inválido: " + status));
+						("Status do Processo inválido: " + status));
 	}
 	
 	public static StatusProcesso toEnum(Integer codigo) {

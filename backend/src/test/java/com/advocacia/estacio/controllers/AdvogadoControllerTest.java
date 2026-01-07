@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -81,7 +82,8 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.bairro", equalTo("Vila Lobão")))
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
-				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -93,7 +95,7 @@ class AdvogadoControllerTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112");
+		"rua do passeio", 11, "53022-112", "Inativo", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		
@@ -110,9 +112,11 @@ class AdvogadoControllerTest {
 		assertNotNull(advogadoAtualizado);
 		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
 		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
+		assertEquals("Inativo", advogadoAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -161,6 +165,22 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.bairro", equalTo("Vila dos Nobres")))
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
-				.andExpect(jsonPath("$.cep", equalTo("53022-112")));
+				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Advogado Id por email No Banco de Dados Pelo Controller")
+	void buscar_advogado_id_por_email() throws Exception {
+		String email = advogadoRepository.findAll().get(0).getEmail();
+		Advogado advogado = advogadoRepository.findAll().get(0);
+
+		mockMvc.perform(get(URI + "/buscarId/email/" + email)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$.id").value(advogado.getId().intValue()))
+				.andExpect(jsonPath("$.nome").value(advogado.getNome()));
 	}
 }

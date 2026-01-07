@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,13 @@ public class AdvogadoController {
 		Page<Advogado> pages = advogadoService.buscarAdvogado(nome, page, size);
 		Page<AdvogadoDto> pagesDto = pages.map(AdvogadoDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+	}
+
+	@GetMapping("/buscarId/email/{email}")
+	public ResponseEntity<EntidadeMinDto> buscarIdPorEmail(@PathVariable String email) {
+		Advogado advogado = advogadoService.buscarIdPorEmail(email);
+		EntidadeMinDto dto = new EntidadeMinDto(advogado.getId(), advogado.getNome());
+		return ResponseEntity.ok(dto);
 	}
 	
 	@PutMapping("/{id}")

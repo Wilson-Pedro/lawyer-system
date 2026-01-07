@@ -10,8 +10,11 @@ interface ResponseMinDto {
   id: string;
   nome: string;
   email: string;
+  telefone: string;
+  matricula: string;
+  periodo: string;
+  usuarioStatus:string;
   registro: string;
-  // statusDoProcesso: "Tramitando" | "Suspenso" | "Arquivado";
 }
 
 interface Page<T> {
@@ -28,6 +31,7 @@ export default function Usuarios() {
   const [busca, setBusca] = useState("");
   const [usuariosFiltro, setUsuariosFiltro] = useState<string>("Estagiário");
   const [uriEdit, setUriEdit] = useState("/usuarios/estagiario/editar/");
+  const [tableLabels, setTableLabes] = useState<string[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +56,12 @@ export default function Usuarios() {
       "Assistido":"/usuarios/assistido/editar/"
     }
 
+    const tableHeaders: Record<string, string[]> = {
+      "Estagiário": ["Nome", "Matrícula", "E-mail", "Telefone", "Estágio", "Status"],
+      "Assistido": ["Nome", "E-mail", "Registro"],
+      "default": ["Nome", "E-mail", "Status", "Registro"]
+    }
+
     const rota = rotas[usuariosFiltro];
     if(!rota) {
       setUsuarios([]);
@@ -62,6 +72,16 @@ export default function Usuarios() {
     const uri = uris[usuariosFiltro];
     setUriEdit(uri);
 
+    if(usuariosFiltro === "Estagiário") {
+      setTableLabes(tableHeaders["Estagiário"]);
+
+    } else if (usuariosFiltro === "Assistido") {
+      setTableLabes(tableHeaders["Assistido"]);
+
+    } else {
+      setTableLabes(tableHeaders["default"]);
+    }
+    
     const fecthUsuarios = async () => {
       try {
         const response = await axios.get(`${API_URL}${rota}`, {
@@ -69,9 +89,12 @@ export default function Usuarios() {
             Authorization: `Bearer ${token}`
           }
         });
+        
         const pages: Page<ResponseMinDto> = response.data;
-        setUsuarios(pages.content);
-        setUsuariosFiltrados(pages.content);
+        const dados = pages.content;
+        setUsuarios(dados);
+        setUsuariosFiltrados(dados);
+
       } catch(error) {
         console.log(error)
       }
@@ -82,17 +105,31 @@ export default function Usuarios() {
   useEffect(() => {
     let dados = [...usuarios];
 
-    if (busca.trim() !== "") {
+    if (busca.trim() !== "" && usuariosFiltro !== "Estagiário") {
       dados = dados.filter(
         (usuario) =>
           usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
           usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
+          usuario.matricula.toLowerCase().includes(busca.toLowerCase()) ||
+          usuario.telefone.toLowerCase().includes(busca.toLowerCase()) ||
+          usuario.periodo.toLowerCase().includes(busca.toLowerCase()) ||
           usuario.registro.toLowerCase().includes(busca.toLowerCase())
       );
     }
 
     setUsuariosFiltrados(dados);
   }, [busca, usuarios]);
+
+  const getUsuarioStatusClass = (status: string) => {
+    switch (status) {
+      case "Ativo":
+        return "text-info fw-bold";
+      case "Inativo":
+        return "text-danger fw-bold";
+      default:
+        return "";
+    }
+  }
 
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
@@ -101,7 +138,7 @@ export default function Usuarios() {
     <div className="min-vh-100 d-flex flex-column bg-light">
       
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Gerenciar Usuários</span>
+        <span className="navbar-brand fw-bold fs-4">Gerenciar Usuário</span>
         <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
           ← Voltar
         </button>
@@ -139,18 +176,42 @@ export default function Usuarios() {
             <table className="table table-hover align-middle bg-white rounded overflow-hidden">
               <thead className="table-dark">
                 <tr>
-                  <th>Nome</th>
-                  <th>E-mail</th>
-                  <th>Registro</th>
+                  {tableLabels.map((label) => (
+                    <th>{label}</th>
+                  ))}
                   <th className="text-center">Editar</th>
                 </tr>
               </thead>
               <tbody>
                 {usuariosFiltrados.map((usuario) => (
                   <tr key={usuario.id}>
-                    <td>{usuario.nome}</td>
-                    <td>{usuario.email}</td>
-                    <td>{usuario.registro}</td>
+                    {usuariosFiltro === "Estagiário" ? (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.matricula}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.telefone}</td>
+                        <td>{usuario.periodo}</td>
+                        <td className={getUsuarioStatusClass(usuario.usuarioStatus)}>
+                          {usuario.usuarioStatus}
+                          </td>
+                      </>
+                    ) : usuariosFiltro === "Assistido" ? (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.registro}</td>
+                      </>
+                    ) : (
+                      <>
+                        <td>{usuario.nome}</td>
+                        <td>{usuario.email}</td>
+                        <td  className={getUsuarioStatusClass(usuario.usuarioStatus)}>
+                          {usuario.usuarioStatus}
+                        </td>
+                        <td>{usuario.registro}</td>
+                      </>
+                    )}
                    <td className="text-center">
                         <button
                           className="btn btn-sm btn-outline-primary me-2"

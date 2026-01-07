@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +36,10 @@ public class UsuarioAuth implements UserDetails{
 	
 	@Enumerated(EnumType.STRING)
 	private UserRole role;
-	
+
+	@Enumerated(EnumType.STRING)
+	private UsuarioStatus usuarioStatus;
+
 	public UsuarioAuth() {
 	}
 	
@@ -57,7 +61,8 @@ public class UsuarioAuth implements UserDetails{
 					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"),
 					new SimpleGrantedAuthority("ROLE_SECRETARIO"),
 					new SimpleGrantedAuthority("ROLE_PROFESSOR"),
-					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"),
+					new SimpleGrantedAuthority("ROLE_ADVOGADO"));
 			
 			case COORDENADOR_DO_CURSO -> List.of(
 					new SimpleGrantedAuthority("ROLE_COORDENADOR_DO_CURSO"));
@@ -70,6 +75,9 @@ public class UsuarioAuth implements UserDetails{
 			
 			case ESTAGIARIO -> List.of(
 					new SimpleGrantedAuthority("ROLE_ESTAGIARIO"));
+
+			case ADVOGADO -> List.of(
+					new SimpleGrantedAuthority("ROLE_ADVOGADO"));
 			
 			default -> throw new IllegalArgumentException("Role Inválida");
 		};
@@ -104,6 +112,14 @@ public class UsuarioAuth implements UserDetails{
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, login, password, role);
+	}
+
+	public UsuarioStatus getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public void setUsuarioStatus(UsuarioStatus usuarioStatus) {
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	@Override

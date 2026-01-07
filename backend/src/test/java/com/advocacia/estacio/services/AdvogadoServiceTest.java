@@ -1,6 +1,8 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,9 @@ class AdvogadoServiceTest {
 	
 	@Autowired
 	AdvogadoRepository advogadoRepository;
+
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -53,8 +58,10 @@ class AdvogadoServiceTest {
 		assertEquals("carlos@gmail.com", advogado.getEmail());
 		assertEquals("88566519808", advogado.getTelefone());
 		assertEquals("1996-09-25", advogado.getDataDeNascimeto().toString());
+		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
+		assertEquals(1, usuarioAuthRepository.count());
 
 	}
 	
@@ -65,7 +72,7 @@ class AdvogadoServiceTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112");
+		"rua do passeio", 11, "53022-112", "Inativo", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		
@@ -77,6 +84,7 @@ class AdvogadoServiceTest {
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
+		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
 	}
@@ -122,5 +130,22 @@ class AdvogadoServiceTest {
 		assertEquals("rua do passeio", advogado.getEndereco().getRua());
 		assertEquals(11, advogado.getEndereco().getNumeroDaCasa());
 		assertEquals("53022-112", advogado.getEndereco().getCep());
+		assertEquals(UsuarioStatus.INATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Advogado ID e NOME pelo por Email Pelo Service")
+	void buscar_advogado_id_e_nome_por_email() {
+
+		Advogado advogado = advogadoRepository.findAll().get(0);
+		Long id = advogado.getId();
+		String nome = advogado.getNome();
+		String email = advogado.getEmail();
+
+		Advogado advogadoEncontrado = advogadoService.buscarIdPorEmail(email);
+
+		assertNotNull(advogadoEncontrado);
+		assertEquals(id, advogadoEncontrado.getId());
+		assertEquals("Carlos Silva Lima", advogado.getNome());
 	}
 }

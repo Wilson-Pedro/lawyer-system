@@ -3,6 +3,7 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -13,12 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.domain.records.EstagiarioMinDto;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -58,6 +58,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro@gmail.com", estagiarioSalvo.getEmail());
 		assertEquals("20251208", estagiarioSalvo.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_I, estagiarioSalvo.getPeriodo());
+		assertEquals(UsuarioStatus.ATIVO, estagiarioSalvo.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(estagiarioSalvo.getEmail());
 		
@@ -74,8 +75,8 @@ class EstagiarioServiceTest {
 		Long id = estagiarioRepository.findAll().get(0).getId();
 		
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-		"Pedro Silva Lucas", "pedro22@gmail.com", "20251208",
-		"Estágio II", "12345");
+		"Pedro Silva Lucas", "pedro22@gmail.com", "92921421224","20251208",
+		"Estágio II", "Inativo", "12345");
 		
 		Estagiario estagiarioAtualizado = estagiarioService.atualizar(id, estagiario);
 		
@@ -83,6 +84,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiarioAtualizado.getEmail());
 		assertEquals("20251208", estagiarioAtualizado.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
+		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) 
 				usuarioAuthRepository.findByLogin(estagiarioAtualizado.getEmail());
@@ -103,6 +105,7 @@ class EstagiarioServiceTest {
 		assertEquals("pedro22@gmail.com", estagiario.getEmail());
 		assertEquals("20251208", estagiario.getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiario.getPeriodo());
+		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -113,8 +116,10 @@ class EstagiarioServiceTest {
 
 		assertEquals("Pedro Silva Lucas", estagiarios.getContent().get(0).getNome());
 		assertEquals("pedro22@gmail.com", estagiarios.getContent().get(0).getEmail());
+		assertEquals("92921421224", estagiarios.getContent().get(0).getTelefone());
 		assertEquals("20251208", estagiarios.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarios.getContent().get(0).getPeriodo());
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -122,7 +127,7 @@ class EstagiarioServiceTest {
 	void deve_buscar_Estagiario_id_pelo_email_PeloService() {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
-		EstagiarioMinDto dto = estagiarioService.buscarIdPorEmail("pedro22@gmail.com");
+		EntidadeMinDto dto = estagiarioService.buscarIdPorEmail("pedro22@gmail.com");
 
 		assertEquals(estagiario.getId(), dto.id());
 		assertEquals(estagiario.getNome(), dto.nome());
@@ -132,9 +137,15 @@ class EstagiarioServiceTest {
 	@DisplayName("Deve buscar Todos os Estagiarios")
 	void buscar_todos() {
 
-		Page<ResponseMinDto> pages = estagiarioService.buscarTodos(0, 20);
+		Page<Estagiario> pages = estagiarioService.buscarTodos(0, 20);
 
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
+		assertEquals("Pedro Silva Lucas", pages.getContent().get(0).getNome());
+		assertEquals("pedro22@gmail.com", pages.getContent().get(0).getEmail());
+		assertEquals("92921421224", pages.getContent().get(0).getTelefone());
+		assertEquals("20251208", pages.getContent().get(0).getMatricula());
+		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
+		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 }

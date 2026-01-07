@@ -19,8 +19,9 @@ interface Demanda {
     demanda: string;
     estagiarioNome: string;
     estagiarioId: string;
-    demandaStatus: string;
+    demandaStatusAluno: string;
     prazo: string;
+    tempestividade:string;
 }
 
 export default function DemandasEstagiario() {
@@ -60,7 +61,7 @@ export default function DemandasEstagiario() {
             dados = dados.filter(
                 (d) =>
                     d.demanda.toLowerCase().includes(busca.toLowerCase()) ||
-                    d.demandaStatus.toLowerCase().includes(busca.toLowerCase())
+                    d.demandaStatusAluno.toLowerCase().includes(busca.toLowerCase())
             );
         }
 
@@ -69,12 +70,16 @@ export default function DemandasEstagiario() {
 
     const getStatusClass = (status: string): string => {
         switch (status) {
-            case "Atendido":
-                return "bg-success bg-opacity-25 text-success fw-semibold";
-            case "Não Atendido":
-                return "bg-warning bg-opacity-25 text-warning fw-semibold";
-            case "Prorrogada":
-                return "bg-danger bg-opacity-25 text-danger fw-semibold";
+            case "Devolvido":
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
+            case "Em Correção":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Corrigido":
+                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
+            case "Dentro do Prazo":
+                return "bg-success text-center bg-opacity-25 text-success fw-semibold";
+            case "Fora do Prazo":
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             default:
                 return "";
         }
@@ -95,28 +100,6 @@ export default function DemandasEstagiario() {
 
 
             <div className="container my-5 flex-grow-1">
-                <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-
-                    <input
-                        type="text"
-                        className="form-control w-50 mb-2 mb-sm-0"
-                        placeholder="Buscar por demanda ou status..."
-                        value={busca}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setBusca(e.target.value)}
-                    />
-
-                    <select
-                        className="form-select w-auto"
-                        value={statusFiltro}
-                        onChange={(e) => setStatusFiltro(e.target.value)}
-                    >
-                        <option value="todos">Todos</option>
-                        <option value="Atendido">Atendido</option>
-                        <option value="Não Atendido">Não Atendido</option>
-                        <option value="Prorrogada">Prorrogada</option>
-                    </select>
-                </div>
-
 
                 {filteredDemandas.length > 0 ? (
                     <div className="table-responsive shadow-sm rounded">
@@ -124,36 +107,30 @@ export default function DemandasEstagiario() {
                             <thead className="table-dark">
                                 <tr>
                                     <th>Demanda</th>
-                                    <th>Estagiario</th>
-                                    <th>Status</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Respostas</th>
-                                    <th className="text-center">Responder</th>
+                                    <th className="text-center">Status</th>
+                                    <th className="text-center">Tempestividade</th>
+                                    <th className="text-center">Comentários</th>
+                                    {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredDemandas.map((demanda) => (
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
-                                        <td>{demanda.estagiarioNome}</td>
                                         <td>{demanda.prazo}</td>
-                                        <td className={getStatusClass(demanda.demandaStatus)}>
-                                            {demanda.demandaStatus}
+                                        <td className={getStatusClass(demanda.demandaStatusAluno)}>
+                                            {demanda.demandaStatusAluno}
                                         </td>
+                                        <td className={getStatusClass(demanda.tempestividade)}>
+                                            {demanda.tempestividade}
+                                            </td>
                                         <td className="text-center">
                                             <button
                                             onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}
                                                 className="btn btn-sm btn-outline-primary"
                                             >
                                                 <EyeIcon />
-                                            </button>
-                                        </td>
-                                        <td className="text-center">
-                                            <button
-                                                onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
-                                                className="btn btn-sm btn-outline-primary me-2"
-                                            >
-                                                <PlusIcon />
                                             </button>
                                         </td>
                                     </tr>

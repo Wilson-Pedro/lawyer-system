@@ -6,9 +6,14 @@ import java.util.stream.Stream;
 
 public enum DemandaStatus {
 
-	ATENDIDO(1, "Atendido"),
-	NAO_ATENDIDO(2, "Não Atendido"),
-	PROROGADA(3, "Prorrogada");
+	CORRIGIDO(1, "Corrigido"),
+	EM_CORRECAO(2, "Em Correção"),
+	DEVOLVIDO(3, "Devolvido"),
+	DENTRO_DO_PRAZO(4, "Dentro do Prazo"),
+	FORA_DO_PRAZO(5, "Fora do Prazo"),
+	RECEBIDO(6, "Recebido"),
+	PROTOCOLADO(7, "Protocolado"),
+	AGUARDANDO_PROFESSOR(8, "Aguardando Professor");
 	
 	private Integer codigo;
 	
@@ -32,7 +37,7 @@ public enum DemandaStatus {
 				.filter(d -> d.getStatus().equals(status))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Status inválido: " + status));
+						("demanda status inválido: " + status));
 	}
 	
 	public static DemandaStatus toEnum(Integer codigo) {
@@ -40,6 +45,6 @@ public enum DemandaStatus {
 				.filter(d -> d.getCodigo().equals(codigo))
 				.findFirst()
 				.orElseThrow(() -> new EnumException
-						("Código inválido: " + codigo));
+						("Código da demanda status inválido: " + codigo));
 	}
 }

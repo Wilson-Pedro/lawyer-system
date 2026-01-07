@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -60,6 +61,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos", ator.getNome());
 		assertEquals("roberto@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -81,6 +83,7 @@ class AtorServiceTest {
 		assertEquals("José Augusto", ator.getNome());
 		assertEquals("jose@gmail.com", ator.getEmail());
 		assertEquals("Secretário", ator.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -102,6 +105,7 @@ class AtorServiceTest {
 		assertEquals("Fabio Junior", ator.getNome());
 		assertEquals("fabio@gmail.com", ator.getEmail());
 		assertEquals("Professor", ator.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
 		
@@ -117,7 +121,7 @@ class AtorServiceTest {
 		
 		AtorDto atorDto = new AtorDto(
 				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
-				"Coordenador do curso", "1234");
+				"Coordenador do curso", "Inativo", "1234");
 		
 		Long id = atorRepository.findAll().get(0).getId();
 		
@@ -128,6 +132,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", ator.getNome());
 		assertEquals("roberto22@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.INATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test
@@ -177,6 +182,7 @@ class AtorServiceTest {
 		assertEquals("Roberto Carlos Silva", coordenador.getNome());
 		assertEquals("roberto22@gmail.com", coordenador.getEmail());
 		assertEquals("Coordenador do curso", coordenador.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.INATIVO, coordenador.getUsuarioAuth().getUsuarioStatus());
 	}
 	
 	@Test
@@ -193,6 +199,8 @@ class AtorServiceTest {
 		assertEquals("José Augusto", secretario.getNome());
 		assertEquals("jose@gmail.com", secretario.getEmail());
 		assertEquals("Secretário", secretario.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.ATIVO, secretario.getUsuarioAuth().getUsuarioStatus());
+
 	}
 	
 	@Test
@@ -209,5 +217,6 @@ class AtorServiceTest {
 		assertEquals("Fabio Junior", professor.getNome());
 		assertEquals("fabio@gmail.com", professor.getEmail());
 		assertEquals("Professor", professor.getTipoDoAtor().getTipo());
+		assertEquals(UsuarioStatus.ATIVO, professor.getUsuarioAuth().getUsuarioStatus());
 	}
 }

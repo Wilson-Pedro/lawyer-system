@@ -12,8 +12,10 @@ export default function EditarEstagiario() {
 
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [matricula, setMatricula] = useState("");
   const [periodo, setPeriodo] = useState("");
+  const [usuarioStatus, setUsuarioStatus] = useState("");
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -37,8 +39,10 @@ export default function EditarEstagiario() {
         const dados = response.data;
         setNome(dados.nome);
         setEmail(dados.email);
+        setTelefone(dados.telefone);
         setMatricula(dados.matricula);
         setPeriodo(dados.periodo);
+        setUsuarioStatus(dados.usuarioStatus);
       } catch(error) {
 
       }
@@ -52,8 +56,10 @@ export default function EditarEstagiario() {
       await axios.put(`${API_URL}/estagiarios/${estagiarioId}`, {
         nome,
         email,
+        telefone,
         matricula,
         periodo,
+        usuarioStatus,
         senha,
       }, {
         headers: {
@@ -78,6 +84,10 @@ export default function EditarEstagiario() {
 
   const selecionarPeriodo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPeriodo(e.target.value);
+  };
+
+  const selecionarUsuarioStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUsuarioStatus(e.target.value);
   };
 
   const token = localStorage.getItem('token');
@@ -113,6 +123,17 @@ export default function EditarEstagiario() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+        
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Telefone</label>
+          <input
+            className={styles.input}
+            placeholder="Telefone"
+            type="text"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+          />
+        </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Matrícula</label>
@@ -136,6 +157,19 @@ export default function EditarEstagiario() {
             <option value="Estágio II">Estágio II</option>
             <option value="Estágio III">Estágio III</option>
             <option value="Estágio IV">Estágio IV</option>
+          </select>
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Status</label>
+          <select
+            className={styles.input}
+            value={usuarioStatus}
+            onChange={selecionarUsuarioStatus}
+          >
+            <option value="" disabled selected></option>
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
           </select>
         </div>
 

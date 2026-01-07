@@ -27,14 +27,17 @@ export default function Login() {
             })
 
             if(response.data !== null) {
+
                 const data = response.data;
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('role', data.role);
-                localStorage.setItem('login', data.login)
+                localStorage.setItem('login', data.login);
                 if(data.role === 'ADMIN') {
                     goToHomeAdmin();
                 } else if(data.role === 'ESTAGIARIO') {
                     goToHomeEstagiario();
+                } else if(data.role === 'ADVOGADO') {
+                    goToHomeAdvogado();
                 }
             }
 
@@ -52,6 +55,9 @@ export default function Login() {
         navigate("/home/estagiario")
     }
 
+    const goToHomeAdvogado = () => {
+        navigate("/home/advogado")
+    }
     // const limparCampos = () => {
     //     setEmail("");
     //     setEmail("");

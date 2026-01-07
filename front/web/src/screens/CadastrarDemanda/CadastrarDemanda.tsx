@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import styles from "./CadastrarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
+import moment from 'moment'
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -19,21 +20,22 @@ export interface Entity {
   nome: string;
 }
 
-export interface Assistido extends Entity {
-}
+export interface Assistido extends Entity {}
 
-export interface Advogado extends Entity {
-}
+export interface Advogado extends Entity {}
 
-export interface Estagiario extends Entity {
-}
+export interface Estagiario extends Entity {}
 
 export default function CadastrarDemanda() {
   const navigate = useNavigate();
 
   const [demanda, setDemanda] = useState<string>("");
   const [demandaStatus, setDemandaStatus] = useState<string>("");
-  const [prazo, setPrazo] = useState<string>("");
+  const [prazoDocumentos, setPrazoDocumentos] = useState<string>("");
+  const [dataHoje, setDataHoje] = useState<Date>(new Date());
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
+  const [prazoDias, setPrazoDias] = useState<number>();
+  const [prazoFinal, setPrazoFinal] = useState<string>("");
 
   const [messageDataError, setMessageDataError] = useState<string>("");
 
@@ -42,30 +44,40 @@ export default function CadastrarDemanda() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
+  
+  const [nomeAdvogado, setNomeAdvogado] = useState("");
+  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
+  const [advogadoId, setAdvogadoId] = useState<number>(0);
+  const [advogados, setAdvogados] = useState<Advogado[]>([]);
+
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
-  
+  const [varianteToast, setVarianteToast] = useState<"success" | "danger">(
+    "success"
+  );
+
   const page = 0;
   const size = 20;
 
   useEffect(() => {
     const buscarEstagiario = async () => {
-      if(nomeEstagiarioSearch.length < 2) {
+      if (nomeEstagiarioSearch.length < 2) {
         setEstagiarios([]);
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+        const response = await axios.get(
+          `${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const pageData: Page<Estagiario> = response.data;
         setEstagiarios(pageData.content);
-
-      } catch(error) {
-        console.log("Error ao tentar buscar estagiarios ", error)
+      } catch (error) {
+        console.log("Error ao tentar buscar estagiarios ", error);
       }
     };
 
@@ -74,26 +86,58 @@ export default function CadastrarDemanda() {
     return () => clearTimeout(delay);
   }, [nomeEstagiarioSearch]);
 
-
-  const cadastrarDemanda = async (e:any) => {
-    e.preventDefault();
-
-    try {
-      await axios.post(`${API_URL}/demandas/`, {
-            demanda,
-            estagiarioId,
-            demandaStatus,
-            prazo
-      }, {
+  
+  useEffect(() => {
+    const buscarAdvogado = async () => {
+      if (nomeAdvogadoSearch.length < 2) {
+        setAdvogados([]);
+        return;
+      }
+      try {
+        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      
-      setMostrarToast(true);
-      setMensagemToast("Demanda cadastrada com sucesso."); 
-      setVarianteToast("success");
+        const pageData: Page<Advogado> = response.data;
+        setAdvogados(pageData.content);
+      } catch (error) {
+        setMensagemToast("Error ao tentar buscar advogados");
+      }
 
+    };
+
+    const delay = setTimeout(buscarAdvogado, 100);
+
+    return () => clearTimeout(delay);
+  }, [nomeAdvogadoSearch]);
+
+  const cadastrarDemanda = async (e: any) => {
+    e.preventDefault();
+
+    try {
+      await axios.post(
+        `${API_URL}/demandas/`,
+        {
+          demanda,
+          estagiarioId,
+          advogadoId,
+          demandaStatusAluno: "Em Correção",
+          demandaStatusProfessor: "Aguardando Professor",
+          prazoDocumentos,
+          diasPrazo: prazoDias,
+          tempestividade: "Dentro do Prazo"
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setMostrarToast(true);
+      setMensagemToast("Demanda cadastrada com sucesso.");
+      setVarianteToast("success");
       limparCampos();
     } catch (error) {
       console.error(error);
@@ -107,8 +151,11 @@ export default function CadastrarDemanda() {
   const formatarData = (dataValue: string) => {
     let numeros = dataValue.replace(/\D/g, "");
 
+    setPrazoDias(0);
+
     if (numeros.length === 0) {
       setMessageDataError("");
+      setPrazoFinal("");
     }
 
     if (numeros.length > 8) {
@@ -122,7 +169,12 @@ export default function CadastrarDemanda() {
     }
 
     if (numeros.length > 4) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2, 4) + "/" + numeros.substring(4);
+      formatado =
+        numeros.substring(0, 2) +
+        "/" +
+        numeros.substring(2, 4) +
+        "/" +
+        numeros.substring(4);
     }
 
     if (numeros.length === 8) {
@@ -134,53 +186,85 @@ export default function CadastrarDemanda() {
       const hoje = new Date();
 
       if (dataDigitada.getTime() < hoje.getTime()) {
+        setPrazoFinal("")
         setMessageDataError("*Prazo inválido");
+        setBtnDisabled(true);
+        setPrazoDias(0);
       } else {
         setMessageDataError("");
+        setBtnDisabled(false);
+        setPrazoFinal(dataDigitada.toLocaleDateString('pt-BR'));
       }
     }
 
-    setPrazo(formatado);
+
+    setPrazoDocumentos(formatado);
+  };
+
+  const setPrazoFinalPorDias = (dias:number) => {
+    if(dias === 0 || dias < 0) return;
+    setPrazoDias(dias);
+    const dataMoment = moment(toDateStringUs(prazoDocumentos));
+    const dataAdicionada = dataMoment.add(dias, 'days');
+    setPrazoFinal(dataAdicionada.format('DD/MM/YYYY'));
+
+  }
+
+  const toDateStringUs = (data:string) => {
+    let diaMesAno = data.split("/");
+    return diaMesAno[2] + "-" + diaMesAno[1] + "-" + diaMesAno[0];
   }
 
   const setEstagiario = (estagiario: Estagiario) => {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
     setNomeEstagiarioSearch("");
-  }
+  }; 
 
-  const selecionarDemandaStatus = async (e:any) => {
+  const selecionarDemandaStatus = async (e: any) => {
     setDemandaStatus(e.target.value);
+  };
+
+  const setAdvogado = (advogado: Advogado) => {
+    setNomeAdvogado(advogado.nome);
+    setAdvogadoId(advogado.id);
+    setNomeAdvogadoSearch("");
   }
 
   const limparCampos = () => {
-    setPrazo("");
-    setNomeEstagiarioSearch("")
+    setNomeEstagiarioSearch("");
+    setNomeEstagiario("")
+    setDemanda("Em Correção")
+    setNomeAdvogadoSearch("")
+    setNomeAdvogado("")
     setDemandaStatus("");
+    setPrazoDocumentos("");
+    setPrazoDias(0);
   };
 
-  const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" />;
 
   return (
-
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate("/cadastrar")}>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate("/cadastrar")}
+      >
         ← Voltar
       </button>
 
       <h1 className={styles.title}>Cadastro de Demanda</h1>
       <form className={styles.form} onSubmit={cadastrarDemanda}>
-
         <div className={styles.inputGroup}>
-            <label className={styles.label}>Demanda</label>
-            <input
+          <label className={styles.label}>Demanda</label>
+          <input
             className={styles.input}
             placeholder="Demanda"
             value={demanda}
             onChange={(e) => setDemanda(e.target.value)}
             required
-            />
+          />
         </div>
 
         <div className={styles.inputGroup}>
@@ -199,38 +283,112 @@ export default function CadastrarDemanda() {
                   className={styles.li}
                   key={data.id}
                   onClick={() => setEstagiario(data)}
-                >{data.nome}</li>
+                >
+                  {data.nome}
+                </li>
               ))}
             </ul>
           )}
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Status da demanda</label>
-          <select className={styles.input} onChange={selecionarDemandaStatus} required>
-            <option value="" disabled selected></option>
-            <option value="Atendido">Atendido</option>
-            <option value="Não Atendido">Não Atendido</option>
-            <option value="Prorrogada">Prorrogada</option>
-          </select>
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Prazo <span className={styles.messageError}>{messageDataError}</span></label>
+          <label className={styles.label}>Advogado</label>
           <input
             className={styles.input}
-            placeholder="Prazo (DD/MM/AAAA)"
-            value={prazo}
-            onChange={(e) => formatarData(e.target.value)}
+            placeholder="Digite o nome do advogado"
+            value={nomeAdvogadoSearch || nomeAdvogado}
+            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
             required
           />
+          {advogados.length > 0 && (
+            <ul className={styles.ul}>
+              {advogados.map((data) => (
+                <li
+                  className={styles.li}
+                  key={data.id}
+                  onClick={() => setAdvogado(data)}
+                >{data.nome}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* <div className={styles.inputGroup}>
+          <label className={styles.label}>Status da demanda</label>
+          <select
+            className={styles.input}
+            onChange={selecionarDemandaStatus}
+            required
+          >
+            <option value="" disabled selected></option>
+            <option value="Corrigido">Corrigido</option>
+            <option value="Em Correção">Em Correção</option>
+            <option value="Devolvido">Devolvido</option>
+            <option value="Dentro do Prazo">Dentro do Prazo</option>
+            <option value="Fora do Prazo">Fora do Prazo</option>
+          </select>
+        </div> */}
+
+        <div className={styles.inputDivGroup}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Data de Atendimento</label>
+            <input
+              className={styles.input}
+              value={dataHoje.toLocaleDateString("pt-BR")}
+              disabled
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>
+              Prazo dos Documentos
+              <span className={styles.messageError}>{messageDataError}</span>
+            </label>
+            <input
+              className={styles.input}
+              placeholder="Prazo dos Documentos (DD/MM/AAAA)"
+              value={prazoDocumentos}
+              onChange={(e) => formatarData(e.target.value)}
+              required
+            />
+          </div>
+        </div>
+
+        <div className={styles.inputDivGroup}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Dias para o Prazo Final</label>
+            <input
+              type="number"
+              className={styles.input}
+              placeholder="Digite a quantidade de dias para o prazo"
+              value={prazoDias}
+              onChange={(e: any) => setPrazoFinalPorDias(e.target.value)}
+              disabled={btnDisabled}
+              required
+            />
+          </div>
+          
+          <div className={styles.inputGroup}>
+            <label className={styles.label}>Prazo Final</label>
+            <input
+              className={styles.input}
+              placeholder="Prazo Final"
+              value={prazoFinal}
+              onChange={(e: any) => setPrazoDias(e.target.value)}
+              disabled
+            />
+          </div>
         </div>
 
         <button type="submit" className={styles.button}>
           Cadastrar Demanda
         </button>
 
-        <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+        <ToastContainer
+          position="top-end"
+          className="p-3"
+          style={{ zIndex: 9999 }}
+        >
           <Toast
             show={mostrarToast}
             onClose={() => setMostrarToast(false)}
@@ -244,7 +402,6 @@ export default function CadastrarDemanda() {
           </Toast>
         </ToastContainer>
       </form>
-      
     </div>
   );
 }

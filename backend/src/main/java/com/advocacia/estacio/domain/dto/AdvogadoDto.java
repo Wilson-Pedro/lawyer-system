@@ -27,13 +27,17 @@ public class AdvogadoDto implements Serializable {
 	private Integer numeroDaCasa;
 	
 	private String cep;
+
+	private String usuarioStatus;
+
+	private String senha;
 	
 	public AdvogadoDto() {
 	}
 
 	public AdvogadoDto(Long id, String nome, String email, String telefone, 
 			String dataDeNascimento, String cidade, String bairro, String rua, 
-			Integer numeroDaCasa, String cep) {
+			Integer numeroDaCasa, String cep, String senha) {
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
@@ -44,6 +48,7 @@ public class AdvogadoDto implements Serializable {
 		this.rua = rua;
 		this.numeroDaCasa = numeroDaCasa;
 		this.cep = cep;
+		this.senha = senha;
 	}
 
 	public AdvogadoDto(Advogado advogado) {
@@ -57,6 +62,14 @@ public class AdvogadoDto implements Serializable {
 		this.rua = advogado.getEndereco().getRua();
 		this.numeroDaCasa = advogado.getEndereco().getNumeroDaCasa();
 		this.cep = advogado.getEndereco().getCep();
+		this.usuarioStatus = advogado.getUsuarioAuth().getUsuarioStatus().getDescricao();
+	}
+
+	public AdvogadoDto(Long id, String nome, String email, String telefone,
+					   String dataDeNascimento, String cidade, String bairro, String rua,
+					   Integer numeroDaCasa, String cep, String usuarioStatus, String senha) {
+		this(id, nome, email, telefone, dataDeNascimento, cidade, bairro, rua, numeroDaCasa, cep, senha);
+		this.usuarioStatus = usuarioStatus;
 	}
 
 	private String toDateString(LocalDate localDate) {
@@ -101,5 +114,13 @@ public class AdvogadoDto implements Serializable {
 
 	public String getCep() {
 		return cep;
+	}
+
+	public String getUsuarioStatus() {
+		return usuarioStatus;
+	}
+
+	public String getSenha() {
+		return senha;
 	}
 }

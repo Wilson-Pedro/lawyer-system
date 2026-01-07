@@ -2,11 +2,13 @@ package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.*;
@@ -36,6 +38,9 @@ class DemandaControllerTest {
 
 	@Autowired
 	EstagiarioService estagiarioService;
+
+	@Autowired
+	AdvogadoService advogadoService;
 
 	@Autowired
 	DemandaService demandaService;
@@ -69,8 +74,10 @@ class DemandaControllerTest {
 		assertEquals(0, demandaRepository.count());
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
+
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), "Atendido", "12/11/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -82,8 +89,11 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
 				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
-				.andExpect(jsonPath("$.demandaStatus", equalTo("Atendido")))
-				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")));
+				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
+				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Em Correção")))
+				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Professor")))
+				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")))
+				.andExpect(jsonPath("$.tempestividade", equalTo("Dentro do Prazo")));
 		
 		assertEquals(1, demandaRepository.count());
 	}
@@ -94,16 +104,37 @@ class DemandaControllerTest {
 	void buscar_demanda_por_status() throws Exception {
 
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
+
+		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
+
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
-		mockMvc.perform(get(URI + "/status/Atendido?page=0&size=20")
+		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()").value(1))
-				.andExpect(jsonPath("content[0].demanda").value("Atualizar Processos"));
+				.andExpect(jsonPath("content[0].demanda").value("Organizar Processos"))
+				.andExpect(jsonPath("content[0].demandaStatusAluno").value("Corrigido"));
 	}
+
+    @Test
+    @Order(4)
+    @DisplayName("Deve Mudar Demanda Status Pelo Controller")
+    void mudar_demanda_status() throws Exception {
+
+        Long id = demandaRepository.findAll().get(0).getId();
+        String status = "Devolvido";
+
+        mockMvc.perform(patch(URI + "/" + id + "/change?status=" + status)
+                        .header("Authorization", "Bearer " + TOKEN))
+                .andExpect(status().isNoContent());
+
+        Demanda demanda = demandaRepository.findById(id).get();
+
+        assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatusAluno());
+    }
 
 	@Test
 	@DisplayName("Deve Buscar Todas as Demanda Pelo Status No Banco de Dados Pelo Controller")

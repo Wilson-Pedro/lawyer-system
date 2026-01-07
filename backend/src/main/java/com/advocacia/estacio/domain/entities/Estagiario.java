@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.EstagiarioDto;
@@ -30,7 +31,9 @@ public class Estagiario implements Serializable {
 	private String nome;
 	
 	private String email;
-	
+
+	private String telefone;
+
 	private String matricula;
 	
 	@Enumerated(EnumType.STRING)
@@ -45,9 +48,21 @@ public class Estagiario implements Serializable {
 	public Estagiario() {
 	}
 
-	public Estagiario(String nome, String email, String matricula, PeriodoEstagio periodo) {
+	public Estagiario(Long id, String nome, String email, String telefone, String matricula, PeriodoEstagio periodo, UsuarioAuth usuarioAuth) {
+		this.id = id;
 		this.nome = nome;
 		this.email = email;
+		this.telefone = telefone;
+		this.matricula = matricula;
+		this.periodo = periodo;
+		this.usuarioAuth = usuarioAuth;
+	}
+
+
+	public Estagiario(String nome, String email, String telefone, String matricula, PeriodoEstagio periodo) {
+		this.nome = nome;
+		this.email = email;
+		this.telefone = telefone;
 		this.matricula = matricula;
 		this.periodo = periodo;
 	}
@@ -55,6 +70,7 @@ public class Estagiario implements Serializable {
 	public Estagiario(EstagiarioDto dto) {
 		this.nome = dto.getNome();
 		this.email = dto.getEmail();
+		this.telefone = dto.getTelefone();
 		this.matricula = dto.getMatricula();
 		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
 	}
@@ -85,6 +101,18 @@ public class Estagiario implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void setRegistro(LocalDateTime registro) {
+		this.registro = registro;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	public String getMatricula() {

@@ -3,6 +3,7 @@ package com.advocacia.estacio.domain.entities;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.AtorDto;

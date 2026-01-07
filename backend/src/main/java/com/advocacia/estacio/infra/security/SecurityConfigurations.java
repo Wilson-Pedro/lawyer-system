@@ -35,22 +35,31 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/atores/**").hasRole("ADMIN")
+
 						.requestMatchers(HttpMethod.POST, "/advogados/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/advogados/").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/advogados/{id}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/advogados/{id}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/advogados/buscarId/email/{email}").hasRole("ADVOGADO")
+
 						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/demandas").hasRole("ADMIN")
+
+						//.requestMatchers(HttpMethod.GET, "/demandas/**").hasRole("ESTAGIARIO")
+						.requestMatchers(HttpMethod.PATCH, "/demandas/{demandaId}/change").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
-						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ADMIN")
-						.requestMatchers("/demandas/responde/**").hasRole("ESTAGIARIO")
+						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
+						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ESTAGIARIO")
+						.requestMatchers("/demandas/responde/**").hasRole("PROFESSOR")
+
 						.requestMatchers(HttpMethod.POST, "/estagiarios/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/{id}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscar/{nome}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscarId/email/{email}").permitAll()
+
 						.requestMatchers(HttpMethod.POST, "/movimentos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/movimentos/buscar/{numeroDoProcesso}").hasRole("ADMIN")
+
 						.requestMatchers(HttpMethod.POST, "/processos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/{id}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/statusDoProcesso/{processoStatus}").hasRole("ADMIN")

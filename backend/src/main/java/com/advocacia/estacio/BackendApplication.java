@@ -58,14 +58,14 @@ public class BackendApplication implements CommandLineRunner {
 
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva", "carlos@gmail.com",
 				"88566519808", "25/09/1996", "São Luís", "Vila Lobão",
-				"rua do passeio", 11, "53022-112");
+				"rua do passeio", 11, "53022-112", "1234");
 
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-				"Pedro Lucas", "pedro@gmail.com", "20251208",
+				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
 				"Estágio I", "1234");
 
 		EstagiarioDto estagiario2 = new EstagiarioDto(null,
-				"Carlos Miguel", "carlos@gmail.com", "20251309",
+				"João Miguel", "joao@gmail.com", "92921421224", "20251309",
 				"Estágio II", "1234");
 
 		Long assistidoId = assistidoService.salvar(assistidoDto).getId();
@@ -93,15 +93,15 @@ public class BackendApplication implements CommandLineRunner {
 		atorService.salvar(ator2);
 		atorService.salvar(ator3);
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, "Atendido", "12/12/2025");
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, "Não Atendido", "15/12/2025");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiarioId, advogadoId, "Corrigido", "Corrigido", "02/12/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		demandaService.salvar(demandaDto2);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
 
-		RegistroDto registroDto = new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
+		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 
 		usuarioAuthService.salvar(registroDto);
 	}
