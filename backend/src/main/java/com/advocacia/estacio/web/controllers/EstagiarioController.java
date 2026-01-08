@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,8 @@ import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.services.EstagiarioService;
+
+import java.util.List;
 
 @RequestMapping("/estagiarios")
 @RestController
@@ -39,6 +42,12 @@ public class EstagiarioController {
 			@RequestParam(defaultValue = "20") int size) {
 		Page<EstagiarioDto> pages = estagiarioService.buscarTodos(page, size).map(EstagiarioDto::new);
 		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	}
+
+	@GetMapping("/periodos")
+	public ResponseEntity<List<String>> buscarPeriodos() {
+		List<String> periodos = estagiarioService.getPeriodos().stream().map(PeriodoEstagio::getTipo).toList();
+		return ResponseEntity.ok(periodos);
 	}
 	
 	@GetMapping("/{id}")

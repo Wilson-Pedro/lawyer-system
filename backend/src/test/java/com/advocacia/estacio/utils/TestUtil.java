@@ -193,7 +193,7 @@ public class TestUtil {
 	}
 	
 	public String getToken() {
-		usuarioAuthRepository.save(getUsuarioAuth());		
+		usuarioAuthService.salvar(getRegistroDto());
 		return usuarioAuthService.login(getAuthenticationDto()).token();
 	}
 }

@@ -1,6 +1,7 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -167,5 +168,35 @@ class ProcessoControllerTest {
 				.andExpect(status().isNoContent());
 		
 		assertEquals(1, processoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Áreas do Direito Civis Pelo Controller")
+	void buscar_areas_do_direito() throws Exception {
+
+		mockMvc.perform(get(URI + "/areasDoDireito")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Civil")))
+				.andExpect(jsonPath("$[1]", equalTo("Trabalho")))
+				.andExpect(jsonPath("$[2]", equalTo("Previdenciário")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Tribunais Civis Pelo Controller")
+	void buscar_tribunais() throws Exception {
+
+		mockMvc.perform(get(URI + "/tribunais")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Estadual")))
+				.andExpect(jsonPath("$[1]", equalTo("Federal")))
+				.andExpect(jsonPath("$[2]", equalTo("Trabalho")));
 	}
 }

@@ -1,6 +1,7 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,8 +45,6 @@ class EstagiarioControllerTest {
 	private static final String URI = "/estagiarios";
 	
 	private static String TOKEN = "";
-	
-	Estagiario estagiario;
 	
 	@Test
 	@Order(1)
@@ -176,5 +175,21 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
 				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"))
 				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Inativo"));
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Períodos Pelo Controller")
+	void buscar_periodos() throws Exception {
+
+		mockMvc.perform(get(URI + "/periodos")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(4)))
+				.andExpect(jsonPath("$[0]", equalTo("Estágio I")))
+				.andExpect(jsonPath("$[1]", equalTo("Estágio II")))
+				.andExpect(jsonPath("$[2]", equalTo("Estágio III")))
+				.andExpect(jsonPath("$[3]", equalTo("Estágio IV")));
 	}
 }

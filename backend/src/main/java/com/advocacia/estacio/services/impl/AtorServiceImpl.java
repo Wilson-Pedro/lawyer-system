@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,9 @@ import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.factory.AtorFactory;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.services.AtorService;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AtorServiceImpl implements AtorService {
@@ -64,5 +68,10 @@ public class AtorServiceImpl implements AtorService {
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
 		//ator.setUsuarioStatus(UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		return atorRepository.save(ator);
+	}
+
+	@Override
+	public List<TipoDoAtor> getTipoAtores() {
+		return Arrays.stream(TipoDoAtor.values()).toList();
 	}
 }

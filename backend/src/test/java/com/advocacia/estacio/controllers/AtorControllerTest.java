@@ -1,13 +1,13 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -202,5 +202,20 @@ class AtorControllerTest {
 				.andExpect(jsonPath("$.email", equalTo("roberto22@gmail.com")))
 				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")))
 				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Tipo de Atores Pelo Controller")
+	void buscar_tipo_atores() throws Exception {
+
+		mockMvc.perform(get(URI + "/tipoAtores")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Coordenador do curso")))
+				.andExpect(jsonPath("$[1]", equalTo("Secretário")))
+				.andExpect(jsonPath("$[2]", equalTo("Professor")));
 	}
 }

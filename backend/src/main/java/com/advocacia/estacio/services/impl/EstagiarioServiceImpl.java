@@ -19,6 +19,9 @@ import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.EstagiarioService;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
 	
@@ -81,7 +84,11 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		estagiario.setTelefone(estagiarioDto.getTelefone());
 		estagiario.setMatricula(estagiarioDto.getMatricula());
 		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
-		//estagiario.setUsuarioStatus(UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus()));
 		return estagiarioRepository.save(estagiario);
 	}
+
+    @Override
+    public List<PeriodoEstagio> getPeriodos() {
+        return Arrays.stream(PeriodoEstagio.values()).toList();
+    }
 }

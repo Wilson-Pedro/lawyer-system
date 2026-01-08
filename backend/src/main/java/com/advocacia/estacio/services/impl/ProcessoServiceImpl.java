@@ -4,8 +4,10 @@ import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -123,5 +125,15 @@ public class ProcessoServiceImpl implements ProcessoService {
 		if(processoRepository.existsByNumeroDoProcesso(processo.getNumeroDoProcesso())) {
 			throw new NumeroDoProcessoExistenteException();
 		}
+	}
+
+	@Override
+	public List<AreaDoDireito> getAreasDoDireito() {
+		return Arrays.stream(AreaDoDireito.values()).toList();
+	}
+
+	@Override
+	public List<Tribunal> getTribunais() {
+		return Arrays.stream(Tribunal.values()).toList();
 	}
 }

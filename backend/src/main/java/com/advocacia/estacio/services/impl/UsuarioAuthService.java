@@ -65,7 +65,7 @@ public class UsuarioAuthService  {
 			atualizar = true;
 		}
 		
-		if(!senha.isEmpty() || !senha.isBlank()) {
+		if(!senha.isEmpty()) {
 			String encryptedPassword = new BCryptPasswordEncoder().encode(senha);
 			user.setPassword(encryptedPassword);	
 			atualizar = true;

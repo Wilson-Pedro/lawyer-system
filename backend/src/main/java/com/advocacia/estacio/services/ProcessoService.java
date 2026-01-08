@@ -2,6 +2,8 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
@@ -26,4 +28,8 @@ public interface ProcessoService {
 	Processo atualizarProcesso(Long id, ProcessoUpdate processoUpdate);
 	
 	void validarProcesso(Processo processo);
+
+	List<AreaDoDireito> getAreasDoDireito();
+
+	List<Tribunal> getTribunais();
 }

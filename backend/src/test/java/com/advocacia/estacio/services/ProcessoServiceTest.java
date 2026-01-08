@@ -2,6 +2,9 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -127,5 +130,25 @@ class ProcessoServiceTest {
 		assertEquals("Tramitando", processo.getStatusDoProcesso().getStatus());
 		
 		assertEquals(1, processoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Areas do Direito")
+	void buscar_estado_civis() {
+		List<AreaDoDireito> areasDoDireito = processoService.getAreasDoDireito();
+
+		assertEquals(AreaDoDireito.CIVIL, areasDoDireito.get(0));
+		assertEquals(AreaDoDireito.TRABALHO, areasDoDireito.get(1));
+		assertEquals(AreaDoDireito.PREVIDENCIARIO, areasDoDireito.get(2));
+	}
+
+	@Test
+	@DisplayName("Deve buscar Tribunais")
+	void buscar_tribunais() {
+		List<Tribunal> tribunais = processoService.getTribunais();
+
+		assertEquals(Tribunal.ESTADUAL, tribunais.get(0));
+		assertEquals(Tribunal.FEDERAL, tribunais.get(1));
+		assertEquals(Tribunal.TRABALHO, tribunais.get(2));
 	}
 }

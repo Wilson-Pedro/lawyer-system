@@ -2,6 +2,9 @@ package com.advocacia.estacio.web.controllers;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.EstadoCivil;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +43,18 @@ public class ProcessoController {
 	public ResponseEntity<ProcessoDto> buscarPorId(@PathVariable Long id) {
 		Processo processo = processoService.buscarPorId(id);
 		return ResponseEntity.ok(new ProcessoDto(processo));
+	}
+
+	@GetMapping("/areasDoDireito")
+	public ResponseEntity<List<String>> buscarAreasDoDireito() {
+		List<String> areasDoDireito = processoService.getAreasDoDireito().stream().map(AreaDoDireito::getDescricao).toList();
+		return ResponseEntity.ok(areasDoDireito);
+	}
+
+	@GetMapping("/tribunais")
+	public ResponseEntity<List<String>> buscarTribunais() {
+		List<String> tribunais = processoService.getTribunais().stream().map(Tribunal::getDescricao).toList();
+		return ResponseEntity.ok(tribunais);
 	}
 	
 	@GetMapping("/statusDoProcesso/{processoStatus}")

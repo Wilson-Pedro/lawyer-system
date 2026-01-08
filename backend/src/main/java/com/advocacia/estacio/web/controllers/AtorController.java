@@ -1,5 +1,7 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.enums.EstadoCivil;
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.services.AtorService;
 
+import java.util.List;
+
 @RequestMapping("/atores")
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -31,6 +35,12 @@ public class AtorController {
 	public ResponseEntity<AtorDto> salvar(@RequestBody AtorDto atorDto) {
 		Ator ator = atorService.salvar(atorDto);
 		return ResponseEntity.status(201).body(new AtorDto(ator));
+	}
+
+	@GetMapping("/tipoAtores")
+	public ResponseEntity<List<String>> buscarTipoAtores() {
+		List<String> tipoAtores = atorService.getTipoAtores().stream().map(TipoDoAtor::getTipo).toList();
+		return ResponseEntity.ok(tipoAtores);
 	}
 
 	@GetMapping("/tipo/{tipoAtor}")

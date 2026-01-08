@@ -12,6 +12,8 @@ import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -129,5 +131,18 @@ class AssistidoServiceServiceTest {
 
 		assertFalse(pages.isEmpty());
 		assertEquals(1, pages.getContent().size());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Estados Civis")
+	void buscar_estados_civis() {
+
+		List<EstadoCivil> estadoCivis = assistidoService.getEstadoCivis();
+
+		assertEquals(EstadoCivil.SOLTERIO, estadoCivis.get(0));
+		assertEquals(EstadoCivil.CASADO, estadoCivis.get(1));
+		assertEquals(EstadoCivil.DIVORCIADO, estadoCivis.get(2));
+		assertEquals(EstadoCivil.VIUVO, estadoCivis.get(3));
+		assertEquals(EstadoCivil.SEPARADO_JUDICIALMENTE, estadoCivis.get(4));
 	}
 }

@@ -23,6 +23,8 @@ import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
+import java.util.List;
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class EstagiarioServiceTest {
@@ -147,5 +149,16 @@ class EstagiarioServiceTest {
 		assertEquals("20251208", pages.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
 		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Todos os Períodos")
+	void buscar_periodos() {
+		List<PeriodoEstagio> periodos = estagiarioService.getPeriodos();
+
+		assertEquals(PeriodoEstagio.ESTAGIO_I, periodos.get(0));
+		assertEquals(PeriodoEstagio.ESTAGIO_II, periodos.get(1));
+		assertEquals(PeriodoEstagio.ESTAGIO_III, periodos.get(2));
+		assertEquals(PeriodoEstagio.ESTAGIO_IV, periodos.get(3));
 	}
 }

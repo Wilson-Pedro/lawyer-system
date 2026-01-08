@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import com.advocacia.estacio.domain.dto.AssistidoDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.services.AssistidoService;
+
+import java.util.List;
 
 @RequestMapping("/assistidos")
 @RestController
@@ -44,6 +47,12 @@ public class AssistidoController {
 	public ResponseEntity<AssistidoDto> buscarPorId(@PathVariable Long id) {
 		AssistidoDto dto = assistidoService.buscarPorId(id).toDto();
 		return ResponseEntity.ok(dto);
+	}
+
+	@GetMapping("/estadoCivis")
+	public ResponseEntity<List<String>> buscarEstadoCivis() {
+		List<String> estadoCivis = assistidoService.getEstadoCivis().stream().map(EstadoCivil::getEstado).toList();
+		return ResponseEntity.ok(estadoCivis);
 	}
 	
 	@GetMapping("/buscar/{nome}")
