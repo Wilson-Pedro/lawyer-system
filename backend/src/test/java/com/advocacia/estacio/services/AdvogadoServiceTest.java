@@ -103,7 +103,7 @@ class AdvogadoServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve buscar Todos os advogados")
+	@DisplayName("Deve buscar Todos os advogados Pelo Service")
 	void buscar_todos() {
 
 		Page<ResponseMinDto> pages = advogadoService.buscarTodos(0, 20);

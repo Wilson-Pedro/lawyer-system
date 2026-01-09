@@ -1,9 +1,10 @@
 package com.advocacia.estacio.web.controllers;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
-import com.advocacia.estacio.domain.enums.EstadoCivil;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,6 +56,15 @@ public class ProcessoController {
 	public ResponseEntity<List<String>> buscarTribunais() {
 		List<String> tribunais = processoService.getTribunais().stream().map(Tribunal::getDescricao).toList();
 		return ResponseEntity.ok(tribunais);
+	}
+
+	@GetMapping("/processoStatus")
+	public ResponseEntity<List<String>> buscarProcessoStatus() {
+		List<String> processoStatus = processoService.getProcessoStatus().stream()
+				.filter(p -> !p.equals(StatusProcesso.TODOS))
+				.map(StatusProcesso::getStatus)
+				.toList();
+		return ResponseEntity.ok(processoStatus);
 	}
 	
 	@GetMapping("/statusDoProcesso/{processoStatus}")

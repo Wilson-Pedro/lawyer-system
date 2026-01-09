@@ -72,7 +72,7 @@ public class AssistidoServiceImpl implements AssistidoService {
 	}
 
 	@Override
-	public List<EstadoCivil> getEstadoCivis() {
+	public List<EstadoCivil> getEstadosCivis() {
 		return Arrays.stream(EstadoCivil.values()).toList();
 	}
 }

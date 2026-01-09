@@ -31,18 +31,9 @@ export default function EditarDemanda() {
 
   const [demanda, setDemanda] = useState<string>("");
   const [demandaStatus, setDemandaStatus] = useState<string>("");
-  // const [prazoDocumentos, setPrazoDocumentos] = useState<string>("");
-  // const [dataHoje, setDataHoje] = useState<Date>(new Date());
-  // const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
-  // const [prazoDias, setPrazoDias] = useState<number>();
   const [prazoFinal, setPrazoFinal] = useState<string>("");
 
-  // const [messageDataError, setMessageDataError] = useState<string>("");
-
   const [nomeEstagiario, setNomeEstagiario] = useState<string>("");
-  // const [nomeEstagiarioSearch, setNomeEstagiarioSearch] = useState<string>("");
-  // const [estagiarioId, setEstagiarioId] = useState<number>(0);
-  // const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
@@ -109,79 +100,6 @@ export default function EditarDemanda() {
     }
   };
 
-  // const formatarData = (dataValue: string) => {
-  //   let numeros = dataValue.replace(/\D/g, "");
-
-  //   setPrazoDias(0);
-
-  //   if (numeros.length === 0) {
-  //     setMessageDataError("");
-  //     setPrazoFinal("");
-  //   }
-
-  //   if (numeros.length > 8) {
-  //     numeros = numeros.substring(0, 8);
-  //   }
-
-  //   let formatado = numeros;
-
-  //   if (numeros.length > 2) {
-  //     formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
-  //   }
-
-  //   if (numeros.length > 4) {
-  //     formatado =
-  //       numeros.substring(0, 2) +
-  //       "/" +
-  //       numeros.substring(2, 4) +
-  //       "/" +
-  //       numeros.substring(4);
-  //   }
-
-  //   if (numeros.length === 8) {
-  //     const dia = parseInt(numeros.substring(0, 2));
-  //     const mes = parseInt(numeros.substring(2, 4));
-  //     const ano = parseInt(numeros.substring(4, 8));
-
-  //     const dataDigitada = new Date(ano, mes - 1, dia);
-  //     const hoje = new Date();
-
-  //     if (dataDigitada.getTime() < hoje.getTime()) {
-  //       setPrazoFinal("")
-  //       setMessageDataError("*Prazo inválido");
-  //       setBtnDisabled(true);
-  //       setPrazoDias(0);
-  //     } else {
-  //       setMessageDataError("");
-  //       setBtnDisabled(false);
-  //       setPrazoFinal(dataDigitada.toLocaleDateString('pt-BR'));
-  //     }
-  //   }
-
-
-  //   setPrazoDocumentos(formatado);
-  // };
-
-  // const setPrazoFinalPorDias = (dias:number) => {
-  //   if(dias === 0 || dias < 0) return;
-  //   setPrazoDias(dias);
-  //   const dataMoment = moment(toDateStringUs(prazoDocumentos));
-  //   const dataAdicionada = dataMoment.add(dias, 'days');
-  //   setPrazoFinal(dataAdicionada.format('DD/MM/YYYY'));
-
-  // }
-
-  // const toDateStringUs = (data:string) => {
-  //   let diaMesAno = data.split("/");
-  //   return diaMesAno[2] + "-" + diaMesAno[1] + "-" + diaMesAno[0];
-  // }
-
-  // const setEstagiario = (estagiario: Estagiario) => {
-  //   setNomeEstagiario(estagiario.nome);
-  //   setEstagiarioId(estagiario.id);
-  //   setNomeEstagiarioSearch("");
-  // };
-
   const selecionarDemandaStatus = async (e: any) => {
     setDemandaStatus(e.target.value);
   };
@@ -222,19 +140,7 @@ export default function EditarDemanda() {
             required
             disabled
           />
-          {/* {estagiarios.length > 0 && (
-            <ul className={styles.ul}>
-              {estagiarios.map((data) => (
-                <li
-                  className={styles.li}
-                  key={data.id}
-                  onClick={() => setEstagiario(data)}
-                >
-                  {data.nome}
-                </li>
-              ))}
-            </ul>
-          )} */}
+
         </div>
 
         <div className={styles.inputGroup}>
@@ -249,61 +155,9 @@ export default function EditarDemanda() {
             <option value="Em Correção">Em Correção</option>
             <option value="Corrigido">Corrigido</option>
             <option value="Devolvido">Devolvido</option>
-            {/* <option value="Dentro do Prazo">Dentro do Prazo</option>
-            <option value="Fora do Prazo">Fora do Prazo</option> */}
           </select>
         </div>
 
-        {/* <div className={styles.inputDivGroup}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Data de Atendimento</label>
-            <input
-              className={styles.input}
-              value={dataHoje.toLocaleDateString("pt-BR")}
-              disabled
-            />
-          </div>
-
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>
-              Prazo dos Documentos
-              <span className={styles.messageError}>{messageDataError}</span>
-            </label>
-            <input
-              className={styles.input}
-              placeholder="Prazo dos Documentos (DD/MM/AAAA)"
-              value={prazoDocumentos}
-              onChange={(e) => formatarData(e.target.value)}
-              required
-            />
-          </div>
-        </div> */}
-
-        {/* <div className={styles.inputDivGroup}>
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Dias para o Prazo Final</label>
-            <input
-              type="number"
-              className={styles.input}
-              placeholder="Digite a quantidade de dias para o prazo"
-              value={prazoDias}
-              onChange={(e: any) => setPrazoFinalPorDias(e.target.value)}
-              disabled={btnDisabled}
-              required
-            />
-          </div>
-          
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Prazo Final</label>
-            <input
-              className={styles.input}
-              placeholder="Prazo Final"
-              value={prazoFinal}
-              onChange={(e: any) => setPrazoDias(e.target.value)}
-              disabled
-            />
-          </div>
-        </div> */}
 
           <div className={styles.inputGroup}>
             <label className={styles.label}>Prazo Final</label>

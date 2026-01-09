@@ -20,6 +20,7 @@ export default function EditarAdvogado() {
   const [cep, setCep] = useState("");
 
   const [usuarioStatus, setUsuarioStatus] = useState("");
+  const [statusDoUsuario, setStatusDoUsuario] = useState<string[]>([]);
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -58,7 +59,25 @@ export default function EditarAdvogado() {
       }
     }
 
+    const buscarUsuarioStatus = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/auth/usuarioStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setStatusDoUsuario(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
     fecthAdvogado();
+    buscarUsuarioStatus();
   }, []);
 
   const atualizarAdvogado = async (e:any) => {
@@ -245,8 +264,9 @@ export default function EditarAdvogado() {
           onChange={selecionarUsuarioStatus}
         >
           <option value="" disabled selected></option>
-          <option value="Ativo">Ativo</option>
-          <option value="Inativo">Inativo</option>
+            {statusDoUsuario.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
         </select>
       </div>
 

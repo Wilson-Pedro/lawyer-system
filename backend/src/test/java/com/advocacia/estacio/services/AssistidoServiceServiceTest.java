@@ -124,7 +124,7 @@ class AssistidoServiceServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve buscar Todos os Assistidos")
+	@DisplayName("Deve buscar Todos os Assistidos Pelo Service")
 	void buscar_todos() {
 
 		Page<ResponseMinDto> pages = assistidoService.buscarTodos(0, 20);
@@ -134,10 +134,10 @@ class AssistidoServiceServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve buscar Estados Civis")
+	@DisplayName("Deve buscar Estados Civis Pelo Service")
 	void buscar_estados_civis() {
 
-		List<EstadoCivil> estadoCivis = assistidoService.getEstadoCivis();
+		List<EstadoCivil> estadoCivis = assistidoService.getEstadosCivis();
 
 		assertEquals(EstadoCivil.SOLTERIO, estadoCivis.get(0));
 		assertEquals(EstadoCivil.CASADO, estadoCivis.get(1));

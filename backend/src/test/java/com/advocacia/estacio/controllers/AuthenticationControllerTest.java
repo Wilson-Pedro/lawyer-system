@@ -1,10 +1,12 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -57,6 +59,21 @@ class AuthenticationControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jsonRequest))
 				.andExpect(status().isOk());
-				//.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Usuario Status Pelo Controller")
+	void buscar_usuario_stataus() throws Exception {
+
+		String TOKEN = usuarioAuthService.login(testUtil.getAuthenticationDto()).token();
+
+		mockMvc.perform(get(URI + "/usuarioStatus")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(2)))
+				.andExpect(jsonPath("$[0]", CoreMatchers.equalTo("Ativo")))
+				.andExpect(jsonPath("$[1]", CoreMatchers.equalTo("Inativo")));
 	}
 }

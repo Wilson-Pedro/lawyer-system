@@ -13,7 +13,9 @@ export default function EditarUsuario() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [tipoAtor, setTipoAtor] = useState("");
+  const [tiposDeAtores, setTiposDeAtores] = useState<string[]>([]);
   const [usuarioStatus, setUsuarioStatus] = useState("");
+  const [statusDoUsuario, setStatusDoUsuario] = useState<string[]>([]);
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -26,6 +28,40 @@ export default function EditarUsuario() {
   useEffect(() => {
 
     const token = localStorage.getItem('token');
+
+    const buscarTipoAtores = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/atores/tipoAtores`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTiposDeAtores(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarUsuarioStatus = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/auth/usuarioStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setStatusDoUsuario(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
 
     const fetchUsuario = async () => {
       try {
@@ -46,6 +82,8 @@ export default function EditarUsuario() {
     }
 
     fetchUsuario();
+    buscarTipoAtores();
+    buscarUsuarioStatus();
   }, []);
 
   const atualizarUsuario = async () => {
@@ -128,9 +166,9 @@ export default function EditarUsuario() {
             onChange={selecionarTipoAtor}
           >
             <option value="" disabled selected></option>
-            <option value="Coordenador do curso">Coordenador(a) do curso</option>
-            <option value="Secretário">Secretário(a)</option>
-            <option value="Professor">Professor(a)</option>
+            {tiposDeAtores.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
@@ -142,8 +180,9 @@ export default function EditarUsuario() {
             onChange={selecionarUsuarioStatus}
           >
             <option value="" disabled selected></option>
-            <option value="Ativo">Ativo</option>
-            <option value="Inativo">Inativo</option>
+            {statusDoUsuario.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 

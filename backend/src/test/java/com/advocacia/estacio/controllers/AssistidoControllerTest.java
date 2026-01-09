@@ -187,9 +187,9 @@ class AssistidoControllerTest {
 
 	@Test
 	@DisplayName("Deve Buscar Estados Civis Pelo Controller")
-	void buscar_estado_civis() throws Exception {
+	void buscar_estados_civis() throws Exception {
 
-		mockMvc.perform(get(URI + "/estadoCivis")
+		mockMvc.perform(get(URI + "/estadosCivis")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

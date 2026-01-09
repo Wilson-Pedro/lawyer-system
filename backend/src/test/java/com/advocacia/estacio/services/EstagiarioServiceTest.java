@@ -136,7 +136,7 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve buscar Todos os Estagiarios")
+	@DisplayName("Deve buscar Todos os Estagiarios Pelo Service")
 	void buscar_todos() {
 
 		Page<Estagiario> pages = estagiarioService.buscarTodos(0, 20);
@@ -152,7 +152,7 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
-	@DisplayName("Deve buscar Todos os Períodos")
+	@DisplayName("Deve buscar Todos os Períodos Pelo Service")
 	void buscar_periodos() {
 		List<PeriodoEstagio> periodos = estagiarioService.getPeriodos();
 

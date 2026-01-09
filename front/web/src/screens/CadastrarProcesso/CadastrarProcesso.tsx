@@ -35,8 +35,13 @@ export default function CadastrarProcesso() {
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
+
   const [areaDoDireito, setAreaDeDireito] = useState("");
+  const [areasDoDireito, setAreasDeDireito] = useState<string[]>([]);
+
   const [tribunal, setTribunal] = useState("");
+  const [tribunais, setTribunais] = useState<string[]>([]);
+  
   const [prazo, setPrazo] = useState("");
 
   const [messageDataError, setMessageDataError] = useState("");
@@ -62,6 +67,46 @@ export default function CadastrarProcesso() {
   
   const page = 0;
   const size = 20;
+
+  useEffect(() => {
+
+    const buscarAreasDoDireito = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/areasDoDireito`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setAreasDeDireito(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarTribunais = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/tribunais`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTribunais(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarAreasDoDireito();
+    buscarTribunais();
+  }, []);
 
 
   useEffect(() => {
@@ -377,9 +422,9 @@ export default function CadastrarProcesso() {
           <label className={styles.label}>Área de Direito</label>
           <select className={styles.input} onChange={selecionarAreaDoDireito} required>
             <option value="" disabled selected></option>
-            <option value="Civil">Civil</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Previdenciário">Previdenciário</option>
+            {areasDoDireito.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
@@ -387,9 +432,9 @@ export default function CadastrarProcesso() {
           <label className={styles.label}>Tribunal</label>
           <select className={styles.input} onChange={selecionarTribunal} required>
             <option value="" disabled selected></option>
-            <option value="Estadual">Estadual</option>
-            <option value="Federal">Federal</option>
-            <option value="Trabalho">Trabalho</option>
+            {tribunais.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 

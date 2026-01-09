@@ -3,6 +3,7 @@ package com.advocacia.estacio.services;
 import java.util.List;
 
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
 import org.springframework.data.domain.Page;
 
@@ -32,4 +33,6 @@ public interface ProcessoService {
 	List<AreaDoDireito> getAreasDoDireito();
 
 	List<Tribunal> getTribunais();
+
+	List<StatusProcesso> getProcessoStatus();
 }

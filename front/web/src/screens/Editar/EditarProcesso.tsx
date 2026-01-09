@@ -38,8 +38,13 @@ export default function EditarProcesso() {
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
-  const [areaDoDireito, setAreaDeDireito] = useState<string | "">("");
-  const [tribunal, setTribunal] = useState<string | "">("");
+
+  const [areaDoDireito, setAreaDeDireito] = useState("");
+  const [areasDoDireito, setAreasDeDireito] = useState<string[]>([]);
+
+  const [tribunal, setTribunal] = useState("");
+  const [tribunais, setTribunais] = useState<string[]>([]);
+
   const [prazo, setPrazo] = useState<string | "">("");
 
   const [messageDataError, setMessageDataError] = useState("");
@@ -57,6 +62,8 @@ export default function EditarProcesso() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
+  const [statusProcesso, setStatusProcesso] = useState<string[]>([]);
+
   const [statusDoProcesso, setStatusDoProcesso] = useState("");
   const [partesEnvolvidas, setPartesEnvolvidas] = useState("");
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState("");
@@ -72,6 +79,64 @@ export default function EditarProcesso() {
 
   const page = 0;
   const size = 20;
+
+  useEffect(() => {
+
+    const buscarAreasDoDireito = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/areasDoDireito`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setAreasDeDireito(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarTribunais = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/tribunais`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTribunais(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarStatusDoProcesso = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/processoStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setStatusProcesso(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarAreasDoDireito();
+    buscarTribunais();
+    buscarStatusDoProcesso();
+  }, []);
 
   useEffect(() => {
 
@@ -240,6 +305,14 @@ export default function EditarProcesso() {
     setPrazo(formatado);
   }
 
+  const selecionarAreaDoDireito = async (e:any) => {
+    setAreaDeDireito(e.target.value);
+  }
+
+  const selecionarTribunal = async (e:any) => {
+    setTribunal(e.target.value);
+  }
+
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
@@ -375,48 +448,47 @@ export default function EditarProcesso() {
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
-          <Select 
-              options={[
-                { value: "Civil", label: "Civil" },
-                { value: "Trabalho", label: "Trabalho" },
-                { value: "Previdenciário", label: "Previdenciário" }
-              ]}
-              value={ areaDoDireito ? { value: areaDoDireito, label: areaDoDireito } : null}
-              onChange={(e) => {
-                if (e) setAreaDeDireito(e.value)} 
-              }
-          />
-
+          <select 
+            className={styles.input} 
+            value={areaDoDireito} 
+            onChange={selecionarAreaDoDireito} 
+            required
+          >
+            <option value="" disabled selected></option>
+            {areasDoDireito.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
+          </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
-          <Select 
-              options={[
-                { value: "Estadual", label: "Estadual" },
-                { value: "Federal", label: "Federal" },
-                { value: "Trabalho", label: "Trabalho" }
-              ]}
-              value={ tribunal ? { value: tribunal, label: tribunal } : null}
-              onChange={(e) => {
-                if (e) setTribunal(e.value)} 
-              }
-          />
+          <select 
+            className={styles.input}
+            value={tribunal}
+            onChange={selecionarTribunal}
+            required
+          >
+            <option value="" disabled selected></option>
+            {tribunais.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
+          </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Status Do Processo</label>
-          <Select 
-              options={[
-                { value: "Tramitando", label: "Tramitando" },
-                { value: "Suspenso", label: "Suspenso" },
-                { value: "Arquivado", label: "Arquivado" }
-              ]}
-              value={ statusDoProcesso ? { value: statusDoProcesso, label: statusDoProcesso } : null}
-              onChange={(e) => {
-                if (e) setStatusDoProcesso(e.value)} 
-              }
-          />
+          <select 
+            className={styles.input}
+            value={statusDoProcesso}
+            onChange={selecionarTribunal}
+            required
+          >
+            <option value="" disabled selected></option>
+            {statusProcesso.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
+          </select>
         </div>
 
         <div className={styles.inputGroup}>

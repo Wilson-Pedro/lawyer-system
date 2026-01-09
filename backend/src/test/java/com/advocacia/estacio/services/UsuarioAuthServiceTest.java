@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.services.impl.UsuarioAuthService;
 import com.advocacia.estacio.utils.TestUtil;
+
+import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -110,5 +113,14 @@ class UsuarioAuthServiceTest {
 		
 		assertEquals(usuario.getLogin(), mesmoUsuario.getLogin());
 		assertEquals(usuario.getPassword(), mesmoUsuario.getPassword());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Usuario Status Pelo Service")
+	void buscar_usuario_status() {
+		List<UsuarioStatus> usuarioStatus = usuarioAuthService.getUsuarioStatus();
+
+		assertEquals(UsuarioStatus.ATIVO, usuarioStatus.get(0));
+		assertEquals(UsuarioStatus.INATIVO, usuarioStatus.get(1));;
 	}
 }

@@ -21,5 +21,5 @@ public interface AssistidoService {
 
 	Page<ResponseMinDto> buscarTodos(int page, int size);
 
-	List<EstadoCivil> getEstadoCivis();
+	List<EstadoCivil> getEstadosCivis();
 }

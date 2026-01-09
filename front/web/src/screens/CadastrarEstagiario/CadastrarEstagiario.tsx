@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
@@ -13,12 +13,35 @@ export default function CadastrarEstagiario() {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [matricula, setMatricula] = useState("");
+  const [periodos, setPeriodos] = useState<string[]>([]);
   const [periodo, setPeriodo] = useState("");
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+
+  useEffect(() => {
+
+    const buscarPeriodos = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/estagiarios/periodos`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setPeriodos(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarPeriodos();
+  }, []);
 
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
@@ -124,10 +147,9 @@ export default function CadastrarEstagiario() {
             onChange={selecionarPeriodo}
           >
             <option value="" disabled selected></option>
-            <option value="Estágio I">Estágio I</option>
-            <option value="Estágio II">Estágio II</option>
-            <option value="Estágio III">Estágio III</option>
-            <option value="Estágio IV">Estágio IV</option>
+            {periodos.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 

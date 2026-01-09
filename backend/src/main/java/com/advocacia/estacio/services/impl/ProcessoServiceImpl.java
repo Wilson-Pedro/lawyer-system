@@ -136,4 +136,9 @@ public class ProcessoServiceImpl implements ProcessoService {
 	public List<Tribunal> getTribunais() {
 		return Arrays.stream(Tribunal.values()).toList();
 	}
+
+	@Override
+	public List<StatusProcesso> getProcessoStatus() {
+		return Arrays.stream(StatusProcesso.values()).toList();
+	}
 }

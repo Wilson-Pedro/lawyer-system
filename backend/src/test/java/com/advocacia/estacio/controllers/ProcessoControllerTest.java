@@ -186,6 +186,21 @@ class ProcessoControllerTest {
 	}
 
 	@Test
+	@DisplayName("Deve Buscar Processo Status Pelo Controller")
+	void buscar_processo_status() throws Exception {
+
+		mockMvc.perform(get(URI + "/processoStatus")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Tramitando")))
+				.andExpect(jsonPath("$[1]", equalTo("Suspenso")))
+				.andExpect(jsonPath("$[2]", equalTo("Arquivado")));
+	}
+
+	@Test
 	@DisplayName("Deve Buscar Tribunais Civis Pelo Controller")
 	void buscar_tribunais() throws Exception {
 

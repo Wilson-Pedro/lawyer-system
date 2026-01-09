@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
@@ -12,11 +12,33 @@ export default function CadastrarUsuario() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [tipoAtor, setTipoAtor] = useState("");
+  const [tiposDeAtores, setTiposDeAtores] = useState<string[]>([]);
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+
+  useEffect(() => {
+
+    const buscarTipoAtores = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/atores/tipoAtores`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTiposDeAtores(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+    buscarTipoAtores();
+  }, []);
 
   const cadastrarUsuario = async () => {
     try {
@@ -98,9 +120,9 @@ export default function CadastrarUsuario() {
             onChange={selecionarTipoAtor}
           >
             <option value="" disabled selected></option>
-            <option value="Coordenador do curso">Coordenador(a) do curso</option>
-            <option value="Secretário">Secretário(a)</option>
-            <option value="Professor">Professor(a)</option>
+            {tiposDeAtores.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 

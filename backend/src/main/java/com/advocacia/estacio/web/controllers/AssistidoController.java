@@ -49,9 +49,9 @@ public class AssistidoController {
 		return ResponseEntity.ok(dto);
 	}
 
-	@GetMapping("/estadoCivis")
-	public ResponseEntity<List<String>> buscarEstadoCivis() {
-		List<String> estadoCivis = assistidoService.getEstadoCivis().stream().map(EstadoCivil::getEstado).toList();
+	@GetMapping("/estadosCivis")
+	public ResponseEntity<List<String>> buscarEstadosCivis() {
+		List<String> estadoCivis = assistidoService.getEstadosCivis().stream().map(EstadoCivil::getEstado).toList();
 		return ResponseEntity.ok(estadoCivis);
 	}
 	

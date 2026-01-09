@@ -1,10 +1,10 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
@@ -170,5 +170,57 @@ class DemandaControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("content[0].estagiarioNome").value("Pedro Lucas"));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demanda Status do ADMIN Pelo Controller")
+	void buscar_demanda_status_admin() throws Exception {
+
+		mockMvc.perform(get(URI + "/role/admin")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(8)))
+				.andExpect(jsonPath("$[0]", equalTo("Corrigido")))
+				.andExpect(jsonPath("$[1]", equalTo("Em Correção")))
+				.andExpect(jsonPath("$[2]", equalTo("Devolvido")))
+				.andExpect(jsonPath("$[3]", equalTo("Dentro do Prazo")))
+				.andExpect(jsonPath("$[4]", equalTo("Fora do Prazo")))
+				.andExpect(jsonPath("$[5]", equalTo("Recebido")))
+				.andExpect(jsonPath("$[6]", equalTo("Protocolado")))
+				.andExpect(jsonPath("$[7]", equalTo("Aguardando Professor")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demanda Status do PROFESSOR Pelo Controller")
+	void buscar_demanda_status_professor() throws Exception {
+
+		mockMvc.perform(get(URI + "/role/Professor")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(5)))
+				.andExpect(jsonPath("$[0]", equalTo("Em Correção")))
+				.andExpect(jsonPath("$[1]", equalTo("Corrigido")))
+				.andExpect(jsonPath("$[2]", equalTo("Devolvido")))
+				.andExpect(jsonPath("$[3]", equalTo("Dentro do Prazo")))
+				.andExpect(jsonPath("$[4]", equalTo("Fora do Prazo")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demanda Status do ADVOGADO Pelo Controller")
+	void buscar_demanda_status_advogado() throws Exception {
+
+		mockMvc.perform(get(URI + "/role/Advogado")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Em Correção")))
+				.andExpect(jsonPath("$[1]", equalTo("Corrigido")))
+				.andExpect(jsonPath("$[2]", equalTo("Devolvido")));
 	}
 }

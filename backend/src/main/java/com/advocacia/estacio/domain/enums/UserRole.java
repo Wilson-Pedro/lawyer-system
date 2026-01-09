@@ -36,4 +36,11 @@ public enum UserRole {
 				.findFirst()
 				.orElseThrow(() -> new EnumException("role inválida"));
 	}
+
+	public static UserRole toEnum(String roleS) {
+		return Stream.of(UserRole.values())
+				.filter(r -> r.getRole().equals(roleS))
+				.findFirst()
+				.orElseThrow(() -> new EnumException("role inválida"));
+	}
 }

@@ -1,7 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
+import com.advocacia.estacio.exceptions.EnumException;
 import com.advocacia.estacio.services.AdvogadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class DemandaServiceImpl implements DemandaService {
@@ -60,10 +63,6 @@ public class DemandaServiceImpl implements DemandaService {
 		return demandaRepository.buscarTodosPorEstagiarioId(estagiarioId, pageable);
 	}
 
-//	@Override
-//	public Page<DemandaDto> buscarTodosPorAdvogadooId(Long advogadoId, int page, int size) {
-//		return null;
-//	}
 
 	@Override
 	public Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size) {
@@ -76,5 +75,18 @@ public class DemandaServiceImpl implements DemandaService {
 		Demanda demanda = buscarPorId(id);
 		demanda.setDemandaStatusAluno(DemandaStatus.toEnum(status));
 		demandaRepository.save(demanda);
+	}
+
+	@Override
+	public List<DemandaStatus> getDemandaStatus(UserRole role) {
+		return switch (role) {
+			case ADMIN -> List.of(DemandaStatus.values());
+
+			case PROFESSOR -> List.of(DemandaStatus.EM_CORRECAO, DemandaStatus.CORRIGIDO, DemandaStatus.DEVOLVIDO,
+					DemandaStatus.DENTRO_DO_PRAZO, DemandaStatus.FORA_DO_PRAZO);
+
+			case ADVOGADO -> List.of(DemandaStatus.EM_CORRECAO, DemandaStatus.CORRIGIDO, DemandaStatus.DEVOLVIDO);
+			default -> throw new EnumException("Essa Role não tem demandas");
+		};
 	}
 }

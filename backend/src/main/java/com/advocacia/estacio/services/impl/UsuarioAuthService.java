@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,9 @@ import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class UsuarioAuthService  {
@@ -72,5 +76,10 @@ public class UsuarioAuthService  {
 		}
 
 		if(atualizar) this.usuarioAuthRepository.save(user);
+	}
+
+
+	public List<UsuarioStatus> getUsuarioStatus() {
+		return Arrays.stream(UsuarioStatus.values()).toList();
 	}
 }

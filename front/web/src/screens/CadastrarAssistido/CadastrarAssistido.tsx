@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap"
@@ -15,6 +15,7 @@ export default function CadastrarAssistido() {
   const [profissao, setProfissao] = useState("");
   const [nacionalidade, setNacionalidade] = useState("brasileiro");
   const [naturalidade, setnaturalidade] = useState("");
+  const [estadosCivis, setEstadosCivis] = useState<string[]>([]);
   const [estadoCivil, setEstadoCivil] = useState("");
   const [cidade, setCidade] = useState("");
   const [bairro, setBairro] = useState("");
@@ -28,8 +29,31 @@ export default function CadastrarAssistido() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+
+    const buscarEstadosCivis = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/assistidos/estadosCivis`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setEstadosCivis(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarEstadosCivis();
+  }, []);
+
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
+
 
   const cadastrarAssistido = async (e:any) => {
     e.preventDefault();
@@ -169,11 +193,14 @@ export default function CadastrarAssistido() {
           <label className={styles.label}>Estado Civil</label>
           <select className={styles.input} onChange={selecionarEstadoCivil}>
             <option value="" disabled selected></option>
-            <option value="Solteiro(a)">Solteiro(a)</option>
+            {estadosCivis.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
+            {/* <option value="Solteiro(a)">Solteiro(a)</option>
             <option value="Casado(a)">Casado(a)</option>
             <option value="Divorciado(a)">Divorciado(a)</option>
             <option value="Viuvo(a)">Viuvo(a)</option>
-            <option value="Separado Judicialmente">Separado Judicialmente</option>
+            <option value="Separado Judicialmente">Separado Judicialmente</option> */}
           </select>
         </div>
         
