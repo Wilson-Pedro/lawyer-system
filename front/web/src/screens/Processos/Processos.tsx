@@ -6,6 +6,14 @@ import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
 
 const API_URL = process.env.REACT_APP_API;
 
+interface Page<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  sizE: number;
+  number: number;
+}
+
 interface Processo {
   id: string;
   numeroDoProcesso: string;
@@ -21,20 +29,25 @@ export default function Processos() {
   const [filteredProcessos, setFilteredProcessos] = useState<Processo[]>([]);
   const [busca, setBusca] = useState("");
   const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(20);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
+
+
     const fetchProcessos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}`, {
+        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}?page=${0}&size=${20}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-        setProcessos(response.data);
-        setFilteredProcessos(response.data);
+        const page: Page<Processo> = response.data;
+        setProcessos(page.content);
+        setFilteredProcessos(page.content);
       } catch (error) {
         console.error(error);
       }

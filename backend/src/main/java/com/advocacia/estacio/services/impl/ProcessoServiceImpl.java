@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.projections.ProcessoProjection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -71,10 +72,17 @@ public class ProcessoServiceImpl implements ProcessoService {
 	public List<Processo> findAll() {
 		return processoRepository.findAll();
 	}
-	
-	public List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus) {
-		return processoRepository.buscarProcessosPorStatusDoProcesso(processoStatus).stream()
-				.map(ProcessoDto::new).toList();
+
+	@Override
+	public Page<Processo> findAll(int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return processoRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus, int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        return processoRepository.buscarProcessosPorStatusDoProcesso(StatusProcesso.toEnum(processoStatus), pageable);
 	}
 	
 	public Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size) {

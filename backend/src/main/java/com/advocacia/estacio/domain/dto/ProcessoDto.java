@@ -4,8 +4,10 @@ import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
 import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 import com.advocacia.estacio.domain.entities.Processo;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.projections.ProcessoProjection;
 
 public class ProcessoDto implements Serializable{
@@ -50,28 +52,6 @@ public class ProcessoDto implements Serializable{
 	public ProcessoDto() {
 	}
 	
-//	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
-//			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId, String advogadoNome,
-//			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas,
-//			String ultimaAtualizacao) {
-//		this.id = id;
-//		this.assistidoId = assistidoId;
-//		this.numeroDoProcesso = numeroDoProcesso;
-//		this.numeroDoProcessoPje = numeroDoProcessoPje;
-//		this.assunto = assunto;
-//		this.vara = vara;
-//		this.prazoFinal = prazoFinal;
-//		this.responsavel = responsavel;
-//		this.advogadoId = advogadoId;
-//		this.estagiarioId = estagiarioId;
-//		this.advogadoNome = advogadoNome;
-//		this.areaDoDireito = areaDoDireito;
-//		this.tribunal = tribunal;
-//		this.statusDoProcesso = statusDoProcesso;
-//		this.partesEnvolvidas = partesEnvolvidas;
-//		this.ultimaAtualizacao = ultimaAtualizacao;
-//	}
-	
 	public ProcessoDto(Long id, Long assistidoId, String numeroDoProcesso, String numeroDoProcessoPje, String assunto,
 			String vara, String prazoFinal, String responsavel, Long advogadoId, Long estagiarioId,
 			String areaDoDireito, String tribunal, String statusDoProcesso, String partesEnvolvidas) {
@@ -98,6 +78,16 @@ public class ProcessoDto implements Serializable{
 		this.vara = vara;
 		this.prazoFinal = prazoFinal;
 		this.responsavel = responsavel;
+	}
+
+	public ProcessoDto(Long id, String numeroDoProcesso, String assunto, LocalDate prazoFinal, String responsavel, StatusProcesso statusDoProcesso, String advogadoNome) {
+		this.id = id;
+		this.numeroDoProcesso = numeroDoProcesso;
+		this.assunto = assunto;
+		this.prazoFinal = localDateToString(prazoFinal);
+		this.responsavel = responsavel;
+		this.statusDoProcesso = statusDoProcesso.getStatus();
+		this.advogadoNome = advogadoNome;
 	}
 	
 	public ProcessoDto(Processo processo) {

@@ -102,17 +102,17 @@ class ProcessoControllerTest {
 	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Controller")
 	void buscar_processos_por_status() throws Exception {
 		
-		mockMvc.perform(get(URI + "/statusDoProcesso/TRAMITANDO")
+		mockMvc.perform(get(URI + "/statusDoProcesso/Tramitando?page=0&size=10")
 				.header("Authorization", "Bearer " + TOKEN)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$[0].id").exists())
-				.andExpect(jsonPath("$[0].numeroDoProcesso").exists())
-				.andExpect(jsonPath("$[0].assunto").exists())
-				.andExpect(jsonPath("$[0].prazoFinal").exists())
-				.andExpect(jsonPath("$[0].responsavel").exists());
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("$.content[0].id").exists())
+				.andExpect(jsonPath("$.content[0].numeroDoProcesso").exists())
+				.andExpect(jsonPath("$.content[0].assunto").exists())
+				.andExpect(jsonPath("$.content[0].prazoFinal").exists())
+				.andExpect(jsonPath("$.content[0].responsavel").exists());
 	}
 	
 	@Test

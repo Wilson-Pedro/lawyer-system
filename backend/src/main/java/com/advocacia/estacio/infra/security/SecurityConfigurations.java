@@ -69,7 +69,7 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/processos/areasDoDireito").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/tribunais").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/processoStatus").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/processos/statusDoProcesso/{processoStatus}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/processos/statusDoProcesso/{processoStatus}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/processos/buscar/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/numeroDoProcesso/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/processos/{id}").hasRole("ADMIN")

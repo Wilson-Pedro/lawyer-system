@@ -80,10 +80,21 @@ class ProcessoServiceTest {
 	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Service")
 	void buscar_processos_por_status() {
 		
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
+		Page<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("Tramitando", 0, 20);
 		
 		assertNotNull(processos);
+		assertEquals(1, processos.getContent().size());
         assertFalse(processos.isEmpty());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar TODOS os Processos Paginados e Dados Pelo Service")
+	void buscar_todos_processos() {
+
+		Page<Processo> processos = processoService.findAll(0, 20);
+
+		assertNotNull(processos);
+		assertFalse(processos.isEmpty());
 	}
 	
 	@Test

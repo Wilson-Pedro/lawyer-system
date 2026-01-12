@@ -19,10 +19,12 @@ public interface ProcessoService {
 	Processo buscarPorId(Long id);
 	
 	Processo buscarPorNumeroDoProcesso(String numeroDoProcesso);
-	
-	List<ProcessoDto> buscarProcessosPorStatusDoProcesso(String processoStatus);
+
+	Page<ProcessoDto> buscarProcessosPorStatusDoProcesso(String statusDoProcesso, int page, int size);
 	
 	List<Processo> findAll();
+
+	Page<Processo> findAll(int page, int size);
 	
 	Page<Processo> buscarProcesso(String numeroDoProcesso, int page, int size);
 	

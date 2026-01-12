@@ -313,6 +313,10 @@ export default function EditarProcesso() {
     setTribunal(e.target.value);
   }
 
+  const selecionarStatusDoProcesso = async (e:any) => {
+    setStatusDoProcesso(e.target.value);
+  }
+
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
@@ -481,7 +485,7 @@ export default function EditarProcesso() {
           <select 
             className={styles.input}
             value={statusDoProcesso}
-            onChange={selecionarTribunal}
+            onChange={selecionarStatusDoProcesso}
             required
           >
             <option value="" disabled selected></option>

@@ -68,14 +68,16 @@ public class ProcessoController {
 	}
 	
 	@GetMapping("/statusDoProcesso/{processoStatus}")
-	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso(
-			@PathVariable String processoStatus) {
+	public ResponseEntity<PageResponseDto<ProcessoDto>> buscarProcessosPorStatusDoProcesso(
+			@PathVariable String processoStatus,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
 		if(processoStatus.equalsIgnoreCase("todos")) {
-			return ResponseEntity.ok(processoService.findAll().stream()
-					.map(ProcessoDto::new).toList());
+			Page<ProcessoDto> todosProcessos = processoService.findAll(page, size).map(ProcessoDto::new);
+			return ResponseEntity.ok((new PageResponseDto<>(todosProcessos)));
 		}
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus);
-		return ResponseEntity.ok(processos);
+		Page<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus, page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(processos));
 	}
 	
 	@GetMapping("/buscar/{numeroDoProcesso}")
