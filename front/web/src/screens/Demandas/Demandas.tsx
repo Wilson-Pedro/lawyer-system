@@ -29,27 +29,40 @@ export default function Demandas() {
     const [filteredDemandas, setFilteredDemandas] = useState<Demanda[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
+    const [page, setPage] = useState(0);
+    const [pages, setPages] = useState<number[]>([]);
+    const [size, setSize] = useState(1);
+    const [paginaAtual, setPaginaAtual] = useState(0);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        definirPaginacao();
+    }, [pages]);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/status/${statusFiltro}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/status/${statusFiltro}?page=${page}&size=${size}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const page: Page<Demanda> = response.data;
-                setDemandas(page.content);
+                const pages: Page<Demanda> = response.data;
+                setDemandas(pages.content);
+                setTotalPages(pages.totalPages);
+                setTotalElements(pages.totalElements);
+                definirPaginacao();
                 setFilteredDemandas(response.data);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDemandas();
-    }, [statusFiltro]);
+    }, [statusFiltro, page]);
 
     useEffect(() => {
         let dados = [...demandas]
@@ -66,6 +79,33 @@ export default function Demandas() {
 
         setFilteredDemandas(dados);
     }, [busca, demandas]);
+
+    const paginaAnterior = () => {
+        setPaginaAtual(page - 1);
+        setPage(paginaAtual - 1);
+    }
+
+    const proximaPagina = () => {
+        setPaginaAtual(page + 1);
+        setPage(paginaAtual + 1);
+    }
+
+    const navegarParaPagina = (pagina:number) => {
+        if(pagina >=0 && pagina <= totalPages) {
+            setPage(pagina);
+            setPaginaAtual(pagina);
+        }
+    }
+
+    const definirPaginacao = () => {
+        let pagina = 0;
+        let paginas: number[] = [];
+        for(let i = 0; i < totalPages; i++) {
+            paginas.push(pagina);
+            pagina++;
+        }
+        setPages(paginas);
+    }
 
     const getStatusClass = (status: string): string => {
         switch (status) {
@@ -95,7 +135,7 @@ export default function Demandas() {
         <div className="min-vh-100 d-flex flex-column bg-light">
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-                <span className="navbar-brand fw-bold fs-4">Demandas</span>
+                <span className="navbar-brand fw-bold fs-4">Demandas - toalPages: {totalPages} - totalElements: {totalElements} - Page: {page} - Atual: {paginaAtual}</span>
                 <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
                     ← Voltar
                 </button>
@@ -183,6 +223,46 @@ export default function Demandas() {
                     </div>
                 )}
             </div>
+
+            <nav aria-label="Page navigation example">
+                <ul className="pagination justify-content-center">
+                    {page !== 0 ? (
+                        <li className="page-item">
+                            <button className="page-link" onClick={() => paginaAnterior()}>Anterior</button>
+                        </li>
+                    ) : (
+                        <li className="page-item">
+                            <button className="page-link disabled">Anterior</button>
+                        </li>
+                    )}
+
+                    {pages.map((item, index) => (
+
+                        <>
+                            {page === item ? (
+                                <li className="page-item">
+                                    <button className="page-link active" onClick={() => navegarParaPagina(item)}>{item + 1}</button>
+                                </li>
+                            ) : (
+                                <li className="page-item">
+                                    <button className="page-link" onClick={() => navegarParaPagina(item)}>{item + 1}</button>
+                                </li>
+                            )}
+                        </>
+
+                    ))}
+
+                    {page !== (totalPages - 1) ? (
+                        <li className="page-item">
+                            <button className="page-link" onClick={() => proximaPagina()}>Próximo</button>
+                        </li>
+                    ) : (
+                        <li className="page-item">
+                            <button className="page-link disabled">Próximo</button>
+                        </li>
+                    )}
+                </ul>
+            </nav>
 
 
             <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

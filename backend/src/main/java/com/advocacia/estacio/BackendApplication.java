@@ -97,6 +97,26 @@ public class BackendApplication implements CommandLineRunner {
 		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		demandaService.salvar(demandaDto2);
+		demandaService.salvar(demandaDto2);
+		demandaService.salvar(demandaDto2);
+
+		demandaService.salvar(new DemandaDto(null, "2", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "2", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "2", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "2", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "2", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+
+		demandaService.salvar(new DemandaDto(null, "3", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "3", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "3", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "3", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "3", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+
+		demandaService.salvar(new DemandaDto(null, "4", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "4", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "4", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+		demandaService.salvar(new DemandaDto(null, "4", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "03/12/2025", 12, "Dentro do Prazo"));
+
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
