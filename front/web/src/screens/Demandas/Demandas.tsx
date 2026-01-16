@@ -109,72 +109,90 @@ export default function Demandas() {
         let pagina = primeiraPagina;
         let paginas: number[] = [];
 
-
-        if(totalPages <= 11) {
-            setUltimaPagina(totalPages)
+        if(paginaAtual + 1 === 1) {
+            console.log(`paginaAtual + 1 === 1`)
             setPrimeiraPagina(0);
-
-        } else if (paginaAtual >= 0 && paginaAtual <= 11) {
-            setUltimaPagina(11);
+            setUltimaPagina(totalPages <= 11 ? totalPages : 12);
             setMostrarUltimaPagina(true);
             setMostrarPrimeiraPagina(false);
         }
 
-        if (paginaAtual + 1 === 1) {
 
-            setPrimeiraPagina(0);
-            setUltimaPagina(11);
+        if(totalPages <= 12) {
+            console.log(`totalPages <= 12`)
+            setUltimaPagina(totalPages)
+            setPrimeiraPagina(0)
             setMostrarPrimeiraPagina(false);
+            setMostrarUltimaPagina(false);
+        }
 
-        } else if(paginaAtual === primeiraPagina) {
 
-            if(paginaAtual === 0) {
-                setMostrarPrimeiraPagina(false);
-            }
-            
-            if(paginaAtual - 9 === 0) {
-                setUltimaPagina(11);
+        if(paginaAtual === primeiraPagina) {
+
+            console.log(`paginaAtual === primeiraPagina`)
+
+            if(paginaAtual - 10 > 10) {
+                console.log(`primeiraPagina: 1`)
+                setUltimaPagina(paginaAtual + 2);
+                setPrimeiraPagina(paginaAtual - 11);
+                setMostrarPrimeiraPagina(true);
+                setMostrarUltimaPagina(true);
+
+            } else if(paginaAtual > 12) {
+                console.log(`primeiraPagina: 2`)
+                setPrimeiraPagina(paginaAtual - 10);
+                setUltimaPagina(paginaAtual + 2);
+                setMostrarUltimaPagina(totalPages <= 12 ? false : true);
+                setMostrarPrimeiraPagina(true);
+
+            } else if(paginaAtual - 10 < 12) {
+                console.log(`primeiraPagina: 3`)
                 setPrimeiraPagina(0);
+                setUltimaPagina(totalPages <= 12 ? totalPages : 12);
+                setMostrarUltimaPagina(totalPages <= 12 ? false : true);
                 setMostrarPrimeiraPagina(false);
             }
 
         } else if (paginaAtual + 1 === ultimaPagina) {
 
-            if(paginaAtual + 1 === ultimaPagina) {
-                setMostrarUltimaPagina(false);
-            }
-            
-            if(paginaAtual - 9 === 0) {
-                setUltimaPagina(paginaAtual + 9);
-                setPrimeiraPagina(paginaAtual);
-                setMostrarPrimeiraPagina(true);
+            console.log(`paginaAtual + 1 === ultimaPagina`)
 
-            } else if((totalPages - 1) - ultimaPagina < 10) {
-                setMostrarUltimaPagina(false);
-                setUltimaPagina(totalPages);
-                setPrimeiraPagina(totalPages - 10);
-
-            } else if((totalPages - 1) - ultimaPagina > 10) {
-                console.log(`oi`)
+            if((paginaAtual + 1 === ultimaPagina) && paginaAtual + 1 !== totalPages) {
+                console.log(`ultimaPagina: 1`)
                 setMostrarUltimaPagina(true);
-                setPrimeiraPagina(paginaAtual);
+                setMostrarPrimeiraPagina(true);
+            }
+
+            if((totalPages - 1) - ultimaPagina > 10) {
+                console.log(`ultimaPagina: 2`)
+                setMostrarUltimaPagina(true);
+                setPrimeiraPagina(paginaAtual - 1);
                 setUltimaPagina(paginaAtual + 10);
 
+            } else if((totalPages - 1) - ultimaPagina <= 10) {
+                console.log(`ultimaPagina: 3`)
+                setMostrarUltimaPagina(false);
+                setMostrarPrimeiraPagina(totalPages - 13 > 0 ? true : false);
+                setPrimeiraPagina(totalPages - 13 > 0 ? totalPages - 13 : 0);
+                setUltimaPagina(totalPages);
+
+            } else if (paginaAtual + 1 === totalPages) {
+                console.log(`ultimaPagina: 4`)
+                setPrimeiraPagina(totalPages - 10);
+                setUltimaPagina(totalPages);
+                setMostrarUltimaPagina(false);
+                setMostrarPrimeiraPagina(true);
             }
 
-        } else if(paginaAtual + 1 === totalPages) {
-                setPrimeiraPagina(totalPages - 9);
+        } else if (paginaAtual + 1 === totalPages) {
+            console.log(`paginaAtual + 1 === totalPages`)
+                console.log(`paginal Atual === pagina total`)
+                setPrimeiraPagina(totalPages - 13);
                 setUltimaPagina(totalPages);
-                setMostrarPrimeiraPagina(true);
                 setMostrarUltimaPagina(false);
+                setMostrarPrimeiraPagina(true);
         }
 
-        // if(paginaAtual >= 10 && paginaAtual + 7 <= totalPages) {
-        //     setMostrarUltimaPagina(true);
-        //     setMostrarPrimeiraPagina(true);
-        //     setUltimaPagina(totalPages - 2);
-        //     setPrimeiraPagina(totalPages - 9);
-        // }
 
         for(let i = primeiraPagina; i < ultimaPagina; i++) {
             paginas.push(pagina);
@@ -322,7 +340,7 @@ export default function Demandas() {
                                     <button 
                                     className={`page-link ${page === item ? "active" : ""}`} 
                                     onClick={() => navegarParaPagina(item)}
-                                    >{page === item ? paginaAtual : item + 1}</button>
+                                    >{page === item ? paginaAtual + 1 : item + 1}</button>
                                 </li>
 
                             ))}
@@ -336,7 +354,7 @@ export default function Demandas() {
                                     <li className="page-item">
                                         <button 
                                         className={`page-link`}
-                                        onClick={() => navegarParaPagina(1)}
+                                        onClick={() => navegarParaPagina(0)}
                                         >1</button>
                                     </li>
                                     <li className="page-item">
