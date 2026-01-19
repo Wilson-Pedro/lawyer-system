@@ -4,6 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, PlusIcon } from "../../Icons/Icon";
 
+import Paginacao from "../../components/Paginacao/Paginacao";
+
 const API_URL = process.env.REACT_APP_API;
 
 interface Page<T> {
@@ -35,7 +37,7 @@ export default function Demandas() {
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(10);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
@@ -88,22 +90,6 @@ export default function Demandas() {
         definirPaginacao();
     }, [paginaAtual, totalPages, ultimaPagina]);
 
-    const paginaAnterior = () => {
-        setPaginaAtual(page - 1);
-        setPage(paginaAtual - 1);
-    }
-
-    const proximaPagina = () => {
-        setPaginaAtual(page + 1);
-        setPage(paginaAtual + 1);
-    }
-
-    const navegarParaPagina = (pagina:number) => {
-        if(pagina >=0 && pagina <= totalPages) {
-            setPage(pagina);
-            setPaginaAtual(pagina);
-        }
-    }
 
     const definirPaginacao = () => {
         let pagina = primeiraPagina;
@@ -321,85 +307,16 @@ export default function Demandas() {
                 )}
             </div>
 
-            <nav aria-label="Page navigation example">
-                <ul className="pagination justify-content-center">
-                    <li className="page-item">
-                        <button 
-                        className={`page-link ${page === 0 ? "disabled" : ""}`} 
-                        onClick={page === 0 ? undefined : paginaAnterior}
-                        disabled={page === 0}
-                        >Anterior</button>
-                    </li>
-
-                    {totalPages <= 11 ? (
-                        <>
-
-                            {paginas.map((item, index) => (
-
-                                <li className="page-item" key={index}>
-                                    <button 
-                                    className={`page-link ${page === item ? "active" : ""}`} 
-                                    onClick={() => navegarParaPagina(item)}
-                                    >{page === item ? paginaAtual + 1 : item + 1}</button>
-                                </li>
-
-                            ))}
-                        </>
-
-                    ) : (
-                        <>
-
-                            {mostrarPrimeiraPagina && (
-                                <>
-                                    <li className="page-item">
-                                        <button 
-                                        className={`page-link`}
-                                        onClick={() => navegarParaPagina(0)}
-                                        >1</button>
-                                    </li>
-                                    <li className="page-item">
-                                        <button className="page-link disabled">...</button>
-                                    </li>
-                                </>
-                            )}
-
-                            {paginas.map((item, index) => (
-
-                                <li className="page-item" key={index}>
-                                    <button 
-                                    className={`page-link ${page === item ? "active" : ""}`} 
-                                    onClick={() => navegarParaPagina(item)}>{item + 1}</button>
-                                </li>
-
-                            ))}
-
-                            {mostrarUltimaPagina && (
-                                <>
-                                    <li className="page-item">
-                                        <button className="page-link disabled">...</button>
-                                    </li>
-                                    <li className="page-item">
-                                        <button 
-                                        className={`page-link ${page === totalPages -1 ? "active" : ""}`}
-                                        onClick={() => navegarParaPagina(totalPages - 1)}
-                                        >{totalPages}</button>
-                                    </li>
-                                </>
-                            )}
-
-                        </>
-                    )} 
-
-                    <li className="page-item">
-                        <button 
-                        className={`page-link ${page === totalPages - 1 ? "disabled" : ""}`} 
-                        onClick={page === (totalPages - 1) ? undefined : proximaPagina}
-                        disabled={page === (totalPages - 1)}
-                        >Próximo</button>
-                    </li>
-
-                </ul>
-            </nav>
+            <Paginacao 
+                page={page}
+                totalPages={totalPages}
+                paginaAtual={paginaAtual}
+                paginas={paginas}
+                setPaginaAtual={setPaginaAtual}
+                setPage={setPage}
+                mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+                mostrarUltimaPagina={mostrarUltimaPagina}
+            />
 
 
             <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
