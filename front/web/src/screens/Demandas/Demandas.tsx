@@ -37,7 +37,7 @@ export default function Demandas() {
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
-    const [size, setSize] = useState(10);
+    const [size, setSize] = useState(1);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
@@ -85,107 +85,6 @@ export default function Demandas() {
 
         setFilteredDemandas(dados);
     }, [busca, demandas]);
-
-    useEffect(() => {
-        definirPaginacao();
-    }, [paginaAtual, totalPages, ultimaPagina]);
-
-
-    const definirPaginacao = () => {
-        let pagina = primeiraPagina;
-        let paginas: number[] = [];
-
-        if(paginaAtual + 1 === 1) {
-            console.log(`paginaAtual + 1 === 1`)
-            setPrimeiraPagina(0);
-            setUltimaPagina(totalPages <= 11 ? totalPages : 12);
-            setMostrarUltimaPagina(true);
-            setMostrarPrimeiraPagina(false);
-        }
-
-
-        if(totalPages <= 12) {
-            console.log(`totalPages <= 12`)
-            setUltimaPagina(totalPages)
-            setPrimeiraPagina(0)
-            setMostrarPrimeiraPagina(false);
-            setMostrarUltimaPagina(false);
-        }
-
-
-        if(paginaAtual === primeiraPagina) {
-
-            console.log(`paginaAtual === primeiraPagina`)
-
-            if(paginaAtual - 10 > 10) {
-                console.log(`primeiraPagina: 1`)
-                setUltimaPagina(paginaAtual + 2);
-                setPrimeiraPagina(paginaAtual - 11);
-                setMostrarPrimeiraPagina(true);
-                setMostrarUltimaPagina(true);
-
-            } else if(paginaAtual > 12) {
-                console.log(`primeiraPagina: 2`)
-                setPrimeiraPagina(paginaAtual - 10);
-                setUltimaPagina(paginaAtual + 2);
-                setMostrarUltimaPagina(totalPages <= 12 ? false : true);
-                setMostrarPrimeiraPagina(true);
-
-            } else if(paginaAtual - 10 < 12) {
-                console.log(`primeiraPagina: 3`)
-                setPrimeiraPagina(0);
-                setUltimaPagina(totalPages <= 12 ? totalPages : 12);
-                setMostrarUltimaPagina(totalPages <= 12 ? false : true);
-                setMostrarPrimeiraPagina(false);
-            }
-
-        } else if (paginaAtual + 1 === ultimaPagina) {
-
-            console.log(`paginaAtual + 1 === ultimaPagina`)
-
-            if((paginaAtual + 1 === ultimaPagina) && paginaAtual + 1 !== totalPages) {
-                console.log(`ultimaPagina: 1`)
-                setMostrarUltimaPagina(true);
-                setMostrarPrimeiraPagina(true);
-            }
-
-            if((totalPages - 1) - ultimaPagina > 10) {
-                console.log(`ultimaPagina: 2`)
-                setMostrarUltimaPagina(true);
-                setPrimeiraPagina(paginaAtual - 1);
-                setUltimaPagina(paginaAtual + 10);
-
-            } else if((totalPages - 1) - ultimaPagina <= 10) {
-                console.log(`ultimaPagina: 3`)
-                setMostrarUltimaPagina(false);
-                setMostrarPrimeiraPagina(totalPages - 13 > 0 ? true : false);
-                setPrimeiraPagina(totalPages - 13 > 0 ? totalPages - 13 : 0);
-                setUltimaPagina(totalPages);
-
-            } else if (paginaAtual + 1 === totalPages) {
-                console.log(`ultimaPagina: 4`)
-                setPrimeiraPagina(totalPages - 10);
-                setUltimaPagina(totalPages);
-                setMostrarUltimaPagina(false);
-                setMostrarPrimeiraPagina(true);
-            }
-
-        } else if (paginaAtual + 1 === totalPages) {
-            console.log(`paginaAtual + 1 === totalPages`)
-                console.log(`paginal Atual === pagina total`)
-                setPrimeiraPagina(totalPages - 13);
-                setUltimaPagina(totalPages);
-                setMostrarUltimaPagina(false);
-                setMostrarPrimeiraPagina(true);
-        }
-
-
-        for(let i = primeiraPagina; i < ultimaPagina; i++) {
-            paginas.push(pagina);
-            pagina++;
-        }
-        setPaginas(paginas);
-    }
 
 
     const getStatusClass = (status: string): string => {
@@ -264,7 +163,6 @@ export default function Demandas() {
                                     <th className="text-center">Status Professor</th>
                                     <th className="text-center">Editar</th>
                                     <th className="text-center">Comentar</th>
-                                    {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -311,11 +209,18 @@ export default function Demandas() {
                 page={page}
                 totalPages={totalPages}
                 paginaAtual={paginaAtual}
+                primeiraPagina={primeiraPagina}
+                ultimaPagina={ultimaPagina}
                 paginas={paginas}
                 setPaginaAtual={setPaginaAtual}
+                setPrimeiraPagina={setPrimeiraPagina}
+                setUltimaPagina={setUltimaPagina}
                 setPage={setPage}
                 mostrarPrimeiraPagina={mostrarPrimeiraPagina}
                 mostrarUltimaPagina={mostrarUltimaPagina}
+                setMostrarUltimaPagina={setMostrarUltimaPagina}
+                setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+                setPaginas={setPaginas}
             />
 
 
