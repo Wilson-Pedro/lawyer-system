@@ -46,6 +46,7 @@ const Paginacao: React.FC<PaginacaoProp> = ({
         let paginas: number[] = [];
 
         if(paginaAtual + 1 === 1) {
+            console.log("paginaAtual + 1 === 1")
             setPrimeiraPagina(0);
             setUltimaPagina(totalPages <= 11 ? totalPages : 12);
             setMostrarUltimaPagina(true);
@@ -53,7 +54,8 @@ const Paginacao: React.FC<PaginacaoProp> = ({
         }
 
 
-        if(totalPages <= 12) {
+        if(totalPages <= 13) {
+            console.log("totalPages <= 13")
             setUltimaPagina(totalPages)
             setPrimeiraPagina(0)
             setMostrarPrimeiraPagina(false);
@@ -62,45 +64,54 @@ const Paginacao: React.FC<PaginacaoProp> = ({
 
 
         if(paginaAtual === primeiraPagina) {
+          console.log("paginaAtual === primeiraPagina")
 
             if(paginaAtual - 10 > 10) {
+                console.log("1")
                 setUltimaPagina(paginaAtual + 2);
                 setPrimeiraPagina(paginaAtual - 11);
                 setMostrarPrimeiraPagina(true);
                 setMostrarUltimaPagina(true);
 
-            } else if(paginaAtual > 12) {
+            } else if(paginaAtual > 13) {
+                console.log("2")
                 setPrimeiraPagina(paginaAtual - 10);
                 setUltimaPagina(paginaAtual + 2);
                 setMostrarUltimaPagina(totalPages <= 12 ? false : true);
                 setMostrarPrimeiraPagina(true);
 
-            } else if(paginaAtual - 10 < 12) {
+            } else if(paginaAtual - 10 < 13) {
+                console.log("3")
                 setPrimeiraPagina(0);
-                setUltimaPagina(totalPages <= 12 ? totalPages : 12);
-                setMostrarUltimaPagina(totalPages <= 12 ? false : true);
+                setUltimaPagina(totalPages <= 13 ? totalPages  : 13);
+                setMostrarUltimaPagina(totalPages <= 13 ? false : true);
                 setMostrarPrimeiraPagina(false);
             }
 
         } else if (paginaAtual + 1 === ultimaPagina) {
+            console.log("paginaAtual + 1 === ultimaPagina")
 
             if((paginaAtual + 1 === ultimaPagina) && paginaAtual + 1 !== totalPages) {
+                console.log("1")
                 setMostrarUltimaPagina(true);
                 setMostrarPrimeiraPagina(true);
             }
 
             if((totalPages - 1) - ultimaPagina > 10) {
+                console.log("2")
                 setMostrarUltimaPagina(true);
                 setPrimeiraPagina(paginaAtual - 1);
                 setUltimaPagina(paginaAtual + 10);
 
             } else if((totalPages - 1) - ultimaPagina <= 10) {
+                console.log("3")
                 setMostrarUltimaPagina(false);
                 setMostrarPrimeiraPagina(totalPages - 13 > 0 ? true : false);
                 setPrimeiraPagina(totalPages - 13 > 0 ? totalPages - 13 : 0);
                 setUltimaPagina(totalPages);
 
             } else if (paginaAtual + 1 === totalPages) {
+                console.log("4")
                 setPrimeiraPagina(totalPages - 10);
                 setUltimaPagina(totalPages);
                 setMostrarUltimaPagina(false);
@@ -108,6 +119,7 @@ const Paginacao: React.FC<PaginacaoProp> = ({
             }
 
         } else if (paginaAtual + 1 === totalPages) {
+                console.log("paginaAtual + 1 === totalPages")
                 setPrimeiraPagina(totalPages - 13);
                 setUltimaPagina(totalPages);
                 setMostrarUltimaPagina(false);

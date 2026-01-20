@@ -37,7 +37,7 @@ export default function Demandas() {
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
-    const [size, setSize] = useState(1);
+    const [size, setSize] = useState(10);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
