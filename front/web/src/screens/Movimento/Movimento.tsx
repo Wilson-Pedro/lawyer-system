@@ -119,6 +119,7 @@ export default function Movimento() {
             ))}
           </tbody>
         </Table>
+
       ) : (
         <div className="alert alert-secondary text-center mt-5">
           <p className="text-muted fs-5">Nenhum movimento encontrado.</p>

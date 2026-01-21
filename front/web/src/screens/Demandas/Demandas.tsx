@@ -115,8 +115,7 @@ export default function Demandas() {
         <div className="min-vh-100 d-flex flex-column bg-light">
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-                <span className="navbar-brand fw-bold fs-4">Demandas - toalPages: {totalPages} - totalElements: {totalElements} - Page: {page} - Atual: {paginaAtual} - 
-                    Primeira Página: {primeiraPagina} - Última Página: {ultimaPagina}
+                <span className="navbar-brand fw-bold fs-4">Demandas
                 </span>
                 <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
                     ← Voltar

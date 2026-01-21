@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon } from "../../Icons/Icon";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -32,6 +33,20 @@ export default function Usuarios() {
   const [usuariosFiltro, setUsuariosFiltro] = useState<string>("Estagiário");
   const [uriEdit, setUriEdit] = useState("/usuarios/estagiario/editar/");
   const [tableLabels, setTableLabes] = useState<string[]>([]);
+
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(1);
+
+  const [primeiraPagina, setPrimeiraPagina] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  
+  const [totalElements, setTotalElements] = useState(0);
+  const [paginas, setPaginas] = useState<number[]>([]);
+  const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+  const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+  const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+  const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,7 +99,7 @@ export default function Usuarios() {
     
     const fecthUsuarios = async () => {
       try {
-        const response = await axios.get(`${API_URL}${rota}`, {
+        const response = await axios.get(`${API_URL}${rota}?page=${page}&size=${size}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -94,13 +109,15 @@ export default function Usuarios() {
         const dados = pages.content;
         setUsuarios(dados);
         setUsuariosFiltrados(dados);
+        setTotalPages(pages.totalPages);
+        setTotalElements(pages.totalElements);
 
       } catch(error) {
         console.log(error)
       }
     }
     fecthUsuarios();
-  }, [usuariosFiltro]);
+  }, [usuariosFiltro, page, size]);
 
   useEffect(() => {
     let dados = [...usuarios];
@@ -131,14 +148,21 @@ export default function Usuarios() {
     }
   }
 
+  const selecionarTipoDeUsuario = (usuario:string) => {
+    setPage(0);
+    setPaginaAtual(0);
+    setPrimeiraPagina(0);
+    setUsuariosFiltro(usuario);
+  }
+
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
-      
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
         <span className="navbar-brand fw-bold fs-4">Gerenciar Usuário</span>
+        <span></span>
         <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
           ← Voltar
         </button>
@@ -159,7 +183,7 @@ export default function Usuarios() {
           <select
             className="form-select w-auto"
             value={usuariosFiltro}
-            onChange={(e) => setUsuariosFiltro(e.target.value)}
+            onChange={(e) => selecionarTipoDeUsuario(e.target.value)}
           >
             <option value="Estagiário">Estagiário</option>
             <option value="Coordenador do curso">Coordenador do curso</option>
@@ -231,6 +255,24 @@ export default function Usuarios() {
           </div>
         )}
       </div>
+
+        <Paginacao 
+          page={page}
+          totalPages={totalPages}
+          paginaAtual={paginaAtual}
+          primeiraPagina={primeiraPagina}
+          ultimaPagina={ultimaPagina}
+          paginas={paginas}
+          setPaginaAtual={setPaginaAtual}
+          setPrimeiraPagina={setPrimeiraPagina}
+          setUltimaPagina={setUltimaPagina}
+          setPage={setPage}
+          mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+          mostrarUltimaPagina={mostrarUltimaPagina}
+          setMostrarUltimaPagina={setMostrarUltimaPagina}
+          setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+          setPaginas={setPaginas}
+      />
 
       
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

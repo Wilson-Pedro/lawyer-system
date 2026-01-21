@@ -74,7 +74,6 @@ public class BackendApplication implements CommandLineRunner {
 		Long estagiarioId2 = estagiarioService.salvar(estagiario2).getId();
 
 		ProcessoRequestDto request = new ProcessoRequestDto(assistidoId, "2543243", "Seguro de Carro", "23423ee23", "Júlio", advogadoId,  estagiarioId, "Previdenciário", "Trabalho", "25/10/2025");
-
 		Processo processo = processoService.salvar(request);
 
 		MovimentoDto movimentoDto1 = new MovimentoDto(null, processo.getId(), advogadoId, "Documentação completa");
