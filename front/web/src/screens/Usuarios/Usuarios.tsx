@@ -35,7 +35,7 @@ export default function Usuarios() {
   const [tableLabels, setTableLabes] = useState<string[]>([]);
 
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(1);
+  const [size, setSize] = useState(10);
 
   const [primeiraPagina, setPrimeiraPagina] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
