@@ -4,6 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import styles from "./CadastrarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 
+import Input from "../../components/Input/Input";
+
 const API_URL = process.env.REACT_APP_API;
 
 export interface Page<T> {
@@ -331,48 +333,34 @@ export default function CadastrarProcesso() {
           )}
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Assunto</label>
-          <input
-            className={styles.input}
-            placeholder="Assunto"
-            value={assunto}
-            onChange={(e) => setAssunto(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={assunto}
+          title="Assunto"
+          setValue={setAssunto}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Vara</label>
-          <input
-            className={styles.input}
-            placeholder="Vara"
-            value={vara}
-            onChange={(e) => setVara(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={vara}
+          title="Vara"
+          setValue={setVara}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Nº do processo do PJE</label>
-          <input
-            className={styles.input}
-            placeholder="Nº do processo do PJE"
-            value={numeroDoProcessoPje}
-            onChange={(e) => setNumeroDoProcessoPje(e.target.value)}
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Responsável</label>
-          <input
-            className={styles.input}
-            placeholder="Responsável"
-            value={responsavel}
-            onChange={(e) => setResponsavel(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={numeroDoProcessoPje}
+          title="Nº do processo do PJE"
+          setValue={setNumeroDoProcessoPje}
+          required={true}
+        />
+
+        <Input
+          value={responsavel}
+          title="Responsável"
+          setValue={setResponsavel}
+          required={true}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Advogado</label>

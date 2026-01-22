@@ -4,6 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarUsuario.module.css";
 
+import Input from "../../components/Input/Input";
+
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarUsuario() {
@@ -91,26 +93,21 @@ export default function CadastrarUsuario() {
       <h1 className={styles.title}>Cadastrar Usuário</h1>
 
       <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarUsuario(); }}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Nome Completo</label>
-          <input
-            className={styles.input}
-            placeholder="Nome Completo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>E-mail</label>
-          <input
-            className={styles.input}
-            placeholder="E-mail"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <Input
+          value={nome}
+          title="Nome Completo"
+          setValue={setNome}
+          required={true}
+        />
+
+        <Input
+          value={email}
+          title="E-mail"
+          type="email"
+          setValue={setEmail}
+          required={true}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Função</label>
@@ -126,16 +123,13 @@ export default function CadastrarUsuario() {
           </select>
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Senha</label>
-          <input
-            className={styles.input}
-            placeholder="Senha"
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-        </div>
+        <Input
+          value={senha}
+          title="Senha"
+          type="password"
+          setValue={setSenha}
+          required={true}
+        />
 
         <button type="submit" className={styles.button}>
           Enviar Cadastro

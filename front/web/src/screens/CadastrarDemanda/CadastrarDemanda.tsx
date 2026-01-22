@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import styles from "./CadastrarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 import moment from 'moment'
+import Input from "../../components/Input/Input";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -30,7 +31,6 @@ export default function CadastrarDemanda() {
   const navigate = useNavigate();
 
   const [demanda, setDemanda] = useState<string>("");
-  const [demandaStatus, setDemandaStatus] = useState<string>("");
   const [prazoDocumentos, setPrazoDocumentos] = useState<string>("");
   const [dataHoje, setDataHoje] = useState<Date>(new Date());
   const [btnDisabled, setBtnDisabled] = useState<boolean>(false);
@@ -221,10 +221,6 @@ export default function CadastrarDemanda() {
     setNomeEstagiarioSearch("");
   }; 
 
-  const selecionarDemandaStatus = async (e: any) => {
-    setDemandaStatus(e.target.value);
-  };
-
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
@@ -236,8 +232,7 @@ export default function CadastrarDemanda() {
     setNomeEstagiario("")
     setDemanda("Em Correção")
     setNomeAdvogadoSearch("")
-    setNomeAdvogado("")
-    setDemandaStatus("");
+    setNomeAdvogado("");
     setPrazoDocumentos("");
     setPrazoDias(0);
   };
@@ -256,16 +251,13 @@ export default function CadastrarDemanda() {
 
       <h1 className={styles.title}>Cadastro de Demanda</h1>
       <form className={styles.form} onSubmit={cadastrarDemanda}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Demanda</label>
-          <input
-            className={styles.input}
-            placeholder="Demanda"
-            value={demanda}
-            onChange={(e) => setDemanda(e.target.value)}
-            required
-          />
-        </div>
+        
+        <Input
+          value={demanda}
+          title="Demanda"
+          setValue={setDemanda}
+          required={true}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estagiário</label>
@@ -313,23 +305,8 @@ export default function CadastrarDemanda() {
           )}
         </div>
 
-        {/* <div className={styles.inputGroup}>
-          <label className={styles.label}>Status da demanda</label>
-          <select
-            className={styles.input}
-            onChange={selecionarDemandaStatus}
-            required
-          >
-            <option value="" disabled selected></option>
-            <option value="Corrigido">Corrigido</option>
-            <option value="Em Correção">Em Correção</option>
-            <option value="Devolvido">Devolvido</option>
-            <option value="Dentro do Prazo">Dentro do Prazo</option>
-            <option value="Fora do Prazo">Fora do Prazo</option>
-          </select>
-        </div> */}
-
         <div className={styles.inputDivGroup}>
+
           <div className={styles.inputGroup}>
             <label className={styles.label}>Data de Atendimento</label>
             <input
@@ -355,6 +332,7 @@ export default function CadastrarDemanda() {
         </div>
 
         <div className={styles.inputDivGroup}>
+
           <div className={styles.inputGroup}>
             <label className={styles.label}>Dias para o Prazo Final</label>
             <input
@@ -367,17 +345,15 @@ export default function CadastrarDemanda() {
               required
             />
           </div>
-          
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Prazo Final</label>
-            <input
-              className={styles.input}
-              placeholder="Prazo Final"
-              value={prazoFinal}
-              onChange={(e: any) => setPrazoDias(e.target.value)}
-              disabled
-            />
-          </div>
+
+          <Input
+            value={prazoFinal}
+            title="Prazo Final"
+            setValue={setPrazoDias}
+            required={true}
+            disabled={true}
+          />
+        
         </div>
 
         <button type="submit" className={styles.button}>

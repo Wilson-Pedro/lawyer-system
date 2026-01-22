@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarEstagiario.module.css";
+import Input from "../../components/Input/Input";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -97,47 +98,35 @@ export default function CadastrarEstagiario() {
       <h1 className={styles.title}>Cadastrar Estagiário</h1>
 
       <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Nome Completo</label>
-          <input
-            className={styles.input}
-            placeholder="Nome Completo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>E-mail</label>
-          <input
-            className={styles.input}
-            placeholder="E-mail"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <Input
+          value={nome}
+          title="Nome Completo"
+          setValue={setNome}
+          required={true}
+        />
+        
+        <Input
+          value={email}
+          title="E-mail"
+          type="email"
+          setValue={setEmail}
+          required={true}
+        />
+        
+        <Input
+          value={telefone}
+          title="Telefone"
+          setValue={setTelefone}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Telefone</label>
-          <input
-            className={styles.input}
-            placeholder="Telefone"
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Matrícula</label>
-          <input
-            className={styles.input}
-            placeholder="Matrícula"
-            value={matricula}
-            onChange={(e) => setMatricula(e.target.value)}
-          />
-        </div>
+        <Input
+          value={matricula}
+          title="Matrícula"
+          setValue={setMatricula}
+          required={true}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Período</label>
@@ -153,16 +142,13 @@ export default function CadastrarEstagiario() {
           </select>
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Senha</label>
-          <input
-            className={styles.input}
-            placeholder="Senha"
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-        </div>
+        <Input
+          value={senha}
+          title="Senha"
+          type="password"
+          setValue={setSenha}
+          required={true}
+        />
 
         <button type="submit" className={styles.button}>
           Enviar Cadastro

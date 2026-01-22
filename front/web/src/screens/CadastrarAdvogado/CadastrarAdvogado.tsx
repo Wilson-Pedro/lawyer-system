@@ -116,6 +116,7 @@ export default function CadastrarAdvogado() {
         value={email}
         title="E-mail"
         setValue={setEmail}
+        type="email"
         required={true}
       />
 

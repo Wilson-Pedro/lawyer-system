@@ -8,6 +8,7 @@ interface InputProp {
     setValue: any;
     required:boolean;
     type?:React.HTMLInputTypeAttribute;
+    disabled?:boolean;
 }
 
 const Input: React.FC<InputProp> = ({
@@ -17,6 +18,7 @@ const Input: React.FC<InputProp> = ({
     setValue,
     type,
     required,
+    disabled
 }) => {
     return(
       <div className={styles.inputGroup}>
@@ -28,6 +30,7 @@ const Input: React.FC<InputProp> = ({
           onChange={(e) => setValue(e.target.value)}
           required={required}
           type={type !== "" ? type : "text"}
+          disabled={disabled !== null ? false : true}
         />
       </div>
     );
