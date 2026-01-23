@@ -6,7 +6,7 @@ interface InputProp {
     value: string | number;
     placeholder?:string;
     setValue: any;
-    required:boolean;
+    required?:boolean;
     type?:React.HTMLInputTypeAttribute;
     disabled?:boolean;
 }
@@ -28,9 +28,9 @@ const Input: React.FC<InputProp> = ({
           placeholder={placeholder|| title}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          required={required}
+          required={required !== null ? required : false}
           type={type !== "" ? type : "text"}
-          disabled={disabled !== null ? false : true}
+          disabled={disabled !== null ? disabled : false}
         />
       </div>
     );

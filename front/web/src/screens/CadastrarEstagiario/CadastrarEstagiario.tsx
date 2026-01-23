@@ -5,6 +5,8 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarEstagiario.module.css";
 import Input from "../../components/Input/Input";
 
+import { scrollToTop } from "./../../utils/Utils";
+
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarEstagiario() {
@@ -67,6 +69,8 @@ export default function CadastrarEstagiario() {
       setMostrarToast(true);
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 

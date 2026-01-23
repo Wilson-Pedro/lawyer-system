@@ -42,7 +42,6 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		
 		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
-		//estagiario.setUsuarioStatus(UsuarioStatus.ATIVO);
 		return estagiarioRepository.save(estagiario);
 	}
 
@@ -65,7 +64,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 
 	@Override
 	public Page<Estagiario> buscarTodos(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return estagiarioRepository.buscarTodos(pageable);
 	}
 	

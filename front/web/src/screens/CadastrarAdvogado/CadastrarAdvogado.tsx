@@ -5,6 +5,8 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarAdvogado.module.css";
 import Input from "../../components/Input/Input";
 
+import { scrollToTop } from "./../../utils/Utils";
+
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAdvogado() {
@@ -56,6 +58,8 @@ export default function CadastrarAdvogado() {
       setVarianteToast("success");
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 
@@ -133,6 +137,13 @@ export default function CadastrarAdvogado() {
         value={dataDeNascimento}
         placeholder={"DD/MM/AAAA"}
         setValue={formatarData}
+        required={true}
+      />
+
+      <Input
+        title="CEP"
+        value={cep}
+        setValue={setCep}
         required={true}
       />
 

@@ -5,6 +5,8 @@ import { Toast, ToastContainer } from "react-bootstrap"
 import styles from "./CadastrarAssistido.module.css";
 import Input from "../../components/Input/Input";
 
+import { scrollToTop } from "./../../utils/Utils";
+
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAssistido() {
@@ -85,6 +87,8 @@ export default function CadastrarAssistido() {
       setVarianteToast("success");
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 

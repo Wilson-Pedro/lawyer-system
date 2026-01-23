@@ -6,6 +6,8 @@ import { Toast, ToastContainer } from "react-bootstrap";
 
 import Input from "../../components/Input/Input";
 
+import { scrollToTop } from "./../../utils/Utils";
+
 const API_URL = process.env.REACT_APP_API;
 
 export interface Page<T> {
@@ -66,6 +68,8 @@ export default function CadastrarProcesso() {
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+
+  const [selected, setSelected] = useState<boolean>(true);
   
   const page = 0;
   const size = 20;
@@ -195,7 +199,7 @@ export default function CadastrarProcesso() {
     try {
       await axios.post(`${API_URL}/processos/`, {
         assistidoId,
-        numeroDoProcessoPje,
+        numeroDoProcessoPje: numeroDoProcessoPje || "",
         assunto,
         vara,
         responsavel,
@@ -215,6 +219,8 @@ export default function CadastrarProcesso() {
       setVarianteToast("success");
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 
@@ -272,6 +278,7 @@ export default function CadastrarProcesso() {
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
+    setResponsavel(advogado.nome);
     setNomeAdvogadoSearch("");
   }
 
@@ -282,10 +289,12 @@ export default function CadastrarProcesso() {
   }
 
   const selecionarAreaDoDireito = async (e:any) => {
+    setSelected(false);
     setAreaDeDireito(e.target.value);
   }
 
   const selecionarTribunal = async (e:any) => {
+    setSelected(false);
     setTribunal(e.target.value);
   }
 
@@ -297,6 +306,10 @@ export default function CadastrarProcesso() {
     setAreaDeDireito("");
     setTribunal("");
     setNumeroDoProcessoPje("");
+    setNomeAssistido("");
+    setNomeAdvogado("");
+    setNomeEstagiario("")
+    setSelected(true)
   };
 
   const token = localStorage.getItem('token');
@@ -352,14 +365,6 @@ export default function CadastrarProcesso() {
           value={numeroDoProcessoPje}
           title="Nº do processo do PJE"
           setValue={setNumeroDoProcessoPje}
-          required={true}
-        />
-
-        <Input
-          value={responsavel}
-          title="Responsável"
-          setValue={setResponsavel}
-          required={true}
         />
 
         <div className={styles.inputGroup}>
@@ -383,6 +388,7 @@ export default function CadastrarProcesso() {
             </ul>
           )}
         </div>
+        
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estagiário</label>
@@ -406,10 +412,17 @@ export default function CadastrarProcesso() {
           )}
         </div>
 
+        <Input
+          value={responsavel}
+          title="Responsável"
+          setValue={setResponsavel}
+          required={true}
+        />
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
           <select className={styles.input} onChange={selecionarAreaDoDireito} required>
-            <option value="" disabled selected></option>
+            <option value="" disabled selected={selected}></option>
             {areasDoDireito.map((option, key) => (
               <option key={key} value={option}>{option}</option>
             ))}
@@ -419,7 +432,7 @@ export default function CadastrarProcesso() {
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
           <select className={styles.input} onChange={selecionarTribunal} required>
-            <option value="" disabled selected></option>
+            <option value="" disabled selected={selected}></option>
             {tribunais.map((option, key) => (
               <option key={key} value={option}>{option}</option>
             ))}
