@@ -67,9 +67,10 @@ export default function Movimento() {
   }, [numeroDoProcesso, page, size]);
 
   const movimentosFiltrados = movimentos.filter(
-    (item) =>
-      item.movimento.toLowerCase().includes(busca.toLowerCase()) ||
-      item.advogado.toLowerCase().includes(busca.toLowerCase())
+    (movimento) =>
+      movimento.movimento.toLowerCase().includes(busca.toLowerCase()) ||
+      movimento.advogado.toLowerCase().includes(busca.toLowerCase()) ||
+      movimento.numeroDoProcesso.toLocaleLowerCase().includes(busca.toLocaleLowerCase())
   );
 
   const token = localStorage.getItem('token');

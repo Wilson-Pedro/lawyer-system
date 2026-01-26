@@ -31,7 +31,7 @@ export default function Processos() {
   const [busca, setBusca] = useState("");
   const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(1);
+  const [size, setSize] = useState(10);
 
   const [primeiraPagina, setPrimeiraPagina] = useState(0);
   const [totalPages, setTotalPages] = useState(0);

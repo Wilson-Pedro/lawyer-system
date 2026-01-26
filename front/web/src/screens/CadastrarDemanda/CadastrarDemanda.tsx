@@ -215,6 +215,22 @@ export default function CadastrarDemanda() {
     return diaMesAno[2] + "-" + diaMesAno[1] + "-" + diaMesAno[0];
   }
 
+  const setAdvogadoNome = (nome: string) =>  {
+    setNomeAdvogado(nome);
+    setNomeAdvogadoSearch(nome);
+    if(nome.length === 0) {
+      setAdvogados([]);
+    }
+  }
+
+  const setEstagiarioNome = (nome: string) =>  {
+    setNomeEstagiario(nome);
+    setNomeEstagiarioSearch(nome);
+    if(nome.length === 0) {
+      setEstagiarios([]);
+    }
+  }
+
   const setEstagiario = (estagiario: Estagiario) => {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
@@ -265,7 +281,7 @@ export default function CadastrarDemanda() {
             className={styles.input}
             placeholder="Digite o nome do estagiário"
             value={nomeEstagiarioSearch || nomeEstagiario}
-            onChange={(e) => setNomeEstagiarioSearch(e.target.value)}
+            onChange={(e) => setEstagiarioNome(e.target.value)}
             required
           />
           {estagiarios.length > 0 && (
@@ -289,7 +305,7 @@ export default function CadastrarDemanda() {
             className={styles.input}
             placeholder="Digite o nome do advogado"
             value={nomeAdvogadoSearch || nomeAdvogado}
-            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            onChange={(e) => setAdvogadoNome(e.target.value)}
             required
           />
           {advogados.length > 0 && (

@@ -146,6 +146,10 @@ export default function CadastrarProcesso() {
     const buscarAdvogado = async () => {
       if (nomeAdvogadoSearch.length < 2) {
         setAdvogados([]);
+        // if(nomeAdvogadoSearch.length <= 1 && advogados.length === 0) {
+        //   setNomeAdvogadoSearch("");
+        //   setNomeAdvogado("");
+        // }
         return;
       }
       try {
@@ -269,6 +273,22 @@ export default function CadastrarProcesso() {
     setPrazo(formatado);
   }
 
+  const setAdvogadoNome = (nome: string) =>  {
+    setNomeAdvogado(nome);
+    setNomeAdvogadoSearch(nome);
+    if(nome.length === 0) {
+      setAdvogados([]);
+    }
+  }
+
+  const setEstagiarioNome = (nome: string) =>  {
+    setNomeEstagiario(nome);
+    setNomeEstagiarioSearch(nome);
+    if(nome.length === 0) {
+      setEstagiarios([]);
+    }
+  }
+
   const setAssistido = (assistido: Assistido) => {
     setNomeAssistido(assistido.nome);
     setAssistidoId(assistido.id);
@@ -373,7 +393,7 @@ export default function CadastrarProcesso() {
             className={styles.input}
             placeholder="Digite o nome do advogado"
             value={nomeAdvogadoSearch || nomeAdvogado}
-            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            onChange={(e) => setAdvogadoNome(e.target.value)}
             required
           />
           {advogados.length > 0 && (
@@ -396,7 +416,7 @@ export default function CadastrarProcesso() {
             className={styles.input}
             placeholder="Digite o nome do estagiário"
             value={nomeEstagiarioSearch || nomeEstagiario}
-            onChange={(e) => setNomeEstagiarioSearch(e.target.value)}
+            onChange={(e) => setEstagiarioNome(e.target.value)}
             required
           />
           {estagiarios.length > 0 && (
@@ -472,3 +492,5 @@ export default function CadastrarProcesso() {
     </div>
   );
 }
+
+
