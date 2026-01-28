@@ -58,7 +58,7 @@ class TokenServiceTest {
 	
 	@Test
 	@Order(3)
-	@DisplayName("Deve validar Token")
+	@DisplayName("Deve validar Token Pelo Service")
 	void validar_token() {
 		String login = tokenService.validateToken(TOKEN);
 		

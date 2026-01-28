@@ -15,4 +15,6 @@ public interface ProcessoProjection {
 	Long getAdvogadoId();
 	
 	String getAdvogadoNome();
+
+	String getStatusDoProcesso();
 }

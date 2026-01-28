@@ -17,6 +17,10 @@ import com.advocacia.estacio.repositories.AssistidoRepository;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EnderecoService;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class AssistidoServiceImpl implements AssistidoService {
 	
@@ -42,7 +46,7 @@ public class AssistidoServiceImpl implements AssistidoService {
 
 	@Override
 	public Page<ResponseMinDto> buscarTodos(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return assistidoRepository.buscarTodos(pageable);
 	}
 
@@ -65,5 +69,10 @@ public class AssistidoServiceImpl implements AssistidoService {
 		assistido.setEstadoCivil(EstadoCivil.toEnum(assistidoDto.getEstadoCivil()));
 		enderecoService.atualizar(assistido.getEndereco().getId(), new Endereco(assistidoDto));
 		return assistidoRepository.save(assistido);
+	}
+
+	@Override
+	public List<EstadoCivil> getEstadosCivis() {
+		return Arrays.stream(EstadoCivil.values()).toList();
 	}
 }

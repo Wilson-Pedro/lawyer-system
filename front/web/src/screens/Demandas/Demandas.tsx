@@ -4,6 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, PlusIcon } from "../../Icons/Icon";
 
+import Paginacao from "../../components/Paginacao/Paginacao";
+
 const API_URL = process.env.REACT_APP_API;
 
 interface Page<T> {
@@ -29,6 +31,19 @@ export default function Demandas() {
     const [filteredDemandas, setFilteredDemandas] = useState<Demanda[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+    const [primeiraPagina, setPrimeiraPagina] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    
+    const [totalElements, setTotalElements] = useState(0);
+    const [page, setPage] = useState(0);
+    const [paginas, setPaginas] = useState<number[]>([]);
+    const [size, setSize] = useState(10);
+    const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+    const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+    const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+    const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -36,20 +51,24 @@ export default function Demandas() {
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/status/${statusFiltro}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/status/${statusFiltro}?page=${page}&size=${size}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const page: Page<Demanda> = response.data;
-                setDemandas(page.content);
+                const pages: Page<Demanda> = response.data;
+                setDemandas(pages.content);
+                setTotalPages(pages.totalPages);
+                setTotalElements(pages.totalElements);
                 setFilteredDemandas(response.data);
+
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDemandas();
-    }, [statusFiltro]);
+    }, [statusFiltro, page, size]);
+
 
     useEffect(() => {
         let dados = [...demandas]
@@ -66,6 +85,7 @@ export default function Demandas() {
 
         setFilteredDemandas(dados);
     }, [busca, demandas]);
+
 
     const getStatusClass = (status: string): string => {
         switch (status) {
@@ -95,7 +115,8 @@ export default function Demandas() {
         <div className="min-vh-100 d-flex flex-column bg-light">
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-                <span className="navbar-brand fw-bold fs-4">Demandas</span>
+                <span className="navbar-brand fw-bold fs-4">Demandas
+                </span>
                 <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
                     ← Voltar
                 </button>
@@ -141,7 +162,6 @@ export default function Demandas() {
                                     <th className="text-center">Status Professor</th>
                                     <th className="text-center">Editar</th>
                                     <th className="text-center">Comentar</th>
-                                    {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,6 +203,24 @@ export default function Demandas() {
                     </div>
                 )}
             </div>
+
+            <Paginacao 
+                page={page}
+                totalPages={totalPages}
+                paginaAtual={paginaAtual}
+                primeiraPagina={primeiraPagina}
+                ultimaPagina={ultimaPagina}
+                paginas={paginas}
+                setPaginaAtual={setPaginaAtual}
+                setPrimeiraPagina={setPrimeiraPagina}
+                setUltimaPagina={setUltimaPagina}
+                setPage={setPage}
+                mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+                mostrarUltimaPagina={mostrarUltimaPagina}
+                setMostrarUltimaPagina={setMostrarUltimaPagina}
+                setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+                setPaginas={setPaginas}
+            />
 
 
             <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

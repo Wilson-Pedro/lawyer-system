@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EyeIcon, PlusIcon } from "../../Icons/Icon";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -29,6 +30,21 @@ export default function DemandasEstagiario() {
     const [filteredDemandas, setFilteredDemandas] = useState<Demanda[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+
+    const [primeiraPagina, setPrimeiraPagina] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    
+    const [totalElements, setTotalElements] = useState(0);
+    const [paginas, setPaginas] = useState<number[]>([]);
+    const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+    const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+    const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+    const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const params = useParams();
@@ -39,20 +55,22 @@ export default function DemandasEstagiario() {
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/estagiario/${estagiarioId}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/estagiario/${estagiarioId}?page=${page}&size=${size}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const page: Page<Demanda> = response.data;
-                setDemandas(page.content);
+                const pages: Page<Demanda> = response.data;
+                setDemandas(pages.content);
                 setFilteredDemandas(response.data);
+                setTotalPages(pages.totalPages);
+                setTotalElements(pages.totalElements);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDemandas();
-    }, [statusFiltro, estagiarioId]);
+    }, [statusFiltro, estagiarioId, page, size]);
 
     useEffect(() => {
         let dados = [...demandas]
@@ -144,6 +162,24 @@ export default function DemandasEstagiario() {
                     </div>
                 )}
             </div>
+
+            <Paginacao 
+                page={page}
+                totalPages={totalPages}
+                paginaAtual={paginaAtual}
+                primeiraPagina={primeiraPagina}
+                ultimaPagina={ultimaPagina}
+                paginas={paginas}
+                setPaginaAtual={setPaginaAtual}
+                setPrimeiraPagina={setPrimeiraPagina}
+                setUltimaPagina={setUltimaPagina}
+                setPage={setPage}
+                mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+                mostrarUltimaPagina={mostrarUltimaPagina}
+                setMostrarUltimaPagina={setMostrarUltimaPagina}
+                setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+                setPaginas={setPaginas}
+            />
 
 
             <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

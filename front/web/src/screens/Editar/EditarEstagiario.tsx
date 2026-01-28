@@ -14,8 +14,10 @@ export default function EditarEstagiario() {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [matricula, setMatricula] = useState("");
+  const [periodos, setPeriodos] = useState<string[]>([]);
   const [periodo, setPeriodo] = useState("");
   const [usuarioStatus, setUsuarioStatus] = useState("");
+  const [statusDoUsuario, setStatusDoUsuario] = useState<string[]>([]);
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
@@ -48,7 +50,43 @@ export default function EditarEstagiario() {
       }
     }
 
+    const buscarPeriodos = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/estagiarios/periodos`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setPeriodos(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarUsuarioStatus = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/auth/usuarioStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setStatusDoUsuario(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
     fetchEstagiario();
+    buscarPeriodos();
+    buscarUsuarioStatus();
   }, []);
 
   const atualizarEstagiario = async () => {
@@ -153,10 +191,9 @@ export default function EditarEstagiario() {
             onChange={selecionarPeriodo}
           >
             <option value="" disabled selected></option>
-            <option value="Estágio I">Estágio I</option>
-            <option value="Estágio II">Estágio II</option>
-            <option value="Estágio III">Estágio III</option>
-            <option value="Estágio IV">Estágio IV</option>
+            {periodos.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
@@ -168,8 +205,9 @@ export default function EditarEstagiario() {
             onChange={selecionarUsuarioStatus}
           >
             <option value="" disabled selected></option>
-            <option value="Ativo">Ativo</option>
-            <option value="Inativo">Inativo</option>
+            {statusDoUsuario.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 

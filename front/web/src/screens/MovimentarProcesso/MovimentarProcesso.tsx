@@ -101,6 +101,14 @@ export default function MovimentarProcesso() {
         setNumeroDoProcessoSearch("");
     }
 
+    const setProcesso = (numeroDoProcesso: string) => {
+        setNumeroDoProcesso(numeroDoProcesso);
+        setNumeroDoProcessoSearch(numeroDoProcesso);
+        if(numeroDoProcesso.length === 0) {
+            setProcessos([]);
+        }
+    }
+
     const movimentosFiltrados = movimentos.filter(
         (movimento) =>
             movimento.movimento.toLocaleLowerCase().includes(busca.toLocaleLowerCase()) ||
@@ -129,7 +137,7 @@ export default function MovimentarProcesso() {
                         className="form-control w-50 mb-2 mb-sm-0"
                         placeholder="Digite o número do processo"
                         value={numeroDoProcessoSearch || numeroDoProcesso}
-                        onChange={(e) => setNumeroDoProcessoSearch(e.target.value)}
+                        onChange={(e) => setProcesso(e.target.value)}
                     />
                     {processos.length > 0 && (
                         <ul className={styles.ul}>

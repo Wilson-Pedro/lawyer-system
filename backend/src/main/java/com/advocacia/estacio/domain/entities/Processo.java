@@ -42,7 +42,7 @@ public class Processo implements Serializable{
 	@Column(unique = true)
 	private String numeroDoProcesso;
 	
-	@Column(unique = true, nullable = true)
+	@Column(nullable = true)
 	private String numeroDoProcessoPje;
 	
 	private String assunto;

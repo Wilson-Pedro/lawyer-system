@@ -1,7 +1,11 @@
 package com.advocacia.estacio.web.controllers;
 
+import java.util.Collections;
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -41,16 +45,39 @@ public class ProcessoController {
 		Processo processo = processoService.buscarPorId(id);
 		return ResponseEntity.ok(new ProcessoDto(processo));
 	}
+
+	@GetMapping("/areasDoDireito")
+	public ResponseEntity<List<String>> buscarAreasDoDireito() {
+		List<String> areasDoDireito = processoService.getAreasDoDireito().stream().map(AreaDoDireito::getDescricao).toList();
+		return ResponseEntity.ok(areasDoDireito);
+	}
+
+	@GetMapping("/tribunais")
+	public ResponseEntity<List<String>> buscarTribunais() {
+		List<String> tribunais = processoService.getTribunais().stream().map(Tribunal::getDescricao).toList();
+		return ResponseEntity.ok(tribunais);
+	}
+
+	@GetMapping("/processoStatus")
+	public ResponseEntity<List<String>> buscarProcessoStatus() {
+		List<String> processoStatus = processoService.getProcessoStatus().stream()
+				.filter(p -> !p.equals(StatusProcesso.TODOS))
+				.map(StatusProcesso::getStatus)
+				.toList();
+		return ResponseEntity.ok(processoStatus);
+	}
 	
 	@GetMapping("/statusDoProcesso/{processoStatus}")
-	public ResponseEntity<List<ProcessoDto>> buscarProcessosPorStatusDoProcesso(
-			@PathVariable String processoStatus) {
+	public ResponseEntity<PageResponseDto<ProcessoDto>> buscarProcessosPorStatusDoProcesso(
+			@PathVariable String processoStatus,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size) {
 		if(processoStatus.equalsIgnoreCase("todos")) {
-			return ResponseEntity.ok(processoService.findAll().stream()
-					.map(ProcessoDto::new).toList());
+			Page<ProcessoDto> todosProcessos = processoService.findAll(page, size).map(ProcessoDto::new);
+			return ResponseEntity.ok((new PageResponseDto<>(todosProcessos)));
 		}
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus);
-		return ResponseEntity.ok(processos);
+		Page<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso(processoStatus, page, size);
+		return ResponseEntity.ok(new PageResponseDto<>(processos));
 	}
 	
 	@GetMapping("/buscar/{numeroDoProcesso}")

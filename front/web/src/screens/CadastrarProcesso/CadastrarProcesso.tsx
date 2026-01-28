@@ -4,6 +4,10 @@ import { useNavigate, Navigate } from "react-router-dom";
 import styles from "./CadastrarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 
+import Input from "../../components/Input/Input";
+
+import { scrollToTop } from "./../../utils/Utils";
+
 const API_URL = process.env.REACT_APP_API;
 
 export interface Page<T> {
@@ -35,8 +39,13 @@ export default function CadastrarProcesso() {
   const [assunto, setAssunto] = useState("");
   const [vara, setVara] = useState("");
   const [responsavel, setResponsavel] = useState("");
+
   const [areaDoDireito, setAreaDeDireito] = useState("");
+  const [areasDoDireito, setAreasDeDireito] = useState<string[]>([]);
+
   const [tribunal, setTribunal] = useState("");
+  const [tribunais, setTribunais] = useState<string[]>([]);
+  
   const [prazo, setPrazo] = useState("");
 
   const [messageDataError, setMessageDataError] = useState("");
@@ -59,9 +68,51 @@ export default function CadastrarProcesso() {
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+
+  const [selected, setSelected] = useState<boolean>(true);
   
   const page = 0;
   const size = 20;
+
+  useEffect(() => {
+
+    const buscarAreasDoDireito = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/areasDoDireito`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setAreasDeDireito(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    const buscarTribunais = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/processos/tribunais`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setTribunais(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarAreasDoDireito();
+    buscarTribunais();
+  }, []);
 
 
   useEffect(() => {
@@ -95,6 +146,10 @@ export default function CadastrarProcesso() {
     const buscarAdvogado = async () => {
       if (nomeAdvogadoSearch.length < 2) {
         setAdvogados([]);
+        // if(nomeAdvogadoSearch.length <= 1 && advogados.length === 0) {
+        //   setNomeAdvogadoSearch("");
+        //   setNomeAdvogado("");
+        // }
         return;
       }
       try {
@@ -148,7 +203,7 @@ export default function CadastrarProcesso() {
     try {
       await axios.post(`${API_URL}/processos/`, {
         assistidoId,
-        numeroDoProcessoPje,
+        numeroDoProcessoPje: numeroDoProcessoPje || "",
         assunto,
         vara,
         responsavel,
@@ -168,6 +223,8 @@ export default function CadastrarProcesso() {
       setVarianteToast("success");
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 
@@ -216,6 +273,22 @@ export default function CadastrarProcesso() {
     setPrazo(formatado);
   }
 
+  const setAdvogadoNome = (nome: string) =>  {
+    setNomeAdvogado(nome);
+    setNomeAdvogadoSearch(nome);
+    if(nome.length === 0) {
+      setAdvogados([]);
+    }
+  }
+
+  const setEstagiarioNome = (nome: string) =>  {
+    setNomeEstagiario(nome);
+    setNomeEstagiarioSearch(nome);
+    if(nome.length === 0) {
+      setEstagiarios([]);
+    }
+  }
+
   const setAssistido = (assistido: Assistido) => {
     setNomeAssistido(assistido.nome);
     setAssistidoId(assistido.id);
@@ -225,6 +298,7 @@ export default function CadastrarProcesso() {
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
+    setResponsavel(advogado.nome);
     setNomeAdvogadoSearch("");
   }
 
@@ -235,10 +309,12 @@ export default function CadastrarProcesso() {
   }
 
   const selecionarAreaDoDireito = async (e:any) => {
+    setSelected(false);
     setAreaDeDireito(e.target.value);
   }
 
   const selecionarTribunal = async (e:any) => {
+    setSelected(false);
     setTribunal(e.target.value);
   }
 
@@ -250,6 +326,10 @@ export default function CadastrarProcesso() {
     setAreaDeDireito("");
     setTribunal("");
     setNumeroDoProcessoPje("");
+    setNomeAssistido("");
+    setNomeAdvogado("");
+    setNomeEstagiario("")
+    setSelected(true)
   };
 
   const token = localStorage.getItem('token');
@@ -286,48 +366,26 @@ export default function CadastrarProcesso() {
           )}
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Assunto</label>
-          <input
-            className={styles.input}
-            placeholder="Assunto"
-            value={assunto}
-            onChange={(e) => setAssunto(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={assunto}
+          title="Assunto"
+          setValue={setAssunto}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Vara</label>
-          <input
-            className={styles.input}
-            placeholder="Vara"
-            value={vara}
-            onChange={(e) => setVara(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={vara}
+          title="Vara"
+          setValue={setVara}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Nº do processo do PJE</label>
-          <input
-            className={styles.input}
-            placeholder="Nº do processo do PJE"
-            value={numeroDoProcessoPje}
-            onChange={(e) => setNumeroDoProcessoPje(e.target.value)}
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Responsável</label>
-          <input
-            className={styles.input}
-            placeholder="Responsável"
-            value={responsavel}
-            onChange={(e) => setResponsavel(e.target.value)}
-            required
-          />
-        </div>
+        <Input
+          value={numeroDoProcessoPje}
+          title="Nº do processo do PJE"
+          setValue={setNumeroDoProcessoPje}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Advogado</label>
@@ -335,7 +393,7 @@ export default function CadastrarProcesso() {
             className={styles.input}
             placeholder="Digite o nome do advogado"
             value={nomeAdvogadoSearch || nomeAdvogado}
-            onChange={(e) => setNomeAdvogadoSearch(e.target.value)}
+            onChange={(e) => setAdvogadoNome(e.target.value)}
             required
           />
           {advogados.length > 0 && (
@@ -350,6 +408,7 @@ export default function CadastrarProcesso() {
             </ul>
           )}
         </div>
+        
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estagiário</label>
@@ -357,7 +416,7 @@ export default function CadastrarProcesso() {
             className={styles.input}
             placeholder="Digite o nome do estagiário"
             value={nomeEstagiarioSearch || nomeEstagiario}
-            onChange={(e) => setNomeEstagiarioSearch(e.target.value)}
+            onChange={(e) => setEstagiarioNome(e.target.value)}
             required
           />
           {estagiarios.length > 0 && (
@@ -373,23 +432,30 @@ export default function CadastrarProcesso() {
           )}
         </div>
 
+        <Input
+          value={responsavel}
+          title="Responsável"
+          setValue={setResponsavel}
+          required={true}
+        />
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
           <select className={styles.input} onChange={selecionarAreaDoDireito} required>
-            <option value="" disabled selected></option>
-            <option value="Civil">Civil</option>
-            <option value="Trabalho">Trabalho</option>
-            <option value="Previdenciário">Previdenciário</option>
+            <option value="" disabled selected={selected}></option>
+            {areasDoDireito.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
           <select className={styles.input} onChange={selecionarTribunal} required>
-            <option value="" disabled selected></option>
-            <option value="Estadual">Estadual</option>
-            <option value="Federal">Federal</option>
-            <option value="Trabalho">Trabalho</option>
+            <option value="" disabled selected={selected}></option>
+            {tribunais.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
@@ -426,3 +492,5 @@ export default function CadastrarProcesso() {
     </div>
   );
 }
+
+

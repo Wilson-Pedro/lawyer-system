@@ -1,6 +1,7 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -182,5 +183,22 @@ class AssistidoControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.content.length()").value(1));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Estados Civis Pelo Controller")
+	void buscar_estados_civis() throws Exception {
+
+		mockMvc.perform(get(URI + "/estadosCivis")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(5)))
+				.andExpect(jsonPath("$[0]", equalTo("Solteiro(a)")))
+				.andExpect(jsonPath("$[1]", equalTo("Casado(a)")))
+				.andExpect(jsonPath("$[2]", equalTo("Divorciado(a)")))
+				.andExpect(jsonPath("$[3]", equalTo("Viuvo(a)")))
+				.andExpect(jsonPath("$[4]", equalTo("Separado Judicialmente")));
 	}
 }

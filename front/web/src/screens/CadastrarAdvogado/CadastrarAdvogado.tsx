@@ -3,21 +3,25 @@ import { useNavigate, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarAdvogado.module.css";
+import Input from "../../components/Input/Input";
+
+import { scrollToTop } from "./../../utils/Utils";
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAdvogado() {
 
-  const [nome, setNome] = useState("Júlio Silva");
-  const [email, setEmail] = useState("julio@gmail.com");
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
   //const [cpf, setCpf] = useState("23423423234");
-  const [telefone, setTelefone] = useState("8893545325");
+  const [telefone, setTelefone] = useState("");
   const [dataDeNascimento, setDataDeNascimento] = useState("");
-  const [cidade, setCidade] = useState("Belo Horizonte");
-  const [bairro, setBairro] = useState("Monte Castelo");
-  const [rua, setRua] = useState("Rua das Goiabadas");
-  const [numeroDaCasa, setNumeroDaCasa] = useState("12");
-  const [cep, setCep] = useState("120454122");
+  const [cidade, setCidade] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numeroDaCasa, setNumeroDaCasa] = useState("");
+  const [cep, setCep] = useState("");
+  const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
@@ -42,6 +46,7 @@ export default function CadastrarAdvogado() {
         rua,
         numeroDaCasa: parseInt(numeroDaCasa),
         cep,
+        senha,
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -53,6 +58,8 @@ export default function CadastrarAdvogado() {
       setVarianteToast("success");
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 
@@ -102,108 +109,84 @@ export default function CadastrarAdvogado() {
       </button>
       <h1 className={styles.title}>Cadastrar Advogado</h1>
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Nome Completo</label>
-        <input
-          className={styles.input}
-          placeholder="Nome Completo"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-      </div>
+      <Input
+        value={nome}
+        title="Nome Completo"
+        setValue={setNome}
+        required={true}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>E-mail</label>
-        <input
-          className={styles.input}
-          placeholder="E-mail"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
+      <Input
+        value={email}
+        title="E-mail"
+        setValue={setEmail}
+        type="email"
+        required={true}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Telefone</label>
-        <input
-          className={styles.input}
-          placeholder="Telefone"
-          type="tel"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-          required
-        />
-      </div>
+      <Input
+        value={telefone}
+        title="Telefone"
+        setValue={setTelefone}
+        type={"tel"}
+        required={true}
+      />
 
-      <div className={styles.inputGroup}>
-        <label className={styles.label}>Data de Nascimento</label>
-        <input
-          className={styles.input}
-          placeholder="DD/MM/AAAA"
-          value={dataDeNascimento}
-          onChange={(e) => formatarData(e.target.value)}
-          required
-        />
-      </div>
+      <Input
+        title="Data de Nascimento"
+        value={dataDeNascimento}
+        placeholder={"DD/MM/AAAA"}
+        setValue={formatarData}
+        required={true}
+      />
 
-      <div className={styles.inputRow}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Cidade</label>
-          <input
-            className={styles.input}
-            placeholder="Cidade"
-            value={cidade}
-            onChange={(e) => setCidade(e.target.value)}
-            required
-          />
-        </div>
+      <Input
+        title="CEP"
+        value={cep}
+        setValue={setCep}
+        required={true}
+      />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Bairro</label>
-          <input
-            className={styles.input}
-            placeholder="Bairro"
-            value={bairro}
-            onChange={(e) => setBairro(e.target.value)}
-            required
-          />
-        </div>
-      </div>
+      <Input
+        title="Cidade"
+        value={cidade}
+        setValue={setCidade}
+        required={true}
+      />
+
+      <Input
+        title="Bairro"
+        value={bairro}
+        setValue={setBairro}
+        required={true}
+      />
 
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Rua</label>
-        <input
-          className={styles.input}
-          placeholder="Rua"
+        <Input
+          title="Rua"
           value={rua}
-          onChange={(e) => setRua(e.target.value)}
-          required
+          setValue={setRua}
+          required={true}
         />
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>Número da Casa</label>
-        <input
-          className={styles.input}
-          placeholder="Número da Casa"
-          type="number"
+        <Input
+          title="Número da Casa"
           value={numeroDaCasa}
-          onChange={(e) => setNumeroDaCasa(e.target.value)}
-          required
+          setValue={setNumeroDaCasa}
+          type="number"
+          required={true}
         />
       </div>
 
       <div className={styles.inputGroup}>
-        <label className={styles.label}>CEP</label>
-        <input
-          className={styles.input}
-          placeholder="CEP"
-          value={cep}
-          onChange={(e) => setCep(e.target.value)}
-          required
+        <Input
+          title="Senha"
+          value={senha}
+          setValue={setSenha}
+          required={true}
         />
       </div>
 

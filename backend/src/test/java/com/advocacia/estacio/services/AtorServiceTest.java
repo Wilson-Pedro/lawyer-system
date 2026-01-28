@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -23,6 +25,8 @@ import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -218,5 +222,15 @@ class AtorServiceTest {
 		assertEquals("fabio@gmail.com", professor.getEmail());
 		assertEquals("Professor", professor.getTipoDoAtor().getTipo());
 		assertEquals(UsuarioStatus.ATIVO, professor.getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Tipo de Atores Pelo Service")
+	void buscar_tipo_atores() {
+		List<TipoDoAtor> atores = atorService.getTipoAtores();
+
+		assertEquals(TipoDoAtor.COORDENADOR_DO_CURSO, atores.get(0));
+		assertEquals(TipoDoAtor.SECRETARIO, atores.get(1));
+		assertEquals(TipoDoAtor.PROFESSOR, atores.get(2));
 	}
 }

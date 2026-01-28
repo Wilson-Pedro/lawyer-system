@@ -1,5 +1,8 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
+import com.advocacia.estacio.domain.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +12,8 @@ import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.services.DemandaService;
+
+import java.util.List;
 
 @RequestMapping("/demandas")
 @RestController
@@ -29,6 +34,16 @@ public class DemandaController {
         DemandaDto demandaDto = demandaService.buscarPorId(demandaId).toDto();
         return ResponseEntity.ok(demandaDto);
     }
+
+	@GetMapping("/role/{role}")
+	public ResponseEntity<List<String>> buscarDemandaStatus(@PathVariable String role) {
+		List<String> demandaStatus = demandaService
+				.getDemandaStatus(UserRole.toEnum(role))
+				.stream()
+				.map(DemandaStatus::getStatus)
+				.toList();
+		return ResponseEntity.ok(demandaStatus);
+	}
 
     @PatchMapping("/{id}/change")
     public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam(defaultValue = "Em Correção") String status) {

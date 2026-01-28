@@ -2,6 +2,9 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.enums.AreaDoDireito;
+import com.advocacia.estacio.domain.enums.StatusProcesso;
+import com.advocacia.estacio.domain.enums.Tribunal;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -77,10 +80,21 @@ class ProcessoServiceTest {
 	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Service")
 	void buscar_processos_por_status() {
 		
-		List<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("TRAMITANDO");
+		Page<ProcessoDto> processos = processoService.buscarProcessosPorStatusDoProcesso("Tramitando", 0, 20);
 		
 		assertNotNull(processos);
+		assertEquals(1, processos.getContent().size());
         assertFalse(processos.isEmpty());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar TODOS os Processos Paginados e Dados Pelo Service")
+	void buscar_todos_processos() {
+
+		Page<Processo> processos = processoService.findAll(0, 20);
+
+		assertNotNull(processos);
+		assertFalse(processos.isEmpty());
 	}
 	
 	@Test
@@ -127,5 +141,35 @@ class ProcessoServiceTest {
 		assertEquals("Tramitando", processo.getStatusDoProcesso().getStatus());
 		
 		assertEquals(1, processoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Areas do Direito")
+	void buscar_estado_civis() {
+		List<AreaDoDireito> areasDoDireito = processoService.getAreasDoDireito();
+
+		assertEquals(AreaDoDireito.CIVIL, areasDoDireito.get(0));
+		assertEquals(AreaDoDireito.TRABALHO, areasDoDireito.get(1));
+		assertEquals(AreaDoDireito.PREVIDENCIARIO, areasDoDireito.get(2));
+	}
+
+	@Test
+	@DisplayName("Deve buscar Tribunais")
+	void buscar_tribunais() {
+		List<Tribunal> tribunais = processoService.getTribunais();
+
+		assertEquals(Tribunal.ESTADUAL, tribunais.get(0));
+		assertEquals(Tribunal.FEDERAL, tribunais.get(1));
+		assertEquals(Tribunal.TRABALHO, tribunais.get(2));
+	}
+
+	@Test
+	@DisplayName("Deve buscar Status do Processo")
+	void buscar_status_processo() {
+		List<StatusProcesso> statusProcesso = processoService.getProcessoStatus();
+
+		assertEquals(StatusProcesso.TRAMITANDO, statusProcesso.get(0));
+		assertEquals(StatusProcesso.SUSPENSO, statusProcesso.get(1));
+		assertEquals(StatusProcesso.ARQUIVADO, statusProcesso.get(2));
 	}
 }

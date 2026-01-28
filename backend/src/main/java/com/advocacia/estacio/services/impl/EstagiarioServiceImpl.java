@@ -19,6 +19,9 @@ import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.EstagiarioService;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
 	
@@ -26,7 +29,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	private EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
-	private UsuarioAuthService usuarioAuthService;
+	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	@Override
 	public Estagiario salvar(EstagiarioDto estagiarioDto) {
@@ -37,9 +40,8 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 				estagiarioDto.getSenha(), 
 				UserRole.ESTAGIARIO);
 		
-		UsuarioAuth auth = usuarioAuthService.salvar(registro);
+		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
-		//estagiario.setUsuarioStatus(UsuarioStatus.ATIVO);
 		return estagiarioRepository.save(estagiario);
 	}
 
@@ -62,7 +64,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 
 	@Override
 	public Page<Estagiario> buscarTodos(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return estagiarioRepository.buscarTodos(pageable);
 	}
 	
@@ -70,7 +72,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
 		Estagiario estagiario = buscarPorId(id);
 		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
-		usuarioAuthService.atualizarLogin(
+		usuarioAuthServiceImpl.atualizarLogin(
 				estagiario.getEmail(), 
 				estagiarioDto.getEmail(), 
 				estagiarioDto.getSenha(),
@@ -81,7 +83,11 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		estagiario.setTelefone(estagiarioDto.getTelefone());
 		estagiario.setMatricula(estagiarioDto.getMatricula());
 		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
-		//estagiario.setUsuarioStatus(UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus()));
 		return estagiarioRepository.save(estagiario);
 	}
+
+    @Override
+    public List<PeriodoEstagio> getPeriodos() {
+        return Arrays.stream(PeriodoEstagio.values()).toList();
+    }
 }

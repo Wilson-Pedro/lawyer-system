@@ -43,10 +43,13 @@ public class SecurityConfigurations {
 
 						.requestMatchers(HttpMethod.POST, "/assistidos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/assistidos/buscar/{nome}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/assistidos/estadosCivis").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/assistidos/{id}").hasRole("ADMIN")
 
 						//.requestMatchers(HttpMethod.GET, "/demandas/**").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.PATCH, "/demandas/{demandaId}/change").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/demandas/role/{role}").hasAnyRole("ADMIN", "ADVOGADO", "PROFESSOR")
 						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
 						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ESTAGIARIO")
@@ -54,15 +57,19 @@ public class SecurityConfigurations {
 
 						.requestMatchers(HttpMethod.POST, "/estagiarios/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/{id}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/estagiarios/periodos").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscar/{nome}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/estagiarios/buscarId/email/{email}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/estagiarios/buscarId/email/{email}").hasRole("ESTAGIARIO")
 
 						.requestMatchers(HttpMethod.POST, "/movimentos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/movimentos/buscar/{numeroDoProcesso}").hasRole("ADMIN")
 
 						.requestMatchers(HttpMethod.POST, "/processos/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/{id}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.GET, "/processos/statusDoProcesso/{processoStatus}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/processos/areasDoDireito").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/processos/tribunais").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/processos/processoStatus").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/processos/statusDoProcesso/{processoStatus}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/processos/buscar/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/processos/numeroDoProcesso/{numeroDoProcesso}").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PUT, "/processos/{id}").hasRole("ADMIN")

@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 import styles from "./CadastrarEstagiario.module.css";
+import Input from "../../components/Input/Input";
+
+import { scrollToTop } from "./../../utils/Utils";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -13,12 +16,35 @@ export default function CadastrarEstagiario() {
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
   const [matricula, setMatricula] = useState("");
+  const [periodos, setPeriodos] = useState<string[]>([]);
   const [periodo, setPeriodo] = useState("");
   const [senha, setSenha] = useState("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+
+  useEffect(() => {
+
+    const buscarPeriodos = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/estagiarios/periodos`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setPeriodos(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
+    buscarPeriodos();
+  }, []);
 
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
@@ -43,6 +69,8 @@ export default function CadastrarEstagiario() {
       setMostrarToast(true);
 
       limparCampos();
+
+      scrollToTop();
     } catch (error) {
       console.error(error);
 
@@ -74,47 +102,35 @@ export default function CadastrarEstagiario() {
       <h1 className={styles.title}>Cadastrar Estagiário</h1>
 
       <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Nome Completo</label>
-          <input
-            className={styles.input}
-            placeholder="Nome Completo"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
-        </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>E-mail</label>
-          <input
-            className={styles.input}
-            placeholder="E-mail"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <Input
+          value={nome}
+          title="Nome Completo"
+          setValue={setNome}
+          required={true}
+        />
+        
+        <Input
+          value={email}
+          title="E-mail"
+          type="email"
+          setValue={setEmail}
+          required={true}
+        />
+        
+        <Input
+          value={telefone}
+          title="Telefone"
+          setValue={setTelefone}
+          required={true}
+        />
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Telefone</label>
-          <input
-            className={styles.input}
-            placeholder="Telefone"
-            type="text"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Matrícula</label>
-          <input
-            className={styles.input}
-            placeholder="Matrícula"
-            value={matricula}
-            onChange={(e) => setMatricula(e.target.value)}
-          />
-        </div>
+        <Input
+          value={matricula}
+          title="Matrícula"
+          setValue={setMatricula}
+          required={true}
+        />
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Período</label>
@@ -124,23 +140,19 @@ export default function CadastrarEstagiario() {
             onChange={selecionarPeriodo}
           >
             <option value="" disabled selected></option>
-            <option value="Estágio I">Estágio I</option>
-            <option value="Estágio II">Estágio II</option>
-            <option value="Estágio III">Estágio III</option>
-            <option value="Estágio IV">Estágio IV</option>
+            {periodos.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
 
-        <div className={styles.inputGroup}>
-          <label className={styles.label}>Senha</label>
-          <input
-            className={styles.input}
-            placeholder="Senha"
-            type="password"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-        </div>
+        <Input
+          value={senha}
+          title="Senha"
+          type="password"
+          setValue={setSenha}
+          required={true}
+        />
 
         <button type="submit" className={styles.button}>
           Enviar Cadastro

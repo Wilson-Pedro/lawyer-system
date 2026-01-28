@@ -2,6 +2,7 @@ package com.advocacia.estacio.exceptions;
 
 import com.advocacia.estacio.domain.enums.*;
 import com.advocacia.estacio.services.AdvogadoService;
+import com.advocacia.estacio.services.DemandaService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class EnumExceptionTest {
+
+	@Autowired
+	DemandaService demandaService;
 
 	// ÁREA DO DIREITO
 	@Test
@@ -26,6 +30,12 @@ class EnumExceptionTest {
 	}
 
 	// DEMANDA STATUS
+	@Test
+	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
+	void EnumException_DemandaStatus_getDemandaStatus() {
+		assertThrows(EnumException.class, () -> demandaService.getDemandaStatus(UserRole.COORDENADOR_DO_CURSO));
+	}
+
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
 	void EnumException_DemandaStatus_codigo() {

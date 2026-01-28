@@ -17,6 +17,7 @@ export default function EditarAssistido() {
   const [nacionalidade, setNacionalidade] = useState("brasileiro");
   const [naturalidade, setnaturalidade] = useState("");
   const [estadoCivil, setEstadoCivil] = useState("");
+  const [estadosCivis, setEstadosCivis] = useState<string[]>([]);
   const [cidade, setCidade] = useState("");
   const [bairro, setBairro] = useState("");
   const [rua, setRua] = useState("");
@@ -30,6 +31,28 @@ export default function EditarAssistido() {
   const navigate = useNavigate();
   const params = useParams();
   const assistidoId = params.assistidoId || '';
+
+    useEffect(() => {
+  
+      const buscarEstadosCivis = async () => {
+  
+        try {
+  
+          const response = await axios.get(`${API_URL}/assistidos/estadosCivis`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          setEstadosCivis(response.data);
+  
+        } catch(error) {
+          console.log(error);
+        }
+  
+      }
+  
+      buscarEstadosCivis();
+    }, []);
  
   useEffect(() => {
 
@@ -62,7 +85,25 @@ export default function EditarAssistido() {
       }
     }
 
+    const buscarEstadosCivis = async () => {
+
+      try {
+
+        const response = await axios.get(`${API_URL}/assistidos/estadosCivis`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setEstadosCivis(response.data);
+
+      } catch(error) {
+        console.log(error);
+      }
+
+    }
+
     fetchAssitido();
+    buscarEstadosCivis();
   }, []);
 
   const atualizarAssistido = async (e:any) => {
@@ -189,13 +230,15 @@ export default function EditarAssistido() {
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Estado Civil</label>
-          <select className={styles.input} onChange={selecionarEstadoCivil}>
+          <select 
+            className={styles.input} 
+            value={estadoCivil}
+            onChange={selecionarEstadoCivil}
+          >
             <option value="" disabled></option>
-            <option value="Solteiro(a)">Solteiro(a)</option>
-            <option value="Casado(a)">Casado(a)</option>
-            <option value="Divorciado(a)">Divorciado(a)</option>
-            <option value="Viuvo(a)">Viuvo(a)</option>
-            <option value="Separado Judicialmente">Separado Judicialmente</option>
+            {estadosCivis.map((option, key) => (
+              <option key={key} value={option}>{option}</option>
+            ))}
           </select>
         </div>
         

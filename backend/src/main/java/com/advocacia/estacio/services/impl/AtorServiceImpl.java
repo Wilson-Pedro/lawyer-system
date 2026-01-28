@@ -18,6 +18,9 @@ import com.advocacia.estacio.factory.AtorFactory;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.services.AtorService;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Service
 public class AtorServiceImpl implements AtorService {
 	
@@ -25,7 +28,7 @@ public class AtorServiceImpl implements AtorService {
 	private AtorRepository atorRepository;
 	
 	@Autowired
-	private UsuarioAuthService usuarioAuthService;
+	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	@Override
 	public Ator salvar(AtorDto atorDto) {
@@ -34,7 +37,7 @@ public class AtorServiceImpl implements AtorService {
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
 
-		UsuarioAuth auth = usuarioAuthService.salvar(new RegistroDto(
+		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(new RegistroDto(
 				atorDto.getEmail(), 
 				atorDto.getSenha(), 
 				UserRole.toEnum(ator.getTipoDoAtor())));
@@ -57,12 +60,17 @@ public class AtorServiceImpl implements AtorService {
 	@Override
 	public Ator atualizar(Long id, AtorDto atorDto) {
 		Ator ator = buscarPorId(id);
-		usuarioAuthService.atualizarLogin(ator.getEmail(), atorDto.getEmail(), atorDto.getSenha(), UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
+		usuarioAuthServiceImpl.atualizarLogin(ator.getEmail(), atorDto.getEmail(), atorDto.getSenha(), UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		ator.setId(id);
 		ator.setNome(atorDto.getNome());
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
 		//ator.setUsuarioStatus(UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		return atorRepository.save(ator);
+	}
+
+	@Override
+	public List<TipoDoAtor> getTipoAtores() {
+		return Arrays.stream(TipoDoAtor.values()).toList();
 	}
 }

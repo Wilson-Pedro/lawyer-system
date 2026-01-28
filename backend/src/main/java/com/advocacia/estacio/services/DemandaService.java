@@ -1,9 +1,13 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.domain.enums.UserRole;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.entities.Demanda;
+
+import java.util.List;
 
 public interface DemandaService {
 	
@@ -20,4 +24,6 @@ public interface DemandaService {
 	Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size);
 
 	void mudarDemandaStatus(Long id, String status);
+
+	List<DemandaStatus> getDemandaStatus(UserRole role);
 }

@@ -4,6 +4,7 @@ import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -26,6 +27,21 @@ interface Movimento {
 export default function Movimento() {
   const [movimentos, setMovimentos] = useState<Movimento[]>([]);
   const [busca, setBusca] = useState("");
+
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+
+  const [primeiraPagina, setPrimeiraPagina] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  
+  const [totalElements, setTotalElements] = useState(0);
+  const [paginas, setPaginas] = useState<number[]>([]);
+  const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+  const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+  const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+  const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const { numeroDoProcesso } = useParams<{ numeroDoProcesso: string }>();
 
@@ -34,25 +50,27 @@ export default function Movimento() {
     
     const movimentos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}`, {
+        const response = await axios.get(`${API_URL}/movimentos/buscar/${numeroDoProcesso}?page=${page}&size=${size}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
         const pageData: Page<Movimento> = response.data;
         setMovimentos(pageData.content);
+        setTotalPages(pageData.totalPages);
       } catch (error) {
         console.error("Erro ao buscar movimentos:", error);
       }
     };
 
     movimentos();
-  }, [numeroDoProcesso]);
+  }, [numeroDoProcesso, page, size]);
 
   const movimentosFiltrados = movimentos.filter(
-    (item) =>
-      item.movimento.toLowerCase().includes(busca.toLowerCase()) ||
-      item.advogado.toLowerCase().includes(busca.toLowerCase())
+    (movimento) =>
+      movimento.movimento.toLowerCase().includes(busca.toLowerCase()) ||
+      movimento.advogado.toLowerCase().includes(busca.toLowerCase()) ||
+      movimento.numeroDoProcesso.toLocaleLowerCase().includes(busca.toLocaleLowerCase())
   );
 
   const token = localStorage.getItem('token');
@@ -119,11 +137,30 @@ export default function Movimento() {
             ))}
           </tbody>
         </Table>
+
       ) : (
         <div className="alert alert-secondary text-center mt-5">
           <p className="text-muted fs-5">Nenhum movimento encontrado.</p>
         </div>
       )}
+
+      <Paginacao 
+          page={page}
+          totalPages={totalPages}
+          paginaAtual={paginaAtual}
+          primeiraPagina={primeiraPagina}
+          ultimaPagina={ultimaPagina}
+          paginas={paginas}
+          setPaginaAtual={setPaginaAtual}
+          setPrimeiraPagina={setPrimeiraPagina}
+          setUltimaPagina={setUltimaPagina}
+          setPage={setPage}
+          mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+          mostrarUltimaPagina={mostrarUltimaPagina}
+          setMostrarUltimaPagina={setMostrarUltimaPagina}
+          setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+          setPaginas={setPaginas}
+      />
     </Container>
   );
 }

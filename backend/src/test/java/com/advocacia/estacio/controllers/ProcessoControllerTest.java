@@ -1,6 +1,7 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -101,17 +102,17 @@ class ProcessoControllerTest {
 	@DisplayName("Deve Buscar Processos Por Status No Banco de Dados Pelo Controller")
 	void buscar_processos_por_status() throws Exception {
 		
-		mockMvc.perform(get(URI + "/statusDoProcesso/TRAMITANDO")
+		mockMvc.perform(get(URI + "/statusDoProcesso/Tramitando?page=0&size=10")
 				.header("Authorization", "Bearer " + TOKEN)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$").isArray())
-				.andExpect(jsonPath("$[0].id").exists())
-				.andExpect(jsonPath("$[0].numeroDoProcesso").exists())
-				.andExpect(jsonPath("$[0].assunto").exists())
-				.andExpect(jsonPath("$[0].prazoFinal").exists())
-				.andExpect(jsonPath("$[0].responsavel").exists());
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("$.content[0].id").exists())
+				.andExpect(jsonPath("$.content[0].numeroDoProcesso").exists())
+				.andExpect(jsonPath("$.content[0].assunto").exists())
+				.andExpect(jsonPath("$.content[0].prazoFinal").exists())
+				.andExpect(jsonPath("$.content[0].responsavel").exists());
 	}
 	
 	@Test
@@ -167,5 +168,50 @@ class ProcessoControllerTest {
 				.andExpect(status().isNoContent());
 		
 		assertEquals(1, processoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Áreas do Direito Civis Pelo Controller")
+	void buscar_areas_do_direito() throws Exception {
+
+		mockMvc.perform(get(URI + "/areasDoDireito")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Civil")))
+				.andExpect(jsonPath("$[1]", equalTo("Trabalho")))
+				.andExpect(jsonPath("$[2]", equalTo("Previdenciário")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Processo Status Pelo Controller")
+	void buscar_processo_status() throws Exception {
+
+		mockMvc.perform(get(URI + "/processoStatus")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Tramitando")))
+				.andExpect(jsonPath("$[1]", equalTo("Suspenso")))
+				.andExpect(jsonPath("$[2]", equalTo("Arquivado")));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Tribunais Civis Pelo Controller")
+	void buscar_tribunais() throws Exception {
+
+		mockMvc.perform(get(URI + "/tribunais")
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andExpect(jsonPath("$", hasSize(3)))
+				.andExpect(jsonPath("$[0]", equalTo("Estadual")))
+				.andExpect(jsonPath("$[1]", equalTo("Federal")))
+				.andExpect(jsonPath("$[2]", equalTo("Trabalho")));
 	}
 }

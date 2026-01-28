@@ -3,8 +3,17 @@ import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
+import Paginacao from "../../components/Paginacao/Paginacao";
 
 const API_URL = process.env.REACT_APP_API;
+
+interface Page<T> {
+  content: T[];
+  totalPages: number;
+  totalElements: number;
+  sizE: number;
+  number: number;
+}
 
 interface Processo {
   id: string;
@@ -21,26 +30,44 @@ export default function Processos() {
   const [filteredProcessos, setFilteredProcessos] = useState<Processo[]>([]);
   const [busca, setBusca] = useState("");
   const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+
+  const [primeiraPagina, setPrimeiraPagina] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  
+  const [totalElements, setTotalElements] = useState(0);
+  const [paginas, setPaginas] = useState<number[]>([]);
+  const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+  const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+  const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+  const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    
+
+
     const fetchProcessos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}`, {
+        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}?page=${page}&size=${size}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-        setProcessos(response.data);
-        setFilteredProcessos(response.data);
+        const pages: Page<Processo> = response.data;
+        setProcessos(pages.content);
+        setTotalPages(pages.totalPages);
+        setTotalElements(pages.totalElements);
+        setFilteredProcessos(pages.content);
       } catch (error) {
         console.error(error);
       }
     };
     fetchProcessos();
-  }, [statusFiltro]);
+  }, [statusFiltro, page, size]);
 
   useEffect(() => {
     let dados = [...processos];
@@ -162,6 +189,25 @@ export default function Processos() {
           </div>
         )}
       </div>
+
+      
+      <Paginacao 
+          page={page}
+          totalPages={totalPages}
+          paginaAtual={paginaAtual}
+          primeiraPagina={primeiraPagina}
+          ultimaPagina={ultimaPagina}
+          paginas={paginas}
+          setPaginaAtual={setPaginaAtual}
+          setPrimeiraPagina={setPrimeiraPagina}
+          setUltimaPagina={setUltimaPagina}
+          setPage={setPage}
+          mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+          mostrarUltimaPagina={mostrarUltimaPagina}
+          setMostrarUltimaPagina={setMostrarUltimaPagina}
+          setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+          setPaginas={setPaginas}
+      />
 
       
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

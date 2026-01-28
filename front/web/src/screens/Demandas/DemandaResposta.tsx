@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
+import Paginacao from "../../components/Paginacao/Paginacao";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const API_URL = process.env.REACT_APP_API;
@@ -25,6 +26,21 @@ interface DemandaResposta {
 
 export default function DemandaResposta() {
     const [demandaRespostas, setDemandaRespostas] = useState<DemandaResposta[]>([]);
+        
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(10);
+
+    const [primeiraPagina, setPrimeiraPagina] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    
+    const [totalElements, setTotalElements] = useState(0);
+    const [paginas, setPaginas] = useState<number[]>([]);
+    const [ultimaPagina, setUltimaPagina] = useState<number>(10);
+    const [paginaAtual, setPaginaAtual] = useState<number>(0);
+
+    const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
+    const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const params = useParams();
@@ -35,19 +51,21 @@ export default function DemandaResposta() {
 
         const fetchDemandasResposta = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/responde/demanda/${demandaId}?page=0&size=20`, {
+                const response = await axios.get(`${API_URL}/demandas/responde/demanda/${demandaId}?page=${page}&size=${size}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const page: Page<DemandaResposta> = response.data;
-                setDemandaRespostas(page.content);
+                const pages: Page<DemandaResposta> = response.data;
+                setDemandaRespostas(pages.content);
+                setTotalPages(pages.totalPages);
+                setTotalElements(pages.totalElements);
             } catch (error) {
                 console.error(error);
             }
         };
         fetchDemandasResposta();
-    }, [demandaId]);
+    }, [demandaId, page, size]);
 
     const token = localStorage.getItem('token');
     if (!token) return <Navigate to="/login" />
@@ -95,6 +113,23 @@ export default function DemandaResposta() {
                 )}
             </div>
 
+            <Paginacao 
+                page={page}
+                totalPages={totalPages}
+                paginaAtual={paginaAtual}
+                primeiraPagina={primeiraPagina}
+                ultimaPagina={ultimaPagina}
+                paginas={paginas}
+                setPaginaAtual={setPaginaAtual}
+                setPrimeiraPagina={setPrimeiraPagina}
+                setUltimaPagina={setUltimaPagina}
+                setPage={setPage}
+                mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+                mostrarUltimaPagina={mostrarUltimaPagina}
+                setMostrarUltimaPagina={setMostrarUltimaPagina}
+                setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+                setPaginas={setPaginas}
+            />
 
             <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
                 © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.

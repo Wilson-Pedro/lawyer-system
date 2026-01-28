@@ -1,11 +1,10 @@
 package com.advocacia.estacio.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.domain.enums.Tempestividade;
+import com.advocacia.estacio.domain.enums.UserRole;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +16,10 @@ import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -145,5 +148,50 @@ class DemandaServiceTest {
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
 		assertEquals("Em Correção", demandas.getContent().get(0).getDemandaStatusAluno());
 		assertEquals("Aguardando Professor", demandas.getContent().get(0).getDemandaStatusProfessor());
+	}
+
+	@Test
+	@DisplayName("Deve buscar Demanda Status Do ADMIN pelo Service")
+	void buscar_demanda_status_admin() {
+
+		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.ADMIN);
+
+		assertEquals(demandaStatus.size(), 8);
+
+		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(0));
+		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(1));
+		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
+		assertEquals(DemandaStatus.DENTRO_DO_PRAZO, demandaStatus.get(3));
+		assertEquals(DemandaStatus.FORA_DO_PRAZO, demandaStatus.get(4));
+		assertEquals(DemandaStatus.RECEBIDO, demandaStatus.get(5));
+		assertEquals(DemandaStatus.PROTOCOLADO, demandaStatus.get(6));
+		assertEquals(DemandaStatus.AGUARDANDO_PROFESSOR, demandaStatus.get(7));
+	}
+
+	@Test
+	@DisplayName("Deve buscar Demanda Status Do PROFESSOR pelo Service")
+	void buscar_demanda_status_professor() {
+
+		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.PROFESSOR);
+
+		assertEquals(5, demandaStatus.size());
+
+		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(0));
+		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(1));
+		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
+		assertEquals(DemandaStatus.DENTRO_DO_PRAZO, demandaStatus.get(3));
+		assertEquals(DemandaStatus.FORA_DO_PRAZO, demandaStatus.get(4));
+	}
+	@Test
+	@DisplayName("Deve buscar Demanda Status Do ADVOGADO pelo Service")
+	void buscar_demanda_status_advogado() {
+
+		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.ADVOGADO);
+
+		assertEquals(3, demandaStatus.size());
+
+		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(0));
+		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(1));
+		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
 	}
 }
