@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +15,17 @@ import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
-import com.advocacia.estacio.services.impl.UsuarioAuthService;
+import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UsuarioAuthServiceTest {
+class UsuarioAuthServiceImplTest {
 	
 	@Autowired
-	UsuarioAuthService usuarioAuthService;
+	UsuarioAuthService UsuarioAuthService;
 	
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
@@ -48,8 +47,8 @@ class UsuarioAuthServiceTest {
 		assertEquals(0, usuarioAuthRepository.count());
 		
 		RegistroDto registroDto = testUtil.getRegistroDto();
-		
-		usuarioAuthService.salvar(registroDto);
+
+		UsuarioAuthService.salvar(registroDto);
 		
 		assertEquals(1, usuarioAuthRepository.count());
 		
@@ -66,7 +65,7 @@ class UsuarioAuthServiceTest {
 	void login_e_retornar_token() {
 		AuthenticationDto auth = testUtil.getAuthenticationDto();
 		
-		LoginResponseDto loginResponse = usuarioAuthService.login(auth);
+		LoginResponseDto loginResponse = UsuarioAuthService.login(auth);
 		
 		assertNotNull(loginResponse.token());
 		assertEquals(UserRole.ADMIN, loginResponse.role());
@@ -77,14 +76,14 @@ class UsuarioAuthServiceTest {
 	void atualizar_senha() {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String senha = usuario.getPassword();
-		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345", UsuarioStatus.ATIVO);
+
+		UsuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345", UsuarioStatus.ATIVO);
 		
 		String senhaNova = usuarioAuthRepository.findAll().get(0).getPassword();
 		
 		assertNotEquals(senha, senhaNova);
-		
-		usuarioAuthService.login(new AuthenticationDto(usuario.getLogin(), "12345"));
+
+		UsuarioAuthService.login(new AuthenticationDto(usuario.getLogin(), "12345"));
 	}
 	
 	@Test
@@ -92,22 +91,22 @@ class UsuarioAuthServiceTest {
 	void atualizar_login() {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String loginAntigo = usuario.getLogin();
-		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "", UsuarioStatus.ATIVO);
+
+		UsuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "", UsuarioStatus.ATIVO);
 		
 		String loginNovo = usuarioAuthRepository.findAll().get(0).getLogin();
 		
 		assertNotEquals(loginAntigo, loginNovo);
-		
-		usuarioAuthService.login(new AuthenticationDto("professor_22@gmail.com", "1234"));
+
+		UsuarioAuthService.login(new AuthenticationDto("professor_22@gmail.com", "1234"));
 	}
 	
 	@Test
 	@DisplayName("Não Deve Atualizar Login pelo Service")
 	void nao_atualizar_login() {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
-		
-		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "", UsuarioStatus.ATIVO);
+
+		UsuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "", UsuarioStatus.ATIVO);
 		
 		UsuarioAuth mesmoUsuario = usuarioAuthRepository.findAll().get(0);
 		
@@ -118,7 +117,7 @@ class UsuarioAuthServiceTest {
 	@Test
 	@DisplayName("Deve buscar Usuario Status Pelo Service")
 	void buscar_usuario_status() {
-		List<UsuarioStatus> usuarioStatus = usuarioAuthService.getUsuarioStatus();
+		List<UsuarioStatus> usuarioStatus = UsuarioAuthService.getUsuarioStatus();
 
 		assertEquals(UsuarioStatus.ATIVO, usuarioStatus.get(0));
 		assertEquals(UsuarioStatus.INATIVO, usuarioStatus.get(1));;

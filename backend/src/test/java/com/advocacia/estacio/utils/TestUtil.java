@@ -27,7 +27,7 @@ import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AssistidoService;
 import com.advocacia.estacio.services.EstagiarioService;
-import com.advocacia.estacio.services.impl.UsuarioAuthService;
+import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 
 @Component
 public class TestUtil {
@@ -69,7 +69,7 @@ public class TestUtil {
 	EstagiarioService estagiarioService;
 	
 	@Autowired
-	UsuarioAuthService usuarioAuthService;
+    UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	@Autowired
 	DemandaRespondeRepository demandaRespondeRepository;
@@ -193,7 +193,7 @@ public class TestUtil {
 	}
 	
 	public String getToken() {
-		usuarioAuthService.salvar(getRegistroDto());
-		return usuarioAuthService.login(getAuthenticationDto()).token();
+		usuarioAuthServiceImpl.salvar(getRegistroDto());
+		return usuarioAuthServiceImpl.login(getAuthenticationDto()).token();
 	}
 }

@@ -1,6 +1,5 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +28,7 @@ public class AtorServiceImpl implements AtorService {
 	private AtorRepository atorRepository;
 	
 	@Autowired
-	private UsuarioAuthService usuarioAuthService;
+	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	@Override
 	public Ator salvar(AtorDto atorDto) {
@@ -38,7 +37,7 @@ public class AtorServiceImpl implements AtorService {
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
 
-		UsuarioAuth auth = usuarioAuthService.salvar(new RegistroDto(
+		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(new RegistroDto(
 				atorDto.getEmail(), 
 				atorDto.getSenha(), 
 				UserRole.toEnum(ator.getTipoDoAtor())));
@@ -61,7 +60,7 @@ public class AtorServiceImpl implements AtorService {
 	@Override
 	public Ator atualizar(Long id, AtorDto atorDto) {
 		Ator ator = buscarPorId(id);
-		usuarioAuthService.atualizarLogin(ator.getEmail(), atorDto.getEmail(), atorDto.getSenha(), UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
+		usuarioAuthServiceImpl.atualizarLogin(ator.getEmail(), atorDto.getEmail(), atorDto.getSenha(), UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		ator.setId(id);
 		ator.setNome(atorDto.getNome());
 		ator.setEmail(atorDto.getEmail());

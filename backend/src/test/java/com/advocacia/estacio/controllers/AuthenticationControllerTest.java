@@ -1,6 +1,5 @@
 package com.advocacia.estacio.controllers;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.services.impl.UsuarioAuthService;
+import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class AuthenticationControllerTest {
 	
 	@Autowired
-	UsuarioAuthService usuarioAuthService;
+    UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -49,7 +48,7 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve Realizar Login Pelo Controller")
 	void login() throws Exception {
 		
-		usuarioAuthService.salvar(testUtil.getRegistroDto());
+		usuarioAuthServiceImpl.salvar(testUtil.getRegistroDto());
 				
 		AuthenticationDto authenticationDto = testUtil.getAuthenticationDto();
 		
@@ -65,7 +64,7 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve Buscar Usuario Status Pelo Controller")
 	void buscar_usuario_stataus() throws Exception {
 
-		String TOKEN = usuarioAuthService.login(testUtil.getAuthenticationDto()).token();
+		String TOKEN = usuarioAuthServiceImpl.login(testUtil.getAuthenticationDto()).token();
 
 		mockMvc.perform(get(URI + "/usuarioStatus")
 						.header("Authorization", "Bearer " + TOKEN)

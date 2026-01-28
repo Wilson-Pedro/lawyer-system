@@ -12,7 +12,7 @@ import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.impl.UsuarioAuthService;
+import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -45,7 +45,7 @@ public class BackendApplication implements CommandLineRunner {
 	DemandaRespondeService demandaRespondeService;
 	
 	@Autowired
-	UsuarioAuthService usuarioAuthService;
+	UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -102,6 +102,6 @@ public class BackendApplication implements CommandLineRunner {
 
 		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 
-		usuarioAuthService.salvar(registroDto);
+		usuarioAuthServiceImpl.salvar(registroDto);
 	}
 }

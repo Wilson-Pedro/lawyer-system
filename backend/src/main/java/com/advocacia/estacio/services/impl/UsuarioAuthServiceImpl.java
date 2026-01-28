@@ -1,7 +1,7 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UsuarioAuthService  {
+public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	
 	@Autowired
 	AuthenticationManager authenticationManger;

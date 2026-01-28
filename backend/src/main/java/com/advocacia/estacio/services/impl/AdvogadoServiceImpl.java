@@ -31,12 +31,12 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	private EnderecoService enderecoService;
 
 	@Autowired
-	private UsuarioAuthService usuarioAuthService;
+	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
 
 	@Override
 	public Advogado salvar(AdvogadoDto advogadoDto) {
 		RegistroDto registroDto = new RegistroDto(advogadoDto.getEmail(), advogadoDto.getSenha(), UserRole.ADVOGADO);
-		UsuarioAuth auth = usuarioAuthService.salvar(registroDto);
+		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(registroDto);
 
 		Endereco endereco = enderecoService.salvar(advogadoDto);
 		Advogado advogado = new Advogado(advogadoDto);
@@ -68,7 +68,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	public Advogado atualizar(Long id, AdvogadoDto advogadoDto) {
 		Advogado advogado = buscarPorId(id);
 		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(advogadoDto.getUsuarioStatus());
-		usuarioAuthService.atualizarLogin(advogado.getEmail(), advogadoDto.getEmail(), advogadoDto.getSenha(), usuarioStatus);
+		usuarioAuthServiceImpl.atualizarLogin(advogado.getEmail(), advogadoDto.getEmail(), advogadoDto.getSenha(), usuarioStatus);
 		advogado.setId(id);
 		advogado.setNome(advogadoDto.getNome());
 		advogado.setEmail(advogadoDto.getEmail());
