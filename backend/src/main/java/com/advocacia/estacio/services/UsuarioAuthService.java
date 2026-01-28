@@ -17,4 +17,8 @@ public interface UsuarioAuthService {
 	void atualizarLogin(String loginAntigo, String loginNovo, String senha, UsuarioStatus usuarioStatus);
 
 	List<UsuarioStatus> getUsuarioStatus();
+
+	void ativarUsuarios(List<UsuarioAuth> usuarioAuths);
+
+	void desativarUsuarios(List<UsuarioAuth> usuarioAuths);
 }

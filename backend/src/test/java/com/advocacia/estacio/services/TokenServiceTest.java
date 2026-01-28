@@ -45,7 +45,7 @@ class TokenServiceTest {
 	void gerar_token() {
 		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
 		
-		RegistroDto dto = testUtil.getRegistroDto();
+		RegistroDto dto = testUtil.getRegistroDtos().get(0);
 		
 		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
 		
@@ -64,7 +64,7 @@ class TokenServiceTest {
 		
 		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);
 		
-		assertEquals(userAuth.getLogin(), testUtil.getRegistroDto().login());
+		assertEquals(userAuth.getLogin(), testUtil.getRegistroDtos().get(0).login());
 	}
 
 }

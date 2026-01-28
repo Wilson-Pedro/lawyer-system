@@ -17,6 +17,7 @@ import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -30,7 +31,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	@Autowired
 	TokenService tokenService;
 
-	
+	@Override
 	public UsuarioAuth salvar(RegistroDto dto) {
 		if(this.usuarioAuthRepository.findByLogin(dto.login()) != null) {
 			throw new RuntimeException("Usuário já cadastrado.");
@@ -41,6 +42,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		return this.usuarioAuthRepository.save(user);
 	}
 
+	@Override
 	public LoginResponseDto login(AuthenticationDto dto) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
 		var auth = this.authenticationManger.authenticate(usernamePassword);
@@ -54,7 +56,8 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		}
 		return new LoginResponseDto(token, null, null);
 	}
-	
+
+	@Override
 	public void atualizarLogin(String loginAntigo, String loginNovo, String senha, UsuarioStatus usuarioStatus) {
 		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(loginAntigo);
 		boolean atualizar = false;
@@ -79,7 +82,28 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	}
 
 
+	@Override
 	public List<UsuarioStatus> getUsuarioStatus() {
 		return Arrays.stream(UsuarioStatus.values()).toList();
+	}
+
+	@Override
+	public void ativarUsuarios(List<UsuarioAuth> usuarioAuths) {
+		desativarAtivarUsuarios(usuarioAuths, UsuarioStatus.ATIVO);
+	}
+
+	@Override
+	public void desativarUsuarios(List<UsuarioAuth> usuarioAuths) {
+		desativarAtivarUsuarios(usuarioAuths, UsuarioStatus.INATIVO);
+	}
+
+	private void desativarAtivarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+		List<UsuarioAuth> list = usuarioAuths
+				.stream()
+				.map(user -> {
+						user.setUsuarioStatus(usuarioStatus);
+						return user;
+				}).toList();
+		usuarioAuthRepository.saveAll(list);
 	}
 }

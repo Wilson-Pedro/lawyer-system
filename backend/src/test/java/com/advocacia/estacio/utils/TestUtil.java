@@ -180,8 +180,12 @@ public class TestUtil {
 		return new AuthenticationDto("professor@gmail.com", "1234");
 	}
 	
-	public RegistroDto getRegistroDto() {
-		return new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN);
+	public List<RegistroDto> getRegistroDtos() {
+		return List.of(
+				new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN),
+				new RegistroDto("professor2@gmail.com", "1234", UserRole.ADMIN),
+				new RegistroDto("professor3@gmail.com", "1234", UserRole.ADMIN));
+
 	}
 	
 	public List<AtorDto> getAtores() {
@@ -193,7 +197,7 @@ public class TestUtil {
 	}
 	
 	public String getToken() {
-		usuarioAuthServiceImpl.salvar(getRegistroDto());
+		usuarioAuthServiceImpl.salvar(getRegistroDtos().get(0));
 		return usuarioAuthServiceImpl.login(getAuthenticationDto()).token();
 	}
 }

@@ -48,7 +48,7 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve Realizar Login Pelo Controller")
 	void login() throws Exception {
 		
-		usuarioAuthServiceImpl.salvar(testUtil.getRegistroDto());
+		usuarioAuthServiceImpl.salvar(testUtil.getRegistroDtos().get(0));
 				
 		AuthenticationDto authenticationDto = testUtil.getAuthenticationDto();
 		

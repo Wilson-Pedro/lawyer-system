@@ -122,6 +122,14 @@ public class UsuarioAuth implements UserDetails{
 		this.usuarioStatus = usuarioStatus;
 	}
 
+//	public void desativarUsuario() {
+//		setUsuarioStatus(UsuarioStatus.INATIVO);
+//	}
+//
+//	public void ativarUsuario() {
+//		setUsuarioStatus(UsuarioStatus.ATIVO);
+//	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

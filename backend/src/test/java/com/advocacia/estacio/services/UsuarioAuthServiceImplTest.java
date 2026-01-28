@@ -15,7 +15,6 @@ import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
-import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.List;
 class UsuarioAuthServiceImplTest {
 	
 	@Autowired
-	UsuarioAuthService UsuarioAuthService;
+	UsuarioAuthService usuarioAuthService;
 	
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
@@ -46,9 +45,9 @@ class UsuarioAuthServiceImplTest {
 		
 		assertEquals(0, usuarioAuthRepository.count());
 		
-		RegistroDto registroDto = testUtil.getRegistroDto();
+		RegistroDto registroDto = testUtil.getRegistroDtos().get(0);
 
-		UsuarioAuthService.salvar(registroDto);
+		usuarioAuthService.salvar(registroDto);
 		
 		assertEquals(1, usuarioAuthRepository.count());
 		
@@ -65,10 +64,38 @@ class UsuarioAuthServiceImplTest {
 	void login_e_retornar_token() {
 		AuthenticationDto auth = testUtil.getAuthenticationDto();
 		
-		LoginResponseDto loginResponse = UsuarioAuthService.login(auth);
+		LoginResponseDto loginResponse = usuarioAuthService.login(auth);
 		
 		assertNotNull(loginResponse.token());
 		assertEquals(UserRole.ADMIN, loginResponse.role());
+	}
+
+	@Test
+	@Order(4)
+	@DisplayName("Deve Desativar todos os usuários por UsuárioStatus")
+	void desativar_usuarios() {
+		usuarioAuthService.salvar(testUtil.getRegistroDtos().get(1));
+		usuarioAuthService.salvar(testUtil.getRegistroDtos().get(2));
+
+		List<UsuarioAuth> usuariosAuth = usuarioAuthRepository.findAll();
+
+		usuarioAuthService.desativarUsuarios(usuariosAuth);
+		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(2).getUsuarioStatus());
+	}
+
+	@Test
+	@Order(5)
+	@DisplayName("Deve Ativar todos os usuários por UsuárioStatus")
+	void ativar_usuarios() {
+
+		List<UsuarioAuth> usuariosAuth = usuarioAuthRepository.findAll();
+
+		usuarioAuthService.ativarUsuarios(usuariosAuth);
+		assertEquals(UsuarioStatus.ATIVO, usuariosAuth.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuariosAuth.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuariosAuth.get(2).getUsuarioStatus());
 	}
 	
 	@Test
@@ -77,13 +104,13 @@ class UsuarioAuthServiceImplTest {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String senha = usuario.getPassword();
 
-		UsuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345", UsuarioStatus.ATIVO);
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "12345", UsuarioStatus.ATIVO);
 		
 		String senhaNova = usuarioAuthRepository.findAll().get(0).getPassword();
 		
 		assertNotEquals(senha, senhaNova);
 
-		UsuarioAuthService.login(new AuthenticationDto(usuario.getLogin(), "12345"));
+		usuarioAuthService.login(new AuthenticationDto(usuario.getLogin(), "12345"));
 	}
 	
 	@Test
@@ -92,13 +119,13 @@ class UsuarioAuthServiceImplTest {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 		String loginAntigo = usuario.getLogin();
 
-		UsuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "", UsuarioStatus.ATIVO);
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), "professor_22@gmail.com", "", UsuarioStatus.ATIVO);
 		
 		String loginNovo = usuarioAuthRepository.findAll().get(0).getLogin();
 		
 		assertNotEquals(loginAntigo, loginNovo);
 
-		UsuarioAuthService.login(new AuthenticationDto("professor_22@gmail.com", "1234"));
+		usuarioAuthService.login(new AuthenticationDto("professor_22@gmail.com", "1234"));
 	}
 	
 	@Test
@@ -106,7 +133,7 @@ class UsuarioAuthServiceImplTest {
 	void nao_atualizar_login() {
 		UsuarioAuth usuario = usuarioAuthRepository.findAll().get(0);
 
-		UsuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "", UsuarioStatus.ATIVO);
+		usuarioAuthService.atualizarLogin(usuario.getLogin(), usuario.getLogin(), "", UsuarioStatus.ATIVO);
 		
 		UsuarioAuth mesmoUsuario = usuarioAuthRepository.findAll().get(0);
 		
@@ -117,7 +144,7 @@ class UsuarioAuthServiceImplTest {
 	@Test
 	@DisplayName("Deve buscar Usuario Status Pelo Service")
 	void buscar_usuario_status() {
-		List<UsuarioStatus> usuarioStatus = UsuarioAuthService.getUsuarioStatus();
+		List<UsuarioStatus> usuarioStatus = usuarioAuthService.getUsuarioStatus();
 
 		assertEquals(UsuarioStatus.ATIVO, usuarioStatus.get(0));
 		assertEquals(UsuarioStatus.INATIVO, usuarioStatus.get(1));;
