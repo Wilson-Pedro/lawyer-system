@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import style from './Usuarios.module.css';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -47,6 +48,9 @@ export default function Usuarios() {
 
   const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
   const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
+  const[mostrarFiltroDesativao, setMostrarFiltroDesativacao] = useState<boolean>(false);
+  const[btnMsgDesativar, setBtnMsgDesativar] = useState("Desativar Usuários");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,6 +74,8 @@ export default function Usuarios() {
       "Advogado":"/usuarios/advogado/editar/",
       "Assistido":"/usuarios/assistido/editar/"
     }
+
+    let selecioanar:string = mostrarFiltroDesativao ? "Selecionar" : "";
 
     const tableHeaders: Record<string, string[]> = {
       "Estagiário": ["Nome", "Matrícula", "E-mail", "Telefone", "Estágio", "Status"],
@@ -155,6 +161,11 @@ export default function Usuarios() {
     setUsuariosFiltro(usuario);
   }
 
+  const desativarUsuariosFiltro = () => {
+    setMostrarFiltroDesativacao(!mostrarFiltroDesativao);
+    setBtnMsgDesativar(mostrarFiltroDesativao === false ? "Desativar Usuários" : "Tirar Filtro")
+  }
+
   const token = localStorage.getItem('token');
   if(!token) return <Navigate to="/login" />
 
@@ -194,14 +205,25 @@ export default function Usuarios() {
           </select>
         </div>
 
-        
+        {usuariosFiltro !== "Assistido" ? (
+          <div className={style.divBtn}>
+            <button 
+            onClick={desativarUsuariosFiltro}
+            className="btn btn-primary">{btnMsgDesativar}</button>
+          </div>
+        ) : (
+          <></>
+        )}
         {usuariosFiltrados.length > 0 ? (
           <div className="table-responsive shadow-sm rounded">
             <table className="table table-hover align-middle bg-white rounded overflow-hidden">
               <thead className="table-dark">
                 <tr>
+                  {!mostrarFiltroDesativao && usuariosFiltro !== "Assistido"  ? <th>Selecionar</th> : <></>}
                   {tableLabels.map((label) => (
+
                     <th>{label}</th>
+
                   ))}
                   <th className="text-center">Editar</th>
                 </tr>
@@ -211,6 +233,7 @@ export default function Usuarios() {
                   <tr key={usuario.id}>
                     {usuariosFiltro === "Estagiário" ? (
                       <>
+                        {!mostrarFiltroDesativao ? <td className="text-center"><input className="form-check-input" type="checkbox" /></td> : <></>}
                         <td>{usuario.nome}</td>
                         <td>{usuario.matricula}</td>
                         <td>{usuario.email}</td>
@@ -228,6 +251,7 @@ export default function Usuarios() {
                       </>
                     ) : (
                       <>
+                      {!mostrarFiltroDesativao ? <td className="text-center"><input className="form-check-input" type="checkbox"/></td> : <></>}
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
                         <td  className={getUsuarioStatusClass(usuario.usuarioStatus)}>
