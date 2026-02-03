@@ -49,8 +49,10 @@ export default function Usuarios() {
   const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
   const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
 
-  const[mostrarFiltroDesativao, setMostrarFiltroDesativacao] = useState<boolean>(false);
+  const[mostrarFiltroDesativao, setMostrarFiltroDesativacao] = useState<boolean>(true);
   const[btnMsgDesativar, setBtnMsgDesativar] = useState("Desativar Usuários");
+  const[idList, setIdList] = useState<number[]>([])
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,8 +76,6 @@ export default function Usuarios() {
       "Advogado":"/usuarios/advogado/editar/",
       "Assistido":"/usuarios/assistido/editar/"
     }
-
-    let selecioanar:string = mostrarFiltroDesativao ? "Selecionar" : "";
 
     const tableHeaders: Record<string, string[]> = {
       "Estagiário": ["Nome", "Matrícula", "E-mail", "Telefone", "Estágio", "Status"],
@@ -159,11 +159,29 @@ export default function Usuarios() {
     setPaginaAtual(0);
     setPrimeiraPagina(0);
     setUsuariosFiltro(usuario);
+    zeraIdLista();
   }
 
   const desativarUsuariosFiltro = () => {
     setMostrarFiltroDesativacao(!mostrarFiltroDesativao);
     setBtnMsgDesativar(mostrarFiltroDesativao === false ? "Desativar Usuários" : "Tirar Filtro")
+    setIdList([]);
+  }
+
+  const zeraIdLista = () => {
+    setIdList([]);
+    setMostrarFiltroDesativacao(true);
+    setBtnMsgDesativar("Desativar Usuários")
+  }
+
+  const adicionarIdsParaLista = (id:number) => {
+    if(id !== null && !idList.includes(id)) {
+      setIdList(ids => [...ids, id]);
+
+    } else if (idList.includes(id)) {
+      let listaFiltrada = idList.filter(item => item !== id );
+      setIdList(listaFiltrada);
+    }
   }
 
   const token = localStorage.getItem('token');
@@ -196,12 +214,12 @@ export default function Usuarios() {
             value={usuariosFiltro}
             onChange={(e) => selecionarTipoDeUsuario(e.target.value)}
           >
-            <option value="Estagiário">Estagiário</option>
-            <option value="Coordenador do curso">Coordenador do curso</option>
-            <option value="Secretário">Secretário</option>
-            <option value="Professor">Professor</option>
-            <option value="Advogado">Advogado</option>
-            <option value="Assistido">Assistido</option>
+            <option value="Estagiário" onClick={zeraIdLista}>Estagiário</option>
+            <option value="Coordenador do curso" onClick={zeraIdLista}>Coordenador do curso</option>
+            <option value="Secretário" onClick={zeraIdLista}>Secretário</option>
+            <option value="Professor" onClick={zeraIdLista}>Professor</option>
+            <option value="Advogado" onClick={zeraIdLista}>Advogado</option>
+            <option value="Assistido" onClick={zeraIdLista}>Assistido</option>
           </select>
         </div>
 
@@ -233,7 +251,14 @@ export default function Usuarios() {
                   <tr key={usuario.id}>
                     {usuariosFiltro === "Estagiário" ? (
                       <>
-                        {!mostrarFiltroDesativao ? <td className="text-center"><input className="form-check-input" type="checkbox" /></td> : <></>}
+                        {
+                        !mostrarFiltroDesativao ? 
+                          <td className="text-center">
+                            <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
+                          </td> 
+                        : 
+                          <></>
+                        }
                         <td>{usuario.nome}</td>
                         <td>{usuario.matricula}</td>
                         <td>{usuario.email}</td>
@@ -251,7 +276,14 @@ export default function Usuarios() {
                       </>
                     ) : (
                       <>
-                      {!mostrarFiltroDesativao ? <td className="text-center"><input className="form-check-input" type="checkbox"/></td> : <></>}
+                      {
+                        !mostrarFiltroDesativao ? 
+                          <td className="text-center">
+                            <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
+                          </td> 
+                        : 
+                          <></>
+                        }
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
                         <td  className={getUsuarioStatusClass(usuario.usuarioStatus)}>
