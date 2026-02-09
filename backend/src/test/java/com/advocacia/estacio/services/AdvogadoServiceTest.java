@@ -1,6 +1,8 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.domain.entities.Ator;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import org.junit.jupiter.api.*;
@@ -12,6 +14,8 @@ import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,6 +91,23 @@ class AdvogadoServiceTest {
 		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve buscar UsuariosAuth por lista de id")
+	void buscar_usuariosAuth() {
+
+		advogadoService.salvar(testUtil.getAdvogadoDto2());
+
+		List<Long> ids = advogadoRepository.findAll().stream().map(Advogado::getId).toList();
+
+		List<UsuarioAuth> usuariosAuth = advogadoService.buscarUsuariosAuthPorId(ids);
+
+		assertNotNull(usuariosAuth);
+		assertEquals(2, usuariosAuth.size());
+		assertEquals("carlos22@gmail.com", usuariosAuth.get(0).getLogin());
+		assertEquals("mauricio@gmail.com", usuariosAuth.get(1).getLogin());
+
 	}
 	
 	@Test

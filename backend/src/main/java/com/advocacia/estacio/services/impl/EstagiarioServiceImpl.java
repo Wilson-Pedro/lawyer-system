@@ -86,6 +86,13 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		return estagiarioRepository.save(estagiario);
 	}
 
+	@Override
+	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {
+		return ids.stream()
+				.map(id -> this.buscarPorId(id).getUsuarioAuth())
+				.toList();
+	}
+
     @Override
     public List<PeriodoEstagio> getPeriodos() {
         return Arrays.stream(PeriodoEstagio.values()).toList();

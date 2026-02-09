@@ -21,6 +21,8 @@ import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.EnderecoService;
 import com.advocacia.estacio.utils.Utils;
 
+import java.util.List;
+
 @Service
 public class AdvogadoServiceImpl implements AdvogadoService {
 	
@@ -74,7 +76,6 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 		advogado.setEmail(advogadoDto.getEmail());
 		advogado.setTelefone(advogadoDto.getTelefone());
 		advogado.setDataDeNascimeto(Utils.localDateToString(advogadoDto.getDataDeNascimento()));
-		//advogado.setUsuarioStatus(UsuarioStatus.toEnum(advogadoDto.getUsuarioStatus()));
 		enderecoService.atualizar(advogado.getEndereco().getId(), new Endereco(advogadoDto));
 		return advogadoRepository.save(advogado);
 	}
@@ -82,5 +83,12 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	@Override
 	public Advogado buscarIdPorEmail(String email) {
 		return advogadoRepository.buscarIdPorEmail(email).orElseThrow(EntidadeNaoEncontradaException::new);
+	}
+
+	@Override
+	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {
+		return ids.stream()
+				.map(id -> this.buscarPorId(id).getUsuarioAuth())
+				.toList();
 	}
 }

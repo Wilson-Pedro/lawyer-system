@@ -97,6 +97,22 @@ class EstagiarioServiceTest {
 	}
 
 	@Test
+	@Order(4)
+	@DisplayName("Deve Buscar Usuários Auth por Lista de ids")
+	void buscar_usuariosAuth() {
+
+		estagiarioService.salvar(testUtil.getEstagiarioDto2());
+
+		List<Long> ids = estagiarioRepository.findAll().stream().map(Estagiario::getId).toList();
+
+		List<UsuarioAuth> usuariosAuth = estagiarioService.buscarUsuariosAuthPorId(ids);
+
+		assertEquals(2, usuariosAuth.size());
+		assertEquals("pedro22@gmail.com", usuariosAuth.get(0).getLogin());
+		assertEquals("joao@gmail.com", usuariosAuth.get(1).getLogin());
+	}
+
+	@Test
 	@DisplayName("Deve Buscar Estagiario Por Id No Banco de Dados Pelo Service")
 	void buscar_estagiario_por_id() {
 
@@ -142,13 +158,20 @@ class EstagiarioServiceTest {
 		Page<Estagiario> pages = estagiarioService.buscarTodos(0, 20);
 
 		assertFalse(pages.isEmpty());
-		assertEquals(1, pages.getContent().size());
-		assertEquals("Pedro Silva Lucas", pages.getContent().get(0).getNome());
-		assertEquals("pedro22@gmail.com", pages.getContent().get(0).getEmail());
+		assertEquals(2, pages.getContent().size());
+		assertEquals("Pedro Silva Lucas", pages.getContent().get(1).getNome());
+		assertEquals("pedro22@gmail.com", pages.getContent().get(1).getEmail());
+		assertEquals("92921421224", pages.getContent().get(1).getTelefone());
+		assertEquals("20251208", pages.getContent().get(1).getMatricula());
+		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(1).getPeriodo());
+		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(1).getUsuarioAuth().getUsuarioStatus());
+
+		assertEquals("João Miguel", pages.getContent().get(0).getNome());
+		assertEquals("joao@gmail.com", pages.getContent().get(0).getEmail());
 		assertEquals("92921421224", pages.getContent().get(0).getTelefone());
 		assertEquals("20251208", pages.getContent().get(0).getMatricula());
 		assertEquals(PeriodoEstagio.ESTAGIO_II, pages.getContent().get(0).getPeriodo());
-		assertEquals(UsuarioStatus.INATIVO, pages.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, pages.getContent().get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 
 	@Test

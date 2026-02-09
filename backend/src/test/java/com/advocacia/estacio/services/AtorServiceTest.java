@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.entities.*;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
@@ -17,11 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
-import com.advocacia.estacio.domain.entities.Ator;
-import com.advocacia.estacio.domain.entities.CoordenadorDoCurso;
-import com.advocacia.estacio.domain.entities.Professor;
-import com.advocacia.estacio.domain.entities.Secretario;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -137,6 +133,20 @@ class AtorServiceTest {
 		assertEquals("roberto22@gmail.com", ator.getEmail());
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
 		assertEquals(UsuarioStatus.INATIVO, ator.getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve buscar UsuariosAuth por lista de id")
+	void buscar_usuariosAuth() {
+
+		List<Long> ids = atorRepository.findAll().stream().map(Ator::getId).toList();
+
+		List<UsuarioAuth> usuariosAuth = atorService.buscarUsuariosAuthPorId(ids);
+
+		assertEquals(3, usuariosAuth.size());
+		assertEquals("roberto22@gmail.com", usuariosAuth.get(0).getLogin());
+		assertEquals("jose@gmail.com", usuariosAuth.get(1).getLogin());
+		assertEquals("fabio@gmail.com", usuariosAuth.get(2).getLogin());
 	}
 
 	@Test

@@ -65,12 +65,18 @@ public class AtorServiceImpl implements AtorService {
 		ator.setNome(atorDto.getNome());
 		ator.setEmail(atorDto.getEmail());
 		ator.setTipoDoAtor(TipoDoAtor.toEnum(atorDto.getTipoAtor()));
-		//ator.setUsuarioStatus(UsuarioStatus.toEnum(atorDto.getUsuarioStatus()));
 		return atorRepository.save(ator);
 	}
 
 	@Override
 	public List<TipoDoAtor> getTipoAtores() {
 		return Arrays.stream(TipoDoAtor.values()).toList();
+	}
+
+	@Override
+	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {
+		return ids.stream()
+				.map(id -> this.buscarPorId(id).getUsuarioAuth())
+				.toList();
 	}
 }

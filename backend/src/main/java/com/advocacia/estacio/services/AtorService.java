@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import org.springframework.data.domain.Page;
 
@@ -19,4 +20,6 @@ public interface AtorService {
 	Page<Ator> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size);
 
 	List<TipoDoAtor> getTipoAtores();
+
+	List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids);
 }
