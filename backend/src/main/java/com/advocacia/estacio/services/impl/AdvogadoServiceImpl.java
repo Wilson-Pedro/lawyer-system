@@ -1,10 +1,12 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.RegistroDto;
+import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +35,12 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	private EnderecoService enderecoService;
 
 	@Autowired
-	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
+	private UsuarioAuthService usuarioAuthService;
 
 	@Override
 	public Advogado salvar(AdvogadoDto advogadoDto) {
 		RegistroDto registroDto = new RegistroDto(advogadoDto.getEmail(), advogadoDto.getSenha(), UserRole.ADVOGADO);
-		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(registroDto);
+		UsuarioAuth auth = usuarioAuthService.salvar(registroDto);
 
 		Endereco endereco = enderecoService.salvar(advogadoDto);
 		Advogado advogado = new Advogado(advogadoDto);
@@ -70,7 +72,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	public Advogado atualizar(Long id, AdvogadoDto advogadoDto) {
 		Advogado advogado = buscarPorId(id);
 		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(advogadoDto.getUsuarioStatus());
-		usuarioAuthServiceImpl.atualizarLogin(advogado.getEmail(), advogadoDto.getEmail(), advogadoDto.getSenha(), usuarioStatus);
+		usuarioAuthService.atualizarLogin(advogado.getEmail(), advogadoDto.getEmail(), advogadoDto.getSenha(), usuarioStatus);
 		advogado.setId(id);
 		advogado.setNome(advogadoDto.getNome());
 		advogado.setEmail(advogadoDto.getEmail());
@@ -90,5 +92,11 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 		return ids.stream()
 				.map(id -> this.buscarPorId(id).getUsuarioAuth())
 				.toList();
+	}
+
+	@Override
+	public void desativarAdvogados(RequestIds requestIds) {
+		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
+		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
 	}
 }

@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,6 @@ public interface AdvogadoService {
 	Page<ResponseMinDto> buscarTodos(int page, int size);
 
 	List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids);
+
+	void desativarAdvogados(RequestIds requestIds);
 }

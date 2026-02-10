@@ -4,11 +4,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
+import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -25,6 +26,8 @@ import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -130,7 +133,7 @@ class AtorControllerTest {
 		
 		AtorDto atorDto = new AtorDto(
 				null, "Roberto Carlos Silva", "roberto22@gmail.com", 
-				"Coordenador do curso", "Inativo", "1234");
+				"Coordenador do curso", "Ativo", "1234");
 		
 		Long id = atorRepository.findAll().get(0).getId();
 		
@@ -148,7 +151,7 @@ class AtorControllerTest {
 		assertEquals("Roberto Carlos Silva", atorAtualizado.getNome());
 		assertEquals("roberto22@gmail.com", atorAtualizado.getEmail());
 		assertEquals("Coordenador do curso", atorAtualizado.getTipoDoAtor().getTipo());
-		assertEquals("Inativo", atorAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
+		assertEquals("Ativo", atorAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
 	}
 
 	@Test
@@ -201,7 +204,7 @@ class AtorControllerTest {
 				.andExpect(jsonPath("$.nome", equalTo("Roberto Carlos Silva")))
 				.andExpect(jsonPath("$.email", equalTo("roberto22@gmail.com")))
 				.andExpect(jsonPath("$.tipoAtor", equalTo("Coordenador do curso")))
-				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 	}
 
 	@Test
@@ -217,5 +220,33 @@ class AtorControllerTest {
 				.andExpect(jsonPath("$[0]", equalTo("Coordenador do curso")))
 				.andExpect(jsonPath("$[1]", equalTo("Secretário")))
 				.andExpect(jsonPath("$[2]", equalTo("Professor")));
+	}
+
+	@Test
+	@DisplayName("Deve Desavitar Atores Pelo Controller")
+	void buscar_desativar_usuarios() throws Exception {
+
+		List<Ator> atores = atorRepository.findAll();
+
+		List<Long> ids = atorRepository.findAll().stream().map(Ator::getId).toList();
+
+		assertEquals(UsuarioStatus.ATIVO, atores.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, atores.get(1).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, atores.get(2).getUsuarioAuth().getUsuarioStatus());
+
+		String jsonRequest = objectMapper.writeValueAsString(new RequestIds(ids));
+
+		mockMvc.perform(patch(URI + "/desativar/usuarios")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		atores = atorRepository.findAll();
+
+		assertEquals(UsuarioStatus.INATIVO, atores.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, atores.get(1).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, atores.get(2).getUsuarioAuth().getUsuarioStatus());
+
 	}
 }

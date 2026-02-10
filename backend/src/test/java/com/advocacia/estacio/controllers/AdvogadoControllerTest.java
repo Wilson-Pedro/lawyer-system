@@ -3,19 +3,14 @@ package com.advocacia.estacio.controllers;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +22,8 @@ import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -95,7 +92,7 @@ class AdvogadoControllerTest {
 		
 		AdvogadoDto advogadoDto = new AdvogadoDto(null, "Carlos Silva Lima", "carlos22@gmail.com",
 		"88566519122", "24/08/1993", "São Luís", "Vila dos Nobres",
-		"rua do passeio", 11, "53022-112", "Inativo", "1234");
+		"rua do passeio", 11, "53022-112", "Ativo", "1234");
 		
 		Long id = advogadoRepository.findAll().get(0).getId();
 		
@@ -112,13 +109,37 @@ class AdvogadoControllerTest {
 		assertNotNull(advogadoAtualizado);
 		assertEquals("Carlos Silva Lima", advogadoAtualizado.getNome());
 		assertEquals("carlos22@gmail.com", advogadoAtualizado.getEmail());
-		assertEquals("Inativo", advogadoAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
+		assertEquals("Ativo", advogadoAtualizado.getUsuarioAuth().getUsuarioStatus().getDescricao());
 		assertEquals("88566519122", advogadoAtualizado.getTelefone());
 		assertEquals("1993-08-24", advogadoAtualizado.getDataDeNascimeto().toString());
 		assertEquals("Vila dos Nobres", advogadoAtualizado.getEndereco().getBairro());
-		assertEquals(UsuarioStatus.INATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, advogadoAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
+	}
+
+	@Test
+	@DisplayName("Deve Desavitar Advogados Pelo Controller")
+	void buscar_desativar_usuarios() throws Exception {
+
+		Advogado advogado = advogadoRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
+
+		List<Long> ids = advogadoRepository.findAll().stream().map(Advogado::getId).toList();
+
+		String jsonRequest = objectMapper.writeValueAsString(new RequestIds(ids));
+
+		mockMvc.perform(patch(URI + "/desativar/usuarios")
+				.header("Authorization", "Bearer " + TOKEN)
+				.content(jsonRequest)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		advogado = advogadoRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.INATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
+
 	}
 	
 	@Test
@@ -166,7 +187,7 @@ class AdvogadoControllerTest {
 				.andExpect(jsonPath("$.rua", equalTo("rua do passeio")))
 				.andExpect(jsonPath("$.numeroDaCasa", equalTo(11)))
 				.andExpect(jsonPath("$.cep", equalTo("53022-112")))
-				.andExpect(jsonPath("$.usuarioStatus", equalTo("Inativo")));
+				.andExpect(jsonPath("$.usuarioStatus", equalTo("Ativo")));
 	}
 
 	@Test

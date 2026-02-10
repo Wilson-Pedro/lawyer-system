@@ -1,18 +1,11 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.advocacia.estacio.domain.dto.AdvogadoDto;
 import com.advocacia.estacio.domain.dto.PageResponseDto;
@@ -71,6 +64,12 @@ public class AdvogadoController {
 			@PathVariable Long id, 
 			@RequestBody AdvogadoDto advogadoDto) {
 		advogadoService.atualizar(id, advogadoDto);
+		return ResponseEntity.noContent().build();
+	}
+
+	@PatchMapping("/desativar/usuarios")
+	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
+		this.advogadoService.desativarAdvogados(ids);
 		return ResponseEntity.noContent().build();
 	}
 }

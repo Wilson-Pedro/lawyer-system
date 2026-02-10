@@ -1,7 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
+import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +31,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	private EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
-	private UsuarioAuthServiceImpl usuarioAuthServiceImpl;
+	private UsuarioAuthService usuarioAuthService;
 
 	@Override
 	public Estagiario salvar(EstagiarioDto estagiarioDto) {
@@ -40,7 +42,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 				estagiarioDto.getSenha(), 
 				UserRole.ESTAGIARIO);
 		
-		UsuarioAuth auth = usuarioAuthServiceImpl.salvar(registro);
+		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
 		return estagiarioRepository.save(estagiario);
 	}
@@ -72,7 +74,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
 		Estagiario estagiario = buscarPorId(id);
 		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
-		usuarioAuthServiceImpl.atualizarLogin(
+		usuarioAuthService.atualizarLogin(
 				estagiario.getEmail(), 
 				estagiarioDto.getEmail(), 
 				estagiarioDto.getSenha(),
@@ -97,4 +99,10 @@ public class EstagiarioServiceImpl implements EstagiarioService {
     public List<PeriodoEstagio> getPeriodos() {
         return Arrays.stream(PeriodoEstagio.values()).toList();
     }
+
+	@Override
+	public void desativarEstagiarios(RequestIds requestIds) {
+		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
+		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
+	}
 }
