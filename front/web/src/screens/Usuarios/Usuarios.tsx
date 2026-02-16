@@ -15,7 +15,7 @@ interface ResponseMinDto {
   telefone: string;
   matricula: string;
   periodo: string;
-  usuarioStatus:string;
+  usuarioStatus: string;
   registro: string;
 }
 
@@ -40,7 +40,7 @@ export default function Usuarios() {
 
   const [primeiraPagina, setPrimeiraPagina] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  
+
   const [totalElements, setTotalElements] = useState(0);
   const [paginas, setPaginas] = useState<number[]>([]);
   const [ultimaPagina, setUltimaPagina] = useState<number>(10);
@@ -49,32 +49,60 @@ export default function Usuarios() {
   const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
   const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
 
-  const[mostrarFiltroDesativao, setMostrarFiltroDesativacao] = useState<boolean>(true);
-  const[btnMsgDesativar, setBtnMsgDesativar] = useState("Desativar Usuários");
-  const[idList, setIdList] = useState<number[]>([])
+  const [mostrarFiltroDesativao, setMostrarFiltroDesativacao] = useState<boolean>(true);
+  const [btnMsgDesativar, setBtnMsgDesativar] = useState("Desativar Usuários");
+  const [idList, setIdList] = useState<number[]>([])
 
   const navigate = useNavigate();
 
+  const rotasParaDesativar: Record<string, string> = {
+    "Coordenador do curso": "/atores/desativar/usuarios",
+    "Secretário": "/atores/desativar/usuarios",
+    "Professor": "/atores/desativar/usuarios",
+    "Estagiário": "/estagiarios/desativar/usuarios",
+    "Advogado": "/advogados/desativar/usuarios",
+  }
+
+  const rotaParaDesativar = rotasParaDesativar[usuariosFiltro];
+
+  const desativarUsuario = async () => {
+    try {
+      await axios.patch(`${API_URL}${rotaParaDesativar}`, {
+        ids: idList
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setIdList([]);
+      setMostrarFiltroDesativacao(true);
+      setBtnMsgDesativar("Desativar Usuários")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    if(!usuariosFiltrados) return;
+    if (!usuariosFiltrados) return;
     const token = localStorage.getItem('token');
 
     const rotas: Record<string, string> = {
-      "Coordenador do curso":"/atores/tipo/Coordenador do curso",
-      "Secretário":"/atores/tipo/Secretário",
-      "Professor":"/atores/tipo/Professor",
-      "Estagiário":"/estagiarios",
-      "Advogado":"/advogados",
-      "Assistido":"/assistidos"
+      "Coordenador do curso": "/atores/tipo/Coordenador do curso",
+      "Secretário": "/atores/tipo/Secretário",
+      "Professor": "/atores/tipo/Professor",
+      "Estagiário": "/estagiarios",
+      "Advogado": "/advogados",
+      "Assistido": "/assistidos"
     }
 
     const uris: Record<string, string> = {
-      "Coordenador do curso":"/usuarios/editar/",
-      "Secretário":"/usuarios/editar/",
-      "Professor":"/usuarios/editar/",
-      "Estagiário":"/usuarios/estagiario/editar/",
-      "Advogado":"/usuarios/advogado/editar/",
-      "Assistido":"/usuarios/assistido/editar/"
+      "Coordenador do curso": "/usuarios/editar/",
+      "Secretário": "/usuarios/editar/",
+      "Professor": "/usuarios/editar/",
+      "Estagiário": "/usuarios/estagiario/editar/",
+      "Advogado": "/usuarios/advogado/editar/",
+      "Assistido": "/usuarios/assistido/editar/"
     }
 
     const tableHeaders: Record<string, string[]> = {
@@ -84,7 +112,7 @@ export default function Usuarios() {
     }
 
     const rota = rotas[usuariosFiltro];
-    if(!rota) {
+    if (!rota) {
       setUsuarios([]);
       setUsuariosFiltrados([]);
       return;
@@ -93,7 +121,7 @@ export default function Usuarios() {
     const uri = uris[usuariosFiltro];
     setUriEdit(uri);
 
-    if(usuariosFiltro === "Estagiário") {
+    if (usuariosFiltro === "Estagiário") {
       setTableLabes(tableHeaders["Estagiário"]);
 
     } else if (usuariosFiltro === "Assistido") {
@@ -102,7 +130,7 @@ export default function Usuarios() {
     } else {
       setTableLabes(tableHeaders["default"]);
     }
-    
+
     const fecthUsuarios = async () => {
       try {
         const response = await axios.get(`${API_URL}${rota}?page=${page}&size=${size}`, {
@@ -110,7 +138,7 @@ export default function Usuarios() {
             Authorization: `Bearer ${token}`
           }
         });
-        
+
         const pages: Page<ResponseMinDto> = response.data;
         const dados = pages.content;
         setUsuarios(dados);
@@ -118,7 +146,7 @@ export default function Usuarios() {
         setTotalPages(pages.totalPages);
         setTotalElements(pages.totalElements);
 
-      } catch(error) {
+      } catch (error) {
         console.log(error)
       }
     }
@@ -154,7 +182,7 @@ export default function Usuarios() {
     }
   }
 
-  const selecionarTipoDeUsuario = (usuario:string) => {
+  const selecionarTipoDeUsuario = (usuario: string) => {
     setPage(0);
     setPaginaAtual(0);
     setPrimeiraPagina(0);
@@ -174,18 +202,18 @@ export default function Usuarios() {
     setBtnMsgDesativar("Desativar Usuários")
   }
 
-  const adicionarIdsParaLista = (id:number) => {
-    if(id !== null && !idList.includes(id)) {
+  const adicionarIdsParaLista = (id: number) => {
+    if (id !== null && !idList.includes(id)) {
       setIdList(ids => [...ids, id]);
 
     } else if (idList.includes(id)) {
-      let listaFiltrada = idList.filter(item => item !== id );
+      let listaFiltrada = idList.filter(item => item !== id);
       setIdList(listaFiltrada);
     }
   }
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
@@ -197,10 +225,10 @@ export default function Usuarios() {
         </button>
       </nav>
 
-      
+
       <div className="container my-5 flex-grow-1">
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-          
+
           <input
             type="text"
             className="form-control w-50 mb-2 mb-sm-0"
@@ -208,7 +236,7 @@ export default function Usuarios() {
             value={busca}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setBusca(e.target.value)}
           />
-          
+
           <select
             className="form-select w-auto"
             value={usuariosFiltro}
@@ -225,9 +253,20 @@ export default function Usuarios() {
 
         {usuariosFiltro !== "Assistido" ? (
           <div className={style.divBtn}>
-            <button 
-            onClick={desativarUsuariosFiltro}
-            className="btn btn-primary">{btnMsgDesativar}</button>
+            {btnMsgDesativar !== "Desativar Usuários" && (
+              <form  onSubmit={desativarUsuario}>
+                <button
+                  type="submit"
+                  className="btn btn-warning m-1"
+                  disabled={idList.length === 0}>Desativar
+                </button>
+              </form>
+            )}
+
+            <button
+              onClick={desativarUsuariosFiltro}
+              className="btn btn-primary m-1">{btnMsgDesativar}
+            </button>
           </div>
         ) : (
           <></>
@@ -237,7 +276,7 @@ export default function Usuarios() {
             <table className="table table-hover align-middle bg-white rounded overflow-hidden">
               <thead className="table-dark">
                 <tr>
-                  {!mostrarFiltroDesativao && usuariosFiltro !== "Assistido"  ? <th>Selecionar</th> : <></>}
+                  {!mostrarFiltroDesativao && usuariosFiltro !== "Assistido" ? <th>Selecionar</th> : <></>}
                   {tableLabels.map((label) => (
 
                     <th>{label}</th>
@@ -252,12 +291,12 @@ export default function Usuarios() {
                     {usuariosFiltro === "Estagiário" ? (
                       <>
                         {
-                        !mostrarFiltroDesativao ? 
-                          <td className="text-center">
-                            <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
-                          </td> 
-                        : 
-                          <></>
+                          !mostrarFiltroDesativao ?
+                            <td className="text-center">
+                              <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
+                            </td>
+                            :
+                            <></>
                         }
                         <td>{usuario.nome}</td>
                         <td>{usuario.matricula}</td>
@@ -266,7 +305,7 @@ export default function Usuarios() {
                         <td>{usuario.periodo}</td>
                         <td className={getUsuarioStatusClass(usuario.usuarioStatus)}>
                           {usuario.usuarioStatus}
-                          </td>
+                        </td>
                       </>
                     ) : usuariosFiltro === "Assistido" ? (
                       <>
@@ -276,30 +315,30 @@ export default function Usuarios() {
                       </>
                     ) : (
                       <>
-                      {
-                        !mostrarFiltroDesativao ? 
-                          <td className="text-center">
-                            <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
-                          </td> 
-                        : 
-                          <></>
+                        {
+                          !mostrarFiltroDesativao ?
+                            <td className="text-center">
+                              <input className="form-check-input" onClick={() => adicionarIdsParaLista(Number(usuario.id))} type="checkbox" />
+                            </td>
+                            :
+                            <></>
                         }
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
-                        <td  className={getUsuarioStatusClass(usuario.usuarioStatus)}>
+                        <td className={getUsuarioStatusClass(usuario.usuarioStatus)}>
                           {usuario.usuarioStatus}
                         </td>
                         <td>{usuario.registro}</td>
                       </>
                     )}
-                   <td className="text-center">
-                        <button
-                          className="btn btn-sm btn-outline-primary me-2"
-                          onClick={() => navigate(`${uriEdit}${usuario.id}`)}
-                        >
-                          <EditIcon />
-                        </button>
-                      </td>
+                    <td className="text-center">
+                      <button
+                        className="btn btn-sm btn-outline-primary me-2"
+                        onClick={() => navigate(`${uriEdit}${usuario.id}`)}
+                      >
+                        <EditIcon />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -312,25 +351,25 @@ export default function Usuarios() {
         )}
       </div>
 
-        <Paginacao 
-          page={page}
-          totalPages={totalPages}
-          paginaAtual={paginaAtual}
-          primeiraPagina={primeiraPagina}
-          ultimaPagina={ultimaPagina}
-          paginas={paginas}
-          setPaginaAtual={setPaginaAtual}
-          setPrimeiraPagina={setPrimeiraPagina}
-          setUltimaPagina={setUltimaPagina}
-          setPage={setPage}
-          mostrarPrimeiraPagina={mostrarPrimeiraPagina}
-          mostrarUltimaPagina={mostrarUltimaPagina}
-          setMostrarUltimaPagina={setMostrarUltimaPagina}
-          setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
-          setPaginas={setPaginas}
+      <Paginacao
+        page={page}
+        totalPages={totalPages}
+        paginaAtual={paginaAtual}
+        primeiraPagina={primeiraPagina}
+        ultimaPagina={ultimaPagina}
+        paginas={paginas}
+        setPaginaAtual={setPaginaAtual}
+        setPrimeiraPagina={setPrimeiraPagina}
+        setUltimaPagina={setUltimaPagina}
+        setPage={setPage}
+        mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+        mostrarUltimaPagina={mostrarUltimaPagina}
+        setMostrarUltimaPagina={setMostrarUltimaPagina}
+        setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+        setPaginas={setPaginas}
       />
 
-      
+
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
         © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.
       </footer>
