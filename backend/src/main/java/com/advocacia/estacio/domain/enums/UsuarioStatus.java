@@ -7,7 +7,8 @@ import java.util.stream.Stream;
 public enum UsuarioStatus {
 
 	ATIVO(1, "Ativo"),
-	INATIVO(2, "Inativo");
+	INATIVO(2, "Inativo"),
+	DESLIGADO(3, "Desligado");
 
 	private Integer codigo;
 

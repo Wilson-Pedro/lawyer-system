@@ -1,6 +1,10 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.entities.DesativarUsuario;
+import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
+import com.advocacia.estacio.repositories.DesativarUsuarioRepository;
 import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,9 +19,12 @@ import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.infra.security.TokenService;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -26,7 +33,10 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	AuthenticationManager authenticationManger;
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;	
+	UsuarioAuthRepository usuarioAuthRepository;
+
+	@Autowired
+	DesativarUsuarioRepository desativarUsuarioRepository;
 	
 	@Autowired
 	TokenService tokenService;
@@ -105,5 +115,19 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 						return user;
 				}).toList();
 		usuarioAuthRepository.saveAll(list);
+	}
+
+	@Override
+	public DesativarUsuario buscarDesativarUsuarioPorId(Long id) {
+		return this.desativarUsuarioRepository.findById(id)
+				.orElseThrow(EntidadeNaoEncontradaException::new);
+	}
+
+	@Override
+	public void definirDataDeDesativacao(Long id, String data) {
+		DesativarUsuario desativarUsuario = buscarDesativarUsuarioPorId(id);
+		LocalDate localDate = stringToLocalDate(data);
+		desativarUsuario.setDataDeDesativacao(localDate);
+		desativarUsuarioRepository.save(desativarUsuario);
 	}
 }

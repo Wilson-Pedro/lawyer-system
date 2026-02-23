@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import com.advocacia.estacio.utils.Utils;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.advocacia.estacio.domain.dto.ProcessoDto;
@@ -12,7 +13,7 @@ import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
 import com.advocacia.estacio.domain.enums.AreaDoDireito;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.domain.enums.Tribunal;
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 import static com.advocacia.estacio.utils.Utils.stringToLocalDateTime;
 
 import jakarta.persistence.Column;
@@ -107,7 +108,7 @@ public class Processo implements Serializable{
 		this.numeroDoProcessoPje = dto.getNumeroDoProcessoPje();
 		this.assunto = dto.getAssunto();
 		this.vara = dto.getVara();
-		this.prazoFinal = localDateToString(dto.getPrazoFinal());
+		this.prazoFinal = Utils.stringToLocalDate(dto.getPrazoFinal());
 		this.responsavel = dto.getResponsavel();
 		this.areaDoDireito = AreaDoDireito.toEnum(dto.getAreaDoDireito());
 		this.tribunal = Tribunal.toEnum(dto.getTribunal());
@@ -121,7 +122,7 @@ public class Processo implements Serializable{
 		this.numeroDoProcessoPje = request.getNumeroDoProcessoPje();
 		this.vara = request.getVara();
 		this.responsavel = request.getResponsavel();
-		this.prazoFinal = localDateToString(request.getPrazo());
+		this.prazoFinal = Utils.stringToLocalDate(request.getPrazo());
 		this.areaDoDireito = AreaDoDireito.toEnum(request.getAreaDoDireito());
 		this.tribunal = Tribunal.toEnum(request.getTribunal());
 	}

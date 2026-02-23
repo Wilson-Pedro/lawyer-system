@@ -1,6 +1,6 @@
 package com.advocacia.estacio.domain.dto;
 
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 import java.io.Serializable;
 
@@ -57,7 +57,7 @@ public class ProcessoRequestDto implements Serializable{
 		this.estagiarioId = processo.getEstagiario().getId();
 		this.areaDoDireito = processo.getAreaDoDireito().getDescricao();
 		this.tribunal = processo.getTribunal().getDescricao();
-		this.prazo = localDateToString(processo.getPrazoFinal());
+		this.prazo = stringToLocalDate(processo.getPrazoFinal());
 	}
 
 	public Long getAssistidoId() {

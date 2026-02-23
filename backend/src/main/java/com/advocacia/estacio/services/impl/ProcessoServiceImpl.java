@@ -1,14 +1,13 @@
 package com.advocacia.estacio.services.impl;
 
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.projections.ProcessoProjection;
+import com.advocacia.estacio.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -120,7 +119,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 		processo.setNumeroDoProcessoPje(dto.getNumeroDoProcessoPje());
 		processo.setAssunto(dto.getAssunto());
 		processo.setVara(dto.getVara());
-		processo.setPrazoFinal(localDateToString(dto.getPrazoFinal()));
+		processo.setPrazoFinal(Utils.stringToLocalDate(dto.getPrazoFinal()));
 		processo.setResponsavel(dto.getResponsavel());
 		processo.setAreaDoDireito(AreaDoDireito.toEnum(dto.getAreaDoDireito()));
 		processo.setTribunal(Tribunal.toEnum(dto.getTribunal()));

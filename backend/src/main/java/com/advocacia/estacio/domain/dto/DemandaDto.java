@@ -55,8 +55,8 @@ public class DemandaDto {
 		this.advogadoId = advogadoId;
 		this.demandaStatusAluno = demandaStatusAluno.getStatus();
 		this.demandaStatusProfessor = demandaStatusProfessor.getStatus();
-		this.prazoDocumentos = Utils.localDateToString(prazoDocumentos);
-		this.prazo = Utils.localDateToString(prazo);
+		this.prazoDocumentos = Utils.stringToLocalDate(prazoDocumentos);
+		this.prazo = Utils.stringToLocalDate(prazo);
 		this.tempestividade = tempestividade.getStatus();
 	}
 	
@@ -68,8 +68,8 @@ public class DemandaDto {
 		this.advogadoId = demanda.getAdvogado().getId();
 		this.demandaStatusAluno = demanda.getDemandaStatusAluno().getStatus();
 		this.demandaStatusProfessor = demanda.getDemandaStatusProfessor().getStatus();
-		this.prazoDocumentos = Utils.localDateToString(demanda.getPrazoDocumentos());
-		this.prazo = Utils.localDateToString(demanda.getPrazo());
+		this.prazoDocumentos = Utils.stringToLocalDate(demanda.getPrazoDocumentos());
+		this.prazo = Utils.stringToLocalDate(demanda.getPrazo());
 		this.tempestividade = demanda.getTempestividade().getStatus();
 	}
 	

@@ -95,6 +95,14 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 				.toList();
 	}
 
+	@Override
+	public List<UsuarioAuth> buscarUsuariosAuthPorUsuarioStatus(UsuarioStatus usuarioStatus) {
+		return estagiarioRepository.findAll().stream()
+				.map(Estagiario::getUsuarioAuth)
+				.filter(u -> u.getUsuarioStatus() == usuarioStatus)
+				.toList();
+	}
+
     @Override
     public List<PeriodoEstagio> getPeriodos() {
         return Arrays.stream(PeriodoEstagio.values()).toList();

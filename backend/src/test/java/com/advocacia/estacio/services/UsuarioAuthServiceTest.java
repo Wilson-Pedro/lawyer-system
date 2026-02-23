@@ -1,9 +1,11 @@
 package com.advocacia.estacio.services;
 
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.domain.entities.DesativarUsuario;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,12 @@ import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UsuarioAuthServiceImplTest {
+class UsuarioAuthServiceTest {
 	
 	@Autowired
 	UsuarioAuthService usuarioAuthService;
@@ -148,5 +151,19 @@ class UsuarioAuthServiceImplTest {
 
 		assertEquals(UsuarioStatus.ATIVO, usuarioStatus.get(0));
 		assertEquals(UsuarioStatus.INATIVO, usuarioStatus.get(1));;
+	}
+
+	@Test
+	@DisplayName("Deve definir data de desativacao")
+	void definir_data_de_desativacao() {
+		String data = "25/10/2026";
+		DesativarUsuario desativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		assertEquals(null, desativarUsuario.getDataDeDesativacao());
+
+		this.usuarioAuthService.definirDataDeDesativacao(1L, data);
+
+		desativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		LocalDate localDate = stringToLocalDate(data);
+		assertEquals(localDate, desativarUsuario.getDataDeDesativacao());
 	}
 }

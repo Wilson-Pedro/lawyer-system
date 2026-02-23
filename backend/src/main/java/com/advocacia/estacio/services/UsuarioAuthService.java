@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.entities.DesativarUsuario;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
@@ -21,4 +22,8 @@ public interface UsuarioAuthService {
 	void ativarUsuarios(List<UsuarioAuth> usuarioAuths);
 
 	void desativarUsuarios(List<UsuarioAuth> usuarioAuths);
+
+	DesativarUsuario buscarDesativarUsuarioPorId(Long id);
+
+	void definirDataDeDesativacao(Long id, String data);
 }

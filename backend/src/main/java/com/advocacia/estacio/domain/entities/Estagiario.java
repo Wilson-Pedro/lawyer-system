@@ -78,6 +78,10 @@ public class Estagiario implements Serializable {
 	public EstagiarioDto toDto() {
 		return new EstagiarioDto(this);
 	}
+
+	public boolean isAtivo() {
+		return this.usuarioAuth.isAtivo();
+	}
 	
 	public Long getId() {
 		return id;

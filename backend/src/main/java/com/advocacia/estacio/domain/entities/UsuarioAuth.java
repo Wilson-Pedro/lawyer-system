@@ -122,6 +122,10 @@ public class UsuarioAuth implements UserDetails{
 		this.usuarioStatus = usuarioStatus;
 	}
 
+	public boolean isAtivo() {
+		return this.usuarioStatus == UsuarioStatus.ATIVO;
+	}
+
 	@Override
 	public String toString() {
 		return "UsuarioAuth{" +
