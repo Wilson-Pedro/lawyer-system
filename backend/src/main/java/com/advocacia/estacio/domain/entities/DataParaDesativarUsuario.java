@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "TBL_DESATIVAR_USUARIO")
-public class DesativarUsuario {
+public class DataParaDesativarUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,16 +17,10 @@ public class DesativarUsuario {
     @Column(unique = true)
     private LocalDate dataDeDesativacao;
 
-//    public DesativarUsuario(DesativarUsuarioDto dto) {
-//        this.tipoUsuario = UserRole.toEnum(dto.getTipoUsuario());
-//        this.dataDeDesativacao = localDateToString(dto.getDataDeDesativacao());
-//    }
-
-
-    public DesativarUsuario() {
+    public DataParaDesativarUsuario() {
     }
 
-    public DesativarUsuario(UserRole tipoUsuario, LocalDate dataDeDesativacao) {
+    public DataParaDesativarUsuario(UserRole tipoUsuario, LocalDate dataDeDesativacao) {
         this.tipoUsuario = tipoUsuario;
         this.dataDeDesativacao = dataDeDesativacao;
     }

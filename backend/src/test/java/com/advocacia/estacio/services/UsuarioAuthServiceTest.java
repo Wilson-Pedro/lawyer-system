@@ -1,11 +1,9 @@
 package com.advocacia.estacio.services;
 
 import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
-import com.advocacia.estacio.domain.entities.DesativarUsuario;
+import com.advocacia.estacio.domain.entities.DataParaDesativarUsuario;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,13 +155,63 @@ class UsuarioAuthServiceTest {
 	@DisplayName("Deve definir data de desativacao")
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
-		DesativarUsuario desativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
-		assertEquals(null, desativarUsuario.getDataDeDesativacao());
+		DataParaDesativarUsuario dataParaDesativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		assertNull(dataParaDesativarUsuario.getDataDeDesativacao());
 
 		this.usuarioAuthService.definirDataDeDesativacao(1L, data);
 
-		desativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		dataParaDesativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
 		LocalDate localDate = stringToLocalDate(data);
-		assertEquals(localDate, desativarUsuario.getDataDeDesativacao());
+		assertEquals(localDate, dataParaDesativarUsuario.getDataDeDesativacao());
+	}
+
+	@Test
+	@DisplayName("Deve desativar usuários por data de desativacao")
+	void desativar_usuarios_por_data_de_desativacao() {
+
+		List<UsuarioAuth> usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+
+		usuarioAuthService.ativarUsuarios(usuarioAuths);
+
+		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
+
+		usuarioAuthService.desativarUsuariosPorData(LocalDate.now(), usuarioAuths);
+
+		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+		assertEquals(UsuarioStatus.INATIVO, usuarioAuths.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, usuarioAuths.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, usuarioAuths.get(2).getUsuarioStatus());
+
+	}
+
+	@Test
+	@DisplayName("Não deve desativar usuários por data de desativacao")
+	void nao_desativar_usuarios_por_data_de_desativacao() {
+
+		List<UsuarioAuth> usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+
+		usuarioAuthService.ativarUsuarios(usuarioAuths);
+
+		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
+
+		usuarioAuthService.desativarUsuariosPorData(LocalDate.now().plusDays(3), usuarioAuths);
+
+		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(0).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
+
+	}
+
+	private List<UsuarioAuth> buscarUsuariosAuthPorRole(UserRole userRole) {
+		return usuarioAuthRepository.findAll().stream()
+				.filter(u -> u.getRole().equals(userRole))
+				.toList();
 	}
 }
