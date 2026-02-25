@@ -2,7 +2,7 @@ package com.advocacia.estacio;
 
 import com.advocacia.estacio.domain.dto.*;
 import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuario;
+import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
 import com.advocacia.estacio.repositories.DesativarUsuarioRepository;
 import com.advocacia.estacio.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,8 +101,8 @@ public class BackendApplication implements CommandLineRunner {
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
 
-		DataParaDesativarUsuario dataParaDesativarUsuario = new DataParaDesativarUsuario(UserRole.ESTAGIARIO, null);
-		desativarUsuarioRepository.save(dataParaDesativarUsuario);
+		DataParaDesativarUsuarios dataParaDesativarUsuarios = new DataParaDesativarUsuarios(UserRole.ESTAGIARIO, null);
+		desativarUsuarioRepository.save(dataParaDesativarUsuarios);
 
 		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 

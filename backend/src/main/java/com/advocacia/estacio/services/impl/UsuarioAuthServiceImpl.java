@@ -1,6 +1,7 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuario;
+import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
+import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.DesativarUsuarioRepository;
@@ -22,7 +23,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -123,16 +124,23 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 
 
 	@Override
-	public DataParaDesativarUsuario buscarDesativarUsuarioPorId(Long id) {
+	public DataParaDesativarUsuarios buscarDesativarUsuarioPorId(Long id) {
 		return this.desativarUsuarioRepository.findById(id)
 				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
 	@Override
 	public void definirDataDeDesativacao(Long id, String data) {
-		DataParaDesativarUsuario dataParaDesativarUsuario = buscarDesativarUsuarioPorId(id);
-		LocalDate localDate = stringToLocalDate(data);
-		dataParaDesativarUsuario.setDataDeDesativacao(localDate);
-		desativarUsuarioRepository.save(dataParaDesativarUsuario);
+		DataParaDesativarUsuarios dataParaDesativarUsuarios = buscarDesativarUsuarioPorId(id);
+		LocalDate localDate = localDateToString(data);
+		dataParaDesativarUsuarios.setDataDeDesativacao(localDate);
+		desativarUsuarioRepository.save(dataParaDesativarUsuarios);
+	}
+
+	@Override
+	public List<UsuarioAuth> buscarUsuariosAuthPorRole(UserRole userRole) {
+		return usuarioAuthRepository.findAll().stream()
+				.filter(u -> u.getRole().equals(userRole))
+				.toList();
 	}
 }

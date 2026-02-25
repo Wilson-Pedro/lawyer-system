@@ -1,8 +1,8 @@
 package com.advocacia.estacio.repositories;
 
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuario;
+import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DesativarUsuarioRepository extends JpaRepository<DataParaDesativarUsuario, Long> {
+public interface DesativarUsuarioRepository extends JpaRepository<DataParaDesativarUsuarios, Long> {
 
 }

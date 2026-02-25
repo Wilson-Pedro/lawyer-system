@@ -1,8 +1,10 @@
 package com.advocacia.estacio.services;
 
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -23,6 +25,7 @@ import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -183,5 +186,33 @@ class EstagiarioServiceTest {
 		assertEquals(PeriodoEstagio.ESTAGIO_II, periodos.get(1));
 		assertEquals(PeriodoEstagio.ESTAGIO_III, periodos.get(2));
 		assertEquals(PeriodoEstagio.ESTAGIO_IV, periodos.get(3));
+	}
+
+	@Test
+	@DisplayName("Deve Desativar Estagiários por Data Pelo Service")
+	void desativar_estagiarios_por_data() {
+		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(e -> e.getUsuarioAuth()).toList();
+		auths = auths.stream().map(a -> {
+			a.setUsuarioStatus(UsuarioStatus.ATIVO);
+			return a;
+		}).toList();
+
+		this.usuarioAuthRepository.saveAll(auths);
+
+		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  localDateToString(LocalDate.now());
+
+		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+
+		this.estagiarioService.desativarEstagiariosPorData(dto);
+
+		estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
 	}
 }

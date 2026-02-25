@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class EstagiarioController {
 	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
 		this.estagiarioService.desativarEstagiarios(ids);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping("/desativarPorData")
+	public ResponseEntity<Void> desativarUsuariosPorData(@RequestBody DataParaDesativarUsuariosDto data) {
+		return null;
 	}
 }

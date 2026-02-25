@@ -1,12 +1,15 @@
 package com.advocacia.estacio.domain.dto;
 
-public class DesativarUsuarioDto {
+public class DataParaDesativarUsuariosDto {
 
     private String tipoUsuario;
 
     private String dataDeDesativacao;
 
-    public DesativarUsuarioDto(String tipoUsuario, String dataDeDesativacao) {
+    public DataParaDesativarUsuariosDto() {
+    }
+
+    public DataParaDesativarUsuariosDto(String tipoUsuario, String dataDeDesativacao) {
         this.tipoUsuario = tipoUsuario;
         this.dataDeDesativacao = dataDeDesativacao;
     }

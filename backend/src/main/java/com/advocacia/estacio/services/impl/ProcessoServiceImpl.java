@@ -1,6 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -119,7 +119,7 @@ public class ProcessoServiceImpl implements ProcessoService {
 		processo.setNumeroDoProcessoPje(dto.getNumeroDoProcessoPje());
 		processo.setAssunto(dto.getAssunto());
 		processo.setVara(dto.getVara());
-		processo.setPrazoFinal(Utils.stringToLocalDate(dto.getPrazoFinal()));
+		processo.setPrazoFinal(Utils.localDateToString(dto.getPrazoFinal()));
 		processo.setResponsavel(dto.getResponsavel());
 		processo.setAreaDoDireito(AreaDoDireito.toEnum(dto.getAreaDoDireito()));
 		processo.setTribunal(Tribunal.toEnum(dto.getTribunal()));

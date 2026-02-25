@@ -71,8 +71,9 @@ class AuthenticationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$", hasSize(2)))
+				.andExpect(jsonPath("$", hasSize(3)))
 				.andExpect(jsonPath("$[0]", CoreMatchers.equalTo("Ativo")))
-				.andExpect(jsonPath("$[1]", CoreMatchers.equalTo("Inativo")));
+				.andExpect(jsonPath("$[1]", CoreMatchers.equalTo("Inativo")))
+				.andExpect(jsonPath("$[2]", CoreMatchers.equalTo("Desligado")));
 	}
 }

@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
@@ -33,4 +34,6 @@ public interface EstagiarioService {
 	List<UsuarioAuth> buscarUsuariosAuthPorUsuarioStatus(UsuarioStatus usuarioStatus);
 
 	void desativarEstagiarios(RequestIds requestIds);
+
+	void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto);
 }

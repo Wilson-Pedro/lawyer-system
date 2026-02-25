@@ -1,7 +1,7 @@
 package com.advocacia.estacio.domain.dto;
 
 import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.StatusProcesso;
 import com.advocacia.estacio.projections.ProcessoProjection;
+import com.advocacia.estacio.utils.Utils;
 
 public class ProcessoDto implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -84,7 +85,7 @@ public class ProcessoDto implements Serializable{
 		this.id = id;
 		this.numeroDoProcesso = numeroDoProcesso;
 		this.assunto = assunto;
-		this.prazoFinal = stringToLocalDate(prazoFinal);
+		this.prazoFinal = Utils.localDateToString(prazoFinal);
 		this.responsavel = responsavel;
 		this.statusDoProcesso = statusDoProcesso.getStatus();
 		this.advogadoNome = advogadoNome;
@@ -98,7 +99,7 @@ public class ProcessoDto implements Serializable{
 		this.numeroDoProcessoPje = processo.getNumeroDoProcessoPje();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = stringToLocalDate(processo.getPrazoFinal());
+		this.prazoFinal = Utils.localDateToString(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
 		this.estagiarioId = processo.getEstagiario().getId();

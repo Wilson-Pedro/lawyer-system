@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
@@ -21,8 +22,11 @@ import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.services.EstagiarioService;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
@@ -112,5 +116,12 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	public void desativarEstagiarios(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
 		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
+	}
+
+	@Override
+	public void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto) {
+		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
+		LocalDate dataDesativacao = localDateToString(dto.getDataDeDesativacao());
+		this.usuarioAuthService.desativarUsuariosPorData(dataDesativacao, usuariosAuth);
 	}
 }

@@ -1,9 +1,9 @@
 package com.advocacia.estacio.services;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuario;
+import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,14 +155,14 @@ class UsuarioAuthServiceTest {
 	@DisplayName("Deve definir data de desativacao")
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
-		DataParaDesativarUsuario dataParaDesativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
-		assertNull(dataParaDesativarUsuario.getDataDeDesativacao());
+		DataParaDesativarUsuarios dataParaDesativarUsuarios = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		assertNull(dataParaDesativarUsuarios.getDataDeDesativacao());
 
 		this.usuarioAuthService.definirDataDeDesativacao(1L, data);
 
-		dataParaDesativarUsuario = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
-		LocalDate localDate = stringToLocalDate(data);
-		assertEquals(localDate, dataParaDesativarUsuario.getDataDeDesativacao());
+		dataParaDesativarUsuarios = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		LocalDate localDate = localDateToString(data);
+		assertEquals(localDate, dataParaDesativarUsuarios.getDataDeDesativacao());
 	}
 
 	@Test

@@ -1,12 +1,15 @@
 package com.advocacia.estacio.domain.entities;
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.enums.UserRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
+import static com.advocacia.estacio.utils.Utils.localDateToString;
+
 @Entity
 @Table(name = "TBL_DESATIVAR_USUARIO")
-public class DataParaDesativarUsuario {
+public class DataParaDesativarUsuarios {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +20,17 @@ public class DataParaDesativarUsuario {
     @Column(unique = true)
     private LocalDate dataDeDesativacao;
 
-    public DataParaDesativarUsuario() {
+    public DataParaDesativarUsuarios() {
     }
 
-    public DataParaDesativarUsuario(UserRole tipoUsuario, LocalDate dataDeDesativacao) {
+    public DataParaDesativarUsuarios(UserRole tipoUsuario, LocalDate dataDeDesativacao) {
         this.tipoUsuario = tipoUsuario;
         this.dataDeDesativacao = dataDeDesativacao;
+    }
+
+    public DataParaDesativarUsuarios(DataParaDesativarUsuariosDto dto) {
+        this.tipoUsuario = UserRole.toEnum(dto.getTipoUsuario());
+        this.dataDeDesativacao = localDateToString(dto.getDataDeDesativacao());
     }
 
     public LocalDate getDataDeDesativacao() {
