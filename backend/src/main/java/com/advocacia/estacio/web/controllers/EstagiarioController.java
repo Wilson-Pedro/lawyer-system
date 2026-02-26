@@ -80,8 +80,9 @@ public class EstagiarioController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/desativarPorData")
+	@PutMapping("/desativar/desativarPorData")
 	public ResponseEntity<Void> desativarUsuariosPorData(@RequestBody DataParaDesativarUsuariosDto data) {
-		return null;
+		this.estagiarioService.desativarEstagiariosPorData(data);
+		return  ResponseEntity.noContent().build();
 	}
 }

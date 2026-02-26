@@ -1,5 +1,6 @@
 package com.advocacia.estacio.controllers;
 
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,9 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +30,7 @@ import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -34,6 +40,12 @@ class EstagiarioControllerTest {
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
+
+	@Autowired
+	EstagiarioService estagiarioService;
+
+	@Autowired
+	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -176,7 +188,7 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content[0].telefone").value("92921421224"))
 				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
 				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"))
-				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Ativo"));
+				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Inativo"));
 	}
 
 	@Test
@@ -200,6 +212,9 @@ class EstagiarioControllerTest {
 	void buscar_desativar_usuarios() throws Exception {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
+		UsuarioAuth auth = estagiario.getUsuarioAuth();
+		auth.setUsuarioStatus(UsuarioStatus.ATIVO);
+		usuarioAuthRepository.save(auth);
 
 		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
 
@@ -216,6 +231,40 @@ class EstagiarioControllerTest {
 		estagiario = estagiarioRepository.findAll().get(0);
 
 		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
+
+	}
+
+	@Test
+	@DisplayName("Deve Desavitar Estagiários por Data Pelo Controller")
+	void buscar_desativar_usuarios_por_data() throws Exception {
+
+		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(e -> e.getUsuarioAuth()).toList();
+		auths = auths.stream().map(a -> {
+			a.setUsuarioStatus(UsuarioStatus.ATIVO);
+			return a;
+		}).toList();
+
+		this.usuarioAuthRepository.saveAll(auths);
+
+		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  localDateToString(LocalDate.now());
+
+		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		mockMvc.perform(put(URI + "/desativar/desativarPorData")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+						.andExpect(status().isNoContent());
+
+		estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 
 	}
 }
