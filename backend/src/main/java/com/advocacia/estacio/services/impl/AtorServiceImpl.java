@@ -85,6 +85,6 @@ public class AtorServiceImpl implements AtorService {
 	@Override
 	public void desativarAtores(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
-		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
+		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
 	}
 }

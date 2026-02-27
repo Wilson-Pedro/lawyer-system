@@ -2,8 +2,8 @@ package com.advocacia.estacio;
 
 import com.advocacia.estacio.domain.dto.*;
 import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
-import com.advocacia.estacio.repositories.DesativarUsuarioRepository;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,7 +34,7 @@ public class BackendApplication implements CommandLineRunner {
 	AtorService atorService;
 	
 	@Autowired
-	DesativarUsuarioRepository desativarUsuarioRepository;
+	DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
 	
 	@Autowired
 	EstagiarioService estagiarioService;
@@ -101,8 +101,10 @@ public class BackendApplication implements CommandLineRunner {
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
 
-		DataParaDesativarUsuarios dataParaDesativarUsuarios = new DataParaDesativarUsuarios(UserRole.ESTAGIARIO, null);
-		desativarUsuarioRepository.save(dataParaDesativarUsuarios);
+		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = new com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
+		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData dataParaAtivarUsuarios = new com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
+		this.desativarAtivarUsuarioPorData.save(desativarAtivarUsuarioPorData);
+		this.desativarAtivarUsuarioPorData.save(dataParaAtivarUsuarios);
 
 		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 

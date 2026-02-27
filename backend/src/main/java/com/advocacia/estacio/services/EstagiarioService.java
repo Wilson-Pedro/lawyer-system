@@ -35,5 +35,5 @@ public interface EstagiarioService {
 
 	void desativarEstagiarios(RequestIds requestIds);
 
-	void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto);
+	void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto, String usuarioStatus);
 }

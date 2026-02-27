@@ -1,6 +1,7 @@
 package com.advocacia.estacio.domain.entities;
 import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 @Entity
 @Table(name = "TBL_DESATIVAR_USUARIO")
-public class DataParaDesativarUsuarios {
+public class DesativarAtivarUsuarioPorData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,18 +18,21 @@ public class DataParaDesativarUsuarios {
 
     private UserRole tipoUsuario;
 
-    @Column(unique = true)
+    @Column(nullable = true)
     private LocalDate dataDeDesativacao;
 
-    public DataParaDesativarUsuarios() {
+    private UsuarioStatus usuarioStatus;
+
+    public DesativarAtivarUsuarioPorData() {
     }
 
-    public DataParaDesativarUsuarios(UserRole tipoUsuario, LocalDate dataDeDesativacao) {
+    public DesativarAtivarUsuarioPorData(UserRole tipoUsuario, LocalDate dataDeDesativacao, UsuarioStatus usuarioStatus) {
         this.tipoUsuario = tipoUsuario;
         this.dataDeDesativacao = dataDeDesativacao;
+        this.usuarioStatus = usuarioStatus;
     }
 
-    public DataParaDesativarUsuarios(DataParaDesativarUsuariosDto dto) {
+    public DesativarAtivarUsuarioPorData(DataParaDesativarUsuariosDto dto) {
         this.tipoUsuario = UserRole.toEnum(dto.getTipoUsuario());
         this.dataDeDesativacao = localDateToString(dto.getDataDeDesativacao());
     }
@@ -47,5 +51,9 @@ public class DataParaDesativarUsuarios {
 
     public void setDataDeDesativacao(LocalDate dataDeDesativacao) {
         this.dataDeDesativacao = dataDeDesativacao;
+    }
+
+    public UsuarioStatus getUsuarioStatus() {
+        return usuarioStatus;
     }
 }

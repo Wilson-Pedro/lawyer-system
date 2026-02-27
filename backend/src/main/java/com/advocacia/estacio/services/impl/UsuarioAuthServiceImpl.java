@@ -1,10 +1,9 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
-import com.advocacia.estacio.repositories.DesativarUsuarioRepository;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +34,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	UsuarioAuthRepository usuarioAuthRepository;
 
 	@Autowired
-	DesativarUsuarioRepository desativarUsuarioRepository;
+	DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
 	
 	@Autowired
 	TokenService tokenService;
@@ -101,12 +100,13 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		desativarAtivarUsuarios(usuarioAuths, UsuarioStatus.ATIVO);
 	}
 
-	@Override
-	public void desativarUsuarios(List<UsuarioAuth> usuarioAuths) {
-		desativarAtivarUsuarios(usuarioAuths, UsuarioStatus.INATIVO);
+	//@Override
+	public void desativarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+		desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
 	}
 
-	private void desativarAtivarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+	@Override
+	public void desativarAtivarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
 		List<UsuarioAuth> list = usuarioAuths
 				.stream()
 				.map(user -> {
@@ -117,24 +117,24 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	}
 
 	@Override
-	public void desativarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths) {
+	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
 		LocalDate dataHoje = LocalDate.now();
-		if(dataParaDesativar.isEqual(dataHoje)) desativarUsuarios(usuarioAuths);
+		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
 	}
 
 
 	@Override
-	public DataParaDesativarUsuarios buscarDesativarUsuarioPorId(Long id) {
-		return this.desativarUsuarioRepository.findById(id)
+	public com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id) {
+		return this.desativarAtivarUsuarioPorData.findById(id)
 				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
 	@Override
 	public void definirDataDeDesativacao(Long id, String data) {
-		DataParaDesativarUsuarios dataParaDesativarUsuarios = buscarDesativarUsuarioPorId(id);
+		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
 		LocalDate localDate = localDateToString(data);
-		dataParaDesativarUsuarios.setDataDeDesativacao(localDate);
-		desativarUsuarioRepository.save(dataParaDesativarUsuarios);
+		desativarAtivarUsuarioPorData.setDataDeDesativacao(localDate);
+		this.desativarAtivarUsuarioPorData.save(desativarAtivarUsuarioPorData);
 	}
 
 	@Override

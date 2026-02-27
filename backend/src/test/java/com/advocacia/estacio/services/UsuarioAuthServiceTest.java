@@ -3,7 +3,7 @@ package com.advocacia.estacio.services;
 import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.advocacia.estacio.domain.entities.DataParaDesativarUsuarios;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +80,7 @@ class UsuarioAuthServiceTest {
 
 		List<UsuarioAuth> usuariosAuth = usuarioAuthRepository.findAll();
 
-		usuarioAuthService.desativarUsuarios(usuariosAuth);
+		usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
 		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(0).getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(1).getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, usuariosAuth.get(2).getUsuarioStatus());
@@ -155,14 +155,14 @@ class UsuarioAuthServiceTest {
 	@DisplayName("Deve definir data de desativacao")
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
-		DataParaDesativarUsuarios dataParaDesativarUsuarios = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
-		assertNull(dataParaDesativarUsuarios.getDataDeDesativacao());
+		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		assertNull(desativarAtivarUsuarioPorData.getDataDeDesativacao());
 
 		this.usuarioAuthService.definirDataDeDesativacao(1L, data);
 
-		dataParaDesativarUsuarios = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
 		LocalDate localDate = localDateToString(data);
-		assertEquals(localDate, dataParaDesativarUsuarios.getDataDeDesativacao());
+		assertEquals(localDate, desativarAtivarUsuarioPorData.getDataDeDesativacao());
 	}
 
 	@Test
@@ -178,7 +178,7 @@ class UsuarioAuthServiceTest {
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
 
-		usuarioAuthService.desativarUsuariosPorData(LocalDate.now(), usuarioAuths);
+		usuarioAuthService.desativarAtivarUsuariosPorData(LocalDate.now(), usuarioAuths, UsuarioStatus.INATIVO);
 
 		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
 		assertEquals(UsuarioStatus.INATIVO, usuarioAuths.get(0).getUsuarioStatus());
@@ -200,7 +200,7 @@ class UsuarioAuthServiceTest {
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
 
-		usuarioAuthService.desativarUsuariosPorData(LocalDate.now().plusDays(3), usuarioAuths);
+		usuarioAuthService.desativarAtivarUsuariosPorData(LocalDate.now().plusDays(3), usuarioAuths, UsuarioStatus.INATIVO);
 
 		usuarioAuths = buscarUsuariosAuthPorRole(UserRole.ADMIN);
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(0).getUsuarioStatus());

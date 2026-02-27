@@ -4,6 +4,7 @@ import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,9 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	
 	@Autowired
 	private UsuarioAuthService usuarioAuthService;
+
+	@Autowired
+	private DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
 
 	@Override
 	public Estagiario salvar(EstagiarioDto estagiarioDto) {
@@ -115,13 +119,14 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	@Override
 	public void desativarEstagiarios(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
-		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
+		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
 	}
 
 	@Override
-	public void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto) {
+	public void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto, String usuarioStatus) {
 		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
 		LocalDate dataDesativacao = localDateToString(dto.getDataDeDesativacao());
-		this.usuarioAuthService.desativarUsuariosPorData(dataDesativacao, usuariosAuth);
+		UsuarioStatus status = UsuarioStatus.toEnum(usuarioStatus);
+		this.usuarioAuthService.desativarAtivarUsuariosPorData(dataDesativacao, usuariosAuth, status);
 	}
 }

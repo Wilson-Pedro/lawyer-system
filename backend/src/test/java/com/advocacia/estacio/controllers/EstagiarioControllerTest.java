@@ -42,9 +42,6 @@ class EstagiarioControllerTest {
 	EstagiarioRepository estagiarioRepository;
 
 	@Autowired
-	EstagiarioService estagiarioService;
-
-	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
 	
 	@Autowired
@@ -188,7 +185,7 @@ class EstagiarioControllerTest {
 				.andExpect(jsonPath("$.content[0].telefone").value("92921421224"))
 				.andExpect(jsonPath("$.content[0].matricula").value("20251208"))
 				.andExpect(jsonPath("$.content[0].periodo").value("Estágio II"))
-				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Inativo"));
+				.andExpect(jsonPath("$.content[0].usuarioStatus").value("Ativo"));
 	}
 
 	@Test
@@ -209,7 +206,7 @@ class EstagiarioControllerTest {
 
 	@Test
 	@DisplayName("Deve Desavitar Estagiários Pelo Controller")
-	void buscar_desativar_usuarios() throws Exception {
+	void desativar_usuarios() throws Exception {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
 		UsuarioAuth auth = estagiario.getUsuarioAuth();
@@ -236,15 +233,12 @@ class EstagiarioControllerTest {
 
 	@Test
 	@DisplayName("Deve Desavitar Estagiários por Data Pelo Controller")
-	void buscar_desativar_usuarios_por_data() throws Exception {
+	void desativar_usuarios_por_data() throws Exception {
 
-		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(e -> e.getUsuarioAuth()).toList();
-		auths = auths.stream().map(a -> {
-			a.setUsuarioStatus(UsuarioStatus.ATIVO);
-			return a;
-		}).toList();
+		UsuarioAuth auth = this.estagiarioRepository.findAll().get(0).getUsuarioAuth();
+		auth.setUsuarioStatus(UsuarioStatus.ATIVO);
 
-		this.usuarioAuthRepository.saveAll(auths);
+		this.usuarioAuthRepository.save(auth);
 
 		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
 
@@ -256,7 +250,7 @@ class EstagiarioControllerTest {
 
 		String jsonRequest = objectMapper.writeValueAsString(dto);
 
-		mockMvc.perform(put(URI + "/desativar/desativarPorData")
+		mockMvc.perform(put(URI + "/Inativo/estagiarios")
 						.header("Authorization", "Bearer " + TOKEN)
 						.content(jsonRequest)
 						.contentType(MediaType.APPLICATION_JSON))
@@ -266,5 +260,35 @@ class EstagiarioControllerTest {
 
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 
+	}
+
+	@Test
+	@DisplayName("Deve Avitar Estagiários por Data Pelo Controller")
+	void ativar_usuarios_por_data() throws Exception {
+
+		UsuarioAuth auth = this.estagiarioRepository.findAll().get(0).getUsuarioAuth();
+		auth.setUsuarioStatus(UsuarioStatus.INATIVO);
+
+		this.usuarioAuthRepository.save(auth);
+
+		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  localDateToString(LocalDate.now());
+
+		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		mockMvc.perform(put(URI + "/Ativo/estagiarios")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 	}
 }

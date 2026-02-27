@@ -191,7 +191,7 @@ class EstagiarioServiceTest {
 	@Test
 	@DisplayName("Deve Desativar Estagiários por Data Pelo Service")
 	void desativar_estagiarios_por_data() {
-		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(e -> e.getUsuarioAuth()).toList();
+		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
 		auths = auths.stream().map(a -> {
 			a.setUsuarioStatus(UsuarioStatus.ATIVO);
 			return a;
@@ -208,11 +208,39 @@ class EstagiarioServiceTest {
 
 		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
 
-		this.estagiarioService.desativarEstagiariosPorData(dto);
+		this.estagiarioService.desativarEstagiariosPorData(dto, "Inativo");
 
 		estagiarios = this.estagiarioRepository.findAll();
 
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve Ativar Estagiários por Data Pelo Service")
+	void ativar_estagiarios_por_data() {
+		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
+		auths = auths.stream().map(a -> {
+			a.setUsuarioStatus(UsuarioStatus.INATIVO);
+			return a;
+		}).toList();
+
+		this.usuarioAuthRepository.saveAll(auths);
+
+		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  localDateToString(LocalDate.now());
+
+		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+
+		this.estagiarioService.desativarEstagiariosPorData(dto, "Ativo");
+
+		estagiarios = this.estagiarioRepository.findAll();
+
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
 	}
 }

@@ -97,6 +97,6 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 	@Override
 	public void desativarAdvogados(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
-		this.usuarioAuthService.desativarUsuarios(usuariosAuth);
+		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth,UsuarioStatus.INATIVO);
 	}
 }
