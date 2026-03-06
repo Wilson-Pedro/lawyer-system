@@ -1,11 +1,12 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
 import com.advocacia.estacio.services.UsuarioAuthService;
+import com.advocacia.estacio.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,7 +28,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
@@ -39,7 +40,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	private UsuarioAuthService usuarioAuthService;
 
 	@Autowired
-	private DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
+	private DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
 
 	@Override
 	public Estagiario salvar(EstagiarioDto estagiarioDto) {
@@ -116,6 +117,7 @@ public class EstagiarioServiceImpl implements EstagiarioService {
         return Arrays.stream(PeriodoEstagio.values()).toList();
     }
 
+
 	@Override
 	public void desativarEstagiarios(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
@@ -123,10 +125,15 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	}
 
 	@Override
-	public void desativarEstagiariosPorData(DataParaDesativarUsuariosDto dto, String usuarioStatus) {
+	public void desativarEstagiariosPorData(DesativarAtivarUsuarioPorDataDto dto, String usuarioStatus) {
 		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
-		LocalDate dataDesativacao = localDateToString(dto.getDataDeDesativacao());
+		LocalDate dataDesativacao = Utils.stringToLocalDate(dto.getDataDeDesativacao());
 		UsuarioStatus status = UsuarioStatus.toEnum(usuarioStatus);
 		this.usuarioAuthService.desativarAtivarUsuariosPorData(dataDesativacao, usuariosAuth, status);
+	}
+
+	@Override
+	public void definirDataDeDesativacao(Long id, String data) {
+		this.usuarioAuthService.definirDataParaAtivarDesativar(id, data);
 	}
 }

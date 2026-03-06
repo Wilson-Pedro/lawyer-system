@@ -1,10 +1,13 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
 import com.advocacia.estacio.services.UsuarioAuthService;
+import com.advocacia.estacio.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +25,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -34,7 +37,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	UsuarioAuthRepository usuarioAuthRepository;
 
 	@Autowired
-	DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
+	DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
 	
 	@Autowired
 	TokenService tokenService;
@@ -100,11 +103,6 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		desativarAtivarUsuarios(usuarioAuths, UsuarioStatus.ATIVO);
 	}
 
-	//@Override
-	public void desativarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
-		desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
-	}
-
 	@Override
 	public void desativarAtivarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
 		List<UsuarioAuth> list = usuarioAuths
@@ -124,17 +122,17 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 
 
 	@Override
-	public com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id) {
-		return this.desativarAtivarUsuarioPorData.findById(id)
+	public DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id) {
+		return this.desativarAtivarUsuarioPorDataRepository.findById(id)
 				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
 	@Override
-	public void definirDataDeDesativacao(Long id, String data) {
-		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
-		LocalDate localDate = localDateToString(data);
+	public void definirDataParaAtivarDesativar(Long id, String data) {
+		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
+		LocalDate localDate = Utils.stringToLocalDate(data);
 		desativarAtivarUsuarioPorData.setDataDeDesativacao(localDate);
-		this.desativarAtivarUsuarioPorData.save(desativarAtivarUsuarioPorData);
+		this.desativarAtivarUsuarioPorDataRepository.save(desativarAtivarUsuarioPorData);
 	}
 
 	@Override

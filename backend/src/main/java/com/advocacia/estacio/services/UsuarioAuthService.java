@@ -25,11 +25,11 @@ public interface UsuarioAuthService {
 
 	void desativarAtivarUsuarios(List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus);
 
-	DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id);
-
-	void definirDataDeDesativacao(Long id, String data);
+	void definirDataParaAtivarDesativar(Long id, String data);
 
 	void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus);
+
+	DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id);
 
 	List<UsuarioAuth> buscarUsuariosAuthPorRole(UserRole userRole);
 }

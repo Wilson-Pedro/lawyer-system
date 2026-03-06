@@ -2,8 +2,9 @@ package com.advocacia.estacio;
 
 import com.advocacia.estacio.domain.dto.*;
 import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorData;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
 import com.advocacia.estacio.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,7 @@ import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
+
 
 @SpringBootApplication
 public class BackendApplication implements CommandLineRunner {
@@ -34,7 +36,7 @@ public class BackendApplication implements CommandLineRunner {
 	AtorService atorService;
 	
 	@Autowired
-	DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData;
+	DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
 	
 	@Autowired
 	EstagiarioService estagiarioService;
@@ -101,10 +103,11 @@ public class BackendApplication implements CommandLineRunner {
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiarioId, "Documentação completa", "Estagiário");
 		demandaRespondeService.salvar(demandaRespondeDto);
 
-		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = new com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
-		com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData dataParaAtivarUsuarios = new com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
-		this.desativarAtivarUsuarioPorData.save(desativarAtivarUsuarioPorData);
-		this.desativarAtivarUsuarioPorData.save(dataParaAtivarUsuarios);
+		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
+		DesativarAtivarUsuarioPorData dataParaAtivarUsuarios = new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
+		this.desativarAtivarUsuarioPorDataRepository.save(desativarAtivarUsuarioPorData);
+		this.desativarAtivarUsuarioPorDataRepository.save(dataParaAtivarUsuarios);
+
 
 		RegistroDto registroDto = new RegistroDto("admin@gmail.com", "1234", UserRole.ADMIN);
 

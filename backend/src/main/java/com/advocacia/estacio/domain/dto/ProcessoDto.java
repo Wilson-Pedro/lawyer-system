@@ -1,7 +1,7 @@
 package com.advocacia.estacio.domain.dto;
 
 import static com.advocacia.estacio.utils.Utils.localDateTimeToString;
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -85,7 +85,7 @@ public class ProcessoDto implements Serializable{
 		this.id = id;
 		this.numeroDoProcesso = numeroDoProcesso;
 		this.assunto = assunto;
-		this.prazoFinal = Utils.localDateToString(prazoFinal);
+		this.prazoFinal = Utils.stringToLocalDate(prazoFinal);
 		this.responsavel = responsavel;
 		this.statusDoProcesso = statusDoProcesso.getStatus();
 		this.advogadoNome = advogadoNome;
@@ -99,7 +99,7 @@ public class ProcessoDto implements Serializable{
 		this.numeroDoProcessoPje = processo.getNumeroDoProcessoPje();
 		this.assunto = processo.getAssunto();
 		this.vara = processo.getVara();
-		this.prazoFinal = Utils.localDateToString(processo.getPrazoFinal());
+		this.prazoFinal = Utils.stringToLocalDate(processo.getPrazoFinal());
 		this.responsavel = processo.getResponsavel();
 		this.advogadoId = processo.getAdvogado().getId();
 		this.estagiarioId = processo.getEstagiario().getId();

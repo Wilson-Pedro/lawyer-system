@@ -1,9 +1,8 @@
 package com.advocacia.estacio.web.controllers;
 
-import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -75,6 +74,15 @@ public class EstagiarioController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@PutMapping("/data/{id}/ativarDesativar/")
+	public ResponseEntity<Void> definirDataParaAtivarDesativar(
+			@RequestBody DesativarAtivarUsuarioPorDataDto dto,
+			@PathVariable Long id
+	) {
+		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
+		return  ResponseEntity.noContent().build();
+	}
+
 	@PatchMapping("/desativar/usuarios")
 	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
 		this.estagiarioService.desativarEstagiarios(ids);
@@ -84,7 +92,7 @@ public class EstagiarioController {
 	@PutMapping("/{usuarioStatus}/estagiarios")
 	public ResponseEntity<Void> desativarAtivarUsuariosPorData(
 			@PathVariable String usuarioStatus,
-			@RequestBody DataParaDesativarUsuariosDto data) {
+			@RequestBody DesativarAtivarUsuarioPorDataDto data) {
 		this.estagiarioService.desativarEstagiariosPorData(data, usuarioStatus);
 		return  ResponseEntity.noContent().build();
 	}

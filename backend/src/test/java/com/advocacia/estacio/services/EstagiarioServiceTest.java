@@ -1,10 +1,10 @@
 package com.advocacia.estacio.services;
 
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.advocacia.estacio.domain.dto.DataParaDesativarUsuariosDto;
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -204,9 +204,9 @@ class EstagiarioServiceTest {
 		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
 
-		String dataHoje =  localDateToString(LocalDate.now());
+		String dataHoje =  stringToLocalDate(LocalDate.now());
 
-		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.INATIVO);
 
 		this.estagiarioService.desativarEstagiariosPorData(dto, "Inativo");
 
@@ -232,9 +232,9 @@ class EstagiarioServiceTest {
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
 
-		String dataHoje =  localDateToString(LocalDate.now());
+		String dataHoje =  stringToLocalDate(LocalDate.now());
 
-		DataParaDesativarUsuariosDto dto = new DataParaDesativarUsuariosDto("Estagiário", dataHoje);
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
 
 		this.estagiarioService.desativarEstagiariosPorData(dto, "Ativo");
 
