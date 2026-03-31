@@ -28,8 +28,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
-
 @Service
 public class EstagiarioServiceImpl implements EstagiarioService {
 	

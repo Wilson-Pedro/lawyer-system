@@ -17,11 +17,13 @@ public class DesativarAtivarUsuarioPorData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private UserRole tipoUsuario;
 
     @Column(nullable = true)
     private LocalDate dataDeDesativacao;
 
+    @Enumerated(EnumType.STRING)
     private UsuarioStatus usuarioStatus;
 
     public DesativarAtivarUsuarioPorData() {

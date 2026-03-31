@@ -32,7 +32,11 @@ public class SecurityConfigurations {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/h2-console/**").permitAll()
+
+						// AUTH
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+						.requestMatchers(HttpMethod.PUT, "/auth/usuarioStatus").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/auth/data/ativarDesativar/").hasRole("ADMIN")
 
 						// ATORES
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
@@ -69,6 +73,7 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/estagiarios/buscarId/email/{email}").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.PATCH, "/estagiarios/desativar/usuarios").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/estagiarios/desativar/desativarPorData").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/estagiarios/data/{id}/ativarDesativar/").hasRole("ADMIN")
 
 						// MOVIMENTOS
 						.requestMatchers(HttpMethod.POST, "/movimentos/").hasRole("ADMIN")

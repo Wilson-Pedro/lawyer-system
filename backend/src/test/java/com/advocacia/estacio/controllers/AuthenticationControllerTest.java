@@ -1,10 +1,16 @@
 package com.advocacia.estacio.controllers;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
+import com.advocacia.estacio.utils.Utils;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,8 @@ import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.time.LocalDate;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -25,6 +33,9 @@ class AuthenticationControllerTest {
 	
 	@Autowired
     UsuarioAuthServiceImpl usuarioAuthServiceImpl;
+
+	@Autowired
+	DesativarAtivarUsuarioPorDataRepository dataRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -75,5 +86,53 @@ class AuthenticationControllerTest {
 				.andExpect(jsonPath("$[0]", CoreMatchers.equalTo("Ativo")))
 				.andExpect(jsonPath("$[1]", CoreMatchers.equalTo("Inativo")))
 				.andExpect(jsonPath("$[2]", CoreMatchers.equalTo("Desligado")));
+	}
+
+	@Test
+	@DisplayName("Deve definir data para ativar usuários Pelo Controller")
+	void deve_definir_data_para_ativar_usuarios() throws Exception {
+
+		String hoje = Utils.stringToLocalDate(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(1);
+		assertNull(data.getDataDeDesativacao());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.ATIVO);
+
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		String TOKEN = usuarioAuthServiceImpl.login(testUtil.getAuthenticationDto()).token();
+
+		mockMvc.perform(put(URI + "/data/ativarDesativar/")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		data = dataRepository.findAll().get(1);
+		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
+	}
+
+	@Test
+	@DisplayName("Deve definir data para desativar usuários Pelo Controller")
+	void deve_definir_data_para_desativar_usuarios() throws Exception {
+
+		String hoje = Utils.stringToLocalDate(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
+		assertNull(data.getDataDeDesativacao());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.INATIVO);
+
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		String TOKEN = usuarioAuthServiceImpl.login(testUtil.getAuthenticationDto()).token();
+
+		mockMvc.perform(put(URI + "/data/ativarDesativar/")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		data = dataRepository.findAll().get(0);
+		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
 	}
 }

@@ -2,8 +2,7 @@ package com.advocacia.estacio.domain.dto;
 
 import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
-
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import com.advocacia.estacio.utils.Utils;
 
 public class DesativarAtivarUsuarioPorDataDto {
 
@@ -26,7 +25,7 @@ public class DesativarAtivarUsuarioPorDataDto {
 
     public DesativarAtivarUsuarioPorDataDto(DesativarAtivarUsuarioPorData entity) {
         this.tipoUsuario = entity.getTipoUsuario().getRole();
-        this.dataDeDesativacao = stringToLocalDate(entity.getDataDeDesativacao());
+        this.dataDeDesativacao = Utils.stringToLocalDate(entity.getDataDeDesativacao());
         this.usuarioStatus = entity.getUsuarioStatus();
     }
 

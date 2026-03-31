@@ -120,6 +120,21 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
 	}
 
+	@Override
+	public void definirDataDeDesativacao(DesativarAtivarUsuarioPorDataDto dto) {
+		DesativarAtivarUsuarioPorData data = desativarAtivarUsuarioPorDataRepository.findAll().stream()
+				.filter(d ->
+						d.getTipoUsuario().getRole().equals(dto.getTipoUsuario()) &&
+						d.getUsuarioStatus().equals(dto.getUsuarioStatus()))
+				.findFirst()
+				.orElseThrow(null);
+		if(data != null) {
+			LocalDate  localDate = Utils.stringToLocalDate(dto.getDataDeDesativacao());
+			data.setDataDeDesativacao(localDate);
+			data.setId(data.getId());
+			desativarAtivarUsuarioPorDataRepository.save(data);
+		}
+	}
 
 	@Override
 	public DesativarAtivarUsuarioPorData buscarDesativarUsuarioPorId(Long id) {

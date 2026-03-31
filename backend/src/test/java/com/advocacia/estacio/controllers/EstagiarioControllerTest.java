@@ -11,11 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
-import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.services.EstagiarioService;
+import com.advocacia.estacio.utils.Utils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,6 +41,9 @@ class EstagiarioControllerTest {
 	
 	@Autowired
 	EstagiarioRepository estagiarioRepository;
+
+	@Autowired
+	EstagiarioService estagiarioService;
 
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
@@ -247,7 +251,7 @@ class EstagiarioControllerTest {
 
 		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 
-		String dataHoje =  stringToLocalDate(LocalDate.now());
+		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
 
 		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.INATIVO);
 
@@ -268,7 +272,7 @@ class EstagiarioControllerTest {
 	@DisplayName("Deve Definir Data para ativar Estagiários Pelo Controller")
 	void definir_data_para_ativar() throws Exception {
 
-		String dataHoje =  stringToLocalDate(LocalDate.now());
+		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
 
 		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
 		Long id = dataRepository.findAll().get(0).getId();
@@ -283,7 +287,7 @@ class EstagiarioControllerTest {
 
 		LocalDate data = dataRepository.findAll().get(0).getDataDeDesativacao();
 
-		assertEquals(stringToLocalDate(dataHoje), data);
+		assertEquals(Utils.stringToLocalDate(dataHoje), data);
 	}
 
 	@Test
@@ -299,7 +303,7 @@ class EstagiarioControllerTest {
 
 		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
 
-		String dataHoje =  stringToLocalDate(LocalDate.now());
+		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
 
 		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
 
@@ -314,5 +318,70 @@ class EstagiarioControllerTest {
 		estagiarios = this.estagiarioRepository.findAll();
 
 		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@Test
+	@DisplayName("Deve Definir data e desativar Estagiários Controller")
+	void definiar_data_e_desativar_usuario() throws Exception {
+
+		UsuarioAuth auth = this.estagiarioRepository.findAll().get(0).getUsuarioAuth();
+		auth.setUsuarioStatus(UsuarioStatus.ATIVO);
+
+		this.usuarioAuthRepository.save(auth);
+
+		Estagiario estagiario = this.estagiarioRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.INATIVO);
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		Long id = dataRepository.findAll().get(0).getId();
+
+		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
+
+		mockMvc.perform(put(URI + "/Inativo/estagiarios")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		estagiario = this.estagiarioRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
+	}
+
+	@DisplayName("Deve Definir data e ativar Estagiários Controller")
+	void definiar_data_e_ativar_usuario() throws Exception {
+
+		UsuarioAuth auth = this.estagiarioRepository.findAll().get(0).getUsuarioAuth();
+		auth.setUsuarioStatus(UsuarioStatus.INATIVO);
+
+		this.usuarioAuthRepository.save(auth);
+
+		Estagiario estagiario = this.estagiarioRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
+
+		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
+		String jsonRequest = objectMapper.writeValueAsString(dto);
+
+		Long id = dataRepository.findAll().get(0).getId();
+
+		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
+
+		mockMvc.perform(put(URI + "/Ativo/estagiarios")
+						.header("Authorization", "Bearer " + TOKEN)
+						.content(jsonRequest)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+
+		estagiario = this.estagiarioRepository.findAll().get(0);
+
+		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
 	}
 }

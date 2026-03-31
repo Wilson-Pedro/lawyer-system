@@ -2,6 +2,7 @@ package com.advocacia.estacio.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
@@ -30,6 +31,9 @@ class UsuarioAuthServiceTest {
 	
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
+
+	@Autowired
+	DesativarAtivarUsuarioPorDataRepository dataRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -157,6 +161,8 @@ class UsuarioAuthServiceTest {
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
 		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		desativarAtivarUsuarioPorData.setDataDeDesativacao(null);
+		dataRepository.save(desativarAtivarUsuarioPorData);
 		assertNull(desativarAtivarUsuarioPorData.getDataDeDesativacao());
 
 		this.usuarioAuthService.definirDataParaAtivarDesativar(1L, data);
@@ -208,6 +214,38 @@ class UsuarioAuthServiceTest {
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(1).getUsuarioStatus());
 		assertEquals(UsuarioStatus.ATIVO, usuarioAuths.get(2).getUsuarioStatus());
 
+	}
+
+	@Test
+	@DisplayName("Deve definir data para ativar usuários")
+	void deve_definir_data_para_ativar_usuarios() {
+
+		String hoje = Utils.stringToLocalDate(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(1);
+		assertNull(data.getDataDeDesativacao());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.ATIVO);
+
+		this.usuarioAuthService.definirDataDeDesativacao(dto);
+
+		data = dataRepository.findAll().get(1);
+		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
+	}
+
+	@Test
+//	@DisplayName("Deve definir data para desativar usuários")
+	void deve_definir_data_para_desativar_usuarios() {
+
+		String hoje = Utils.stringToLocalDate(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
+		assertNull(data.getDataDeDesativacao());
+
+		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.INATIVO);
+
+		this.usuarioAuthService.definirDataDeDesativacao(dto);
+
+		data = dataRepository.findAll().get(0);
+		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
 	}
 
 	private List<UsuarioAuth> buscarUsuariosAuthPorRole(UserRole userRole) {

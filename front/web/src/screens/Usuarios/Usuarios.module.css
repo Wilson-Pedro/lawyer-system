@@ -4,3 +4,27 @@
     justify-content: end;
     margin-bottom: 2%;
 }
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 15px;
+}
+
+.messageError {
+  color: red;
+  font-weight: bold;
+}
+
+.toastMessage {
+  font-size: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
