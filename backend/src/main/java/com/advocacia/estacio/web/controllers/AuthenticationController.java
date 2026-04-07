@@ -32,7 +32,7 @@ public class AuthenticationController {
 		return ResponseEntity.ok(usuarioStatus);
 	}
 
-	@PutMapping("/data/ativarDesativar/")
+	@PutMapping("/data/ativarDesativar")
 	public ResponseEntity<Void> definirDataParaAtivarDesativar(
 			@RequestBody DesativarAtivarUsuarioPorDataDto dto
 	) {

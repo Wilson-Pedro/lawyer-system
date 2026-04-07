@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { EditIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
@@ -51,7 +51,6 @@ export default function Usuarios() {
   const [ultimaPagina, setUltimaPagina] = useState<number>(10);
   const [paginaAtual, setPaginaAtual] = useState<number>(0);
   const [dataDeDesativacao, setDataDeDesativacao] = useState<string>('');
-  const [idAtivarDesativar, setIdAtivarDesativar] = useState<number>(0);
 
   const [usuarioStatus, setUuarioStatus] = useState<string>("");
   const [tipoUsuario, setTipoUsuario] = useState<string>('Estagiário');
@@ -189,15 +188,16 @@ export default function Usuarios() {
 
   const cadastrarDataAtivacaoDesativacao = async (e:any) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     try {
-      await axios.put(`${API_URL}/estagiarios/data/${idAtivarDesativar}/ativarDesativar/`, {
-        tipoUsuario,
-        dataDeDesativacao,
-        usuarioStatus
+      await axios.put(`${API_URL}/auth/data/ativarDesativar`, {
+        tipoUsuario: tipoUsuario,
+        dataDeDesativacao: dataDeDesativacao,
+        usuarioStatus: usuarioStatus
       }, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       setMensagemToast("Data definida com sucesso!");
@@ -205,7 +205,6 @@ export default function Usuarios() {
       setMostrarToast(true);
 
     } catch (error) {
-      console.error(error);
 
       setMensagemToast("Erro ao definir Data.");
       setVarianteToast("danger");
@@ -230,6 +229,31 @@ export default function Usuarios() {
 
     setUsuariosFiltrados(dados);
   }, [busca, usuarios]);
+
+  // useEffect(() => {
+  //   const desativarAtivarEstagiarioPorData = async () => {
+  //     const token = localStorage.getItem("token");
+  //     try {
+  //       await axios.put(`${API_URL}/estagiarios/${}`, {
+  //         tipoUsuario: tipoUsuario,
+  //         dataDeDesativacao: dataDeDesativacao,
+  //         usuarioStatus: usuarioStatus
+  //       }, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
+
+  //     } catch {
+
+  //       setMensagemToast("Erro ao Desativar ou Ativar Usuário.");
+  //       setVarianteToast("danger");
+  //       setMostrarToast(true);
+  //     }
+  //   };
+
+  //   desativarAtivarEstagiarioPorData();
+  // }, []);
 
   const getUsuarioStatusClass = (status: string) => {
     switch (status) {
@@ -323,8 +347,6 @@ export default function Usuarios() {
   const selecionarUsuarioStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value;
     setUuarioStatus(status);
-    const idAtivarDesativar = usuarioStatus === "INATIVA" ? 2 : 1;
-    setIdAtivarDesativar(idAtivarDesativar);
   };
 
   const selecionarTipoUsuario = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -337,7 +359,7 @@ export default function Usuarios() {
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Gerenciar Usuário {idAtivarDesativar} - {usuarioStatus}</span>
+        <span className="navbar-brand fw-bold fs-4">Gerenciar Usuário</span>
         <span></span>
         <button
           className="btn btn-outline-light ms-auto"
@@ -580,10 +602,10 @@ export default function Usuarios() {
                   <label className={styles.label}>Tipo Usuário</label>
                   <select
                     className={styles.input}
-                    value={usuarioStatus}
+                    value={tipoUsuario}
                     onChange={selecionarTipoUsuario}
                   >
-                    <option value="ESTAGIÁRIO">Estagiário</option>
+                    <option value="Estagiário">Estagiário</option>
                   </select>
                 </div>
 

@@ -102,7 +102,7 @@ class AuthenticationControllerTest {
 
 		String TOKEN = usuarioAuthServiceImpl.login(testUtil.getAuthenticationDto()).token();
 
-		mockMvc.perform(put(URI + "/data/ativarDesativar/")
+		mockMvc.perform(put(URI + "/data/ativarDesativar")
 						.header("Authorization", "Bearer " + TOKEN)
 						.content(jsonRequest)
 						.contentType(MediaType.APPLICATION_JSON))
@@ -126,7 +126,7 @@ class AuthenticationControllerTest {
 
 		String TOKEN = usuarioAuthServiceImpl.login(testUtil.getAuthenticationDto()).token();
 
-		mockMvc.perform(put(URI + "/data/ativarDesativar/")
+		mockMvc.perform(put(URI + "/data/ativarDesativar")
 						.header("Authorization", "Bearer " + TOKEN)
 						.content(jsonRequest)
 						.contentType(MediaType.APPLICATION_JSON))

@@ -31,12 +31,12 @@ public class SecurityConfigurations {
 				.headers(headers -> headers.frameOptions(frame -> frame.disable()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
-
 						// AUTH
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/auth/usuarioStatus").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/auth/data/ativarDesativar/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/auth/data/ativarDesativar").hasRole("ADMIN")
 
 						// ATORES
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
