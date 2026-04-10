@@ -25,7 +25,7 @@ public class DesativarAtivarUsuarioPorDataDto {
 
     public DesativarAtivarUsuarioPorDataDto(DesativarAtivarUsuarioPorData entity) {
         this.tipoUsuario = entity.getTipoUsuario().getRole();
-        this.dataDeDesativacao = Utils.stringToLocalDate(entity.getDataDeDesativacao());
+        this.dataDeDesativacao = Utils.localDateToString(entity.getDataDeDesativacao());
         this.usuarioStatus = entity.getUsuarioStatus();
     }
 

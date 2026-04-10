@@ -1,6 +1,6 @@
 package com.advocacia.estacio.services;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -189,59 +189,59 @@ class EstagiarioServiceTest {
 		assertEquals(PeriodoEstagio.ESTAGIO_IV, periodos.get(3));
 	}
 
-	@Test
-	@DisplayName("Deve Desativar Estagiários por Data Pelo Service")
-	void desativar_estagiarios_por_data() {
-		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
-		auths = auths.stream().map(a -> {
-			a.setUsuarioStatus(UsuarioStatus.ATIVO);
-			return a;
-		}).toList();
+//	@Test
+//	@DisplayName("Deve Desativar Estagiários por Data Pelo Service")
+//	void desativar_estagiarios_por_data() {
+//		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
+//		auths = auths.stream().map(a -> {
+//			a.setUsuarioStatus(UsuarioStatus.ATIVO);
+//			return a;
+//		}).toList();
+//
+//		this.usuarioAuthRepository.saveAll(auths);
+//
+//		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+//
+//		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+//		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+//
+//		String dataHoje =  Utils.localDateToString(LocalDate.now());
+//
+//		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.INATIVO);
+//
+//		this.estagiarioService.desativarEstagiariosPorData(dto, "Inativo");
+//
+//		estagiarios = this.estagiarioRepository.findAll();
+//
+//		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+//		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+//	}
 
-		this.usuarioAuthRepository.saveAll(auths);
-
-		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
-
-		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
-
-		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
-
-		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.INATIVO);
-
-		this.estagiarioService.desativarEstagiariosPorData(dto, "Inativo");
-
-		estagiarios = this.estagiarioRepository.findAll();
-
-		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
-	}
-
-	@Test
-	@DisplayName("Deve Ativar Estagiários por Data Pelo Service")
-	void ativar_estagiarios_por_data() {
-		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
-		auths = auths.stream().map(a -> {
-			a.setUsuarioStatus(UsuarioStatus.INATIVO);
-			return a;
-		}).toList();
-
-		this.usuarioAuthRepository.saveAll(auths);
-
-		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
-
-		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
-
-		String dataHoje =  Utils.stringToLocalDate(LocalDate.now());
-
-		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
-
-		this.estagiarioService.desativarEstagiariosPorData(dto, "Ativo");
-
-		estagiarios = this.estagiarioRepository.findAll();
-
-		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
-	}
+//	@Test
+//	@DisplayName("Deve Ativar Estagiários por Data Pelo Service")
+//	void ativar_estagiarios_por_data() {
+//		List<UsuarioAuth> auths = this.estagiarioRepository.findAll().stream().map(Estagiario::getUsuarioAuth).toList();
+//		auths = auths.stream().map(a -> {
+//			a.setUsuarioStatus(UsuarioStatus.INATIVO);
+//			return a;
+//		}).toList();
+//
+//		this.usuarioAuthRepository.saveAll(auths);
+//
+//		List<Estagiario> estagiarios = this.estagiarioRepository.findAll();
+//
+//		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+//		assertEquals(UsuarioStatus.INATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+//
+//		String dataHoje =  Utils.localDateToString(LocalDate.now());
+//
+//		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", dataHoje, UsuarioStatus.ATIVO);
+//
+//		this.estagiarioService.desativarEstagiariosPorData(dto, "Ativo");
+//
+//		estagiarios = this.estagiarioRepository.findAll();
+//
+//		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(0).getUsuarioAuth().getUsuarioStatus());
+//		assertEquals(UsuarioStatus.ATIVO, estagiarios.get(1).getUsuarioAuth().getUsuarioStatus());
+//	}
 }

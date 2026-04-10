@@ -77,7 +77,7 @@ public class AdvogadoServiceImpl implements AdvogadoService {
 		advogado.setNome(advogadoDto.getNome());
 		advogado.setEmail(advogadoDto.getEmail());
 		advogado.setTelefone(advogadoDto.getTelefone());
-		advogado.setDataDeNascimeto(Utils.stringToLocalDate(advogadoDto.getDataDeNascimento()));
+		advogado.setDataDeNascimeto(Utils.localDateToString(advogadoDto.getDataDeNascimento()));
 		enderecoService.atualizar(advogado.getEndereco().getId(), new Endereco(advogadoDto));
 		return advogadoRepository.save(advogado);
 	}

@@ -122,16 +122,16 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
 	}
 
-	@Override
-	public void desativarEstagiariosPorData(DesativarAtivarUsuarioPorDataDto dto, String usuarioStatus) {
-		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
-		LocalDate dataDesativacao = Utils.stringToLocalDate(dto.getDataDeDesativacao());
-		UsuarioStatus status = UsuarioStatus.toEnum(usuarioStatus);
-		this.usuarioAuthService.desativarAtivarUsuariosPorData(dataDesativacao, usuariosAuth, status);
-	}
+//	@Override
+//	public void desativarEstagiariosPorData(DesativarAtivarUsuarioPorDataDto dto, String usuarioStatus) {
+//		List<UsuarioAuth> usuariosAuth = this.usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
+//		LocalDate dataDesativacao = Utils.localDateToString(dto.getDataDeDesativacao());
+//		UsuarioStatus status = UsuarioStatus.toEnum(usuarioStatus);
+//		this.usuarioAuthService.desativarAtivarUsuariosPorData(dataDesativacao, usuariosAuth, status);
+//	}
 
-	@Override
-	public void definirDataDeDesativacao(Long id, String data) {
-		this.usuarioAuthService.definirDataParaAtivarDesativar(id, data);
-	}
+//	@Override
+//	public void definirDataDeDesativacao(Long id, String data) {
+//		this.usuarioAuthService.definirDataParaAtivarDesativar(id, data);
+//	}
 }

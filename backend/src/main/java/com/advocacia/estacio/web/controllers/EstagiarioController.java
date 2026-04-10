@@ -74,14 +74,14 @@ public class EstagiarioController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/data/{id}/ativarDesativar/")
-	public ResponseEntity<Void> definirDataParaAtivarDesativar(
-			@RequestBody DesativarAtivarUsuarioPorDataDto dto,
-			@PathVariable Long id
-	) {
-		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
-		return  ResponseEntity.noContent().build();
-	}
+//	@PutMapping("/data/{id}/ativarDesativar/")
+//	public ResponseEntity<Void> definirDataParaAtivarDesativar(
+//			@RequestBody DesativarAtivarUsuarioPorDataDto dto,
+//			@PathVariable Long id
+//	) {
+//		this.estagiarioService.definirDataDeDesativacao(id, dto.getDataDeDesativacao());
+//		return  ResponseEntity.noContent().build();
+//	}
 
 	@PatchMapping("/desativar/usuarios")
 	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
@@ -89,11 +89,11 @@ public class EstagiarioController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/{usuarioStatus}/estagiarios")
-	public ResponseEntity<Void> desativarAtivarUsuariosPorData(
-			@PathVariable String usuarioStatus,
-			@RequestBody DesativarAtivarUsuarioPorDataDto data) {
-		this.estagiarioService.desativarEstagiariosPorData(data, usuarioStatus);
-		return  ResponseEntity.noContent().build();
-	}
+//	@PutMapping("/{usuarioStatus}/estagiarios")
+//	public ResponseEntity<Void> desativarAtivarUsuariosPorData(
+//			@PathVariable String usuarioStatus,
+//			@RequestBody DesativarAtivarUsuarioPorDataDto data) {
+//		this.estagiarioService.desativarEstagiariosPorData(data, usuarioStatus);
+//		return  ResponseEntity.noContent().build();
+//	}
 }

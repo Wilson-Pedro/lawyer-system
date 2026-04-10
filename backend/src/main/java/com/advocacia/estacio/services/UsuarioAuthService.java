@@ -28,7 +28,9 @@ public interface UsuarioAuthService {
 
 	void definirDataParaAtivarDesativar(Long id, String data);
 
-	void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus);
+	//void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus);
+
+	void desativarAtivarUsuariosPorData(DesativarAtivarUsuarioPorDataDto dto);
 
 	void definirDataDeDesativacao(DesativarAtivarUsuarioPorDataDto dto);
 

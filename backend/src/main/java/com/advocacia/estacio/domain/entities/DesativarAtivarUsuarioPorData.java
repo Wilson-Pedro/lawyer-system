@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 @Entity
 @Table(name = "TBL_DESATIVAR_USUARIO")
@@ -37,7 +37,7 @@ public class DesativarAtivarUsuarioPorData {
 
     public DesativarAtivarUsuarioPorData(DesativarAtivarUsuarioPorDataDto dto) {
         this.tipoUsuario = UserRole.toEnum(dto.getTipoUsuario());
-        this.dataDeDesativacao = Utils.stringToLocalDate(dto.getDataDeDesativacao());
+        this.dataDeDesativacao = Utils.localDateToString(dto.getDataDeDesativacao());
         this.usuarioStatus = dto.getUsuarioStatus();
     }
 

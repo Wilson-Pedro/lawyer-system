@@ -51,7 +51,10 @@ class AuthenticationControllerTest {
 	@Test
 	@Order(1)
 	void deletando_TodosOsDados_AntesDostestes() {
+
 		testUtil.deleteAll();
+		dataRepository.save(testUtil.getDataAtivacaoDto());
+		dataRepository.save(testUtil.getDataDesativacaoDto());
 	}
 	
 	@Test
@@ -92,8 +95,8 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve definir data para ativar usuários Pelo Controller")
 	void deve_definir_data_para_ativar_usuarios() throws Exception {
 
-		String hoje = Utils.stringToLocalDate(LocalDate.now());
-		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(1);
+		String hoje = Utils.localDateToString(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
 		assertNull(data.getDataDeDesativacao());
 
 		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.ATIVO);
@@ -108,7 +111,7 @@ class AuthenticationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNoContent());
 
-		data = dataRepository.findAll().get(1);
+		data = dataRepository.findAll().get(0);
 		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
 	}
 
@@ -116,8 +119,8 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve definir data para desativar usuários Pelo Controller")
 	void deve_definir_data_para_desativar_usuarios() throws Exception {
 
-		String hoje = Utils.stringToLocalDate(LocalDate.now());
-		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
+		String hoje = Utils.localDateToString(LocalDate.now());
+		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(1);
 		assertNull(data.getDataDeDesativacao());
 
 		DesativarAtivarUsuarioPorDataDto dto = new DesativarAtivarUsuarioPorDataDto("Estagiário", hoje, UsuarioStatus.INATIVO);
@@ -132,7 +135,7 @@ class AuthenticationControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNoContent());
 
-		data = dataRepository.findAll().get(0);
+		data = dataRepository.findAll().get(1);
 		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
 	}
 }

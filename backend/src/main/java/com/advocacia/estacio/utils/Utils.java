@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Utils {
 
-	public static LocalDate stringToLocalDate(String string) {
+	public static LocalDate localDateToString(String string) {
 		String[] stringFormat = string.split("/");
 		if(stringFormat[0].length() == 1) {
 			stringFormat[0] = "0" + stringFormat[0];
@@ -24,7 +24,7 @@ public class Utils {
 		return LocalDateTime.parse(string, formatter);
 	}
 	
-	public static String stringToLocalDate(LocalDate localDate) {
+	public static String localDateToString(LocalDate localDate) {
 		return String.format("%s/%s/%s", localDate.getDayOfMonth(), localDate.getMonthValue(), localDate.getYear());
 	}
 	

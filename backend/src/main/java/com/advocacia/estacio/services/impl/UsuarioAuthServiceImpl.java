@@ -25,7 +25,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.advocacia.estacio.utils.Utils.stringToLocalDate;
+import static com.advocacia.estacio.utils.Utils.localDateToString;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -114,10 +114,22 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		usuarioAuthRepository.saveAll(list);
 	}
 
-	@Override
-	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+//	@Override
+//	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+//		LocalDate dataHoje = LocalDate.now();
+//		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
+//	}
+
+	public void desativarAtivarUsuariosPorData(DesativarAtivarUsuarioPorDataDto dto) {
+		List<DesativarAtivarUsuarioPorData> list = desativarAtivarUsuarioPorDataRepository.findAll();
 		LocalDate dataHoje = LocalDate.now();
-		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
+		for(DesativarAtivarUsuarioPorData ativarDesativar : list) {
+
+			if (ativarDesativar.getDataDeDesativacao().isEqual(dataHoje)) {
+				List<UsuarioAuth> usuariosAuth = this.buscarUsuariosAuthPorRole(ativarDesativar.getTipoUsuario());
+				desativarAtivarUsuarios(usuariosAuth, dto.getUsuarioStatus());
+			}
+		}
 	}
 
 	@Override
@@ -129,7 +141,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 				.findFirst()
 				.orElseThrow(null);
 		if(data != null) {
-			LocalDate  localDate = Utils.stringToLocalDate(dto.getDataDeDesativacao());
+			LocalDate  localDate = Utils.localDateToString(dto.getDataDeDesativacao());
 			data.setDataDeDesativacao(localDate);
 			data.setId(data.getId());
 			desativarAtivarUsuarioPorDataRepository.save(data);
@@ -145,7 +157,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	@Override
 	public void definirDataParaAtivarDesativar(Long id, String data) {
 		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
-		LocalDate localDate = Utils.stringToLocalDate(data);
+		LocalDate localDate = Utils.localDateToString(data);
 		desativarAtivarUsuarioPorData.setDataDeDesativacao(localDate);
 		this.desativarAtivarUsuarioPorDataRepository.save(desativarAtivarUsuarioPorData);
 	}

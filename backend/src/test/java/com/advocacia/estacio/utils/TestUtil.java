@@ -5,21 +5,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.advocacia.estacio.domain.dto.*;
+import com.advocacia.estacio.domain.entities.*;
+import com.advocacia.estacio.domain.enums.*;
 import com.advocacia.estacio.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.advocacia.estacio.domain.entities.Advogado;
-import com.advocacia.estacio.domain.entities.Assistido;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.entities.Processo;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.enums.AreaDoDireito;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.domain.enums.StatusProcesso;
-import com.advocacia.estacio.domain.enums.Tribunal;
-import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
@@ -73,6 +65,9 @@ public class TestUtil {
 
 	@Autowired
 	DemandaRespondeRepository demandaRespondeRepository;
+
+	@Autowired
+	DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
 	
 	@Autowired
 	TokenService tokenService;
@@ -88,6 +83,7 @@ public class TestUtil {
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
 		usuarioAuthRepository.deleteAll();
+		desativarAtivarUsuarioPorDataRepository.deleteAll();
 	}
 	
 	public Processo getProcesso() {
@@ -174,6 +170,14 @@ public class TestUtil {
 	public UsuarioAuth getUsuarioAuth() {
 		String senha = new BCryptPasswordEncoder().encode("1234");
 		return new UsuarioAuth("professor@gmail.com", senha, UserRole.ADMIN);
+	}
+
+	public DesativarAtivarUsuarioPorData getDataAtivacaoDto() {
+		return new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
+	}
+
+	public DesativarAtivarUsuarioPorData getDataDesativacaoDto() {
+		return new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
 	}
 	
 	public AuthenticationDto getAuthenticationDto() {
