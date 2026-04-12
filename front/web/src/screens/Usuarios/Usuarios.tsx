@@ -190,7 +190,7 @@ export default function Usuarios() {
     e.preventDefault();
     const token = localStorage.getItem("token");
     try {
-      await axios.put(`${API_URL}/auth/data/ativarDesativar`, {
+      await axios.put(`${API_URL}/auth/definir/data/ativarDesativar`, {
         tipoUsuario: tipoUsuario,
         dataDeDesativacao: dataDeDesativacao,
         usuarioStatus: usuarioStatus
@@ -213,6 +213,30 @@ export default function Usuarios() {
   };
 
   useEffect(() => {
+    const desativarAtivarEstagiarioPorData = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        await axios.post(`${API_URL}/auth/ativarDesativar/data`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMensagemToast("sucesso!");
+        setVarianteToast("success");
+        setMostrarToast(true);
+
+      } catch {
+
+        setMensagemToast("Erro ao Desativar ou Ativar Usuário Por Data.");
+        setVarianteToast("danger");
+        setMostrarToast(true);
+      }
+    };
+
+    desativarAtivarEstagiarioPorData();
+  }, []);
+
+  useEffect(() => {
     let dados = [...usuarios];
 
     if (busca.trim() !== "" && usuariosFiltro !== "Estagiário") {
@@ -229,31 +253,6 @@ export default function Usuarios() {
 
     setUsuariosFiltrados(dados);
   }, [busca, usuarios]);
-
-  // useEffect(() => {
-  //   const desativarAtivarEstagiarioPorData = async () => {
-  //     const token = localStorage.getItem("token");
-  //     try {
-  //       await axios.put(`${API_URL}/estagiarios/${}`, {
-  //         tipoUsuario: tipoUsuario,
-  //         dataDeDesativacao: dataDeDesativacao,
-  //         usuarioStatus: usuarioStatus
-  //       }, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //     } catch {
-
-  //       setMensagemToast("Erro ao Desativar ou Ativar Usuário.");
-  //       setVarianteToast("danger");
-  //       setMostrarToast(true);
-  //     }
-  //   };
-
-  //   desativarAtivarEstagiarioPorData();
-  // }, []);
 
   const getUsuarioStatusClass = (status: string) => {
     switch (status) {
