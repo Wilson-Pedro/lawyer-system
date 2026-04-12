@@ -213,30 +213,6 @@ export default function Usuarios() {
   };
 
   useEffect(() => {
-    const desativarAtivarEstagiarioPorData = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        await axios.post(`${API_URL}/auth/ativarDesativar/data`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setMensagemToast("sucesso!");
-        setVarianteToast("success");
-        setMostrarToast(true);
-
-      } catch {
-
-        setMensagemToast("Erro ao Desativar ou Ativar Usuário Por Data.");
-        setVarianteToast("danger");
-        setMostrarToast(true);
-      }
-    };
-
-    desativarAtivarEstagiarioPorData();
-  }, []);
-
-  useEffect(() => {
     let dados = [...usuarios];
 
     if (busca.trim() !== "" && usuariosFiltro !== "Estagiário") {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.advocacia.estacio.domain.entities.Processo;
 import com.advocacia.estacio.domain.enums.UserRole;
@@ -18,6 +19,7 @@ import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
 
 
 @SpringBootApplication
+@EnableScheduling
 public class BackendApplication implements CommandLineRunner {
 	
 	@Autowired

@@ -44,10 +44,4 @@ public class AuthenticationController {
 		this.usuarioAuthService.definirDataDeDesativacao(dto);
 		return  ResponseEntity.noContent().build();
 	}
-	
-	@PostMapping("/ativarDesativar/data")
-	public ResponseEntity<Void> desativarAtivarUsuariosPorData() {
-		this.usuarioAuthService.desativarAtivarUsuariosPorData();
-		return  ResponseEntity.noContent().build();
-	}
 }

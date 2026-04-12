@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
-import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
@@ -162,65 +161,5 @@ class AuthenticationControllerTest {
 
 		data = dataRepository.findAll().get(1);
 		assertEquals(data.getDataDeDesativacao(), LocalDate.now());
-	}
-	
-	@Test
-	@DisplayName("Deve ativar usuários por data Pelo Controller")
-	void deve_ativar_usuario_por_data_usuarios() throws Exception {
-
-		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
-		DesativarAtivarUsuarioPorData data2 = dataRepository.findAll().get(1);
-		
-		data.setDataDeDesativacao(LocalDate.now());
-		data2.setDataDeDesativacao(null);
-		dataRepository.save(data);
-		dataRepository.save(data2);
-		
-		Estagiario estagiario = estagiarioRepository.findAll().get(0);
-		Estagiario estagiario2 = estagiarioRepository.findAll().get(1);
-		estagiario.getUsuarioAuth().setUsuarioStatus(UsuarioStatus.INATIVO);
-		estagiario2.getUsuarioAuth().setUsuarioStatus(UsuarioStatus.INATIVO);
-		estagiarioRepository.save(estagiario);
-		estagiarioRepository.save(estagiario2);
-
-		mockMvc.perform(post(URI + "/ativarDesativar/data")
-						.header("Authorization", "Bearer " + TOKEN))
-				.andExpect(status().isNoContent());
-
-		estagiario = estagiarioRepository.findAll().get(0);
-		estagiario2 = estagiarioRepository.findAll().get(1);
-		
-		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.ATIVO, estagiario2.getUsuarioAuth().getUsuarioStatus());
-	}
-	
-	@Test
-	@DisplayName("Deve desativar usuários por data Pelo Controller")
-	void deve_desativar_usuario_por_data_usuarios() throws Exception {
-
-		DesativarAtivarUsuarioPorData data = dataRepository.findAll().get(0);
-		DesativarAtivarUsuarioPorData data2 = dataRepository.findAll().get(1);
-		
-		data.setDataDeDesativacao(null);
-		data2.setDataDeDesativacao(LocalDate.now());
-		dataRepository.save(data);
-		dataRepository.save(data2);
-		
-		Estagiario estagiario = estagiarioRepository.findAll().get(0);
-		Estagiario estagiario2 = estagiarioRepository.findAll().get(1);
-		estagiario.getUsuarioAuth().setUsuarioStatus(UsuarioStatus.ATIVO);
-		estagiario2.getUsuarioAuth().setUsuarioStatus(UsuarioStatus.ATIVO);
-		estagiarioRepository.save(estagiario);
-		estagiarioRepository.save(estagiario2);
-
-		mockMvc.perform(post(URI + "/ativarDesativar/data")
-						.header("Authorization", "Bearer " + TOKEN))
-				.andExpect(status().isNoContent());
-
-		estagiario = estagiarioRepository.findAll().get(0);
-		estagiario2 = estagiarioRepository.findAll().get(1);
-		
-		assertEquals(UsuarioStatus.INATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
-		assertEquals(UsuarioStatus.INATIVO, estagiario2.getUsuarioAuth().getUsuarioStatus());
 	}
 }
