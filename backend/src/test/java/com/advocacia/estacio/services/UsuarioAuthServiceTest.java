@@ -168,27 +168,24 @@ class UsuarioAuthServiceTest {
 		assertEquals(INATIVO, usuarioStatus.get(1));;
 	}
 
+//	@Test
+//	@DisplayName("Deve definir data de desativacao")
+//	void definir_data_de_desativacao() {
+//		String data = "25/10/2026";
+//		Long id = dataRepository.findAll().get(1).getId();
+//		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(id);
+//		desativarAtivarUsuarioPorData.setDataDeDesativacao(null);
+//		dataRepository.save(desativarAtivarUsuarioPorData);
+//		assertNull(desativarAtivarUsuarioPorData.getDataDeDesativacao());
+//
+//		this.usuarioAuthService.definirDataParaAtivarDesativar(1L, data);
+//
+//		desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+//		LocalDate localDate = localDateToString(data);
+//		assertEquals(localDate, desativarAtivarUsuarioPorData.getDataDeDesativacao());
+//	}
+
 	@Test
-<<<<<<< HEAD
-	@DisplayName("Deve definir data de desativacao")
-	void definir_data_de_desativacao() {
-		String data = "25/10/2026";
-		Long id = dataRepository.findAll().get(1).getId();
-		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(id);
-		desativarAtivarUsuarioPorData.setDataDeDesativacao(null);
-		dataRepository.save(desativarAtivarUsuarioPorData);
-		assertNull(desativarAtivarUsuarioPorData.getDataDeDesativacao());
-
-		this.usuarioAuthService.definirDataParaAtivarDesativar(1L, data);
-
-		desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
-		LocalDate localDate = localDateToString(data);
-		assertEquals(localDate, desativarAtivarUsuarioPorData.getDataDeDesativacao());
-	}
-
-	@Test
-=======
->>>>>>> 1bf795390ff2a416414e332dff21a28ee3a06172
 	@DisplayName("Deve desativar usuários por data de desativacao")
 	void desativar_usuarios_por_data_de_desativacao() {
 

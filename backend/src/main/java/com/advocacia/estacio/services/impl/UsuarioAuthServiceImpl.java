@@ -27,16 +27,16 @@ import com.advocacia.estacio.utils.Utils;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
-	
+
 	@Autowired
 	AuthenticationManager authenticationManger;
-	
+
 	@Autowired
 	UsuarioAuthRepository usuarioAuthRepository;
 
 	@Autowired
 	DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
-	
+
 	@Autowired
 	TokenService tokenService;
 
@@ -55,7 +55,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 	public LoginResponseDto login(AuthenticationDto dto) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.password());
 		var auth = this.authenticationManger.authenticate(usernamePassword);
-		
+
 		UsuarioAuth user = (UsuarioAuth) usuarioAuthRepository.findByLogin(dto.login());
 		String token = null;
 		if(user.getUsuarioStatus().equals(UsuarioStatus.ATIVO)) {
@@ -75,15 +75,15 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 			user.setUsuarioStatus(usuarioStatus);
 			atualizar = true;
 		}
-		
+
 		if(!loginAntigo.trim().equals(loginNovo.trim())) {
 			user.setLogin(loginNovo);
 			atualizar = true;
 		}
-		
+
 		if(!senha.isEmpty()) {
 			String encryptedPassword = new BCryptPasswordEncoder().encode(senha);
-			user.setPassword(encryptedPassword);	
+			user.setPassword(encryptedPassword);
 			atualizar = true;
 		}
 
@@ -106,15 +106,12 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		List<UsuarioAuth> list = usuarioAuths
 				.stream()
 				.map(user -> {
-						user.setUsuarioStatus(usuarioStatus);
-						return user;
+					user.setUsuarioStatus(usuarioStatus);
+					return user;
 				}).toList();
 		usuarioAuthRepository.saveAll(list);
 	}
 
-<<<<<<< HEAD
-	public void desativarAtivarUsuariosPorData(DesativarAtivarUsuarioPorDataDto dto) {
-=======
 //	@Override
 //	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
 //		LocalDate dataHoje = LocalDate.now();
@@ -122,7 +119,6 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 //	}
 
 	public void desativarAtivarUsuariosPorData() {
->>>>>>> 1bf795390ff2a416414e332dff21a28ee3a06172
 		List<DesativarAtivarUsuarioPorData> list = desativarAtivarUsuarioPorDataRepository.findAll();
 		LocalDate dataHoje = LocalDate.now();
 		for(DesativarAtivarUsuarioPorData ativarDesativar : list) {
@@ -140,7 +136,7 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		DesativarAtivarUsuarioPorData data = desativarAtivarUsuarioPorDataRepository.findAll().stream()
 				.filter(d ->
 						d.getTipoUsuario().getRole().equals(dto.getTipoUsuario()) &&
-						d.getUsuarioStatus().equals(dto.getUsuarioStatus()))
+								d.getUsuarioStatus().equals(dto.getUsuarioStatus()))
 				.findFirst()
 				.orElseThrow(null);
 		if(data != null) {
