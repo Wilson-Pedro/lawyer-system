@@ -36,7 +36,7 @@ public class SecurityConfigurations {
 						// AUTH
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/auth/usuarioStatus").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PUT, "/auth/data/ativarDesativar").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/auth/definir/data/ativarDesativar").hasRole("ADMIN")
 
 						// ATORES
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")

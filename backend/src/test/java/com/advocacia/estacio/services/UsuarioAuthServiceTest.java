@@ -1,28 +1,35 @@
 package com.advocacia.estacio.services;
 
-import static com.advocacia.estacio.domain.enums.UsuarioStatus.INATIVO;
 import static com.advocacia.estacio.domain.enums.UsuarioStatus.ATIVO;
+import static com.advocacia.estacio.domain.enums.UsuarioStatus.INATIVO;
 import static com.advocacia.estacio.utils.Utils.localDateToString;
-import static org.junit.jupiter.api.Assertions.*;
-
-import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
-import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.domain.records.LoginResponseDto;
-import com.advocacia.estacio.domain.records.RegistroDto;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
-import com.advocacia.estacio.utils.TestUtil;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
+import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.domain.records.AuthenticationDto;
+import com.advocacia.estacio.domain.records.LoginResponseDto;
+import com.advocacia.estacio.domain.records.RegistroDto;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
+import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -46,7 +53,7 @@ class UsuarioAuthServiceTest {
 	@Test
 	@Order(1)
 	void deletando_TodosOsDados_DepoisDostestes() {
-		testUtil.deleteAll();
+		testUtil.deleteAll();	
 	}
 
 	@Test
@@ -162,6 +169,7 @@ class UsuarioAuthServiceTest {
 	}
 
 	@Test
+<<<<<<< HEAD
 	@DisplayName("Deve definir data de desativacao")
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
@@ -179,6 +187,8 @@ class UsuarioAuthServiceTest {
 	}
 
 	@Test
+=======
+>>>>>>> 1bf795390ff2a416414e332dff21a28ee3a06172
 	@DisplayName("Deve desativar usuários por data de desativacao")
 	void desativar_usuarios_por_data_de_desativacao() {
 
@@ -195,7 +205,7 @@ class UsuarioAuthServiceTest {
 		List<UsuarioAuth> estagiarioAuth = usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
 		assertEquals(ATIVO, estagiarioAuth.get(0).getUsuarioStatus());
 
-		usuarioAuthService.desativarAtivarUsuariosPorData(desativarUsuarioDto);
+		usuarioAuthService.desativarAtivarUsuariosPorData();
 
 		estagiarioAuth = usuarioAuthService.buscarUsuariosAuthPorRole(UserRole.ESTAGIARIO);
 		assertEquals(INATIVO, estagiarioAuth.get(0).getUsuarioStatus());

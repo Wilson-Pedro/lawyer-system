@@ -1,31 +1,29 @@
 package com.advocacia.estacio.services.impl;
 
-import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
-import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
-import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
-import com.advocacia.estacio.services.UsuarioAuthService;
-import com.advocacia.estacio.utils.Utils;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
+import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
+import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.LoginResponseDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.infra.security.TokenService;
+import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
 import com.advocacia.estacio.repositories.UsuarioAuthRepository;
-
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.advocacia.estacio.utils.Utils.localDateToString;
+import com.advocacia.estacio.services.UsuarioAuthService;
+import com.advocacia.estacio.utils.Utils;
 
 @Service
 public class UsuarioAuthServiceImpl implements UsuarioAuthService {
@@ -114,14 +112,25 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		usuarioAuthRepository.saveAll(list);
 	}
 
+<<<<<<< HEAD
 	public void desativarAtivarUsuariosPorData(DesativarAtivarUsuarioPorDataDto dto) {
+=======
+//	@Override
+//	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
+//		LocalDate dataHoje = LocalDate.now();
+//		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
+//	}
+
+	public void desativarAtivarUsuariosPorData() {
+>>>>>>> 1bf795390ff2a416414e332dff21a28ee3a06172
 		List<DesativarAtivarUsuarioPorData> list = desativarAtivarUsuarioPorDataRepository.findAll();
 		LocalDate dataHoje = LocalDate.now();
 		for(DesativarAtivarUsuarioPorData ativarDesativar : list) {
-
-			if (ativarDesativar.getDataDeDesativacao().isEqual(dataHoje)) {
-				List<UsuarioAuth> usuariosAuth = this.buscarUsuariosAuthPorRole(ativarDesativar.getTipoUsuario());
-				desativarAtivarUsuarios(usuariosAuth, dto.getUsuarioStatus());
+			if (ativarDesativar.getDataDeDesativacao() != null) {
+				if (ativarDesativar.getDataDeDesativacao().isEqual(dataHoje)) {
+					List<UsuarioAuth> usuariosAuth = this.buscarUsuariosAuthPorRole(ativarDesativar.getTipoUsuario());
+					desativarAtivarUsuarios(usuariosAuth, ativarDesativar.getUsuarioStatus());
+				}
 			}
 		}
 	}
@@ -148,13 +157,13 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 				.orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 
-	@Override
-	public void definirDataParaAtivarDesativar(Long id, String data) {
-		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
-		LocalDate localDate = Utils.localDateToString(data);
-		desativarAtivarUsuarioPorData.setDataDeDesativacao(localDate);
-		this.desativarAtivarUsuarioPorDataRepository.save(desativarAtivarUsuarioPorData);
-	}
+//	@Override
+//	public void definirDataParaAtivarDesativar(Long id, String data) {
+//		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = buscarDesativarUsuarioPorId(id);
+//		LocalDate localDate = Utils.localDateToString(data);
+//		desativarAtivarUsuarioPorData.setDataDeDesativacao(localDate);
+//		this.desativarAtivarUsuarioPorDataRepository.save(desativarAtivarUsuarioPorData);
+//	}
 
 	@Override
 	public List<UsuarioAuth> buscarUsuariosAuthPorRole(UserRole userRole) {
