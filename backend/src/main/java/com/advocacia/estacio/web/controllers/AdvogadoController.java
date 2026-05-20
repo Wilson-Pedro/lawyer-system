@@ -15,7 +15,7 @@ import com.advocacia.estacio.services.AdvogadoService;
 
 @RequestMapping("/advogados")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class AdvogadoController {
 	
 	@Autowired

@@ -4,6 +4,7 @@ import Home from './screens/Home/Home';
 import HomeAdmin from './screens/Home/HomeAdmin';
 import HomeEstagiario from './screens/Home/HomeEstagiario';
 import HomeAdvogado from './screens/Home/HomeAdvogado';
+import HomeProfessor from './screens/Home/HomeProfessor';
 import Processos from './screens/Processos/Processos';
 
 import Cadastros from './screens/Cadastros/Cadastros';
@@ -40,6 +41,7 @@ export default function Rotas() {
                 <Route path="/home/admin" element={<HomeAdmin />} />
                 <Route path="/home/estagiario" element={<HomeEstagiario />} />
                 <Route path="/home/advogado" element={<HomeAdvogado />} />
+                <Route path="/home/professor" element={<HomeProfessor />} />
                 <Route path="/processos" element={<Processos />} />
                 <Route path="/cadastrar/assistido" element={<CadastrarAssistido />} />
                 <Route path="/cadastrar/estagiario" element={<CadastrarEstagiario />} />

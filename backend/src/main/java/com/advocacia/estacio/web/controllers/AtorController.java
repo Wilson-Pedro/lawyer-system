@@ -2,6 +2,8 @@ package com.advocacia.estacio.web.controllers;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ import com.advocacia.estacio.services.AtorService;
 
 @RequestMapping("/atores")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class AtorController {
 	
 	@Autowired
@@ -72,5 +74,12 @@ public class AtorController {
 	public ResponseEntity<Void> desativarUsuarios(@RequestBody RequestIds ids) {
 		this.atorService.desativarAtores(ids);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/buscarId/email/{email}")
+	public ResponseEntity<EntidadeMinDto> buscarIdPorEmail(@PathVariable String email) {
+		Ator ator = atorService.buscarIdPorEmail(email);
+		EntidadeMinDto dto = new EntidadeMinDto(ator.getId(), ator.getNome());
+		return ResponseEntity.ok(dto);
 	}
 }

@@ -20,7 +20,7 @@ import com.advocacia.estacio.services.MovimentoService;
 
 @RequestMapping("/movimentos")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class MovimentoController {
 	
 	@Autowired

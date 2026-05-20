@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequestMapping("/assistidos")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class AssistidoController {
 	
 	@Autowired

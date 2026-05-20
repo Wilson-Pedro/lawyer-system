@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequestMapping("/estagiarios")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class EstagiarioController {
 	
 	@Autowired

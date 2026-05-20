@@ -38,6 +38,8 @@ export default function Login() {
                     goToHomeEstagiario();
                 } else if(data.role === 'ADVOGADO') {
                     goToHomeAdvogado();
+                } else if(data.role === 'PROFESSOR') {
+                    goToHomeProfessor();
                 }
             }
 
@@ -57,6 +59,10 @@ export default function Login() {
 
     const goToHomeAdvogado = () => {
         navigate("/home/advogado")
+    }
+
+    const goToHomeProfessor = () => {
+        navigate("/home/professor")
     }
     // const limparCampos = () => {
     //     setEmail("");

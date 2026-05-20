@@ -1,6 +1,7 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.dto.RequestIds;
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,8 @@ public interface AtorService {
 	Ator buscarPorId(Long id);
 	
 	Ator atualizar(Long id, AtorDto atorDto);
+
+	Ator buscarIdPorEmail(String email);
 
 	Page<Ator> buscarTodosPorTipoDoAtor(String tipoDoAtor, int page, int size);
 

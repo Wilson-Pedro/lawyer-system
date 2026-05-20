@@ -28,7 +28,7 @@ import com.advocacia.estacio.services.ProcessoService;
 
 @RequestMapping("/processos")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class ProcessoController {
 	
 	@Autowired

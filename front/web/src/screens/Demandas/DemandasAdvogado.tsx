@@ -1,8 +1,8 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EyeIcon, PlusIcon } from "../../Icons/Icon";
+import { EyeIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
 
 const API_URL = process.env.REACT_APP_API;

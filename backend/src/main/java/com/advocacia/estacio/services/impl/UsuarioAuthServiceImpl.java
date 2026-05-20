@@ -114,12 +114,6 @@ public class UsuarioAuthServiceImpl implements UsuarioAuthService {
 		usuarioAuthRepository.saveAll(list);
 	}
 
-//	@Override
-//	public void desativarAtivarUsuariosPorData(LocalDate dataParaDesativar, List<UsuarioAuth> usuarioAuths, UsuarioStatus usuarioStatus) {
-//		LocalDate dataHoje = LocalDate.now();
-//		if(dataParaDesativar.isEqual(dataHoje)) desativarAtivarUsuarios(usuarioAuths, usuarioStatus);
-//	}
-
 	public void desativarAtivarUsuariosPorData(DesativarAtivarUsuarioPorDataDto dto) {
 		List<DesativarAtivarUsuarioPorData> list = desativarAtivarUsuarioPorDataRepository.findAll();
 		LocalDate dataHoje = LocalDate.now();

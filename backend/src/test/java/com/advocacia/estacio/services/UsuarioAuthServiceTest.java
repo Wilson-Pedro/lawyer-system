@@ -165,7 +165,8 @@ class UsuarioAuthServiceTest {
 	@DisplayName("Deve definir data de desativacao")
 	void definir_data_de_desativacao() {
 		String data = "25/10/2026";
-		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(1L);
+		Long id = dataRepository.findAll().get(1).getId();
+		DesativarAtivarUsuarioPorData desativarAtivarUsuarioPorData = this.usuarioAuthService.buscarDesativarUsuarioPorId(id);
 		desativarAtivarUsuarioPorData.setDataDeDesativacao(null);
 		dataRepository.save(desativarAtivarUsuarioPorData);
 		assertNull(desativarAtivarUsuarioPorData.getDataDeDesativacao());

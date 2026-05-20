@@ -45,10 +45,10 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 			)
 			FROM Demanda d
 			JOIN d.estagiario e
-			WHERE e.id = :estagiarioId
+			WHERE e.id = :userId
 			""")
-	Page<DemandaDto> buscarTodosPorEstagiarioId(
-			@Param("estagiarioId") Long estagiarioId, Pageable pageable);
+	Page<DemandaDto> buscarTodosPorUserId(
+			@Param("userId") Long userId, Pageable pageable);
 
 //	@Query("""
 //			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(

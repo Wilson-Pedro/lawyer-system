@@ -1,7 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
 import com.advocacia.estacio.domain.enums.DemandaStatus;
-import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @RequestMapping("/demandas")
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class DemandaController {
 	
 	@Autowired
@@ -56,7 +55,7 @@ public class DemandaController {
 			@PathVariable Long estagiarioId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorEstagiarioId(estagiarioId, page, size);
+		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorUserId(estagiarioId, page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 
@@ -65,7 +64,7 @@ public class DemandaController {
 			@PathVariable Long advogadoId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorEstagiarioId(advogadoId, page, size);
+		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorUserId(advogadoId, page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 

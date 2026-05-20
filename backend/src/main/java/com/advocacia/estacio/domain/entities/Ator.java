@@ -50,6 +50,11 @@ public class Ator {
 		this.email = email;
 		this.tipoDoAtor = tipoDoAtor;
 	}
+
+	public Ator(Long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
 	
 	public Ator(AtorDto dto) {
 		this.nome = dto.getNome();

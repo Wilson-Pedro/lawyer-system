@@ -2,7 +2,6 @@ package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
-import com.advocacia.estacio.domain.enums.EstadoCivil;
 import com.advocacia.estacio.domain.enums.Tempestividade;
 import com.advocacia.estacio.domain.enums.UserRole;
 import org.junit.jupiter.api.*;
@@ -115,7 +114,7 @@ class DemandaServiceTest {
 
 		Long estagiarioId = estagiarioRepository.findAll().get(0).getId();
 		
-		Page<DemandaDto> demandas = demandaService.buscarTodosPorEstagiarioId(estagiarioId, 0, 20);
+		Page<DemandaDto> demandas = demandaService.buscarTodosPorUserId(estagiarioId, 0, 20);
 		
 		assertNotNull(demandas);
 		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());

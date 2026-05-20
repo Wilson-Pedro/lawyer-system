@@ -1,6 +1,7 @@
 package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.dto.RequestIds;
+import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,10 @@ public class AtorServiceImpl implements AtorService {
 	public void desativarAtores(RequestIds requestIds) {
 		List<UsuarioAuth> usuariosAuth = buscarUsuariosAuthPorId(requestIds.getIds());
 		this.usuarioAuthService.desativarAtivarUsuarios(usuariosAuth, UsuarioStatus.INATIVO);
+	}
+
+	@Override
+	public Ator buscarIdPorEmail(String email) {
+		return atorRepository.buscarIdPorEmail(email).orElseThrow(EntidadeNaoEncontradaException::new);
 	}
 }
