@@ -3,32 +3,11 @@ import axios from "axios";
 import { useNavigate, useParams, Navigate } from "react-router-dom";
 import styles from "./EditarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
-import Select from "react-select";
 import { scrollToTop } from './../../utils/Utils';
+import { Advogado, Estagiario } from "../../shared/types/Entities";
+import { PageableResponse } from "../../shared/types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-export interface Entity {
-  id: number;
-  nome: string;
-}
-
-export interface Assistido extends Entity {
-}
-
-export interface Advogado extends Entity {
-}
-
-export interface Estagiario extends Entity {
-}
 
 export default function EditarProcesso() {
   const navigate = useNavigate();
@@ -193,7 +172,7 @@ export default function EditarProcesso() {
             Authorization: `Bearer ${token}`
           }
         });
-        const pageData: Page<Advogado> = response.data;
+        const pageData: PageableResponse<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
         setMensagemToast("Error ao tentar buscar advogados");
@@ -218,7 +197,7 @@ export default function EditarProcesso() {
             Authorization: `Bearer ${token}`
           }
        });
-        const pageData: Page<Estagiario> = response.data;
+        const pageData: PageableResponse<Estagiario> = response.data;
         setEstagiarios(pageData.content);
 
       } catch(error) {

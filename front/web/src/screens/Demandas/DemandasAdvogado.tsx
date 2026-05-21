@@ -4,31 +4,14 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EyeIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { DemandaAdvogado } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
 
-interface Page<T> {
-    content: T[];
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    number: number;
-}
-
-interface Demanda {
-    id: number;
-    demanda: string;
-    estagiarioNome: string;
-    estagiarioId: string;
-    demandaStatusAluno: string;
-    demandaStatusProfessor: string;
-    prazo: string;
-    tempestividade:string;
-}
-
 export default function DemandasAdvogado() {
-    const [demandas, setDemandas] = useState<Demanda[]>([]);
-    const [filteredDemandas, setFilteredDemandas] = useState<Demanda[]>([]);
+    const [demandas, setDemandas] = useState<DemandaAdvogado[]>([]);
+    const [filteredDemandas, setFilteredDemandas] = useState<DemandaAdvogado[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
     
@@ -60,7 +43,7 @@ export default function DemandasAdvogado() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const pages: Page<Demanda> = response.data;
+                const pages: PageableResponse<DemandaAdvogado> = response.data;
                 setDemandas(pages.content);
                 setFilteredDemandas(response.data);
                 setTotalPages(pages.totalPages);

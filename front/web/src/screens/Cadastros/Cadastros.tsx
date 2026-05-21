@@ -9,14 +9,7 @@ import {
     SingOutAltIcon, 
     FileCirclePlusIcon
 } from "../../Icons/Icon";
-
-interface MenuItem {
-  label: string;
-  icon: React.JSX.Element;
-  path: string;
-  variant: string;
-}
-
+import { MenuItem } from "../../shared/types/MenuItem";
 export default function Cadastros() {
   const navigate = useNavigate();
 

@@ -3,28 +3,8 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import styles from "./EditarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
-//import moment from 'moment'
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-export interface Entity {
-  id: number;
-  nome: string;
-}
-
-export interface Assistido extends Entity {}
-
-export interface Advogado extends Entity {}
-
-export interface Estagiario extends Entity {}
 
 export default function EditarDemanda() {
   const navigate = useNavigate();
@@ -41,9 +21,6 @@ export default function EditarDemanda() {
 
   const params = useParams();
   const demandaId = params.demandaId || '';
-
-  // const page = 0;
-  // const size = 20;
 
   useEffect(() => {
 

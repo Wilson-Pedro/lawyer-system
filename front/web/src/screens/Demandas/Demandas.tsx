@@ -5,26 +5,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, PlusIcon } from "../../Icons/Icon";
 
 import Paginacao from "../../components/Paginacao/Paginacao";
+import { Demanda } from "./types";
+import { PageableResponse } from "../../shared/types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
-
-interface Page<T> {
-    content: T[];
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    number: number;
-}
-
-interface Demanda {
-    id: number;
-    demanda: string;
-    estagiarioNome: string;
-    estagiarioId: string;
-    demandaStatusAluno: string;
-    demandaStatusProfessor: string;
-    prazo: string;
-}
 
 export default function Demandas() {
     const [demandas, setDemandas] = useState<Demanda[]>([]);
@@ -56,7 +40,7 @@ export default function Demandas() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const pages: Page<Demanda> = response.data;
+                const pages: PageableResponse<Demanda> = response.data;
                 setDemandas(pages.content);
                 setTotalPages(pages.totalPages);
                 setTotalElements(pages.totalElements);

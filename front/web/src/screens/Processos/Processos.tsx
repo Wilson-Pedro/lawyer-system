@@ -4,26 +4,10 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { Processo } from "../../shared/types/Processo";
 
 const API_URL = process.env.REACT_APP_API;
-
-interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  sizE: number;
-  number: number;
-}
-
-interface Processo {
-  id: string;
-  numeroDoProcesso: string;
-  assunto: string;
-  prazoFinal: string;
-  responsavel: string;
-  advogadoNome: string;
-  statusDoProcesso: "Tramitando" | "Suspenso" | "Arquivado";
-}
 
 export default function Processos() {
   const [processos, setProcessos] = useState<Processo[]>([]);
@@ -57,7 +41,7 @@ export default function Processos() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pages: Page<Processo> = response.data;
+        const pages: PageableResponse<Processo> = response.data;
         setProcessos(pages.content);
         setTotalPages(pages.totalPages);
         setTotalElements(pages.totalElements);

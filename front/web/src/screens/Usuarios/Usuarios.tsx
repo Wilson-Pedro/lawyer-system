@@ -1,34 +1,16 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate, Navigate } from "react-router-dom";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { EditIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import styles from "./Usuarios.module.css";
 import { startOfDay } from "date-fns";
 import { Toast, ToastContainer } from "react-bootstrap";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { ResponseMinDto } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
-
-interface ResponseMinDto {
-  id: string;
-  nome: string;
-  email: string;
-  telefone: string;
-  matricula: string;
-  periodo: string;
-  usuarioStatus: string;
-  registro: string;
-}
-
-interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState<ResponseMinDto[]>([]);
@@ -173,7 +155,7 @@ export default function Usuarios() {
           },
         );
 
-        const pages: Page<ResponseMinDto> = response.data;
+        const pages: PageableResponse<ResponseMinDto> = response.data;
         const dados = pages.content;
         setUsuarios(dados);
         setUsuariosFiltrados(dados);

@@ -7,30 +7,10 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import Input from "../../components/Input/Input";
 
 import { scrollToTop } from "./../../utils/Utils";
+import { Advogado, Assistido, Estagiario } from "../../shared/types/Entities";
+import { PageableResponse } from "../../shared/types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-export interface Entity {
-  id: number;
-  nome: string;
-}
-
-export interface Assistido extends Entity {
-}
-
-export interface Advogado extends Entity {
-}
-
-export interface Estagiario extends Entity {
-}
 
 export default function CadastrarProcesso() {
   const navigate = useNavigate();
@@ -127,7 +107,7 @@ export default function CadastrarProcesso() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pageData: Page<Assistido> = response.data;
+        const pageData: PageableResponse<Assistido> = response.data;
         setAssistidos(pageData.content);
 
         limparCampos();
@@ -146,10 +126,6 @@ export default function CadastrarProcesso() {
     const buscarAdvogado = async () => {
       if (nomeAdvogadoSearch.length < 2) {
         setAdvogados([]);
-        // if(nomeAdvogadoSearch.length <= 1 && advogados.length === 0) {
-        //   setNomeAdvogadoSearch("");
-        //   setNomeAdvogado("");
-        // }
         return;
       }
       try {
@@ -158,7 +134,7 @@ export default function CadastrarProcesso() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pageData: Page<Advogado> = response.data;
+        const pageData: PageableResponse<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
         setMensagemToast("Error ao tentar buscar advogados");
@@ -183,7 +159,7 @@ export default function CadastrarProcesso() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pageData: Page<Estagiario> = response.data;
+        const pageData: PageableResponse<Estagiario> = response.data;
         setEstagiarios(pageData.content);
 
       } catch(error) {

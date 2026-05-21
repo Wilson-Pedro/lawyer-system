@@ -7,20 +7,9 @@ import {
 } from "../../Icons/Icon";
 
 import axios from  'axios';
+import { MenuItem, Response } from "../../shared/types/MenuItem";
 
 const API_URL = process.env.REACT_APP_API;
-
-interface MenuItem {
-  label: string;
-  icon: React.JSX.Element;
-  path: string;
-  variant: string;
-}
-
-interface Response {
-  id: number;
-  nome: string;
-}
 
 export default function HomeAdvogado() {
 

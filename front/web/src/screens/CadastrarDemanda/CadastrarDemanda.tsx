@@ -5,27 +5,10 @@ import styles from "./CadastrarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 import moment from 'moment'
 import Input from "../../components/Input/Input";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { Advogado, Estagiario } from "../../shared/types/Entities";
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-export interface Entity {
-  id: number;
-  nome: string;
-}
-
-export interface Assistido extends Entity {}
-
-export interface Advogado extends Entity {}
-
-export interface Estagiario extends Entity {}
 
 export default function CadastrarDemanda() {
   const navigate = useNavigate();
@@ -74,7 +57,7 @@ export default function CadastrarDemanda() {
             },
           }
         );
-        const pageData: Page<Estagiario> = response.data;
+        const pageData: PageableResponse<Estagiario> = response.data;
         setEstagiarios(pageData.content);
       } catch (error) {
         console.log("Error ao tentar buscar estagiarios ", error);
@@ -99,7 +82,7 @@ export default function CadastrarDemanda() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pageData: Page<Advogado> = response.data;
+        const pageData: PageableResponse<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
         setMensagemToast("Error ao tentar buscar advogados");

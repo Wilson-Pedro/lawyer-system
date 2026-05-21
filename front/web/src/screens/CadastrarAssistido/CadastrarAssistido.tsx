@@ -6,24 +6,9 @@ import styles from "./CadastrarAssistido.module.css";
 import Input from "../../components/Input/Input";
 
 import { scrollToTop } from "./../../utils/Utils";
+import { EnderecoViaCep } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface EnderecoViaCep {
-  cep: string;
-  logradouro: string;
-  complemento: string;
-  unidade: string;
-  bairro: string;
-  localidade: string;
-  uf: string;
-  estado: string;
-  regiao: string;
-  ibge: string;
-  gia: string;
-  ddd: string;
-  siafi: string;
-}
 
 export default function CadastrarAssistido() {
   const [nome, setNome] = useState("");
@@ -68,9 +53,14 @@ export default function CadastrarAssistido() {
 
   useEffect(() => {
 
+    if(cep.length === 0) {
+      limparEndereco();
+    }
+
     if(cep.length < 8) {
       return;
     }
+
     const buscarviaCep = async () => {
       try {
         const response = await axios.get<EnderecoViaCep>(
@@ -139,6 +129,14 @@ export default function CadastrarAssistido() {
   const selecionarEstadoCivil = async (e: any) => {
     setEstadoCivil(e.target.value);
   };
+
+  const limparEndereco = () => {
+    setCidade("");
+    setBairro("");
+    setRua("");
+    setNumeroDaCasa("");
+    setCep("");
+  }
 
   const limparCampos = () => {
     setNome("");

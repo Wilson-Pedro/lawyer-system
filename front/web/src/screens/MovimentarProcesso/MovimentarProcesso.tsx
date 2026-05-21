@@ -5,34 +5,11 @@ import { Table, Button, Form, Row, Col } from "react-bootstrap";
 import { PlusIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './MovimentarProcesso.module.css';
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { Processo } from "../../shared/types/Processo";
+import { MovimentoType } from "../../shared/types/Movimento";
 
 const API_URL = process.env.REACT_APP_API;
-
-export interface Page<T> {
-    content: T[];
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    number: number;
-}
-
-interface Processo {
-    id: number;
-    numeroDoProcesso: string;
-    assunto: string;
-    prazoFinal: string;
-    responsavel: string;
-    advogadoNome: string;
-    statusDoProcesso: "Tramitando" | "Suspenso" | "Arquivado";
-}
-
-interface Movimento {
-    id: number;
-    numeroDoProcesso: string;
-    advogado: string;
-    movimento: string;
-    registro: string;
-}
 
 export default function MovimentarProcesso() {
 
@@ -40,7 +17,7 @@ export default function MovimentarProcesso() {
     const [numeroDoProcessoSearch, setNumeroDoProcessoSearch] = useState("");
     const [busca, setBusca] = useState("");
     const [processos, setProcessos] = useState<Processo[]>([]);
-    const [movimentos, setMovimentos] = useState<Movimento[]>([]);
+    const [movimentos, setMovimentos] = useState<MovimentoType[]>([]);
     
     const [disabled, setDisabled] = useState(true);
 
@@ -61,7 +38,7 @@ export default function MovimentarProcesso() {
                     Authorization: `Bearer ${token}`
                     }
                 });
-                const pageData: Page<Processo> = response.data;
+                const pageData: PageableResponse<Processo> = response.data;
                 setProcessos(pageData.content);
 
             } catch (error) {
@@ -85,7 +62,7 @@ export default function MovimentarProcesso() {
                     }
                 });
 
-                const pageData: Page<Movimento> = response.data;
+                const pageData: PageableResponse<MovimentoType> = response.data;
                 setMovimentos(pageData.content);
                 setDisabled(false);
             } catch (error) {

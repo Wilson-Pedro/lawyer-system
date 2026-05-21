@@ -4,13 +4,9 @@ import { useNavigate, useParams, Navigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Toast, ToastContainer, Card } from "react-bootstrap";
 import { ArrowLeftIcon, SaveIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Response } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
-
-interface Response {
-  id: number;
-  nome: string;
-}
 
 export default function CadastrarDemandaResposta() {
   const navigate = useNavigate();

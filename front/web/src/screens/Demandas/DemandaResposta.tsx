@@ -3,29 +3,13 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { DemandaResponse } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
 
-interface Page<T> {
-    content: T[];
-    totalPages: number;
-    totalElements: number;
-    size: number;
-    number: number;
-}
-
-interface DemandaResposta {
-    id: number;
-    demandaId: string;
-    estagiarioId: string;
-    estagiarioNome: string; 
-    resposta: string;
-    respondidoPor: string;
-    registro:string;
-}
-
 export default function DemandaResposta() {
-    const [demandaRespostas, setDemandaRespostas] = useState<DemandaResposta[]>([]);
+    const [demandaRespostas, setDemandaRespostas] = useState<DemandaResponse[]>([]);
         
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
@@ -56,7 +40,7 @@ export default function DemandaResposta() {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const pages: Page<DemandaResposta> = response.data;
+                const pages: PageableResponse<DemandaResponse> = response.data;
                 setDemandaRespostas(pages.content);
                 setTotalPages(pages.totalPages);
                 setTotalElements(pages.totalElements);

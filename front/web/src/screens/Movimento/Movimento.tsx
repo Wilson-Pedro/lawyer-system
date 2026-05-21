@@ -5,27 +5,13 @@ import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Paginacao from "../../components/Paginacao/Paginacao";
+import { PageableResponse } from "../../shared/types/PageableResponse";
+import { MovimentoType } from "../../shared/types/Movimento";
 
 const API_URL = process.env.REACT_APP_API;
 
-interface Page<T> {
-  content: T[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
-interface Movimento {
-  id: number;
-  numeroDoProcesso: string;
-  advogado: string;
-  movimento: string;
-  registro: string;
-}
-
 export default function Movimento() {
-  const [movimentos, setMovimentos] = useState<Movimento[]>([]);
+  const [movimentos, setMovimentos] = useState<MovimentoType[]>([]);
   const [busca, setBusca] = useState("");
 
   const [page, setPage] = useState(0);
@@ -55,7 +41,7 @@ export default function Movimento() {
           Authorization: `Bearer ${token}`
         }
       });
-        const pageData: Page<Movimento> = response.data;
+        const pageData: PageableResponse<MovimentoType> = response.data;
         setMovimentos(pageData.content);
         setTotalPages(pageData.totalPages);
       } catch (error) {
