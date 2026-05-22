@@ -55,16 +55,49 @@ public class ProcessoServiceImpl implements ProcessoService {
 		Processo processo = new Processo(request);
 		processo.setAssistido(assistido);
 		processo.setAdvogado(advogado);
-		processo.setNumeroDoProcesso(gerarNumeroProcesso());
 		processo.tramitando();
 		processo.setEstagiario(estagiario);
 		processo.setUltimaAtualizacao(LocalDateTime.now());
+
 		validarProcesso(processo);
+
+		processo = processoRepository.save(processo);
+
+		processo.setNumeroDoProcesso(
+				gerarNumeroProcesso(processo.getId())
+		);
+
 		return processoRepository.save(processo);
 	}
 
-	private String gerarNumeroProcesso() {
-		return String.format("%d%d", LocalDate.now().getYear(), processoRepository.count()+1);
+	private String gerarNumeroProcesso(Long id) {
+		LocalDateTime now = LocalDateTime.now();
+		return String.format("%d%s%s%s%s%s",
+				now.getYear(),
+				".",
+				addZero(now.getDayOfMonth()),
+				addZero(now.getMonthValue()),
+				".",
+				addZeroInId(id)
+		);
+	}
+
+	private String addZero(int value) {
+		String valueFormat = String.format("%d", value);
+		return valueFormat.length() == 1 ? "0" + valueFormat : valueFormat;
+	}
+
+	private String addZeroInId(Long id) {
+		String valueFormat = String.format("%d", id);
+		int length = valueFormat.length();
+		if(length == 1) {
+			valueFormat = "000" + valueFormat;
+		} else if (length == 2) {
+			valueFormat = "00" + valueFormat;
+		} else if (length == 3) {
+			valueFormat = "0" + valueFormat;
+		}
+		return valueFormat;
 	}
 	
 	@Override
