@@ -1,9 +1,11 @@
 package com.advocacia.estacio.services;
 
 import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.Tempestividade;
 import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.repositories.AtorRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +34,13 @@ class DemandaServiceTest {
 
 	@Autowired
 	AdvogadoService advogadoService;
-	
+
+	@Autowired
+	AtorService atorService;
+
+	@Autowired
+	AtorRepository atorRepository;
+
 	@Autowired
 	DemandaRepository demandaRepository;
 	
@@ -41,10 +49,13 @@ class DemandaServiceTest {
 	
 	@Autowired
 	TestUtil testUtil;
+
+	Professor professor;
 	
 	@Test
 	@Order(1)
 	void deveDeletar_TodosOsDados_AntesDostestes() {
+
 		testUtil.deleteAll();
 	}
 
@@ -52,13 +63,15 @@ class DemandaServiceTest {
 	@Order(2)
 	@DisplayName("Deve Salvar Demanda No Banco de Dados Pelo Service")
 	void salvar_demanda() {
+
+		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 		
 		assertEquals(0, demandaRepository.count());
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		Advogado advogado = advogadoService.salvar(testUtil.getAdvogadoDto());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), advogado.getId(), "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), this.professor.getId(), advogado.getId(), "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
@@ -130,11 +143,13 @@ class DemandaServiceTest {
 	@DisplayName("Deve Buscar Demanda Por Status No Banco de Dados Pelo Service")
 	void deve_buscar_Demandas_por_status_NoBancoDeDados_PeloService() {
 
+		Long professorId = atorRepository.findAll().get(0).getId();
+
 		Long estagiarioId2 = estagiarioService.salvar(testUtil.getEstagiarioDto2()).getId();
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
 
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, professorId, advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
 		Page<DemandaDto> demandas = demandaService.buscarTodosPorStatus("Em Correção", 0, 20);

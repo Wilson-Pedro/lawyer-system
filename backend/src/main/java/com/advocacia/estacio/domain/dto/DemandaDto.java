@@ -17,6 +17,8 @@ public class DemandaDto {
 	
 	private Long estagiarioId;
 
+	private Long professorId;
+
 	private Long advogadoId;
 	
 	private String demandaStatusAluno;
@@ -34,10 +36,11 @@ public class DemandaDto {
 	public DemandaDto() {
 	}
 	
-	public DemandaDto(Long id, String demanda, Long estagiarioId, Long advogadoId, String demandaStatusAluno, String demandaStatusProfessor, String prazoDocumentos, Integer diasPrazo, String tempestividade) {
+	public DemandaDto(Long id, String demanda, Long estagiarioId, Long professorId, Long advogadoId, String demandaStatusAluno, String demandaStatusProfessor, String prazoDocumentos, Integer diasPrazo, String tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiarioId = estagiarioId;
+		this.professorId = professorId;
 		this.advogadoId = advogadoId;
 		this.demandaStatusAluno = demandaStatusAluno;
 		this.demandaStatusProfessor = demandaStatusProfessor;
@@ -91,6 +94,10 @@ public class DemandaDto {
 
 	public Long getEstagiarioId() {
 		return estagiarioId;
+	}
+
+	public Long getProfessorId() {
+		return professorId;
 	}
 
 	public Long getAdvogadoId() {

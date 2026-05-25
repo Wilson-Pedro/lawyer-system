@@ -38,6 +38,10 @@ public class Demanda implements Serializable {
 	private Estagiario estagiario;
 
 	@ManyToOne
+	@JoinColumn(name = "professor_id")
+	private Professor professor;
+
+	@ManyToOne
 	@JoinColumn(name = "advogado_id")
 	private Advogado advogado;
 	
@@ -60,10 +64,11 @@ public class Demanda implements Serializable {
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, Advogado advogado, DemandaStatus demandaStatusAluno, DemandaStatus demandaStatusProfessor, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, Professor professor, Advogado advogado, DemandaStatus demandaStatusAluno, DemandaStatus demandaStatusProfessor, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
+		this.professor = professor;
 		this.advogado = advogado;
 		this.demandaStatusAluno = demandaStatusAluno;
 		this.demandaStatusProfessor = demandaStatusProfessor;

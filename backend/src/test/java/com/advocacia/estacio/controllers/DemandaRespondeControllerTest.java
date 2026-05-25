@@ -4,11 +4,13 @@ import com.advocacia.estacio.domain.dto.DemandaDto;
 import com.advocacia.estacio.domain.dto.DemandaRespondeDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 
 import com.advocacia.estacio.services.AdvogadoService;
+import com.advocacia.estacio.services.AtorService;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +46,9 @@ class DemandaRespondeControllerTest {
 	DemandaService demandaService;
 
 	@Autowired
+	AtorService atorService;
+
+	@Autowired
 	AdvogadoService advogadoService;
 
 	@Autowired
@@ -58,6 +63,8 @@ class DemandaRespondeControllerTest {
 	private static final String URI = "/demandas/responde";
 
 	private static String TOKEN = "";
+
+	Professor professor;
 	
 	@Test
 	@Order(1)
@@ -72,13 +79,15 @@ class DemandaRespondeControllerTest {
 	@DisplayName("Deve Salvar Demanda Responde No Banco de Dados Pelo Controller")
 	void deveSalvar_DemandaResponde_NoBancoDeDados_PeloController() throws Exception {
 
+		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
+
 		assertEquals(0, demandaRespondeRepository.count());
 
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), this.professor.getId(), advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");

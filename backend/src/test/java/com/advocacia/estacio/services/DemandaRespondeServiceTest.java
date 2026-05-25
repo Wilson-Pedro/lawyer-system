@@ -5,7 +5,9 @@ import com.advocacia.estacio.domain.dto.DemandaRespondeDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.DemandaResponde;
 import com.advocacia.estacio.domain.entities.Estagiario;
+import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.RespondidoPor;
+import com.advocacia.estacio.repositories.DemandaRepository;
 import com.advocacia.estacio.repositories.DemandaRespondeRepository;
 import com.advocacia.estacio.repositories.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
@@ -34,14 +36,20 @@ class DemandaRespondeServiceTest {
 	DemandaService demandaService;
 
 	@Autowired
+	AtorService atorService;
+
+	@Autowired
 	AdvogadoService advogadoService;
 	
 	@Autowired
 	TestUtil testUtil;
+
+	Professor professor;
 	
 	@Test
 	@Order(1)
 	void deveDeletar_TodosOsDados_AntesDostestes() {
+
 		testUtil.deleteAll();
 	}
 
@@ -51,12 +59,14 @@ class DemandaRespondeServiceTest {
 	void salvar_demanda_resposta() {
 		
 		assertEquals(0, demandaRespondeRepository.count());
+
+		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), this.professor.getId(), advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");

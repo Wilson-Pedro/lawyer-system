@@ -7,8 +7,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.advocacia.estacio.domain.entities.Demanda;
+import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.services.AdvogadoService;
+import com.advocacia.estacio.services.AtorService;
 import com.advocacia.estacio.services.DemandaService;
 import com.advocacia.estacio.services.EstagiarioService;
 import org.junit.jupiter.api.*;
@@ -40,6 +43,12 @@ class DemandaControllerTest {
 	EstagiarioService estagiarioService;
 
 	@Autowired
+	AtorRepository atorRepository;
+
+	@Autowired
+	AtorService atorService;
+
+	@Autowired
 	AdvogadoService advogadoService;
 
 	@Autowired
@@ -57,6 +66,8 @@ class DemandaControllerTest {
 	private static final String URI = "/demandas";
 	
 	private static String TOKEN = "";
+
+	Professor professor;
 	
 	@Test
 	@Order(1)
@@ -72,12 +83,16 @@ class DemandaControllerTest {
 	void salvar_demanda() throws Exception {
 		
 		assertEquals(0, demandaRepository.count());
+
+		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
+
+		Long professorId = atorRepository.findAll().get(0).getId();
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), this.professor.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -89,6 +104,7 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.demanda", equalTo("Atualizar Processos")))
 				.andExpect(jsonPath("$.estagiarioNome", equalTo("Pedro Lucas")))
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
+				//.andExpect(jsonPath("$.professorId", equalTo(professorId.intValue())))
 				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
 				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Em Correção")))
 				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Professor")))
@@ -107,7 +123,9 @@ class DemandaControllerTest {
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto2()).getId();
 
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
+		Long professorId = atorRepository.findAll().get(0).getId();
+
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, professorId, advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
 		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")
