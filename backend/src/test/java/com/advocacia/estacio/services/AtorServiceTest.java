@@ -243,4 +243,17 @@ class AtorServiceTest {
 		assertEquals(TipoDoAtor.SECRETARIO, atores.get(1));
 		assertEquals(TipoDoAtor.PROFESSOR, atores.get(2));
 	}
+
+	@Test
+	@DisplayName("Deve Buscar Professor Por Nome Pelo Service")
+	void buscar_professor_pelo_nome() {
+
+		String nome = "fab";
+
+		Page<Ator> atores = atorService.buscarAtor(nome, "Professor", 0, 10);
+
+		assertNotNull(atores);
+		assertEquals(1, atores.getContent().size());
+		assertEquals("Fabio Junior", atores.getContent().get(0).getNome());
+	}
 }

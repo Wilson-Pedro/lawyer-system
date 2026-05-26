@@ -28,4 +28,6 @@ public interface AtorService {
 	List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids);
 
 	void desativarAtores(RequestIds requestIds);
+
+	Page<Ator> buscarAtor(String nome, String tipoDoAtor, int page, int size);
 }

@@ -66,7 +66,7 @@ public class BackendApplication implements CommandLineRunner {
 				"rua do passeio", 11, "53022-112", "1234");
 
 		EstagiarioDto estagiario = new EstagiarioDto(null,
-				"Pedro Lucas", "pedro@gmail.com", "92921421224", "20251208",
+				"Pedro Lucas", "pedro@gmail.com", "92956721128", "20251208",
 				"Estágio I", "1234");
 
 		EstagiarioDto estagiario2 = new EstagiarioDto(null,

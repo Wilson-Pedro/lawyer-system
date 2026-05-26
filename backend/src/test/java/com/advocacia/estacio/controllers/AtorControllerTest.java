@@ -251,6 +251,20 @@ class AtorControllerTest {
 		assertEquals(UsuarioStatus.INATIVO, atores.get(0).getUsuarioAuth().getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, atores.get(1).getUsuarioAuth().getUsuarioStatus());
 		assertEquals(UsuarioStatus.INATIVO, atores.get(2).getUsuarioAuth().getUsuarioStatus());
+	}
 
+	@Test
+	@DisplayName("Deve Buscar Professor por Nome Pelo Controller")
+	void buscar_professor_pelo_nome_pelo_controller() throws Exception {
+
+		String nome = "fa";
+		String tipoDoAtor = "Professor";
+
+		mockMvc.perform(get(URI + "/buscar/" + tipoDoAtor + "/" + nome)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()", equalTo(1)))
+				.andExpect(jsonPath("content[0].nome").value("Fabio Junior"));
 	}
 }

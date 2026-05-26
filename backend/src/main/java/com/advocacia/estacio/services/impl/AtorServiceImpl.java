@@ -7,6 +7,7 @@ import com.advocacia.estacio.services.UsuarioAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -92,5 +93,12 @@ public class AtorServiceImpl implements AtorService {
 	@Override
 	public Ator buscarIdPorEmail(String email) {
 		return atorRepository.buscarIdPorEmail(email).orElseThrow(EntidadeNaoEncontradaException::new);
+	}
+
+	@Override
+	public Page<Ator> buscarAtor(String nome, String tipoDoAtor, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by("nome").ascending());
+		TipoDoAtor tipo =  TipoDoAtor.toEnum(tipoDoAtor);
+		return atorRepository.findByNomeContainingIgnoreCaseAndTipoDoAtor(nome, tipo, pageable);
 	}
 }

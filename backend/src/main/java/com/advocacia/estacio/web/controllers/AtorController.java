@@ -2,6 +2,7 @@ package com.advocacia.estacio.web.controllers;
 
 import java.util.List;
 
+import com.advocacia.estacio.domain.dto.*;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.advocacia.estacio.domain.dto.AtorDto;
-import com.advocacia.estacio.domain.dto.PageResponseDto;
-import com.advocacia.estacio.domain.dto.RequestIds;
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Ator;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.services.AtorService;
@@ -81,5 +78,17 @@ public class AtorController {
 		Ator ator = atorService.buscarIdPorEmail(email);
 		EntidadeMinDto dto = new EntidadeMinDto(ator.getId(), ator.getNome());
 		return ResponseEntity.ok(dto);
+	}
+
+	@GetMapping("/buscar/{tipoDoAtor}/{nome}")
+	public ResponseEntity<PageResponseDto<AtorDto>> buscarAdvogadoPorNome(
+			@PathVariable String nome,
+			@PathVariable String tipoDoAtor,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "20") int size
+	) {
+		Page<Ator> pages = atorService.buscarAtor(nome, tipoDoAtor, page, size);
+		Page<AtorDto> pagesDto = pages.map(AtorDto::new);
+		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 }
