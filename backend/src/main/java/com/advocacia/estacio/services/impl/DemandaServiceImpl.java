@@ -1,10 +1,12 @@
 package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.entities.Advogado;
+import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.exceptions.EnumException;
 import com.advocacia.estacio.services.AdvogadoService;
+import com.advocacia.estacio.services.AtorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,16 +34,21 @@ public class DemandaServiceImpl implements DemandaService {
 	private EstagiarioService estagiarioService;
 
 	@Autowired
+	private AtorService atorService;
+
+	@Autowired
 	private AdvogadoService advogadoService;
 
 	@Override
 	public Demanda salvar(DemandaDto demandaDto) {
 		Estagiario estagiario = estagiarioService.buscarPorId(demandaDto.getEstagiarioId());
 		Advogado advogado = advogadoService.buscarPorId(demandaDto.getAdvogadoId());
+		Professor professor = (Professor) atorService.buscarPorId(demandaDto.getProfessorId());
 		Demanda demanda = new Demanda(demandaDto);
 		LocalDate prazo = demanda.getPrazoDocumentos().plusDays(demandaDto.getDiasPrazo());
 		demanda.setPrazo(prazo);
 		demanda.setEstagiario(estagiario);
+		demanda.setProfessor(professor);
 		demanda.setAdvogado(advogado);
 		return demandaRepository.save(demanda);
 	}

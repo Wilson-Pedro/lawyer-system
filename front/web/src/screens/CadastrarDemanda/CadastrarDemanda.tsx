@@ -6,7 +6,7 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import moment from 'moment'
 import Input from "../../components/Input/Input";
 import { PageableResponse } from "../../shared/types/PageableResponse";
-import { Advogado, Estagiario } from "../../shared/types/Entities";
+import { Advogado, Estagiario, Professor } from "../../shared/types/Entities";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -27,11 +27,15 @@ export default function CadastrarDemanda() {
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
-  
   const [nomeAdvogado, setNomeAdvogado] = useState("");
   const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
   const [advogadoId, setAdvogadoId] = useState<number>(0);
   const [advogados, setAdvogados] = useState<Advogado[]>([]);
+    
+  const [nomeProfessor, setNomeProfessor] = useState("");
+  const [nomeProfessorSearch, setNomeProfessorSearch] = useState("");
+  const [professorId, setProfessorId] = useState<number>(0);
+  const [professores, setProfessores] = useState<Advogado[]>([]);
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
@@ -71,6 +75,35 @@ export default function CadastrarDemanda() {
 
   
   useEffect(() => {
+    const buscarProfessor = async () => {
+      if (nomeProfessorSearch.length < 2) {
+        setProfessores([]);
+        return;
+      }
+      const tipoDoAtor = "Professor";
+      try {
+        const response = await axios.get(
+          `${API_URL}/atores/buscar/${tipoDoAtor}/${nomeProfessorSearch}?page=${page}&size=${size}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const pageData: PageableResponse<Professor> = response.data;
+        setProfessores(pageData.content);
+      } catch (error) {
+        console.log("Error ao tentar buscar professores ", error);
+      }
+    };
+
+    const delay = setTimeout(buscarProfessor, 100);
+
+    return () => clearTimeout(delay);
+  }, [nomeProfessorSearch]);
+
+  
+  useEffect(() => {
     const buscarAdvogado = async () => {
       if (nomeAdvogadoSearch.length < 2) {
         setAdvogados([]);
@@ -104,6 +137,7 @@ export default function CadastrarDemanda() {
         {
           demanda,
           estagiarioId,
+          professorId,
           advogadoId,
           demandaStatusAluno: "Em Correção",
           demandaStatusProfessor: "Aguardando Professor",
@@ -205,6 +239,14 @@ export default function CadastrarDemanda() {
       setAdvogados([]);
     }
   }
+  
+  const setProfessorNome = (nome: string) =>  {
+    setNomeProfessor(nome);
+    setNomeProfessorSearch(nome);
+    if(nome.length === 0) {
+      setProfessores([]);
+    }
+  }
 
   const setEstagiarioNome = (nome: string) =>  {
     setNomeEstagiario(nome);
@@ -218,6 +260,12 @@ export default function CadastrarDemanda() {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
     setNomeEstagiarioSearch("");
+  };
+
+  const setProfessor = (professor: Professor) => {
+    setNomeProfessor(professor.nome);
+    setProfessorId(professor.id);
+    setNomeProfessorSearch("");
   }; 
 
   const setAdvogado = (advogado: Advogado) => {
@@ -276,6 +324,30 @@ export default function CadastrarDemanda() {
                   onClick={() => setEstagiario(data)}
                 >
                   {data.nome}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Professor</label>
+          <input
+            className={styles.input}
+            placeholder="Digite o nome do professor"
+            value={nomeProfessorSearch || nomeProfessor}
+            onChange={(e) => setProfessorNome(e.target.value)}
+            required
+          />
+          {professores.length > 0 && (
+            <ul className={styles.ul}>
+              {professores.map((data) => (
+                <li
+                  className={styles.li}
+                  key={data.id}
+                  onClick={() => setProfessor(data)}
+                >
+                  {data.nome} - {data.id}
                 </li>
               ))}
             </ul>

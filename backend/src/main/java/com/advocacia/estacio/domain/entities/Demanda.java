@@ -118,6 +118,10 @@ public class Demanda implements Serializable {
 		this.estagiario = estagiario;
 	}
 
+	public void setProfessor(Professor professor) {
+		this.professor = professor;
+	}
+
 	public Advogado getAdvogado() {
 		return advogado;
 	}
