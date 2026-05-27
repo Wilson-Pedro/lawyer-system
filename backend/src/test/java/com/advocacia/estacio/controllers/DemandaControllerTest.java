@@ -89,8 +89,6 @@ class DemandaControllerTest {
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
-
-		Long professorId = atorRepository.findAll().get(0).getId();
 		
 		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), this.professor.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
 		

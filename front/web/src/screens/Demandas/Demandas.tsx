@@ -41,6 +41,7 @@ export default function Demandas() {
                     }
                 });
                 const pages: PageableResponse<Demanda> = response.data;
+                console.log(pages.content);
                 setDemandas(pages.content);
                 setTotalPages(pages.totalPages);
                 setTotalElements(pages.totalElements);
@@ -141,6 +142,8 @@ export default function Demandas() {
                                 <tr>
                                     <th>Demanda</th>
                                     <th>Estagiario</th>
+                                    <th>Professor</th>
+                                    <th>Advogado</th>
                                     <th>Prazo</th>
                                     <th className="text-center">Status Aluno</th>
                                     <th className="text-center">Status Professor</th>
@@ -153,6 +156,8 @@ export default function Demandas() {
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
                                         <td>{demanda.estagiarioNome}</td>
+                                        <td>{demanda.professorNome}</td>
+                                        <td>{demanda.advogadoNome}</td>
                                         <td>{demanda.prazo}</td>
                                         <td className={getStatusClass(demanda.demandaStatusAluno)}>
                                             {demanda.demandaStatusAluno}
