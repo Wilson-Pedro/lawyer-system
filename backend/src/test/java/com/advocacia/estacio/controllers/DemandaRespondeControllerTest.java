@@ -63,8 +63,6 @@ class DemandaRespondeControllerTest {
 	private static final String URI = "/demandas/responde";
 
 	private static String TOKEN = "";
-
-	Professor professor;
 	
 	@Test
 	@Order(1)
@@ -79,7 +77,7 @@ class DemandaRespondeControllerTest {
 	@DisplayName("Deve Salvar Demanda Responde No Banco de Dados Pelo Controller")
 	void deveSalvar_DemandaResponde_NoBancoDeDados_PeloController() throws Exception {
 
-		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
+		Professor professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 
 		assertEquals(0, demandaRespondeRepository.count());
 
@@ -87,7 +85,7 @@ class DemandaRespondeControllerTest {
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), this.professor.getId(), advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), professor.getId(), advogadoId, "Corrigido", "Aguardando Professor", "Aguardando Advogado","02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 
 		DemandaRespondeDto demandaRespondeDto = new DemandaRespondeDto(null, demanda.getId(), estagiario.getId(), "Documentação completa", "Estagiário");

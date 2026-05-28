@@ -24,6 +24,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.professor.id,
 				d.demandaStatusAluno,
 				d.demandaStatusProfessor,
+				d.demandaStatusAdvogado,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade
@@ -41,6 +42,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.advogado.id,
 				d.demandaStatusAluno,
 				d.demandaStatusProfessor,
+				d.demandaStatusAdvogado,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade
@@ -82,6 +84,7 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 				d.professor.id,
 				d.demandaStatusAluno,
 				d.demandaStatusProfessor,
+				d.demandaStatusAdvogado,
 				d.prazoDocumentos,
 				d.prazo,
 				d.tempestividade

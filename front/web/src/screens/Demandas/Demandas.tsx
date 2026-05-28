@@ -18,15 +18,17 @@ export default function Demandas() {
     const [primeiraPagina, setPrimeiraPagina] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     
-    const [totalElements, setTotalElements] = useState(0);
+    //const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
-    const [size, setSize] = useState(10);
+    //const [size, setSize] = useState(10);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
     const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
     const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+
+    const size = 10;
 
     const navigate = useNavigate();
 
@@ -41,10 +43,9 @@ export default function Demandas() {
                     }
                 });
                 const pages: PageableResponse<Demanda> = response.data;
-                console.log(pages.content);
                 setDemandas(pages.content);
                 setTotalPages(pages.totalPages);
-                setTotalElements(pages.totalElements);
+                //setTotalElements(pages.totalElements);
                 setFilteredDemandas(response.data);
 
             } catch (error) {
@@ -78,7 +79,11 @@ export default function Demandas() {
                 return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Em Correção":
                 return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Aluno":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Aguardando Professor":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Advogado":
                 return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Prorrogada":
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
@@ -147,6 +152,7 @@ export default function Demandas() {
                                     <th>Prazo</th>
                                     <th className="text-center">Status Aluno</th>
                                     <th className="text-center">Status Professor</th>
+                                    <th className="text-center">Status Advogado</th>
                                     <th className="text-center">Editar</th>
                                     <th className="text-center">Comentar</th>
                                 </tr>
@@ -164,6 +170,9 @@ export default function Demandas() {
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
                                             {demanda.demandaStatusProfessor}
+                                        </td>
+                                        <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
+                                            {demanda.demandaStatusAdvogado}
                                         </td>
                                         <td className="text-center">
                                             <button

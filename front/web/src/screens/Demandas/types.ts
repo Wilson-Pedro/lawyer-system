@@ -19,6 +19,7 @@ export type Demanda = {
     advogadoId: string;
     demandaStatusAluno: string;
     demandaStatusProfessor: string;
+    demandaStatusAdvogado: string;
     prazo: string;
 }
 

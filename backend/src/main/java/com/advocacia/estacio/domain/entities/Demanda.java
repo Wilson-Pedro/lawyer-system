@@ -51,6 +51,9 @@ public class Demanda implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private DemandaStatus demandaStatusProfessor;
 
+	@Enumerated(EnumType.STRING)
+	private DemandaStatus demandaStatusAdvogado;
+
 	private LocalDate prazoDocumentos;
 
 	private LocalDate prazo;
@@ -64,7 +67,9 @@ public class Demanda implements Serializable {
 	public Demanda() {
 	}
 
-	public Demanda(Long id, String demanda, Estagiario estagiario, Professor professor, Advogado advogado, DemandaStatus demandaStatusAluno, DemandaStatus demandaStatusProfessor, LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
+	public Demanda(Long id, String demanda, Estagiario estagiario, Professor professor, Advogado advogado,
+				   DemandaStatus demandaStatusAluno, DemandaStatus demandaStatusProfessor, DemandaStatus demandaStatusAdvogado,
+				   LocalDate prazoDocumentos, LocalDate prazo, Tempestividade tempestividade) {
 		this.id = id;
 		this.demanda = demanda;
 		this.estagiario = estagiario;
@@ -72,6 +77,7 @@ public class Demanda implements Serializable {
 		this.advogado = advogado;
 		this.demandaStatusAluno = demandaStatusAluno;
 		this.demandaStatusProfessor = demandaStatusProfessor;
+		this.demandaStatusAdvogado = demandaStatusAdvogado;
 		this.prazoDocumentos = prazoDocumentos;
 		this.prazo = prazo;
 		this.tempestividade = tempestividade;
@@ -81,6 +87,7 @@ public class Demanda implements Serializable {
 		this.demanda = demandaDto.getDemanda();
 		this.demandaStatusAluno = DemandaStatus.toEnum(demandaDto.getDemandaStatusAluno());
 		this.demandaStatusProfessor = DemandaStatus.toEnum(demandaDto.getDemandaStatusProfessor());
+		this.demandaStatusAdvogado = DemandaStatus.toEnum(demandaDto.getDemandaStatusAdvogado());
 		this.prazoDocumentos = localDateToString(demandaDto.getPrazoDocumentos());
 		this.tempestividade = Tempestividade.toEnum(demandaDto.getTempestividade());
 	}
@@ -144,6 +151,14 @@ public class Demanda implements Serializable {
 
 	public DemandaStatus getDemandaStatusProfessor() {
 		return demandaStatusProfessor;
+	}
+
+	public DemandaStatus getDemandaStatusAdvogado() {
+		return demandaStatusAdvogado;
+	}
+
+	public void setDemandaStatusAdvogado(DemandaStatus demandaStatusAdvogado) {
+		this.demandaStatusAdvogado = demandaStatusAdvogado;
 	}
 
 	public void setDemandaStatusProfessor(DemandaStatus demandaStatusProfessor) {

@@ -66,8 +66,6 @@ class DemandaControllerTest {
 	private static final String URI = "/demandas";
 	
 	private static String TOKEN = "";
-
-	Professor professor;
 	
 	@Test
 	@Order(1)
@@ -84,13 +82,13 @@ class DemandaControllerTest {
 		
 		assertEquals(0, demandaRepository.count());
 
-		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
+		Professor professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 
 		Long advogadoId = advogadoService.salvar(testUtil.getAdvogadoDto()).getId();
 		
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), this.professor.getId(), advogadoId, "Em Correção", "Aguardando Professor", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Processos", estagiario.getId(), professor.getId(), advogadoId, "Em Correção", "Aguardando Professor", "Aguardando Advogado", "02/11/2025", 10, "Dentro do Prazo");
 		
 		String jsonRequest = objectMapper.writeValueAsString(demandaDto);
 		
@@ -104,8 +102,9 @@ class DemandaControllerTest {
 				.andExpect(jsonPath("$.estagiarioId", equalTo(estagiario.getId().intValue())))
 				//.andExpect(jsonPath("$.professorId", equalTo(professorId.intValue())))
 				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
-				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Em Correção")))
-				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Professor")))
+				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Aguardando Aluno")))
+				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Aluno")))
+				.andExpect(jsonPath("$.demandaStatusAdvogado", equalTo("Aguardando Aluno")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")))
 				.andExpect(jsonPath("$.tempestividade", equalTo("Dentro do Prazo")));
 		
@@ -123,16 +122,16 @@ class DemandaControllerTest {
 
 		Long professorId = atorRepository.findAll().get(0).getId();
 
-		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, professorId, advogadoId, "Corrigido", "Aguardando Professor", "02/11/2025", 13, "Dentro do Prazo");
+		DemandaDto demandaDto2 = new DemandaDto(null, "Organizar Processos", estagiarioId2, professorId, advogadoId, "Corrigido", "Aguardando Professor", "Aguardando Advogado", "02/11/2025", 13, "Dentro do Prazo");
 		demandaService.salvar(demandaDto2);
 
-		mockMvc.perform(get(URI + "/status/Corrigido?page=0&size=20")
+		mockMvc.perform(get(URI + "/status/Aguardando Aluno?page=0&size=20")
 						.header("Authorization", "Bearer " + TOKEN)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("$.content.length()").value(2))
 				.andExpect(jsonPath("content[0].demanda").value("Organizar Processos"))
-				.andExpect(jsonPath("content[0].demandaStatusAluno").value("Corrigido"));
+				.andExpect(jsonPath("content[0].demandaStatusAluno").value("Aguardando Aluno"));
 	}
 
     @Test
@@ -197,7 +196,7 @@ class DemandaControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$", hasSize(8)))
+				.andExpect(jsonPath("$", hasSize(DemandaStatus.values().length)))
 				.andExpect(jsonPath("$[0]", equalTo("Corrigido")))
 				.andExpect(jsonPath("$[1]", equalTo("Em Correção")))
 				.andExpect(jsonPath("$[2]", equalTo("Devolvido")))

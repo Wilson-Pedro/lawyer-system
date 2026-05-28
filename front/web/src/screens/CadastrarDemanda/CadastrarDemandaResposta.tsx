@@ -45,7 +45,7 @@ export default function CadastrarDemandaResposta() {
 
   const cadastrarDemandaResposta = async (e: React.FormEvent) => {
     e.preventDefault();
-    //const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     try {
       await axios.post(`${API_URL}/demandas/responde/`, {
         demandaId,

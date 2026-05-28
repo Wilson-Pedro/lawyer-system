@@ -12,12 +12,12 @@ export default function DemandaResposta() {
     const [demandaRespostas, setDemandaRespostas] = useState<DemandaResponse[]>([]);
         
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(10);
+    //const [size, setSize] = useState(10);
 
     const [primeiraPagina, setPrimeiraPagina] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     
-    const [totalElements, setTotalElements] = useState(0);
+    //const [totalElements, setTotalElements] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
@@ -26,6 +26,8 @@ export default function DemandaResposta() {
     const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
 
     const navigate = useNavigate();
+
+    const size = 10;
 
     const params = useParams();
     const demandaId = params.demandaId || '';
@@ -43,7 +45,7 @@ export default function DemandaResposta() {
                 const pages: PageableResponse<DemandaResponse> = response.data;
                 setDemandaRespostas(pages.content);
                 setTotalPages(pages.totalPages);
-                setTotalElements(pages.totalElements);
+                //setTotalElements(pages.totalElements);
             } catch (error) {
                 console.error(error);
             }

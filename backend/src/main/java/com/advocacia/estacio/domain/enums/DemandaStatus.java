@@ -13,7 +13,9 @@ public enum DemandaStatus {
 	FORA_DO_PRAZO(5, "Fora do Prazo"),
 	RECEBIDO(6, "Recebido"),
 	PROTOCOLADO(7, "Protocolado"),
-	AGUARDANDO_PROFESSOR(8, "Aguardando Professor");
+	AGUARDANDO_PROFESSOR(8, "Aguardando Professor"),
+	AGUARDANDO_ADVOGADO(9, "Aguardando Advogado"),
+	AGUARDANDO_ALUNO(10, "Aguardando Aluno");
 	
 	private Integer codigo;
 	

@@ -50,6 +50,9 @@ public class DemandaServiceImpl implements DemandaService {
 		demanda.setEstagiario(estagiario);
 		demanda.setProfessor(professor);
 		demanda.setAdvogado(advogado);
+		demanda.setDemandaStatusAluno(DemandaStatus.AGUARDANDO_ALUNO);
+		demanda.setDemandaStatusProfessor(DemandaStatus.AGUARDANDO_ALUNO);
+		demanda.setDemandaStatusAdvogado(DemandaStatus.AGUARDANDO_ALUNO);
 		return demandaRepository.save(demanda);
 	}
 
