@@ -93,6 +93,8 @@ export default function Demandas() {
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Devolvido":
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
+            case "Null":
+                return "bg-secondary text-center bg-opacity-25 text-secondary fw-semibold";
             default:
                 return "";
         }
@@ -169,10 +171,10 @@ export default function Demandas() {
                                             {demanda.demandaStatusAluno}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
-                                            {demanda.demandaStatusProfessor}
+                                            {demanda.demandaStatusProfessor === "Null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
-                                            {demanda.demandaStatusAdvogado}
+                                            {demanda.demandaStatusAdvogado === "Null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
                                         <td className="text-center">
                                             <button

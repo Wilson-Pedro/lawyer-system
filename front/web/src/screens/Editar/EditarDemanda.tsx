@@ -121,7 +121,7 @@ export default function EditarDemanda() {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Status da demanda</label>
+          <label className={styles.label}>Status da demanda (Aluno)</label>
           <select
             className={styles.input}
             onChange={selecionarDemandaStatus}

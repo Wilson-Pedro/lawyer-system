@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services.impl;
 
+import com.advocacia.estacio.domain.dto.DemandaStatusDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.UserRole;
@@ -51,8 +52,8 @@ public class DemandaServiceImpl implements DemandaService {
 		demanda.setProfessor(professor);
 		demanda.setAdvogado(advogado);
 		demanda.setDemandaStatusAluno(DemandaStatus.AGUARDANDO_ALUNO);
-		demanda.setDemandaStatusProfessor(DemandaStatus.AGUARDANDO_ALUNO);
-		demanda.setDemandaStatusAdvogado(DemandaStatus.AGUARDANDO_ALUNO);
+		demanda.setDemandaStatusProfessor(DemandaStatus.NULL);
+		demanda.setDemandaStatusAdvogado(DemandaStatus.NULL);
 		return demandaRepository.save(demanda);
 	}
 
@@ -81,9 +82,11 @@ public class DemandaServiceImpl implements DemandaService {
 	}
 
 	@Override
-	public void mudarDemandaStatus(Long id, String status) {
+	public void mudarDemandaStatus(Long id, DemandaStatusDto dto) {
 		Demanda demanda = buscarPorId(id);
-		demanda.setDemandaStatusAluno(DemandaStatus.toEnum(status));
+		demanda.setDemandaStatusAluno(DemandaStatus.toEnum(dto.getDemandaStatusAluno()));
+		demanda.setDemandaStatusProfessor(DemandaStatus.toEnum(dto.getDemandaStatusProfessor()));
+		demanda.setDemandaStatusAdvogado(DemandaStatus.toEnum(dto.getDemandaStatusAdvogado()));
 		demandaRepository.save(demanda);
 	}
 

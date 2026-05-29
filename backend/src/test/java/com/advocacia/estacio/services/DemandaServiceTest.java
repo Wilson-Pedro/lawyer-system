@@ -1,5 +1,6 @@
 package com.advocacia.estacio.services;
 
+import com.advocacia.estacio.domain.dto.DemandaStatusDto;
 import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
@@ -84,8 +85,8 @@ class DemandaServiceTest {
 		assertEquals("2025-11-02", demanda.getPrazoDocumentos().toString());
 		assertEquals(Tempestividade.DENTRO_DO_PRAZO, demanda.getTempestividade());
 		assertEquals(DemandaStatus.AGUARDANDO_ALUNO, demanda.getDemandaStatusAluno());
-		assertEquals(DemandaStatus.AGUARDANDO_ALUNO, demanda.getDemandaStatusProfessor());
-		assertEquals(DemandaStatus.AGUARDANDO_ALUNO, demanda.getDemandaStatusAdvogado());
+		assertEquals(DemandaStatus.NULL, demanda.getDemandaStatusProfessor());
+		assertEquals(DemandaStatus.NULL, demanda.getDemandaStatusAdvogado());
 
 		assertEquals(1, demandaRepository.count());
 	}
@@ -106,23 +107,54 @@ class DemandaServiceTest {
 		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
 		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAluno());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusProfessor());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAdvogado());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusProfessor());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusAdvogado());
 	}
 
 	@Test
 	@Order(4)
-	@DisplayName("Deve Mudar Demanda Status Pelo Service")
-	void mudar_demanda_status() {
+	@DisplayName("Deve Mudar Demanda Status Do aluno Pelo Service")
+	void mudar_demanda_status_do_aluno() {
 
 		Long id = demandaRepository.findAll().get(0).getId();
-		String status = "Devolvido";
+		DemandaStatusDto demandaStatusDto = new DemandaStatusDto("Devolvido", "Null", "Null");
 
-		demandaService.mudarDemandaStatus(id, status);
+		demandaService.mudarDemandaStatus(id, demandaStatusDto);
 
 		Demanda demanda = demandaRepository.findById(id).get();
 
 		assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatusAluno());
+	}
+
+	@Test
+	@Order(5)
+	@DisplayName("Deve Mudar Demanda Status Do professor Pelo Service")
+	void mudar_demanda_status_do_professor() {
+
+		Long id = demandaRepository.findAll().get(0).getId();
+		DemandaStatusDto demandaStatusDto = new DemandaStatusDto("Devolvido", "Recebido", "Null");
+
+		demandaService.mudarDemandaStatus(id, demandaStatusDto);
+
+		Demanda demanda = demandaRepository.findById(id).get();
+
+		assertEquals(DemandaStatus.RECEBIDO, demanda.getDemandaStatusProfessor());
+	}
+
+
+	@Test
+	@Order(6)
+	@DisplayName("Deve Mudar Demanda Status Do advogado Pelo Service")
+	void mudar_demanda_status_do_advogado() {
+
+		Long id = demandaRepository.findAll().get(0).getId();
+		DemandaStatusDto demandaStatusDto = new DemandaStatusDto("Devolvido", "Recebido", "Protocolado");
+
+		demandaService.mudarDemandaStatus(id, demandaStatusDto);
+
+		Demanda demanda = demandaRepository.findById(id).get();
+
+		assertEquals(DemandaStatus.PROTOCOLADO, demanda.getDemandaStatusAdvogado());
 	}
 	
 	@Test
@@ -140,8 +172,8 @@ class DemandaServiceTest {
 		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
 		assertEquals("Devolvido", demandas.getContent().get(0).getDemandaStatusAluno());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusProfessor());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAdvogado());
+		assertEquals("Recebido", demandas.getContent().get(0).getDemandaStatusProfessor());
+		assertEquals("Protocolado", demandas.getContent().get(0).getDemandaStatusAdvogado());
 	}
 
 	@Test
@@ -168,8 +200,8 @@ class DemandaServiceTest {
 		assertEquals("15/11/2025", demandas.getContent().get(0).getPrazo());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
 		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAluno());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusProfessor());
-		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAdvogado());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusProfessor());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusAdvogado());
 	}
 
 	@Test

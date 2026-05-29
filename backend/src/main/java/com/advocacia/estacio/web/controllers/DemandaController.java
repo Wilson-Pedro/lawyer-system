@@ -1,5 +1,6 @@
 package com.advocacia.estacio.web.controllers;
 
+import com.advocacia.estacio.domain.dto.DemandaStatusDto;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,19 @@ public class DemandaController {
 		return ResponseEntity.ok(demandaStatus);
 	}
 
-    @PatchMapping("/{id}/change")
-    public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam(defaultValue = "Em Correção") String status) {
-        demandaService.mudarDemandaStatus(id, status);
-        return ResponseEntity.noContent().build();
-    }
+//    @PatchMapping("/{id}/change")
+//    public ResponseEntity<Void> mudarDemandaStatus(@PathVariable Long id, @RequestParam(defaultValue = "Em Correção") String status) {
+//        demandaService.mudarDemandaStatus(id, status);
+//        return ResponseEntity.noContent().build();
+//    }
+
+	@PutMapping("/{id}/update")
+	public ResponseEntity<Void> mudarDemandaStatus(
+			@PathVariable Long id,
+			@RequestBody DemandaStatusDto demandaStatusDto) {
+		demandaService.mudarDemandaStatus(id, demandaStatusDto);
+		return ResponseEntity.noContent().build();
+	}
 	
 	@GetMapping("/estagiario/{estagiarioId}")
 	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorEstagiario(

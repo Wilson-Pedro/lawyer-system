@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.advocacia.estacio.domain.dto.DemandaStatusDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
@@ -103,8 +104,8 @@ class DemandaControllerTest {
 				//.andExpect(jsonPath("$.professorId", equalTo(professorId.intValue())))
 				.andExpect(jsonPath("$.advogadoId", equalTo(advogadoId.intValue())))
 				.andExpect(jsonPath("$.demandaStatusAluno", equalTo("Aguardando Aluno")))
-				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Aguardando Aluno")))
-				.andExpect(jsonPath("$.demandaStatusAdvogado", equalTo("Aguardando Aluno")))
+				.andExpect(jsonPath("$.demandaStatusProfessor", equalTo("Null")))
+				.andExpect(jsonPath("$.demandaStatusAdvogado", equalTo("Null")))
 				.andExpect(jsonPath("$.prazo", equalTo("12/11/2025")))
 				.andExpect(jsonPath("$.tempestividade", equalTo("Dentro do Prazo")));
 		
@@ -140,10 +141,14 @@ class DemandaControllerTest {
     void mudar_demanda_status() throws Exception {
 
         Long id = demandaRepository.findAll().get(0).getId();
-        String status = "Devolvido";
+		DemandaStatusDto demandaStatusDto = new DemandaStatusDto("Devolvido", "Null", "Null");
 
-        mockMvc.perform(patch(URI + "/" + id + "/change?status=" + status)
-                        .header("Authorization", "Bearer " + TOKEN))
+		String jsonRequest = objectMapper.writeValueAsString(demandaStatusDto);
+
+        mockMvc.perform(put(URI + "/" + id + "/update")
+                        .header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(jsonRequest))
                 .andExpect(status().isNoContent());
 
         Demanda demanda = demandaRepository.findById(id).get();

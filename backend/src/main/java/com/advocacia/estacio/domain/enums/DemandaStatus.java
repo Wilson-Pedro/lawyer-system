@@ -15,7 +15,8 @@ public enum DemandaStatus {
 	PROTOCOLADO(7, "Protocolado"),
 	AGUARDANDO_PROFESSOR(8, "Aguardando Professor"),
 	AGUARDANDO_ADVOGADO(9, "Aguardando Advogado"),
-	AGUARDANDO_ALUNO(10, "Aguardando Aluno");
+	AGUARDANDO_ALUNO(10, "Aguardando Aluno"),
+	NULL(11, "Null");
 	
 	private Integer codigo;
 	
