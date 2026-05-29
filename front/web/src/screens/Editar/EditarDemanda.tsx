@@ -10,7 +10,11 @@ export default function EditarDemanda() {
   const navigate = useNavigate();
 
   const [demanda, setDemanda] = useState<string>("");
-  const [demandaStatus, setDemandaStatus] = useState<string>("");
+
+  const [demandaStatusAluno, setDemandaStatusAluno] = useState<string>("");
+  const [demandaStatusProfessor, setDemandaStatusProfessor] = useState<string>("");
+  const [demandaStatusAdvogado, setDemandaStatusAdvogado] = useState<string>("");
+  
   const [prazoFinal, setPrazoFinal] = useState<string>("");
 
   const [nomeEstagiario, setNomeEstagiario] = useState<string>("");
@@ -36,9 +40,12 @@ export default function EditarDemanda() {
         });
         const dados = response.data;
         setDemanda(dados.demanda);
+        console.log('demanda: ', dados);
         setNomeEstagiario(dados.estagiarioNome);
         setPrazoFinal(dados.prazoFinal);
-        setDemandaStatus(dados.demandaStatus);
+        setDemandaStatusAluno(dados.demandaStatusAluno);
+        setDemandaStatusProfessor(dados.demandaStatusProfessor);
+        setDemandaStatusProfessor(dados.demandaStatusAdvogado);
 
       } catch(error) {
         console.log(error);
@@ -54,13 +61,14 @@ export default function EditarDemanda() {
      const token = localStorage.getItem('token');
 
     try {
-      await axios.patch(`${API_URL}/demandas/${demandaId}/change`, null,
+      await axios.put(`${API_URL}/demandas/${demandaId}/update`, {
+        demandaStatusAluno: demandaStatusAluno,
+        demandaStatusProfessor: demandaStatusProfessor,
+        demandaStatusAdvogado: demandaStatusAdvogado,
+      },
         {
           headers: {
               Authorization: `Bearer ${token}`
-          },
-          params: {
-            status: demandaStatus
           }
         }
       );
@@ -77,8 +85,16 @@ export default function EditarDemanda() {
     }
   };
 
-  const selecionarDemandaStatus = async (e: any) => {
-    setDemandaStatus(e.target.value);
+  const selecionarDemandaStatusAluno = async (e: any) => {
+    setDemandaStatusAluno(e.target.value);
+  };
+
+  const selecionarDemandaStatusProfessor = async (e: any) => {
+    setDemandaStatusProfessor(e.target.value);
+  };
+
+  const selecionarDemandaStatusAdvogado = async (e: any) => {
+    setDemandaStatusAdvogado(e.target.value);
   };
 
   const token = localStorage.getItem("token");
@@ -124,8 +140,8 @@ export default function EditarDemanda() {
           <label className={styles.label}>Status da demanda (Aluno)</label>
           <select
             className={styles.input}
-            onChange={selecionarDemandaStatus}
-            value={demandaStatus}
+            onChange={selecionarDemandaStatusAluno}
+            value={demandaStatusAluno}
             required
           >
             <option value="" disabled selected></option>
@@ -135,6 +151,36 @@ export default function EditarDemanda() {
           </select>
         </div>
 
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Status da demanda (Proessor)</label>
+          <select
+            className={styles.input}
+            onChange={selecionarDemandaStatusProfessor}
+            value={demandaStatusProfessor}
+            required
+          >
+            <option value="" disabled selected></option>
+            <option value="Em Correção">Em Correção</option>
+            <option value="Corrigido">Corrigido</option>
+            <option value="Devolvido">Devolvido</option>
+          </select>
+        </div>
+
+        
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Status da demanda (Advogado)</label>
+          <select
+            className={styles.input}
+            onChange={selecionarDemandaStatusAdvogado}
+            value={demandaStatusAdvogado}
+            required
+          >
+            <option value="" disabled selected></option>
+            <option value="Em Correção">Em Correção</option>
+            <option value="Corrigido">Corrigido</option>
+            <option value="Devolvido">Devolvido</option>
+          </select>
+        </div>
 
           <div className={styles.inputGroup}>
             <label className={styles.label}>Prazo Final</label>

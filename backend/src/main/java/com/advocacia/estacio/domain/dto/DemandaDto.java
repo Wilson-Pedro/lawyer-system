@@ -96,6 +96,20 @@ public class DemandaDto {
 		this.diasPrazo = diasPrazo;
 		this.tempestividade = tempestividade;
 	}
+
+	public DemandaDto(Long id, String demanda,
+					  Long estagiarioId, Long professorId, Long advogadoId,
+					  String prazoDocumentos,
+					  Integer diasPrazo, String tempestividade) {
+		this.id = id;
+		this.demanda = demanda;
+		this.estagiarioId = estagiarioId;
+		this.advogadoId = advogadoId;
+		this.professorId = professorId;
+		this.prazoDocumentos = prazoDocumentos;
+		this.diasPrazo = diasPrazo;
+		this.tempestividade = tempestividade;
+	}
 	
 	public DemandaDto(Demanda demanda) {
 		this.id = demanda.getId();
