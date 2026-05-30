@@ -43,7 +43,6 @@ export default function Demandas() {
                 const pages: PageableResponse<Demanda> = response.data;
                 setDemandas(pages.content);
                 setTotalPages(pages.totalPages);
-                //setTotalElements(pages.totalElements);
                 setFilteredDemandas(response.data);
 
             } catch (error) {

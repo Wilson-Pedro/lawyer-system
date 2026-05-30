@@ -51,11 +51,6 @@ export default function EditarDemanda() {
         setDemandaStatusProfessor(dados.demandaStatusProfessor);
         setDemandaStatusAdvogado(dados.demandaStatusAdvogado);
 
-        console.log('GET-------------------------------------------------------------------------: ')
-        console.log('aluno: ' + demandaStatusAluno);
-        console.log('professor: ' + demandaStatusProfessor);
-        console.log('advogado: ' + demandaStatusAdvogado);
-
       } catch(error) {
         console.log(error);
       }
@@ -68,11 +63,6 @@ export default function EditarDemanda() {
     e.preventDefault();
 
      const token = localStorage.getItem('token');
-
-     console.log('EDITAR--------------------------------------------------------------------------: ')
-     console.log('aluno: ', demandaStatusAluno);
-     console.log('professor: ', demandaStatusProfessor);
-     console.log('advogado: ', demandaStatusAdvogado);
      
     try {
       await axios.put(`${API_URL}/demandas/${demandaId}/update`, {
