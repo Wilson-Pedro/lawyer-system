@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import styles from "./EditarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
+import { scrollToTop } from "../../utils/Utils";
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -18,6 +19,8 @@ export default function EditarDemanda() {
   const [prazoFinal, setPrazoFinal] = useState<string>("");
 
   const [nomeEstagiario, setNomeEstagiario] = useState<string>("");
+  const [nomeProfessor, setNomeProfessor] = useState<string>("");
+  const [nomeAdvogado, setNomeAdvogado] = useState<string>("");
 
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
@@ -40,12 +43,18 @@ export default function EditarDemanda() {
         });
         const dados = response.data;
         setDemanda(dados.demanda);
-        console.log('demanda: ', dados);
         setNomeEstagiario(dados.estagiarioNome);
+        setNomeProfessor(dados.professorNome);
+        setNomeAdvogado(dados.advogadoNome);
         setPrazoFinal(dados.prazoFinal);
         setDemandaStatusAluno(dados.demandaStatusAluno);
         setDemandaStatusProfessor(dados.demandaStatusProfessor);
-        setDemandaStatusProfessor(dados.demandaStatusAdvogado);
+        setDemandaStatusAdvogado(dados.demandaStatusAdvogado);
+
+        console.log('GET-------------------------------------------------------------------------: ')
+        console.log('aluno: ' + demandaStatusAluno);
+        console.log('professor: ' + demandaStatusProfessor);
+        console.log('advogado: ' + demandaStatusAdvogado);
 
       } catch(error) {
         console.log(error);
@@ -60,6 +69,11 @@ export default function EditarDemanda() {
 
      const token = localStorage.getItem('token');
 
+     console.log('EDITAR--------------------------------------------------------------------------: ')
+     console.log('aluno: ', demandaStatusAluno);
+     console.log('professor: ', demandaStatusProfessor);
+     console.log('advogado: ', demandaStatusAdvogado);
+     
     try {
       await axios.put(`${API_URL}/demandas/${demandaId}/update`, {
         demandaStatusAluno: demandaStatusAluno,
@@ -72,6 +86,8 @@ export default function EditarDemanda() {
           }
         }
       );
+
+      scrollToTop();
 
       setMostrarToast(true);
       setMensagemToast("Demanda editada com sucesso.");
@@ -129,6 +145,33 @@ export default function EditarDemanda() {
             className={styles.input}
             placeholder="Digite o nome do estagiário"
             value={nomeEstagiario}
+            onChange={(e) => setNomeEstagiario(e.target.value)}
+            required
+            disabled
+          />
+
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Professor</label>
+          <input
+            className={styles.input}
+            placeholder="Digite o nome do estagiário"
+            value={nomeProfessor}
+            onChange={(e) => setNomeEstagiario(e.target.value)}
+            required
+            disabled
+          />
+
+        </div>
+
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Advogado</label>
+          <input
+            className={styles.input}
+            placeholder="Digite o nome do estagiário"
+            value={nomeAdvogado}
             onChange={(e) => setNomeEstagiario(e.target.value)}
             required
             disabled

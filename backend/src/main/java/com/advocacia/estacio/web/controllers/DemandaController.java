@@ -32,6 +32,8 @@ public class DemandaController {
     @GetMapping("/{demandaId}")
     public ResponseEntity<DemandaDto> buscarPorId(@PathVariable Long demandaId) {
         DemandaDto demandaDto = demandaService.buscarPorId(demandaId).toDto();
+		System.out.println("----------------------------------------------------------");
+		System.out.println("demandaDto: " + demandaDto);
         return ResponseEntity.ok(demandaDto);
     }
 
@@ -56,6 +58,8 @@ public class DemandaController {
 			@PathVariable Long id,
 			@RequestBody DemandaStatusDto demandaStatusDto) {
 		demandaService.mudarDemandaStatus(id, demandaStatusDto);
+		System.out.println("===================================================================");
+		System.out.println("demandaStatusDto: " + demandaStatusDto);
 		return ResponseEntity.noContent().build();
 	}
 	

@@ -28,4 +28,13 @@ public class DemandaStatusDto {
 	public String getDemandaStatusAdvogado() {
 		return demandaStatusAdvogado;
 	}
+
+	@Override
+	public String toString() {
+		return "DemandaStatusDto{" +
+				"demandaStatusAluno='" + demandaStatusAluno + '\'' +
+				", demandaStatusProfessor='" + demandaStatusProfessor + '\'' +
+				", demandaStatusAdvogado='" + demandaStatusAdvogado + '\'' +
+				'}';
+	}
 }

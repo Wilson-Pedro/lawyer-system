@@ -2,6 +2,8 @@
 
 front/web/node_module
 
+front/web/.env
+
 front/mobile/node_module
 
-front/mobile/
+front/mobile

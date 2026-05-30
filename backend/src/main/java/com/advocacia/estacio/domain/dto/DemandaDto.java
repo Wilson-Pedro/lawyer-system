@@ -115,6 +115,8 @@ public class DemandaDto {
 		this.id = demanda.getId();
 		this.demanda = demanda.getDemanda();
 		this.estagiarioNome = demanda.getEstagiario().getNome();
+		this.professorNome = demanda.getProfessor().getNome();
+		this.advogadoNome = demanda.getAdvogado().getNome();
 		this.estagiarioId = demanda.getEstagiario().getId();
 		this.advogadoId = demanda.getAdvogado().getId();
 		this.demandaStatusAluno = demanda.getDemandaStatusAluno().getStatus();
@@ -191,5 +193,26 @@ public class DemandaDto {
 
 	public String getTempestividade() {
 		return tempestividade;
+	}
+
+	@Override
+	public String toString() {
+		return "DemandaDto{" +
+				"id=" + id +
+				", demanda='" + demanda + '\'' +
+				", estagiarioNome='" + estagiarioNome + '\'' +
+				", professorNome='" + professorNome + '\'' +
+				", advogadoNome='" + advogadoNome + '\'' +
+				", estagiarioId=" + estagiarioId +
+				", professorId=" + professorId +
+				", advogadoId=" + advogadoId +
+				", demandaStatusAluno='" + demandaStatusAluno + '\'' +
+				", demandaStatusProfessor='" + demandaStatusProfessor + '\'' +
+				", demandaStatusAdvogado='" + demandaStatusAdvogado + '\'' +
+				", prazoDocumentos='" + prazoDocumentos + '\'' +
+				", prazo='" + prazo + '\'' +
+				", diasPrazo=" + diasPrazo +
+				", tempestividade='" + tempestividade + '\'' +
+				'}';
 	}
 }

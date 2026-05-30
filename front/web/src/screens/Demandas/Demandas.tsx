@@ -18,10 +18,8 @@ export default function Demandas() {
     const [primeiraPagina, setPrimeiraPagina] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     
-    //const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
-    //const [size, setSize] = useState(10);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
@@ -171,10 +169,10 @@ export default function Demandas() {
                                             {demanda.demandaStatusAluno}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
-                                            {demanda.demandaStatusProfessor === "Null" ? "Aguardando..." : demanda.demandaStatusProfessor}
+                                            {demanda.demandaStatusProfessor.toLocaleLowerCase() == "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
-                                            {demanda.demandaStatusAdvogado === "Null" ? "Aguardando..." : demanda.demandaStatusProfessor}
+                                            {demanda.demandaStatusAdvogado.toLocaleLowerCase() == "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
                                         </td>
                                         <td className="text-center">
                                             <button
