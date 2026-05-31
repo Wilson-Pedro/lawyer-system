@@ -193,6 +193,20 @@ class DemandaControllerTest {
 	}
 
 	@Test
+	@DisplayName("Deve Buscar Demanda Por Professor Id No Banco de Dados Pelo Controller")
+	void buscar_demandas_por_professorId() throws Exception {
+
+		Professor professor = (Professor) atorRepository.findAll().get(0);
+
+		mockMvc.perform(get(URI + "/professor/" + professor.getId())
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(2))
+				.andExpect(jsonPath("content[0].professorNome").value("Fabio Junior"));
+	}
+
+	@Test
 	@DisplayName("Deve Buscar Demanda Status do ADMIN Pelo Controller")
 	void buscar_demanda_status_admin() throws Exception {
 

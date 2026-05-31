@@ -77,6 +77,15 @@ public class DemandaController {
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 
+    @GetMapping("/professor/{professorId}")
+    public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorProfessor(
+            @PathVariable Long professorId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+        Page<DemandaDto> pagesDto = demandaService.buscarTodosPorProfessorId(professorId, page, size);
+        return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
+    }
+
 	@GetMapping("/status/{demandaStatus}")
 	public ResponseEntity<PageResponseDto<DemandaDto>> buscarTodosPorStatus(
 			@PathVariable String demandaStatus,

@@ -5,6 +5,7 @@ import com.advocacia.estacio.domain.entities.Advogado;
 import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.Tempestividade;
+import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UserRole;
 import com.advocacia.estacio.repositories.AtorRepository;
 import org.junit.jupiter.api.*;
@@ -50,8 +51,6 @@ class DemandaServiceTest {
 	
 	@Autowired
 	TestUtil testUtil;
-
-	Professor professor;
 	
 	@Test
 	@Order(1)
@@ -65,14 +64,14 @@ class DemandaServiceTest {
 	@DisplayName("Deve Salvar Demanda No Banco de Dados Pelo Service")
 	void salvar_demanda() {
 
-		this.professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
+		Professor professor = (Professor) atorService.salvar(testUtil.getAtores().get(2));
 		
 		assertEquals(0, demandaRepository.count());
 		
 		Estagiario estagiario = estagiarioRepository.save(testUtil.getEstagiario());
 		Advogado advogado = advogadoService.salvar(testUtil.getAdvogadoDto());
 
-		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), this.professor.getId(), advogado.getId(), "Em Correção", "Aguardando Professor", "Aguardando Advogado", "02/11/2025", 10, "Dentro do Prazo");
+		DemandaDto demandaDto = new DemandaDto(null, "Atualizar Documentos", estagiario.getId(), professor.getId(), advogado.getId(), "Em Correção", "Aguardando Professor", "Aguardando Advogado", "02/11/2025", 10, "Dentro do Prazo");
 		Demanda demanda = demandaService.salvar(demandaDto);
 		
 		assertNotNull(demanda);
@@ -174,6 +173,30 @@ class DemandaServiceTest {
 		assertEquals("Devolvido", demandas.getContent().get(0).getDemandaStatusAluno());
 		assertEquals("Recebido", demandas.getContent().get(0).getDemandaStatusProfessor());
 		assertEquals("Protocolado", demandas.getContent().get(0).getDemandaStatusAdvogado());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demandas Pelo Estário Id No Banco de Dados Pelo Service")
+	void buscar_demandas_por_professorId() {
+
+		Professor professor = (Professor) atorRepository.findAll().get(0);
+
+		Page<DemandaDto> demandas = demandaService.buscarTodosPorProfessorId(professor.getId(), 0, 20);
+
+		System.out.println("================================");
+		System.out.println(demandas.getContent());
+
+		assertNotNull(demandas);
+		assertEquals("Organizar Processos", demandas.getContent().get(0).getDemanda());
+		assertEquals("João Miguel", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("Fabio Junior", demandas.getContent().get(0).getProfessorNome());
+		assertEquals("Mauricio Silva", demandas.getContent().get(0).getAdvogadoNome());
+		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
+		assertEquals("15/11/2025", demandas.getContent().get(0).getPrazo());
+		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
+		assertEquals("Aguardando Aluno", demandas.getContent().get(0).getDemandaStatusAluno());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusProfessor());
+		assertEquals("Null", demandas.getContent().get(0).getDemandaStatusAdvogado());
 	}
 
 	@Test

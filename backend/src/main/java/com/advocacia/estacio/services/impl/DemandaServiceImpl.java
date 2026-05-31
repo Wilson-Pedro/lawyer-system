@@ -74,6 +74,11 @@ public class DemandaServiceImpl implements DemandaService {
 		return demandaRepository.buscarTodosPorUserId(userId, pageable);
 	}
 
+	@Override
+	public Page<DemandaDto> buscarTodosPorProfessorId(Long professorId, int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return demandaRepository.buscarTodosPorProfessorId(professorId, pageable);
+	}
 
 	@Override
 	public Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size) {
