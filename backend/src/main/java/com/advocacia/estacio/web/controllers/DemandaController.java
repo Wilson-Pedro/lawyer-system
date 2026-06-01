@@ -73,7 +73,7 @@ public class DemandaController {
 			@PathVariable Long advogadoId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size) {
-		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorUserId(advogadoId, page, size);
+		Page<DemandaDto> pagesDto = demandaService.buscarTodosPorAdvogadoId(advogadoId, page, size);
 		return ResponseEntity.ok(new PageResponseDto<>(pagesDto));
 	}
 

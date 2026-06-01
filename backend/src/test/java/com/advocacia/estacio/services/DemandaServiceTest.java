@@ -7,6 +7,7 @@ import com.advocacia.estacio.domain.enums.DemandaStatus;
 import com.advocacia.estacio.domain.enums.Tempestividade;
 import com.advocacia.estacio.domain.enums.TipoDoAtor;
 import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AtorRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ class DemandaServiceTest {
 
 	@Autowired
 	AdvogadoService advogadoService;
+
+	@Autowired
+	AdvogadoRepository advogadoRepository;
 
 	@Autowired
 	AtorService atorService;
@@ -167,6 +171,27 @@ class DemandaServiceTest {
 		assertNotNull(demandas);
 		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
 		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("12/11/2025", demandas.getContent().get(0).getPrazo());
+		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
+		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());
+		assertEquals("Devolvido", demandas.getContent().get(0).getDemandaStatusAluno());
+		assertEquals("Recebido", demandas.getContent().get(0).getDemandaStatusProfessor());
+		assertEquals("Protocolado", demandas.getContent().get(0).getDemandaStatusAdvogado());
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demandas Pelo Advogado Id No Banco de Dados Pelo Service")
+	void buscar_demandas_por_advogadoId() {
+
+		Long advogadoId = advogadoRepository.findAll().get(0).getId();
+
+		Page<DemandaDto> demandas = demandaService.buscarTodosPorAdvogadoId(advogadoId, 0, 20);
+
+		assertNotNull(demandas);
+		assertEquals("Atualizar Documentos", demandas.getContent().get(0).getDemanda());
+		assertEquals("Pedro Lucas", demandas.getContent().get(0).getEstagiarioNome());
+		assertEquals("Fabio Junior", demandas.getContent().get(0).getProfessorNome());
+		assertEquals("Carlos Silva", demandas.getContent().get(0).getAdvogadoNome());
 		assertEquals("12/11/2025", demandas.getContent().get(0).getPrazo());
 		assertEquals("2/11/2025", demandas.getContent().get(0).getPrazoDocumentos());
 		assertEquals("Dentro do Prazo", demandas.getContent().get(0).getTempestividade());

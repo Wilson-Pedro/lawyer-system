@@ -13,7 +13,7 @@ const API_URL = process.env.REACT_APP_API;
 
 export default function HomeProfessor() {
 
-  const [advogadoId, setAdvogadoId] = useState<number | null>(null);
+  const [professorId, setProfessorId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
@@ -23,12 +23,12 @@ export default function HomeProfessor() {
       
       const fetchIdUser = async () => {
           try {
-              const response = await axios.get<Response>(`${API_URL}/advogados/buscarId/email/${email}`, {
+              const response = await axios.get<Response>(`${API_URL}/atores/buscarId/email/${email}`, {
                   headers: {
                       Authorization: `Bearer ${token}`
                   }
               });
-              setAdvogadoId(response.data.id);
+              setProfessorId(response.data.id);
           } catch (error) {
                 console.error(error);
             }
@@ -43,7 +43,7 @@ export default function HomeProfessor() {
   if(role !== 'PROFESSOR') return <Navigate to="/login" />
 
   const menuItems: MenuItem[] = [
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/advogado/${advogadoId}`, variant: "warning" },
+    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/professor/${professorId}`, variant: "warning" },
     { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
   ];
 

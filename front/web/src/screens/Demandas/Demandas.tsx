@@ -168,10 +168,10 @@ export default function Demandas() {
                                             {demanda.demandaStatusAluno}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
-                                            {demanda.demandaStatusProfessor.toLocaleLowerCase() == "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
+                                            {demanda.demandaStatusProfessor.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
                                         <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
-                                            {demanda.demandaStatusAdvogado.toLocaleLowerCase() == "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
+                                            {demanda.demandaStatusAdvogado.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
                                         </td>
                                         <td className="text-center">
                                             <button

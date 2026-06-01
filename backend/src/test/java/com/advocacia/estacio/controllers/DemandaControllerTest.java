@@ -10,6 +10,7 @@ import com.advocacia.estacio.domain.dto.DemandaStatusDto;
 import com.advocacia.estacio.domain.entities.Demanda;
 import com.advocacia.estacio.domain.entities.Professor;
 import com.advocacia.estacio.domain.enums.DemandaStatus;
+import com.advocacia.estacio.repositories.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AtorRepository;
 import com.advocacia.estacio.services.AdvogadoService;
 import com.advocacia.estacio.services.AtorService;
@@ -51,6 +52,9 @@ class DemandaControllerTest {
 
 	@Autowired
 	AdvogadoService advogadoService;
+
+	@Autowired
+	AdvogadoRepository advogadoRepository;
 
 	@Autowired
 	DemandaService demandaService;
@@ -190,6 +194,20 @@ class DemandaControllerTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.content.length()").value(1))
 				.andExpect(jsonPath("content[0].estagiarioNome").value("Pedro Lucas"));
+	}
+
+	@Test
+	@DisplayName("Deve Buscar Demanda Por Advogado Id No Banco de Dados Pelo Controller")
+	void buscar_demandas_por_advogadoId() throws Exception {
+
+		Long advogadoId = advogadoRepository.findAll().get(0).getId();
+
+		mockMvc.perform(get(URI + "/advogado/" + advogadoId)
+						.header("Authorization", "Bearer " + TOKEN)
+						.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.content.length()").value(1))
+				.andExpect(jsonPath("content[0].advogadoNome").value("Carlos Silva"));
 	}
 
 	@Test

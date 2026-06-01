@@ -20,7 +20,9 @@ public interface DemandaService {
 	
 	Page<DemandaDto> buscarTodosPorUserId(Long estagiarioId, int page, int size);
 
-	Page<DemandaDto> buscarTodosPorProfessorId(Long advogadoId, int page, int size);
+	Page<DemandaDto> buscarTodosPorProfessorId(Long professorId, int page, int size);
+
+	Page<DemandaDto> buscarTodosPorAdvogadoId(Long advogadoId, int page, int size);
 	
 	Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size);
 

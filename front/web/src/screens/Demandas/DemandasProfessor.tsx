@@ -9,14 +9,14 @@ import { DemandaAdvogado, DemandaProfessor } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
 
-export default function DemandasAdvogado() {
-    const [demandas, setDemandas] = useState<DemandaAdvogado[]>([]);
-    const [filteredDemandas, setFilteredDemandas] = useState<DemandaAdvogado[]>([]);
+export default function DemandasProfessor() {
+    const [demandas, setDemandas] = useState<DemandaProfessor[]>([]);
+    const [filteredDemandas, setFilteredDemandas] = useState<DemandaProfessor[]>([]);
     const [busca, setBusca] = useState("");
     const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
     
     const [page, setPage] = useState(0);
-    //const [size, setSize] = useState(10);
+    const [size, setSize] = useState(10);
 
     const [primeiraPagina, setPrimeiraPagina] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -31,16 +31,14 @@ export default function DemandasAdvogado() {
     const navigate = useNavigate();
 
     const params = useParams();
-    const advogadoId = params.advogadoId || "";
-
-    const size = 10;
+    const professorId = params.professorId || "";
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         const fetchDemandas = async () => {
             try {
-                const response = await axios.get(`${API_URL}/demandas/advogado/${advogadoId}?page=${page}&size=${size}`, {
+                const response = await axios.get(`${API_URL}/demandas/professor/${professorId}?page=${page}&size=${size}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -55,7 +53,7 @@ export default function DemandasAdvogado() {
             }
         };
         fetchDemandas();
-    }, [statusFiltro, advogadoId, page, size]);
+    }, [statusFiltro, professorId, page, size]);
 
     useEffect(() => {
         let dados = [...demandas]
@@ -106,7 +104,7 @@ export default function DemandasAdvogado() {
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
                 <span className="navbar-brand fw-bold fs-4">Demandas</span>
-                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/advogado")}>
+                <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/professor")}>
                     ← Voltar
                 </button>
             </nav>

@@ -81,6 +81,12 @@ public class DemandaServiceImpl implements DemandaService {
 	}
 
 	@Override
+	public Page<DemandaDto> buscarTodosPorAdvogadoId(Long advogadoId, int page, int size) {
+		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
+		return demandaRepository.buscarTodosPorAdvogadoId(advogadoId, pageable);
+	}
+
+	@Override
 	public Page<DemandaDto> buscarTodosPorStatus(String demandaStatus, int page, int size) {
 		PageRequest pageable = PageRequest.of(page, size, Sort.by("id").descending());
 		return demandaRepository.buscarTodosPorStatus(DemandaStatus.toEnum(demandaStatus), pageable);

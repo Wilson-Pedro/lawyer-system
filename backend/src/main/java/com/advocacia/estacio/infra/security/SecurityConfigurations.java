@@ -40,6 +40,7 @@ public class SecurityConfigurations {
 
 						// ATORES
 						.requestMatchers(HttpMethod.POST, "/atores/").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/atores/buscarId/email/{email}").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.GET, "/atores/**").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.PATCH, "/atores/desativar/usuarios").hasRole("ADMIN")
 
@@ -56,12 +57,14 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.GET, "/assistidos/estadosCivis").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/assistidos/{id}").hasRole("ADMIN")
 
+						// DEMANDAS
 						//.requestMatchers(HttpMethod.GET, "/demandas/**").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.PATCH, "/demandas/{demandaId}/change").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.POST, "/demandas/").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.GET, "/demandas/role/{role}").hasAnyRole("ADMIN", "ADVOGADO", "PROFESSOR")
 						.requestMatchers(HttpMethod.GET, "/demandas/estagiario/{estagiarioId}").hasRole("ESTAGIARIO")
 						.requestMatchers(HttpMethod.GET, "/demandas/advogado/{advogadoId}").hasRole("ADVOGADO")
+						.requestMatchers(HttpMethod.GET, "/demandas/professor/{professorId}").hasRole("PROFESSOR")
 						.requestMatchers(HttpMethod.GET, "/demandas/status/{demandaStatus}").hasRole("ESTAGIARIO")
 						.requestMatchers("/demandas/responde/**").hasRole("PROFESSOR")
 

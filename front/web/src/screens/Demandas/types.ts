@@ -23,14 +23,11 @@ export type Demanda = {
     prazo: string;
 }
 
-export type DemandaAdvogado = {
-    id: number;
-    demanda: string;
-    estagiarioNome: string;
-    estagiarioId: string;
-    demandaStatusAluno: string;
-    demandaStatusProfessor: string;
-    prazo: string;
+export type DemandaAdvogado = Demanda & {
+    tempestividade:string;
+}
+
+export type DemandaProfessor = Demanda & {
     tempestividade:string;
 }
 

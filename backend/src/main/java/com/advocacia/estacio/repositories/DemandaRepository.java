@@ -77,6 +77,31 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
 	Page<DemandaDto> buscarTodosPorProfessorId(
 			@Param("professorId") Long professorId,
 			Pageable pageable);
+
+	@Query("""
+			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(
+				d.id,
+				d.demanda,
+				d.estagiario.nome,
+				d.advogado.nome,
+				d.professor.nome,
+				d.estagiario.id,
+				d.advogado.id,
+				d.professor.id,
+				d.demandaStatusAluno,
+				d.demandaStatusProfessor,
+				d.demandaStatusAdvogado,
+				d.prazoDocumentos,
+				d.prazo,
+				d.tempestividade
+			)
+			FROM Demanda d
+			JOIN d.advogado adv
+			WHERE adv.id = :advogadoId
+			""")
+	Page<DemandaDto> buscarTodosPorAdvogadoId(
+			@Param("advogadoId") Long advogadoId,
+			Pageable pageable);
 	
 	@Query("""
 			SELECT new com.advocacia.estacio.domain.dto.DemandaDto(

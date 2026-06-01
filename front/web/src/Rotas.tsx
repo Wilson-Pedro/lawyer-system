@@ -30,6 +30,7 @@ import EditarDemanda from './screens/Editar/EditarDemanda';
 import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import DemandaResposta from './screens/Demandas/DemandaResposta';
 import DemandasAdvogado from './screens/Demandas/DemandasAdvogado';
+import DemandasProfessor from './screens/Demandas/DemandasProfessor';
 import Usuarios from './screens/Usuarios/Usuarios';
 import Login from './screens/Login/Login';
 
@@ -59,6 +60,7 @@ export default function Rotas() {
                 <Route path="/demandas/:demandaId/editar" element={ <EditarDemanda />} />
                 <Route path="/demandas/estagiario/:estagiarioId" element={ <DemandasEstagiario />} />
                 <Route path="/demandas/advogado/:advogadoId" element={ <DemandasAdvogado />} />
+                <Route path="/demandas/professor/:professorId" element={ <DemandasProfessor />} />
                 <Route path="/demandas/:demandaId/respostas" element={ <DemandaResposta />} />
                 <Route path="/usuarios" element={ <Usuarios /> } />
                 <Route path="/usuarios/editar/:usuarioId" element={ <EditarUsuario /> } />
