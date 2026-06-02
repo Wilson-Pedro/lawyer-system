@@ -103,7 +103,7 @@ export default function DemandasProfessor() {
         <div className="min-vh-100 d-flex flex-column bg-light">
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-                <span className="navbar-brand fw-bold fs-4">Demandas</span>
+                <span className="navbar-brand fw-bold fs-4">Demandas do Professor</span>
                 <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/professor")}>
                     ← Voltar
                 </button>
@@ -148,7 +148,7 @@ export default function DemandasProfessor() {
                                         </td>
                                         <td className="text-center">
                                             <button
-                                                onClick={() => navigate(`/demandas/${demanda.id}/editar`)}
+                                                onClick={() => navigate(`/demandas/professor/${professorId}/demanda/${demanda.id}/editar`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <EditIcon />

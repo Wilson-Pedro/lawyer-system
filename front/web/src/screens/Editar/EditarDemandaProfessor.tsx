@@ -7,12 +7,12 @@ import { scrollToTop } from "../../utils/Utils";
 
 const API_URL = process.env.REACT_APP_API;
 
-export default function EditarDemanda() {
+export default function EditarDemandaprofessor() {
   const navigate = useNavigate();
 
   const [demanda, setDemanda] = useState<string>("");
 
-  const [demandaStatusAluno, setDemandaStatusAluno] = useState<string>("");
+  const [demandaStatusAluno, setDemandaStatusAluno] = useState<string>("Em Correção");
   const [demandaStatusProfessor, setDemandaStatusProfessor] = useState<string>("");
   const [demandaStatusAdvogado, setDemandaStatusAdvogado] = useState<string>("");
   
@@ -25,6 +25,7 @@ export default function EditarDemanda() {
   const [mostrarToast, setMostrarToast] = useState(false);
   const [mensagemToast, setMensagemToast] = useState("");
   const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [professorId, setProfessorId] = useState(0);
 
   const params = useParams();
   const demandaId = params.demandaId || '';
@@ -42,7 +43,7 @@ export default function EditarDemanda() {
           }
         });
         const dados = response.data;
-        setDemanda(dados.demanda);
+        setDemanda(dados.professorId);
         setNomeEstagiario(dados.estagiarioNome);
         setNomeProfessor(dados.professorNome);
         setNomeAdvogado(dados.advogadoNome);
@@ -50,6 +51,7 @@ export default function EditarDemanda() {
         setDemandaStatusAluno(dados.demandaStatusAluno);
         setDemandaStatusProfessor(dados.demandaStatusProfessor);
         setDemandaStatusAdvogado(dados.demandaStatusAdvogado);
+        setProfessorId(dados.professorId);
 
       } catch(error) {
         console.log(error);
@@ -57,7 +59,7 @@ export default function EditarDemanda() {
     }
 
     fetchDemanda();
-  }, []);
+  }, [demandaId]);
 
   const editarDemanda = async (e:any) => {
     e.preventDefault();
@@ -95,14 +97,6 @@ export default function EditarDemanda() {
     setDemandaStatusAluno(e.target.value);
   };
 
-  const selecionarDemandaStatusProfessor = async (e: any) => {
-    setDemandaStatusProfessor(e.target.value);
-  };
-
-  const selecionarDemandaStatusAdvogado = async (e: any) => {
-    setDemandaStatusAdvogado(e.target.value);
-  };
-
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" />;
 
@@ -110,7 +104,7 @@ export default function EditarDemanda() {
     <div className={styles.container}>
       <button
         className={styles.backButton}
-        onClick={() => navigate("/demandas")}
+        onClick={() => navigate(`/demandas/professor/${professorId}`)}
       >
         ← Voltar
       </button>
@@ -184,7 +178,7 @@ export default function EditarDemanda() {
           </select>
         </div>
 
-        <div className={styles.inputGroup}>
+        {/* <div className={styles.inputGroup}>
           <label className={styles.label}>Status da demanda (Professor)</label>
           <select
             className={styles.input}
@@ -197,7 +191,7 @@ export default function EditarDemanda() {
             <option value="Corrigido">Corrigido</option>
             <option value="Devolvido">Devolvido</option>
           </select>
-        </div>
+        </div> */}
 
         
         {/* <div className={styles.inputGroup}>

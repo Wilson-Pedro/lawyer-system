@@ -105,7 +105,7 @@ export default function DemandasAdvogado() {
         <div className="min-vh-100 d-flex flex-column bg-light">
 
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-                <span className="navbar-brand fw-bold fs-4">Demandas</span>
+                <span className="navbar-brand fw-bold fs-4">Demandas do Advogado</span>
                 <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/advogado")}>
                     ← Voltar
                 </button>
@@ -126,7 +126,7 @@ export default function DemandasAdvogado() {
                                     <th>Prazo</th>
                                     <th className="text-center">Status Aluno</th>
                                     <th className="text-center">Status Professor</th>
-                                    <th className="text-center">Status Advogado</th>
+                                    {/* <th className="text-center">Status Advogado</th> */}
                                     <th className="text-center">Editar</th>
                                     <th className="text-center">Comentários</th>
                                 </tr>
@@ -145,12 +145,12 @@ export default function DemandasAdvogado() {
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
                                             {demanda.demandaStatusProfessor.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
-                                        <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
+                                        {/* <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
                                             {demanda.demandaStatusAdvogado.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
-                                        </td>
+                                        </td> */}
                                         <td className="text-center">
                                             <button
-                                                onClick={() => navigate(`/demandas/${demanda.id}/editar`)}
+                                                onClick={() => navigate(`/demandas/advogado/${advogadoId}/demanda/${demanda.id}/editar`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <EditIcon />

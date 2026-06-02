@@ -1,8 +1,8 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { EyeIcon, PlusIcon } from "../../Icons/Icon";
+import { EyeIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import { DemandaAdvogado } from "./types";
 import { PageableResponse } from "../../shared/types/PageableResponse";
@@ -21,7 +21,7 @@ export default function DemandasEstagiario() {
     const [primeiraPagina, setPrimeiraPagina] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     
-    const [totalElements, setTotalElements] = useState(0);
+    //const [totalElements, setTotalElements] = useState(0);
     const [paginas, setPaginas] = useState<number[]>([]);
     const [ultimaPagina, setUltimaPagina] = useState<number>(10);
     const [paginaAtual, setPaginaAtual] = useState<number>(0);
@@ -48,7 +48,7 @@ export default function DemandasEstagiario() {
                 setDemandas(pages.content);
                 setFilteredDemandas(response.data);
                 setTotalPages(pages.totalPages);
-                setTotalElements(pages.totalElements);
+                //setTotalElements(pages.totalElements);
             } catch (error) {
                 console.error(error);
             }
@@ -72,16 +72,26 @@ export default function DemandasEstagiario() {
 
     const getStatusClass = (status: string): string => {
         switch (status) {
-            case "Devolvido":
-                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
-            case "Em Correção":
-                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
             case "Corrigido":
                 return "bg-success text-center bg-opacity-25 text-success fw-semibold";
+            case "Em Correção":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Aluno":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Professor":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Aguardando Advogado":
+                return "bg-warning text-center bg-opacity-25 text-warning fw-semibold";
+            case "Prorrogada":
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
             case "Dentro do Prazo":
                 return "bg-success text-center bg-opacity-25 text-success fw-semibold";
             case "Fora do Prazo":
                 return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
+            case "Devolvido":
+                return "bg-danger text-center bg-opacity-25 text-danger fw-semibold";
+            case "Null":
+                return "bg-secondary text-center bg-opacity-25 text-secondary fw-semibold";
             default:
                 return "";
         }
@@ -109,24 +119,33 @@ export default function DemandasEstagiario() {
                             <thead className="table-dark">
                                 <tr>
                                     <th>Demanda</th>
+                                    <th>Estagiario</th>
+                                    <th>Professor</th>
+                                    <th>Advogado</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Status</th>
-                                    <th className="text-center">Tempestividade</th>
+                                    <th className="text-center">Status Aluno</th>
+                                    <th className="text-center">Status Professor</th>
+                                    {/* <th className="text-center">Status Advogado</th> */}
                                     <th className="text-center">Comentários</th>
-                                    {/* <th className="text-center">Responder</th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredDemandas.map((demanda) => (
                                     <tr key={demanda.id}>
                                         <td>{demanda.demanda}</td>
+                                        <td>{demanda.estagiarioNome}</td>
+                                        <td>{demanda.professorNome}</td>
+                                        <td>{demanda.advogadoNome}</td>
                                         <td>{demanda.prazo}</td>
                                         <td className={getStatusClass(demanda.demandaStatusAluno)}>
                                             {demanda.demandaStatusAluno}
                                         </td>
-                                        <td className={getStatusClass(demanda.tempestividade)}>
-                                            {demanda.tempestividade}
-                                            </td>
+                                        <td className={getStatusClass(demanda.demandaStatusProfessor)}>
+                                            {demanda.demandaStatusProfessor.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
+                                        </td>
+                                        {/* <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
+                                            {demanda.demandaStatusAdvogado.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
+                                        </td> */}
                                         <td className="text-center">
                                             <button
                                             onClick={() => navigate(`/demandas/${demanda.id}/respostas`)}

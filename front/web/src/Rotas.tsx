@@ -23,10 +23,12 @@ import EditarAdvogado from './screens/Editar/EditarAdvogado';
 import EditarAssistido from './screens/Editar/EditarAssistido';
 import EditarEstagiario from './screens/Editar/EditarEstagiario';
 import EditarUsuario from './screens/Editar/EditarUsuario';
+import EditarDemanda from './screens/Editar/EditarDemanda';
+import EditarDemandaprofessor from './screens/Editar/EditarDemandaProfessor';
+import EditarDemandaAdvogado from './screens/Editar/EditarDemandaAdvogado';
 
 import MovimentarProcesso from './screens/MovimentarProcesso/MovimentarProcesso';
 import Demandas from './screens/Demandas/Demandas';
-import EditarDemanda from './screens/Editar/EditarDemanda';
 import DemandasEstagiario from './screens/Demandas/DemandasEstagiario';
 import DemandaResposta from './screens/Demandas/DemandaResposta';
 import DemandasAdvogado from './screens/Demandas/DemandasAdvogado';
@@ -43,7 +45,9 @@ export default function Rotas() {
                 <Route path="/home/estagiario" element={<HomeEstagiario />} />
                 <Route path="/home/advogado" element={<HomeAdvogado />} />
                 <Route path="/home/professor" element={<HomeProfessor />} />
+
                 <Route path="/processos" element={<Processos />} />
+
                 <Route path="/cadastrar/assistido" element={<CadastrarAssistido />} />
                 <Route path="/cadastrar/estagiario" element={<CadastrarEstagiario />} />
                 <Route path="/cadastrar/processo" element={<CadastrarProcesso />} />
@@ -51,22 +55,31 @@ export default function Rotas() {
                 <Route path="/cadastrar/demanda" element={<CadastrarDemanda />} />
                 <Route path="/cadastrar/demanda/:demandaId/resposta" element={<CadastrarDemandaResposta />} />
                 <Route path="/cadastrar/usuario" element={ <CadastrarUsuario />} />
+
                 <Route path="/processos/:numeroDoProcesso/movimento" element={<Movimento />}/>
                 <Route path="/processos/:numeroDoProcesso/movimento/cadastrar" element={ <CadastrarMovimento /> } />
                 <Route path="/processos/editar/:processoId"  element={ <EditarProcesso /> }/>
+
                 <Route path="/movimentar" element={ <MovimentarProcesso />} />
+
                 <Route path="/cadastrar" element={ <Cadastros />} />
+
                 <Route path="/demandas" element={ <Demandas />} />
                 <Route path="/demandas/:demandaId/editar" element={ <EditarDemanda />} />
+                <Route path="/demandas/professor/:professorId/demanda/:demandaId/editar" element={ <EditarDemandaprofessor />} />
+                <Route path="/demandas/advogado/:advogadoId/demanda/:demandaId/editar" element={ <EditarDemandaAdvogado />} />
+                
                 <Route path="/demandas/estagiario/:estagiarioId" element={ <DemandasEstagiario />} />
                 <Route path="/demandas/advogado/:advogadoId" element={ <DemandasAdvogado />} />
                 <Route path="/demandas/professor/:professorId" element={ <DemandasProfessor />} />
                 <Route path="/demandas/:demandaId/respostas" element={ <DemandaResposta />} />
+
                 <Route path="/usuarios" element={ <Usuarios /> } />
                 <Route path="/usuarios/editar/:usuarioId" element={ <EditarUsuario /> } />
                 <Route path="/usuarios/estagiario/editar/:estagiarioId" element={ <EditarEstagiario /> } />
                 <Route path="/usuarios/advogado/editar/:advogadoId" element={ <EditarAdvogado /> } />
                 <Route path="/usuarios/assistido/editar/:assistidoId" element={ <EditarAssistido /> } />
+
                 <Route path='/login' element={ <Login /> } />
             </Routes>
         </BrowserRouter>

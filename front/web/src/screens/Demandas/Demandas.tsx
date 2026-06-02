@@ -151,9 +151,9 @@ export default function Demandas() {
                                     <th>Prazo</th>
                                     <th className="text-center">Status Aluno</th>
                                     <th className="text-center">Status Professor</th>
-                                    <th className="text-center">Status Advogado</th>
+                                    {/* <th className="text-center">Status Advogado</th> */}
                                     <th className="text-center">Editar</th>
-                                    <th className="text-center">Comentar</th>
+                                    {/* <th className="text-center">Comentar</th> */}
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,9 +170,9 @@ export default function Demandas() {
                                         <td className={getStatusClass(demanda.demandaStatusProfessor)}>
                                             {demanda.demandaStatusProfessor.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusProfessor}
                                         </td>
-                                        <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
+                                        {/* <td className={getStatusClass(demanda.demandaStatusAdvogado)}>
                                             {demanda.demandaStatusAdvogado.toLocaleLowerCase() === "null" ? "Aguardando..." : demanda.demandaStatusAdvogado}
-                                        </td>
+                                        </td> */}
                                         <td className="text-center">
                                             <button
                                                 onClick={() => navigate(`/demandas/${demanda.id}/editar`)}
@@ -181,14 +181,14 @@ export default function Demandas() {
                                                 <EditIcon />
                                             </button>
                                         </td>
-                                        <td className="text-center">
+                                        {/* <td className="text-center">
                                             <button
                                                 onClick={() => navigate(`/cadastrar/demanda/${demanda.id}/resposta`)}
                                                 className="btn btn-sm btn-outline-primary me-2"
                                             >
                                                 <PlusIcon />
                                             </button>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
