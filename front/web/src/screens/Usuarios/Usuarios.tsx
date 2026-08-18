@@ -197,16 +197,32 @@ export default function Usuarios() {
   useEffect(() => {
     let dados = [...usuarios];
 
-    if (busca.trim() !== "" && usuariosFiltro !== "Estagiário") {
-      dados = dados.filter(
-        (usuario) =>
-          usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
-          usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
-          usuario.matricula.toLowerCase().includes(busca.toLowerCase()) ||
-          usuario.telefone.toLowerCase().includes(busca.toLowerCase()) ||
-          usuario.periodo.toLowerCase().includes(busca.toLowerCase()) ||
-          usuario.registro.toLowerCase().includes(busca.toLowerCase()),
-      );
+
+    if (busca.trim() !== "") {
+      if(usuariosFiltro === "Estagiário") {
+        dados = dados.filter(
+          (usuario) =>
+            usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.matricula.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.telefone.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.periodo.toLowerCase().includes(busca.toLowerCase())
+        );
+      } else if (usuariosFiltro === "Assistido") {
+        dados = dados.filter(
+          (usuario) =>
+            usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.registro.toLowerCase().includes(busca.toLowerCase())
+        );
+      } else {
+        dados = dados.filter(
+          (usuario) =>
+            usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
+            usuario.usuarioStatus.toLowerCase().includes(busca.toLowerCase())
+        );
+      }
     }
 
     setUsuariosFiltrados(dados);
@@ -406,8 +422,8 @@ export default function Usuarios() {
                   ) : (
                     <></>
                   )}
-                  {tableLabels.map((label) => (
-                    <th>{label}</th>
+                  {tableLabels.map((label, index) => (
+                    <th key={index}>{label}</th>
                   ))}
                   <th className="text-center">Editar</th>
                 </tr>
