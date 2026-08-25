@@ -149,7 +149,7 @@ export default function Demandas() {
                                     <th>Professor</th>
                                     <th>Advogado</th>
                                     <th>Prazo</th>
-                                    <th className="text-center">Status Aluno</th>
+                                    <th className="text-center">Status Estagiário</th>
                                     <th className="text-center">Status Professor</th>
                                     {/* <th className="text-center">Status Advogado</th> */}
                                     <th className="text-center">Editar</th>

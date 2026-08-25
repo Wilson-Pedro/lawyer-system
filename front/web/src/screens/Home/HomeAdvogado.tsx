@@ -50,7 +50,7 @@ export default function HomeAdvogado() {
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel de Gerenciamento</span>
+        <span className="navbar-brand fw-bold fs-4">Painel de Gerenciamento - Advogado</span>
         <button
           className="btn btn-outline-light ms-auto"
           onClick={() => {
