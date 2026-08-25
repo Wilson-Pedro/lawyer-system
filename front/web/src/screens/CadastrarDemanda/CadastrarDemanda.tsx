@@ -347,7 +347,7 @@ export default function CadastrarDemanda() {
                   key={data.id}
                   onClick={() => setProfessor(data)}
                 >
-                  {data.nome} - {data.id}
+                  {data.nome}
                 </li>
               ))}
             </ul>
