@@ -3,6 +3,10 @@ package com.advocacia.estacio.web.controllers;
 import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +20,7 @@ import com.advocacia.estacio.services.EstagiarioService;
 
 import java.util.List;
 
+@Tag(name = "Estagiarios", description = "Operações relacionadas ao estagiário")
 @RequestMapping("/estagiarios")
 @RestController
 @CrossOrigin(origins = "${cors.allowed.origins}")
@@ -24,6 +29,11 @@ public class EstagiarioController {
 	@Autowired
 	EstagiarioService estagiarioService;
 
+	// testando a doc
+	@Operation(summary = "Cria um estagiário", description = "Retorna o estagiário criado.")
+	@ApiResponses(value = {
+			@ApiResponse (responseCode ="201",description ="Estagiário criado com sucesso")
+	})
 	@PostMapping("/")
 	public ResponseEntity<EstagiarioDto> salvar(@RequestBody EstagiarioDto estagiarioDto) {
 		EstagiarioDto dto = estagiarioService.salvar(estagiarioDto).toDto();
