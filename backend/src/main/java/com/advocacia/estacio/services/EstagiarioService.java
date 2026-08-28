@@ -29,11 +29,11 @@ public interface EstagiarioService {
 	
 	Page<Estagiario> buscarEstagiario(String nome, int page, int size);
 	
-	Estagiario atualizar(Long id, EstagiarioDto estagiarioDto);
+//	Estagiario atualizar(Long id, EstagiarioDto estagiarioDto);
 
 	List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids);
 
-	List<PeriodoEstagio> getPeriodos();
+//	List<PeriodoEstagio> getPeriodos();
 
 	List<UsuarioAuth> buscarUsuariosAuthPorUsuarioStatus(UsuarioStatus usuarioStatus);
 

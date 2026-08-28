@@ -42,7 +42,7 @@ public class EstagiarioDto implements Serializable {
 		this.email = email;
 		this.telefone = telefone;
 		this.matricula = matricula;
-		this.periodo = periodo.getTipo();
+		this.periodo = periodo.getDescricao();
 	}
 	
 	public EstagiarioDto(Long id, String nome, String email, String telefone, String matricula, String periodo, String senha) {
@@ -61,7 +61,7 @@ public class EstagiarioDto implements Serializable {
 		this.email = estagiario.getEmail();
 		this.telefone = estagiario.getTelefone();
 		this.matricula = estagiario.getMatricula();
-		this.periodo = estagiario.getPeriodo().getTipo();
+		this.periodo = estagiario.getPeriodo().getDescricao();
 		this.usuarioStatus = estagiario.getUsuarioAuth().getUsuarioStatus().getDescricao();
 	}
 	
