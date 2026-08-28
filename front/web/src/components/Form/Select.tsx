@@ -3,10 +3,10 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Form } from "react-bootstrap";
 
-interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'>{
+interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
   name: string;
   label: string;
-  options: { value: string, label: string}[];
+  options: { value: string, label: string }[];
 }
 
 export function Select({ name, label, options, ...rest }: SelectProps) {
@@ -16,10 +16,10 @@ export function Select({ name, label, options, ...rest }: SelectProps) {
   return (
     <Form.Group className="mb-3" controlId={name}>
       <Form.Label>{label}</Form.Label>
-      
+
       <Form.Select {...register(name)} {...rest} isInvalid={!!erro}>
         <option value="" disabled hidden>Selecione uma opção...</option>
-        
+
         {options.map((opcao) => (
           <option key={opcao.value} value={opcao.value}>
             {opcao.label}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { Button, Card, Container, Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import { Form } from "../../../components/Form/Form";
 import { estagiariosService, EstagiarioRequest, PeriodoEstagio, periodoEstagioLabel } from '../'
 // import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,9 @@ import { estagiariosService, EstagiarioRequest, PeriodoEstagio, periodoEstagioLa
 // import { scrollToTop } from "./../../utils/Utils";
 import { Input } from "../../../components/Form/Imput";
 import { Select } from "../../../components/Form/Select";
+import { Button } from "../../../components/Form/Button";
+import { Container } from "../../../components/Form/Container";
+
 import { UseFormSetError } from "react-hook-form";
 import { tratarErrosBackend } from "../../../utils/errorHelper";
 
@@ -47,8 +50,7 @@ export default function CadastrarEstagiario() {
     };
 
     return (
-        <Container className="mt-5" style={{ maxWidth: '600px' }}>
-            <Card className="p-4 shadow-sm">
+        <Container>
                 <h2 className="mb-4 text-center">Cadastrar Estagiário</h2>
 
                 <Form<EstagiarioRequest> onSubmit={handleSalvar}>
@@ -67,7 +69,6 @@ export default function CadastrarEstagiario() {
 
                     <Button type="submit">Enviar Cadastro</Button>
                 </Form>
-            </Card>
 
             <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999, position: 'fixed' }}>
                 <Toast
