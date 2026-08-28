@@ -1,0 +1,87 @@
+import React, { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { Button, Card, Container, Toast, ToastContainer } from "react-bootstrap";
+import { Form } from "../../../components/Form/Form";
+import { estagiariosService, EstagiarioRequest, PeriodoEstagio, periodoEstagioLabel } from '../'
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { meuSchemaZod } from "../schemas/estagiariosSchemas";
+
+// import { scrollToTop } from "./../../utils/Utils";
+import { Input } from "../../../components/Form/Imput";
+import { Select } from "../../../components/Form/Select";
+import { UseFormSetError } from "react-hook-form";
+import { tratarErrosBackend } from "../../../utils/errorHelper";
+
+
+export default function CadastrarEstagiario() {
+    const navigate = useNavigate();
+    const token = localStorage.getItem("token");
+    const [toast, setToast] = useState({ mostrar: false, mensagem: "", variante: "success" });
+
+    // Gera as opções instantaneamente a partir do Enum local sem chamar a API
+    // Mais performance se os Periodos forem estáticos
+    const periodosOptions = Object.values(PeriodoEstagio).map((valorEnum) => ({
+        value: valorEnum,
+        label: periodoEstagioLabel[valorEnum as PeriodoEstagio],
+    }));
+
+    if (!token) return <Navigate to="/login" />;
+
+    const handleSalvar = async (dados: EstagiarioRequest, setError: UseFormSetError<EstagiarioRequest>) => {
+        try {
+            await estagiariosService.cadastrar(dados);
+            // Se deu certo: mostra sucesso e volta para a página anterior após 2 segundos
+            setToast({ mostrar: true, mensagem: "Estagiário cadastrado com sucesso!", variante: "success" });
+            setTimeout(() => navigate(-1), 2000);
+
+        } catch (error: any) {
+            console.error(error);
+
+            const mensagem = tratarErrosBackend(error, setError);
+            if (mensagem) {
+                setToast({ mostrar: true, mensagem, variante: "danger" });
+            }
+
+            // setToast({ mostrar: true, mensagem: "Erro ao cadastrar estagiário.", variante: "danger" });
+        }
+    };
+
+    return (
+        <Container className="mt-5" style={{ maxWidth: '600px' }}>
+            <Card className="p-4 shadow-sm">
+                <h2 className="mb-4 text-center">Cadastrar Estagiário</h2>
+
+                <Form<EstagiarioRequest> onSubmit={handleSalvar}>
+
+                    <Input name="nome" label="Nome Completo" />
+                    <Input name="email" label="Email" type="email" />
+                    <Input name="matricula" label="Matricula" />
+
+                    <Select
+                        name="periodo"
+                        label="Período do Estágio"
+                        options={periodosOptions}
+                    />
+
+                    <Input name="senha" label="Senha" type="password" />
+
+                    <Button type="submit">Enviar Cadastro</Button>
+                </Form>
+            </Card>
+
+            <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999, position: 'fixed' }}>
+                <Toast
+                    onClose={() => setToast({ ...toast, mostrar: false })}
+                    show={toast.mostrar}
+                    bg={toast.variante}
+                    delay={4000}
+                    autohide
+                >
+                    <Toast.Body className="text-white">
+                        {toast.mensagem}
+                    </Toast.Body>
+                </Toast>
+            </ToastContainer>
+        </Container>
+    );
+}

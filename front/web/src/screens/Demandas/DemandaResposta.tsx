@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { PageableResponse } from "../../types/PageableResponse";
 import { DemandaResponse } from "./types";
 
 const API_URL = process.env.REACT_APP_API;

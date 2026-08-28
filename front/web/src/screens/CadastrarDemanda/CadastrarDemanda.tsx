@@ -5,8 +5,8 @@ import styles from "./CadastrarDemanda.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 import moment from 'moment'
 import Input from "../../components/Input/Input";
-import { PageableResponse } from "../../shared/types/PageableResponse";
-import { Advogado, Estagiario, Professor } from "../../shared/types/Entities";
+import { PageableResponse } from "../../types/PageableResponse";
+import { Advogado, Estagiario, Professor } from "../../types/Entities";
 
 const API_URL = process.env.REACT_APP_API;
 

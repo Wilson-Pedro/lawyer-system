@@ -7,7 +7,7 @@ import Paginacao from "../../components/Paginacao/Paginacao";
 import styles from "./Usuarios.module.css";
 import { startOfDay } from "date-fns";
 import { Toast, ToastContainer } from "react-bootstrap";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { PageableResponse } from "../../types/PageableResponse";
 import { ResponseMinDto } from "./types";
 
 const API_URL = process.env.REACT_APP_API;

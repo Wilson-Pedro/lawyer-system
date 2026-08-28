@@ -5,9 +5,9 @@ import { Table, Button, Form, Row, Col } from "react-bootstrap";
 import { PlusIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from './MovimentarProcesso.module.css';
-import { PageableResponse } from "../../shared/types/PageableResponse";
-import { Processo } from "../../shared/types/Processo";
-import { MovimentoType } from "../../shared/types/Movimento";
+import { PageableResponse } from "../../types/PageableResponse";
+import { Processo } from "../../types/Processo";
+import { MovimentoType } from "../../types/Movimento";
 
 const API_URL = process.env.REACT_APP_API;
 

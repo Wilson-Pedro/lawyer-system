@@ -4,8 +4,8 @@ import { useNavigate, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
-import { PageableResponse } from "../../shared/types/PageableResponse";
-import { Processo } from "../../shared/types/Processo";
+import { PageableResponse } from "../../types/PageableResponse";
+import { Processo } from "../../types/Processo";
 
 const API_URL = process.env.REACT_APP_API;
 

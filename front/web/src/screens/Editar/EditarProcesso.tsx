@@ -4,8 +4,8 @@ import { useNavigate, useParams, Navigate } from "react-router-dom";
 import styles from "./EditarProcesso.module.css";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { scrollToTop } from './../../utils/Utils';
-import { Advogado, Estagiario } from "../../shared/types/Entities";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { Advogado, Estagiario } from "../../types/Entities";
+import { PageableResponse } from "../../types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
 

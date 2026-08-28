@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { EyeIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
 import { DemandaAdvogado } from "./types";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { PageableResponse } from "../../types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
 

@@ -8,7 +8,7 @@ import {
     PlusCircleIcon,
     UserCogIcon
 } from "../../Icons/Icon";
-import { MenuItem } from "../../shared/types/MenuItem";
+import { MenuItem } from "../../types/MenuItem";
 
 export default function HomeAdmin() {
   const navigate = useNavigate();

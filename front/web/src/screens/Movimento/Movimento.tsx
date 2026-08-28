@@ -5,8 +5,8 @@ import { Table, Button, Form, Container, Row, Col } from "react-bootstrap";
 import { PlusIcon, ArrowLeftIcon } from "../../Icons/Icon";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Paginacao from "../../components/Paginacao/Paginacao";
-import { PageableResponse } from "../../shared/types/PageableResponse";
-import { MovimentoType } from "../../shared/types/Movimento";
+import { PageableResponse } from "../../types/PageableResponse";
+import { MovimentoType } from "../../types/Movimento";
 
 const API_URL = process.env.REACT_APP_API;
 

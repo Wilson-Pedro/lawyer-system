@@ -6,7 +6,7 @@ import { EditIcon, PlusIcon } from "../../Icons/Icon";
 
 import Paginacao from "../../components/Paginacao/Paginacao";
 import { Demanda } from "./types";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { PageableResponse } from "../../types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
 

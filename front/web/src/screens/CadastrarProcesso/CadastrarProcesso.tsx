@@ -7,8 +7,8 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import Input from "../../components/Input/Input";
 
 import { scrollToTop } from "./../../utils/Utils";
-import { Advogado, Assistido, Estagiario } from "../../shared/types/Entities";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { Advogado, Assistido, Estagiario } from "../../types/Entities";
+import { PageableResponse } from "../../types/PageableResponse";
 
 const API_URL = process.env.REACT_APP_API;
 

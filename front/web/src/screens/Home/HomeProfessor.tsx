@@ -7,7 +7,7 @@ import {
 } from "../../Icons/Icon";
 
 import axios from  'axios';
-import { MenuItem, Response } from "../../shared/types/MenuItem";
+import { MenuItem, Response } from "../../types/MenuItem";
 
 const API_URL = process.env.REACT_APP_API;
 

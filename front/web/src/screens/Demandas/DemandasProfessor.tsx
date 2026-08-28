@@ -4,7 +4,7 @@ import { useNavigate, Navigate, useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { EditIcon, EyeIcon } from "../../Icons/Icon";
 import Paginacao from "../../components/Paginacao/Paginacao";
-import { PageableResponse } from "../../shared/types/PageableResponse";
+import { PageableResponse } from "../../types/PageableResponse";
 import { DemandaAdvogado, DemandaProfessor } from "./types";
 
 const API_URL = process.env.REACT_APP_API;
