@@ -38,7 +38,7 @@ public class EstagiarioController {
 	@Autowired
 	EstagiarioService estagiarioService;
 
-	@PostMapping("/")
+	@PostMapping()
 	public ResponseEntity<EstagiarioResponse> salvar(
 			@RequestBody @Valid EstagiarioRequest data,
 			UriComponentsBuilder uriBuilder)
@@ -56,11 +56,11 @@ public class EstagiarioController {
 		return ResponseEntity.ok(estagiarios);
 	}
 
-	@GetMapping("/periodos")
-	public ResponseEntity<List<String>> buscarPeriodos() {
-		List<String> periodos = estagiarioService.getPeriodos().stream().map(PeriodoEstagio::getTipo).toList();
-		return ResponseEntity.ok(periodos);
-	}
+//	@GetMapping("/periodos")
+//	public ResponseEntity<List<String>> buscarPeriodos() {
+//		List<String> periodos = estagiarioService.getPeriodos().stream().map(PeriodoEstagio).toList();
+//		return ResponseEntity.ok(periodos);
+//	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<EstagiarioDto> buscarPorId(@PathVariable Long id) {
@@ -84,13 +84,13 @@ public class EstagiarioController {
 		return ResponseEntity.ok(dto);
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<Void> atualizarAssistido(
-			@PathVariable Long id, 
-			@RequestBody EstagiarioDto estagiarioDto) {
-		estagiarioService.atualizar(id, estagiarioDto);
-		return ResponseEntity.noContent().build();
-	}
+//	@PutMapping("/{id}")
+//	public ResponseEntity<Void> atualizarAssistido(
+//			@PathVariable Long id,
+//			@RequestBody EstagiarioDto estagiarioDto) {
+//		estagiarioService.atualizar(id, estagiarioDto);
+//		return ResponseEntity.noContent().build();
+//	}
 
 //	@PutMapping("/data/{id}/ativarDesativar/")
 //	public ResponseEntity<Void> definirDataParaAtivarDesativar(

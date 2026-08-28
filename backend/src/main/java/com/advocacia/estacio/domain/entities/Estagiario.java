@@ -67,13 +67,13 @@ public class Estagiario implements Serializable {
 		this.periodo = periodo;
 	}
 	
-	public Estagiario(EstagiarioDto dto) {
-		this.nome = dto.getNome();
-		this.email = dto.getEmail();
-		this.telefone = dto.getTelefone();
-		this.matricula = dto.getMatricula();
-		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
-	}
+//	public Estagiario(EstagiarioDto dto) {
+//		this.nome = dto.getNome();
+//		this.email = dto.getEmail();
+//		this.telefone = dto.getTelefone();
+//		this.matricula = dto.getMatricula();
+//		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
+//	}
 
 	private Estagiario(Builder builder) {
 		this.id = builder.id;

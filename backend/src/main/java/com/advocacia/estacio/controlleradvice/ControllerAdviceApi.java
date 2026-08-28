@@ -1,67 +1,64 @@
 package com.advocacia.estacio.controlleradvice;
 
+import com.advocacia.estacio.domain.dto.refactorDto.ApiError;
 import com.advocacia.estacio.exceptions.EnumException;
 import com.advocacia.estacio.exceptions.ValidationException;
+import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
+import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import com.advocacia.estacio.domain.dto.Problema;
-import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
-import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 
 import java.util.List;
 
 @ControllerAdvice
 public class ControllerAdviceApi {
 
-	@ExceptionHandler(exception = MethodArgumentNotValidException.class)
-	public ResponseEntity<List<ValidationErrorDto>> handle400Error(MethodArgumentNotValidException ex) {
-		var erros = ex.getFieldErrors();
-		return ResponseEntity.badRequest().body(erros.stream().map(ValidationErrorDto::new).toList());
+	// 1. Erros de Validação (Fields)
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiError> handle400Error(MethodArgumentNotValidException ex) {
+		List<ApiError.FieldErrorDto> erros = ex.getFieldErrors().stream()
+				.map(error -> new ApiError.FieldErrorDto(error.getField(), error.getDefaultMessage()))
+				.toList();
+
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), "Erro de validação nos campos", erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 	}
 
-	@ExceptionHandler(EntidadeNaoEncontradaException.class)
-	public ResponseEntity<Problema> entidadeNaoEncontradaException() {
-		HttpStatus status = HttpStatus.NOT_FOUND;
-		Problema problema = new Problema("Entidade Não Encontrada", status.value(), status);
-		return ResponseEntity.status(status).body(problema);
+	// 2. Erros de Regra de Negócio Globais
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<ApiError> handleBusinessRuleError(ValidationException ex) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 	}
-	
+
 	@ExceptionHandler(NumeroDoProcessoExistenteException.class)
-	public ResponseEntity<Problema> numeroDoProcessoExistenteException() {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		Problema problema = new Problema("Esse número do Processo já foi cadastrado", 
-				status.value(), status);
-		return ResponseEntity.status(status).body(problema);
+	public ResponseEntity<ApiError> numeroDoProcessoExistenteException() {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), "Esse número do Processo já foi cadastrado");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 	}
 
 	@ExceptionHandler(EnumException.class)
-	public ResponseEntity<Problema> enumException(EnumException e) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
-		Problema problema = new Problema(e.getMessage(),
-				status.value(), status);
-		return ResponseEntity.status(status).body(problema);
+	public ResponseEntity<ApiError> enumException(EnumException e) {
+		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
 	}
 
+	// 3. Entidade Não Encontrada (404)
+	@ExceptionHandler(EntidadeNaoEncontradaException.class)
+	public ResponseEntity<ApiError> entidadeNaoEncontradaException() {
+		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND.value(), "Entidade Não Encontrada");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
+	}
+
+	// 4. Erros Inesperados do Servidor (500)
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String>  handle500Error(Exception ex) {
+	public ResponseEntity<ApiError> handle500Error(Exception ex) {
 		ex.printStackTrace();
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-				.body("Ocorreu um erro interno inesperado no servidor. Tente novamente mais tarde.");
-	}
-
-	@ExceptionHandler(ValidationException.class)
-	public ResponseEntity<String>  handleBusinessRuleError(ValidationException ex) {
-		return ResponseEntity.badRequest().body(ex.getMessage());
-	}
-
-	private record ValidationErrorDto(String field, String message) {
-		public ValidationErrorDto(FieldError error) {
-			this(error.getField(), error.getDefaultMessage());
-		}
+		ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Ocorreu um erro interno inesperado no servidor. Tente novamente mais tarde.");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
 	}
 }

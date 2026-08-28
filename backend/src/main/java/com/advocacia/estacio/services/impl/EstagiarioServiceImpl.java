@@ -87,23 +87,23 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 		return estagiarioRepository.findAll(pageable).map(EstagiarioListResponse::new);
 	}
 	
-	@Override
-	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
-		Estagiario estagiario = buscarPorId(id);
-		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
-		usuarioAuthService.atualizarLogin(
-				estagiario.getEmail(), 
-				estagiarioDto.getEmail(), 
-				estagiarioDto.getSenha(),
-				usuarioStatus);
-		estagiario.setId(id);
-		estagiario.setNome(estagiarioDto.getNome());
-		estagiario.setEmail(estagiarioDto.getEmail());
-		estagiario.setTelefone(estagiarioDto.getTelefone());
-		estagiario.setMatricula(estagiarioDto.getMatricula());
-		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
-		return estagiarioRepository.save(estagiario);
-	}
+//	@Override
+//	public Estagiario atualizar(Long id, EstagiarioDto estagiarioDto) {
+//		Estagiario estagiario = buscarPorId(id);
+//		UsuarioStatus usuarioStatus = UsuarioStatus.toEnum(estagiarioDto.getUsuarioStatus());
+//		usuarioAuthService.atualizarLogin(
+//				estagiario.getEmail(),
+//				estagiarioDto.getEmail(),
+//				estagiarioDto.getSenha(),
+//				usuarioStatus);
+//		estagiario.setId(id);
+//		estagiario.setNome(estagiarioDto.getNome());
+//		estagiario.setEmail(estagiarioDto.getEmail());
+//		estagiario.setTelefone(estagiarioDto.getTelefone());
+//		estagiario.setMatricula(estagiarioDto.getMatricula());
+//		estagiario.setPeriodo(PeriodoEstagio.toEnum(estagiarioDto.getPeriodo()));
+//		return estagiarioRepository.save(estagiario);
+//	}
 
 	@Override
 	public List<UsuarioAuth> buscarUsuariosAuthPorId(List<Long> ids) {
@@ -120,10 +120,10 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 				.toList();
 	}
 
-    @Override
-    public List<PeriodoEstagio> getPeriodos() {
-        return Arrays.stream(PeriodoEstagio.values()).toList();
-    }
+//    @Override
+//    public List<PeriodoEstagio> getPeriodos() {
+//        return Arrays.stream(PeriodoEstagio.values()).toList();
+//    }
 
 
 	@Override

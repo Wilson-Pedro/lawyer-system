@@ -17,7 +17,7 @@ public record EstagiarioResponse(
                 estagiario.getEmail(),
                 estagiario.getTelefone(),
                 estagiario.getMatricula(),
-                estagiario.getPeriodo().getTipo()
+                estagiario.getPeriodo().getDescricao()
         );
     }
 }
