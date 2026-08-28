@@ -1,8 +1,11 @@
 package com.advocacia.estacio.controlleradvice;
 
 import com.advocacia.estacio.exceptions.EnumException;
+import com.advocacia.estacio.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -10,8 +13,16 @@ import com.advocacia.estacio.domain.dto.Problema;
 import com.advocacia.estacio.exceptions.EntidadeNaoEncontradaException;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 
+import java.util.List;
+
 @ControllerAdvice
 public class ControllerAdviceApi {
+
+	@ExceptionHandler(exception = MethodArgumentNotValidException.class)
+	public ResponseEntity<List<ValidationErrorDto>> handle400Error(MethodArgumentNotValidException ex) {
+		var erros = ex.getFieldErrors();
+		return ResponseEntity.badRequest().body(erros.stream().map(ValidationErrorDto::new).toList());
+	}
 
 	@ExceptionHandler(EntidadeNaoEncontradaException.class)
 	public ResponseEntity<Problema> entidadeNaoEncontradaException() {
@@ -34,5 +45,23 @@ public class ControllerAdviceApi {
 		Problema problema = new Problema(e.getMessage(),
 				status.value(), status);
 		return ResponseEntity.status(status).body(problema);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String>  handle500Error(Exception ex) {
+		ex.printStackTrace();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+				.body("Ocorreu um erro interno inesperado no servidor. Tente novamente mais tarde.");
+	}
+
+	@ExceptionHandler(ValidationException.class)
+	public ResponseEntity<String>  handleBusinessRuleError(ValidationException ex) {
+		return ResponseEntity.badRequest().body(ex.getMessage());
+	}
+
+	private record ValidationErrorDto(String field, String message) {
+		public ValidationErrorDto(FieldError error) {
+			this(error.getField(), error.getDefaultMessage());
+		}
 	}
 }

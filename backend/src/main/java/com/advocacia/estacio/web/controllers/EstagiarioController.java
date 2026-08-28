@@ -2,13 +2,21 @@ package com.advocacia.estacio.web.controllers;
 
 import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioListResponse;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioRequest;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioResponse;
 import com.advocacia.estacio.domain.enums.PeriodoEstagio;
+import com.advocacia.estacio.services.impl.EstagiarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +25,7 @@ import com.advocacia.estacio.domain.dto.PageResponseDto;
 import com.advocacia.estacio.domain.entities.Estagiario;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.services.EstagiarioService;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -29,23 +38,22 @@ public class EstagiarioController {
 	@Autowired
 	EstagiarioService estagiarioService;
 
-	// testando a doc
-	@Operation(summary = "Cria um estagiário", description = "Retorna o estagiário criado.")
-	@ApiResponses(value = {
-			@ApiResponse (responseCode ="201",description ="Estagiário criado com sucesso")
-	})
 	@PostMapping("/")
-	public ResponseEntity<EstagiarioDto> salvar(@RequestBody EstagiarioDto estagiarioDto) {
-		EstagiarioDto dto = estagiarioService.salvar(estagiarioDto).toDto();
-		return ResponseEntity.status(201).body(dto);
+	public ResponseEntity<EstagiarioResponse> salvar(
+			@RequestBody @Valid EstagiarioRequest data,
+			UriComponentsBuilder uriBuilder)
+	 {
+		EstagiarioResponse dto = estagiarioService.salvar(data);
+		var uri = uriBuilder.path("/estagiarios/{id}").buildAndExpand(dto.id()).toUri();
+		return ResponseEntity.created(uri).body(dto);
 	}
 
 	@GetMapping("")
-	public ResponseEntity<PageResponseDto<EstagiarioDto>> buscarTodos(
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size) {
-		Page<EstagiarioDto> pages = estagiarioService.buscarTodos(page, size).map(EstagiarioDto::new);
-		return ResponseEntity.ok(new PageResponseDto<>(pages));
+	public ResponseEntity<Page<EstagiarioListResponse>> buscarTodos(
+			@PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+			) {
+		var estagiarios = estagiarioService.buscarTodos(pageable);
+		return ResponseEntity.ok(estagiarios);
 	}
 
 	@GetMapping("/periodos")

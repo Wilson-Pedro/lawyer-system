@@ -2,6 +2,9 @@ package com.advocacia.estacio.services.impl;
 
 import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.dto.RequestIds;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioListResponse;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioRequest;
+import com.advocacia.estacio.domain.dto.refactorDto.EstagiarioResponse;
 import com.advocacia.estacio.domain.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
 import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
@@ -41,17 +44,25 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	private DesativarAtivarUsuarioPorDataRepository desativarAtivarUsuarioPorDataRepository;
 
 	@Override
-	public Estagiario salvar(EstagiarioDto estagiarioDto) {
-		Estagiario estagiario = new Estagiario(estagiarioDto);
-		
+	public EstagiarioResponse salvar(EstagiarioRequest data) {
+		Estagiario estagiario = Estagiario.builder()
+				.nome(data.nome())
+				.email(data.email())
+				.matricula(data.matricula())
+				.periodo(data.periodo())
+				.telefone(data.telefone())
+				.build();
+
 		RegistroDto registro = new RegistroDto(
-				estagiarioDto.getEmail(), 
-				estagiarioDto.getSenha(), 
+				data.email(),
+				data.senha(),
 				UserRole.ESTAGIARIO);
 		
 		UsuarioAuth auth = usuarioAuthService.salvar(registro);
 		estagiario.setUsuarioAuth(auth);
-		return estagiarioRepository.save(estagiario);
+
+		var estagiarioSalvo = estagiarioRepository.save(estagiario);
+		return new EstagiarioResponse(estagiarioSalvo);
 	}
 
 	@Override
@@ -72,9 +83,8 @@ public class EstagiarioServiceImpl implements EstagiarioService {
 	}
 
 	@Override
-	public Page<Estagiario> buscarTodos(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-		return estagiarioRepository.buscarTodos(pageable);
+	public Page<EstagiarioListResponse> buscarTodos(Pageable pageable) {
+		return estagiarioRepository.findAll(pageable).map(EstagiarioListResponse::new);
 	}
 	
 	@Override

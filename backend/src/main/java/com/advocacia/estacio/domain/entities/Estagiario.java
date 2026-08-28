@@ -75,6 +75,21 @@ public class Estagiario implements Serializable {
 		this.periodo = PeriodoEstagio.toEnum(dto.getPeriodo());
 	}
 
+	private Estagiario(Builder builder) {
+		this.id = builder.id;
+		this.nome = builder.nome;
+		this.email = builder.email;
+		this.telefone = builder.telefone;
+		this.matricula = builder.matricula;
+		this.periodo = builder.periodo;
+		this.usuarioAuth = builder.usuarioAuth;
+		this.registro = builder.registro;
+	}
+
+	public static Builder builder() {
+		return new Builder();
+	}
+
 	public EstagiarioDto toDto() {
 		return new EstagiarioDto(this);
 	}
@@ -169,5 +184,60 @@ public class Estagiario implements Serializable {
 				&& Objects.equals(matricula, other.matricula) && Objects.equals(nome, other.nome)
 				&& periodo == other.periodo && Objects.equals(registro, other.registro)
 				&& Objects.equals(usuarioAuth, other.usuarioAuth);
+	}
+
+	public static class Builder {
+		private Long id;
+		private String nome;
+		private String email;
+		private String telefone;
+		private String matricula;
+		private PeriodoEstagio periodo;
+		private UsuarioAuth usuarioAuth;
+		private LocalDateTime registro;
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder nome(String nome) {
+			this.nome = nome;
+			return this;
+		}
+
+		public Builder email(String email) {
+			this.email = email;
+			return this;
+		}
+
+		public Builder telefone(String telefone) {
+			this.telefone = telefone;
+			return this;
+		}
+
+		public Builder matricula(String matricula) {
+			this.matricula = matricula;
+			return this;
+		}
+
+		public Builder periodo(PeriodoEstagio periodo) {
+			this.periodo = periodo;
+			return this;
+		}
+
+		public Builder usuarioAuth(UsuarioAuth usuarioAuth) {
+			this.usuarioAuth = usuarioAuth;
+			return this;
+		}
+
+		public Builder registro(LocalDateTime registro) {
+			this.registro = registro;
+			return this;
+		}
+
+		public Estagiario build() {
+			return new Estagiario(this);
+		}
 	}
 }
