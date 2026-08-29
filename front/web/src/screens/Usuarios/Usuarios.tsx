@@ -1,14 +1,14 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { EditIcon } from "../../Icons/Icon";
-import Paginacao from "../../components/Paginacao/Paginacao";
-import styles from "./Usuarios.module.css";
-import { startOfDay } from "date-fns";
-import { Toast, ToastContainer } from "react-bootstrap";
-import { PageableResponse } from "../../types/PageableResponse";
-import { ResponseMinDto } from "./types";
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import axios from 'axios';
+import { useNavigate, Navigate } from 'react-router-dom';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { EditIcon } from '../../Icons/Icon';
+import Paginacao from '../../components/Paginacao/Paginacao';
+import styles from './Usuarios.module.css';
+import { startOfDay } from 'date-fns';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { PageableResponse } from '../../types/PageableResponse';
+import { ResponseMinDto } from './types';
 
 const API_URL = process.env.REACT_APP_API;
 
@@ -17,9 +17,9 @@ export default function Usuarios() {
   const [usuariosFiltrados, setUsuariosFiltrados] = useState<ResponseMinDto[]>(
     [],
   );
-  const [busca, setBusca] = useState("");
-  const [usuariosFiltro, setUsuariosFiltro] = useState<string>("Estagiário");
-  const [uriEdit, setUriEdit] = useState("/usuarios/estagiario/editar/");
+  const [busca, setBusca] = useState('');
+  const [usuariosFiltro, setUsuariosFiltro] = useState<string>('Estagiário');
+  const [uriEdit, setUriEdit] = useState('/usuarios/estagiario/editar/');
   const [tableLabels, setTableLabes] = useState<string[]>([]);
 
   const [page, setPage] = useState(0);
@@ -34,7 +34,7 @@ export default function Usuarios() {
   const [paginaAtual, setPaginaAtual] = useState<number>(0);
   const [dataDeDesativacao, setDataDeDesativacao] = useState<string>('');
 
-  const [usuarioStatus, setUuarioStatus] = useState<string>("");
+  const [usuarioStatus, setUuarioStatus] = useState<string>('');
   const [tipoUsuario, setTipoUsuario] = useState<string>('Estagiário');
 
   const [mostrarUltimaPagina, setMostrarUltimaPagina] =
@@ -48,23 +48,25 @@ export default function Usuarios() {
   const [mostrarBtnDataDesativacao, setMostrarBtnDataDesativacao] =
     useState<boolean>(false);
 
-  const [btnMsgDesativar, setBtnMsgDesativar] = useState("Desativar Usuários");
+  const [btnMsgDesativar, setBtnMsgDesativar] = useState('Desativar Usuários');
 
-  const [messageDataError, setMessageDataError] = useState<string>("");
+  const [messageDataError, setMessageDataError] = useState<string>('');
   const [idList, setIdList] = useState<number[]>([]);
-  
+
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   const navigate = useNavigate();
 
   const rotasParaDesativar: Record<string, string> = {
-    "Coordenador do curso": "/atores/desativar/usuarios",
-    Secretário: "/atores/desativar/usuarios",
-    Professor: "/atores/desativar/usuarios",
-    Estagiário: "/estagiarios/desativar/usuarios",
-    Advogado: "/advogados/desativar/usuarios",
+    'Coordenador do curso': '/atores/desativar/usuarios',
+    Secretário: '/atores/desativar/usuarios',
+    Professor: '/atores/desativar/usuarios',
+    Estagiário: '/estagiarios/desativar/usuarios',
+    Advogado: '/advogados/desativar/usuarios',
   };
 
   const rotaParaDesativar = rotasParaDesativar[usuariosFiltro];
@@ -85,7 +87,7 @@ export default function Usuarios() {
 
       setIdList([]);
       setMostrarFiltroDesativacao(true);
-      setBtnMsgDesativar("Desativar Usuários");
+      setBtnMsgDesativar('Desativar Usuários');
     } catch (error) {
       console.log(error);
     }
@@ -93,37 +95,37 @@ export default function Usuarios() {
 
   useEffect(() => {
     if (!usuariosFiltrados) return;
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const rotas: Record<string, string> = {
-      "Coordenador do curso": "/atores/tipo/Coordenador do curso",
-      Secretário: "/atores/tipo/Secretário",
-      Professor: "/atores/tipo/Professor",
-      Estagiário: "/estagiarios",
-      Advogado: "/advogados",
-      Assistido: "/assistidos",
+      'Coordenador do curso': '/atores/tipo/Coordenador do curso',
+      Secretário: '/atores/tipo/Secretário',
+      Professor: '/atores/tipo/Professor',
+      Estagiário: '/estagiarios',
+      Advogado: '/advogados',
+      Assistido: '/assistidos',
     };
 
     const uris: Record<string, string> = {
-      "Coordenador do curso": "/usuarios/editar/",
-      Secretário: "/usuarios/editar/",
-      Professor: "/usuarios/editar/",
-      Estagiário: "/usuarios/estagiario/editar/",
-      Advogado: "/usuarios/advogado/editar/",
-      Assistido: "/usuarios/assistido/editar/",
+      'Coordenador do curso': '/usuarios/editar/',
+      Secretário: '/usuarios/editar/',
+      Professor: '/usuarios/editar/',
+      Estagiário: '/usuarios/estagiario/editar/',
+      Advogado: '/usuarios/advogado/editar/',
+      Assistido: '/usuarios/assistido/editar/',
     };
 
     const tableHeaders: Record<string, string[]> = {
       Estagiário: [
-        "Nome",
-        "Matrícula",
-        "E-mail",
-        "Telefone",
-        "Estágio",
-        "Status",
+        'Nome',
+        'Matrícula',
+        'E-mail',
+        'Telefone',
+        'Estágio',
+        'Status',
       ],
-      Assistido: ["Nome", "E-mail", "Registro"],
-      default: ["Nome", "E-mail", "Status", "Registro"],
+      Assistido: ['Nome', 'E-mail', 'Registro'],
+      default: ['Nome', 'E-mail', 'Status', 'Registro'],
     };
 
     const rota = rotas[usuariosFiltro];
@@ -136,12 +138,12 @@ export default function Usuarios() {
     const uri = uris[usuariosFiltro];
     setUriEdit(uri);
 
-    if (usuariosFiltro === "Estagiário") {
-      setTableLabes(tableHeaders["Estagiário"]);
-    } else if (usuariosFiltro === "Assistido") {
-      setTableLabes(tableHeaders["Assistido"]);
+    if (usuariosFiltro === 'Estagiário') {
+      setTableLabes(tableHeaders['Estagiário']);
+    } else if (usuariosFiltro === 'Assistido') {
+      setTableLabes(tableHeaders['Assistido']);
     } else {
-      setTableLabes(tableHeaders["default"]);
+      setTableLabes(tableHeaders['default']);
     }
 
     const fecthUsuarios = async () => {
@@ -168,28 +170,30 @@ export default function Usuarios() {
     fecthUsuarios();
   }, [usuariosFiltro, page, size]);
 
-  const cadastrarDataAtivacaoDesativacao = async (e:any) => {
+  const cadastrarDataAtivacaoDesativacao = async (e: any) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     try {
-      await axios.put(`${API_URL}/auth/definir/data/ativarDesativar`, {
-        tipoUsuario: tipoUsuario,
-        dataDeDesativacao: dataDeDesativacao,
-        usuarioStatus: usuarioStatus
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      await axios.put(
+        `${API_URL}/auth/definir/data/ativarDesativar`,
+        {
+          tipoUsuario: tipoUsuario,
+          dataDeDesativacao: dataDeDesativacao,
+          usuarioStatus: usuarioStatus,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      setMensagemToast("Data definida com sucesso!");
-      setVarianteToast("success");
+      setMensagemToast('Data definida com sucesso!');
+      setVarianteToast('success');
       setMostrarToast(true);
-
     } catch (error) {
-
-      setMensagemToast("Erro ao definir Data.");
-      setVarianteToast("danger");
+      setMensagemToast('Erro ao definir Data.');
+      setVarianteToast('danger');
       setMostrarToast(true);
     }
   };
@@ -197,30 +201,29 @@ export default function Usuarios() {
   useEffect(() => {
     let dados = [...usuarios];
 
-
-    if (busca.trim() !== "") {
-      if(usuariosFiltro === "Estagiário") {
+    if (busca.trim() !== '') {
+      if (usuariosFiltro === 'Estagiário') {
         dados = dados.filter(
           (usuario) =>
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
             usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
             usuario.matricula.toLowerCase().includes(busca.toLowerCase()) ||
             usuario.telefone.toLowerCase().includes(busca.toLowerCase()) ||
-            usuario.periodo.toLowerCase().includes(busca.toLowerCase())
+            usuario.periodo.toLowerCase().includes(busca.toLowerCase()),
         );
-      } else if (usuariosFiltro === "Assistido") {
+      } else if (usuariosFiltro === 'Assistido') {
         dados = dados.filter(
           (usuario) =>
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
             usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
-            usuario.registro.toLowerCase().includes(busca.toLowerCase())
+            usuario.registro.toLowerCase().includes(busca.toLowerCase()),
         );
       } else {
         dados = dados.filter(
           (usuario) =>
             usuario.nome.toLowerCase().includes(busca.toLowerCase()) ||
             usuario.email.toLowerCase().includes(busca.toLowerCase()) ||
-            usuario.usuarioStatus.toLowerCase().includes(busca.toLowerCase())
+            usuario.usuarioStatus.toLowerCase().includes(busca.toLowerCase()),
         );
       }
     }
@@ -230,12 +233,12 @@ export default function Usuarios() {
 
   const getUsuarioStatusClass = (status: string) => {
     switch (status) {
-      case "Ativo":
-        return "text-info fw-bold";
-      case "Inativo":
-        return "text-danger fw-bold";
+      case 'Ativo':
+        return 'text-info fw-bold';
+      case 'Inativo':
+        return 'text-danger fw-bold';
       default:
-        return "";
+        return '';
     }
   };
 
@@ -250,7 +253,7 @@ export default function Usuarios() {
   const desativarUsuariosFiltro = () => {
     setMostrarFiltroDesativacao(!mostrarFiltroDesativao);
     setBtnMsgDesativar(
-      mostrarFiltroDesativao === false ? "Desativar Usuários" : "Tirar Filtro",
+      mostrarFiltroDesativao === false ? 'Desativar Usuários' : 'Tirar Filtro',
     );
     setMostrarBtnDataDesativacao(!mostrarBtnDataDesativacao);
     setIdList([]);
@@ -259,7 +262,7 @@ export default function Usuarios() {
   const zeraIdLista = () => {
     setIdList([]);
     setMostrarFiltroDesativacao(true);
-    setBtnMsgDesativar("Desativar Usuários");
+    setBtnMsgDesativar('Desativar Usuários');
   };
 
   const adicionarIdsParaLista = (id: number) => {
@@ -272,10 +275,10 @@ export default function Usuarios() {
   };
 
   const formatarData = (dataValue: string) => {
-    let numeros = dataValue.replace(/\D/g, "");
+    let numeros = dataValue.replace(/\D/g, '');
 
     if (numeros.length === 0) {
-      setMessageDataError("");
+      setMessageDataError('');
     }
 
     if (numeros.length > 8) {
@@ -285,15 +288,15 @@ export default function Usuarios() {
     let formatado = numeros;
 
     if (numeros.length > 2) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
+      formatado = numeros.substring(0, 2) + '/' + numeros.substring(2);
     }
 
     if (numeros.length > 4) {
       formatado =
         numeros.substring(0, 2) +
-        "/" +
+        '/' +
         numeros.substring(2, 4) +
-        "/" +
+        '/' +
         numeros.substring(4);
     }
 
@@ -304,15 +307,13 @@ export default function Usuarios() {
 
       const dataDigitada = startOfDay(new Date(ano, mes - 1, dia));
       const hoje = startOfDay(new Date());
-      
 
       if (dataDigitada.getTime() < hoje.getTime()) {
-        setMessageDataError("*Data inválida");
+        setMessageDataError('*Data inválida');
       } else {
-        setMessageDataError("");
+        setMessageDataError('');
       }
     }
-
 
     setDataDeDesativacao(formatado);
   };
@@ -326,7 +327,7 @@ export default function Usuarios() {
     setTipoUsuario(e.target.value);
   };
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" />;
 
   return (
@@ -336,7 +337,7 @@ export default function Usuarios() {
         <span></span>
         <button
           className="btn btn-outline-light ms-auto"
-          onClick={() => navigate("/home/admin")}
+          onClick={() => navigate('/home/admin')}
         >
           ← Voltar
         </button>
@@ -380,9 +381,9 @@ export default function Usuarios() {
           </select>
         </div>
 
-        {usuariosFiltro !== "Assistido" ? (
+        {usuariosFiltro !== 'Assistido' ? (
           <div className={styles.divBtn}>
-            {btnMsgDesativar !== "Desativar Usuários" && (
+            {btnMsgDesativar !== 'Desativar Usuários' && (
               <form onSubmit={desativarUsuario}>
                 <button
                   type="submit"
@@ -417,7 +418,7 @@ export default function Usuarios() {
             <table className="table table-hover align-middle bg-white rounded overflow-hidden">
               <thead className="table-dark">
                 <tr>
-                  {!mostrarFiltroDesativao && usuariosFiltro !== "Assistido" ? (
+                  {!mostrarFiltroDesativao && usuariosFiltro !== 'Assistido' ? (
                     <th>Selecionar</th>
                   ) : (
                     <></>
@@ -431,7 +432,7 @@ export default function Usuarios() {
               <tbody>
                 {usuariosFiltrados.map((usuario) => (
                   <tr key={usuario.id}>
-                    {usuariosFiltro === "Estagiário" ? (
+                    {usuariosFiltro === 'Estagiário' ? (
                       <>
                         {!mostrarFiltroDesativao ? (
                           <td className="text-center">
@@ -459,7 +460,7 @@ export default function Usuarios() {
                           {usuario.usuarioStatus}
                         </td>
                       </>
-                    ) : usuariosFiltro === "Assistido" ? (
+                    ) : usuariosFiltro === 'Assistido' ? (
                       <>
                         <td>{usuario.nome}</td>
                         <td>{usuario.email}</td>
@@ -554,7 +555,6 @@ export default function Usuarios() {
             </div>
             <div className="modal-body">
               <form onSubmit={cadastrarDataAtivacaoDesativacao}>
-
                 <div className={styles.inputGroup}>
                   <label className={styles.label}>
                     Data
@@ -594,36 +594,40 @@ export default function Usuarios() {
                   </select>
                 </div>
 
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Fechar
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Concluir
-                </button>
-              </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Fechar
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Concluir
+                  </button>
+                </div>
               </form>
             </div>
           </div>
         </div>
-              {/* Toast visual */}
-      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
-        <Toast
-          onClose={() => setMostrarToast(false)}
-          show={mostrarToast}
-          bg={varianteToast}
-          delay={3000}
-          autohide
+        {/* Toast visual */}
+        <ToastContainer
+          position="top-end"
+          className="p-3"
+          style={{ zIndex: 9999 }}
         >
-          <Toast.Body className={`${styles.toastMessage} text-white`}>
-            {mensagemToast}
-          </Toast.Body>
-        </Toast>
-      </ToastContainer>
+          <Toast
+            onClose={() => setMostrarToast(false)}
+            show={mostrarToast}
+            bg={varianteToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body className={`${styles.toastMessage} text-white`}>
+              {mensagemToast}
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
       </div>
 
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">

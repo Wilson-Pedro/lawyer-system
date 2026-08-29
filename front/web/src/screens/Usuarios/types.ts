@@ -7,4 +7,4 @@ export type ResponseMinDto = {
   periodo: string;
   usuarioStatus: string;
   registro: string;
-}
+};

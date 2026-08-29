@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./MenuButton.module.css";
+import React from 'react';
+import styles from './MenuButton.module.css';
 
 type Props = {
   label: string;
@@ -12,7 +12,7 @@ export default function MenuButton({ label, onClick, color }: Props) {
     <button
       className={styles.button}
       onClick={onClick}
-      style={{ backgroundColor: color || "#2a3a7f" }}
+      style={{ backgroundColor: color || '#2a3a7f' }}
     >
       {label}
     </button>

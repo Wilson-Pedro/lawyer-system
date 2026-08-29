@@ -4,4 +4,4 @@ export type PageableResponse<T> = {
   totalElements: number;
   size: number;
   number: number;
-}
+};

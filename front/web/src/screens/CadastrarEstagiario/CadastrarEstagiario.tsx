@@ -1,71 +1,72 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
-import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./CadastrarEstagiario.module.css";
-import Input from "../../components/Input/Input";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import styles from './CadastrarEstagiario.module.css';
+import Input from '../../components/Input/Input';
 
-import { scrollToTop } from "./../../utils/Utils";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarEstagiario() {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [matricula, setMatricula] = useState("");
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [matricula, setMatricula] = useState('');
   const [periodos, setPeriodos] = useState<string[]>([]);
-  const [periodo, setPeriodo] = useState("");
-  const [senha, setSenha] = useState("");
+  const [periodo, setPeriodo] = useState('');
+  const [senha, setSenha] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   useEffect(() => {
-
     const buscarPeriodos = async () => {
-
       try {
-
         const response = await axios.get(`${API_URL}/estagiarios/periodos`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setPeriodos(response.data);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-
-    }
+    };
 
     buscarPeriodos();
   }, []);
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   const cadastrarEstagiario = async () => {
     try {
-      await axios.post(`${API_URL}/estagiarios/`, {
-        nome,
-        email,
-        telefone,
-        matricula,
-        periodo,
-        senha,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axios.post(
+        `${API_URL}/estagiarios/`,
+        {
+          nome,
+          email,
+          telefone,
+          matricula,
+          periodo,
+          senha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      setMensagemToast("Estagiário cadastrado com sucesso!");
-      setVarianteToast("success");
+      setMensagemToast('Estagiário cadastrado com sucesso!');
+      setVarianteToast('success');
       setMostrarToast(true);
 
       limparCampos();
@@ -74,8 +75,8 @@ export default function CadastrarEstagiario() {
     } catch (error) {
       console.error(error);
 
-      setMensagemToast("Erro ao cadastrar estagiário.");
-      setVarianteToast("danger");
+      setMensagemToast('Erro ao cadastrar estagiário.');
+      setVarianteToast('danger');
       setMostrarToast(true);
     }
   };
@@ -85,11 +86,11 @@ export default function CadastrarEstagiario() {
   };
 
   const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setMatricula("");
-    setPeriodo("Estágio I");
-    setSenha("");
+    setNome('');
+    setEmail('');
+    setMatricula('');
+    setPeriodo('Estágio I');
+    setSenha('');
   };
 
   return (
@@ -101,15 +102,20 @@ export default function CadastrarEstagiario() {
 
       <h1 className={styles.title}>Cadastrar Estagiário</h1>
 
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarEstagiario(); }}>
-
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          cadastrarEstagiario();
+        }}
+      >
         <Input
           value={nome}
           title="Nome Completo"
           setValue={setNome}
           required={true}
         />
-        
+
         <Input
           value={email}
           title="E-mail"
@@ -117,7 +123,7 @@ export default function CadastrarEstagiario() {
           setValue={setEmail}
           required={true}
         />
-        
+
         <Input
           value={telefone}
           title="Telefone"
@@ -141,7 +147,9 @@ export default function CadastrarEstagiario() {
           >
             <option value="" disabled selected></option>
             {periodos.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
+              <option key={key} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
@@ -160,7 +168,11 @@ export default function CadastrarEstagiario() {
       </form>
 
       {/* Toast visual */}
-      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+      <ToastContainer
+        position="top-end"
+        className="p-3"
+        style={{ zIndex: 9999 }}
+      >
         <Toast
           onClose={() => setMostrarToast(false)}
           show={mostrarToast}

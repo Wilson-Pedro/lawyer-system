@@ -1,90 +1,104 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate, useParams, Navigate } from "react-router-dom";
-import { Container, Form, Button, Row, Col, Toast, ToastContainer, Card } from "react-bootstrap";
-import { ArrowLeftIcon, SaveIcon } from "../../Icons/Icon";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Response } from "./types";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import {
+  Container,
+  Form,
+  Button,
+  Row,
+  Col,
+  Toast,
+  ToastContainer,
+  Card,
+} from 'react-bootstrap';
+import { ArrowLeftIcon, SaveIcon } from '../../Icons/Icon';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Response } from './types';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarDemandaResposta() {
   const navigate = useNavigate();
 
-
-  const [estagiarioNome, setEstagiarioNome] = useState("");
+  const [estagiarioNome, setEstagiarioNome] = useState('');
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
-  const [resposta, setResposta] = useState("");
+  const [resposta, setResposta] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState<boolean>(false);
-  const [mensagemToast, setMesagemToast] = useState("");
-  const [toastVariante, setToastVariant] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMesagemToast] = useState('');
+  const [toastVariante, setToastVariant] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   const params = useParams();
-  const demandaId = params.demandaId || "";
+  const demandaId = params.demandaId || '';
 
-      useEffect(() => {
-        const token = localStorage.getItem('token') || '';
-        const email = localStorage.getItem('login') || '';
-        
-        const fetchIdUser = async () => {
-            try {
-                const response = await axios.get<Response>(`${API_URL}/estagiarios/buscarId/email/${email}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                setEstagiarioNome(response.data.nome);
-                setEstagiarioId(response.data.id);
-            } catch (error) {
-                  console.error(error);
-              }
-        };
-        fetchIdUser();
-      }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token') || '';
+    const email = localStorage.getItem('login') || '';
+
+    const fetchIdUser = async () => {
+      try {
+        const response = await axios.get<Response>(
+          `${API_URL}/estagiarios/buscarId/email/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setEstagiarioNome(response.data.nome);
+        setEstagiarioId(response.data.id);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchIdUser();
+  }, []);
 
   const cadastrarDemandaResposta = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      await axios.post(`${API_URL}/demandas/responde/`, {
-        demandaId,
-        estagiarioId,
-        resposta,
-        respondidoPor: 'Estagiário'
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      
-      setMesagemToast("Demanda Respondida com sucesso.");
-      setToastVariant("success");
+      await axios.post(
+        `${API_URL}/demandas/responde/`,
+        {
+          demandaId,
+          estagiarioId,
+          resposta,
+          respondidoPor: 'Estagiário',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      setMesagemToast('Demanda Respondida com sucesso.');
+      setToastVariant('success');
       setMostrarToast(true);
       limparCampos();
     } catch (error) {
       console.error(error);
-      alert("Erro ao responder demanda movimento.");
+      alert('Erro ao responder demanda movimento.');
     }
   };
 
   const limparCampos = () => {
-    setResposta("");
+    setResposta('');
   };
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   return (
     <Container className="py-5">
-      
       <div className="d-flex align-items-center justify-content-between mb-4">
         <Button
           variant="outline-secondary"
           className="d-flex align-items-center"
-          onClick={() =>
-            navigate(-1)
-          }
+          onClick={() => navigate(-1)}
         >
           <ArrowLeftIcon className="me-2" /> Voltar
         </Button>
@@ -92,7 +106,6 @@ export default function CadastrarDemandaResposta() {
         <h2 className="fw-bold text-dark mb-0">Responder Demanda</h2>
       </div>
 
-     
       <Card className="shadow-sm p-4 border-0">
         <Form onSubmit={cadastrarDemandaResposta}>
           <Row className="mb-3">

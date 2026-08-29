@@ -1,61 +1,66 @@
-import React, { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import axios from "axios";
-import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./CadastrarAdvogado.module.css";
-import Input from "../../components/Input/Input";
+import React, { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import axios from 'axios';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import styles from './CadastrarAdvogado.module.css';
+import Input from '../../components/Input/Input';
 
-import { scrollToTop } from "./../../utils/Utils";
+import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAdvogado() {
-
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
   //const [cpf, setCpf] = useState("23423423234");
-  const [telefone, setTelefone] = useState("");
-  const [dataDeNascimento, setDataDeNascimento] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [rua, setRua] = useState("");
-  const [numeroDaCasa, setNumeroDaCasa] = useState("");
-  const [cep, setCep] = useState("");
-  const [senha, setSenha] = useState("");
+  const [telefone, setTelefone] = useState('');
+  const [dataDeNascimento, setDataDeNascimento] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [rua, setRua] = useState('');
+  const [numeroDaCasa, setNumeroDaCasa] = useState('');
+  const [cep, setCep] = useState('');
+  const [senha, setSenha] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
-  const cadastrarAdvogado = async (e:any) => {
+  const cadastrarAdvogado = async (e: any) => {
     e.preventDefault();
 
     try {
-      await axios.post(`${API_URL}/advogados/`, {
-        nome,
-        email,
-        telefone,
-        dataDeNascimento,
-        cidade,
-        bairro,
-        rua,
-        numeroDaCasa: parseInt(numeroDaCasa),
-        cep,
-        senha,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axios.post(
+        `${API_URL}/advogados/`,
+        {
+          nome,
+          email,
+          telefone,
+          dataDeNascimento,
+          cidade,
+          bairro,
+          rua,
+          numeroDaCasa: parseInt(numeroDaCasa),
+          cep,
+          senha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       setMostrarToast(true);
-      setMensagemToast("Advogado cadastrado com sucesso.");
-      setVarianteToast("success");
+      setMensagemToast('Advogado cadastrado com sucesso.');
+      setVarianteToast('success');
 
       limparCampos();
 
@@ -64,13 +69,13 @@ export default function CadastrarAdvogado() {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar advogado");
-      setVarianteToast("danger");
+      setMensagemToast('Falha ao Cadastrar advogado');
+      setVarianteToast('danger');
     }
   };
 
   const formatarData = (dataValue: string) => {
-    let numeros = dataValue.replace(/\D/g, "");
+    let numeros = dataValue.replace(/\D/g, '');
 
     if (numeros.length > 8) {
       numeros = numeros.substring(0, 8);
@@ -79,30 +84,34 @@ export default function CadastrarAdvogado() {
     let formatado = numeros;
 
     if (numeros.length > 2) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
+      formatado = numeros.substring(0, 2) + '/' + numeros.substring(2);
     }
 
     if (numeros.length > 4) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2, 4) + "/" + numeros.substring(4);
+      formatado =
+        numeros.substring(0, 2) +
+        '/' +
+        numeros.substring(2, 4) +
+        '/' +
+        numeros.substring(4);
     }
 
     setDataDeNascimento(formatado);
-  }
+  };
 
   const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setTelefone("");
-    setDataDeNascimento("");
-    setCidade("");
-    setBairro("");
-    setRua("");
-    setNumeroDaCasa("");
-    setCep("");
+    setNome('');
+    setEmail('');
+    setTelefone('');
+    setDataDeNascimento('');
+    setCidade('');
+    setBairro('');
+    setRua('');
+    setNumeroDaCasa('');
+    setCep('');
   };
 
   return (
-
     <form className={styles.container} onSubmit={cadastrarAdvogado}>
       <button className={styles.backButton} onClick={() => navigate(-1)}>
         ← Voltar
@@ -128,24 +137,19 @@ export default function CadastrarAdvogado() {
         value={telefone}
         title="Telefone"
         setValue={setTelefone}
-        type={"tel"}
+        type={'tel'}
         required={true}
       />
 
       <Input
         title="Data de Nascimento"
         value={dataDeNascimento}
-        placeholder={"DD/MM/AAAA"}
+        placeholder={'DD/MM/AAAA'}
         setValue={formatarData}
         required={true}
       />
 
-      <Input
-        title="CEP"
-        value={cep}
-        setValue={setCep}
-        required={true}
-      />
+      <Input title="CEP" value={cep} setValue={setCep} required={true} />
 
       <Input
         title="Cidade"
@@ -161,14 +165,8 @@ export default function CadastrarAdvogado() {
         required={true}
       />
 
-
       <div className={styles.inputGroup}>
-        <Input
-          title="Rua"
-          value={rua}
-          setValue={setRua}
-          required={true}
-        />
+        <Input title="Rua" value={rua} setValue={setRua} required={true} />
       </div>
 
       <div className={styles.inputGroup}>
@@ -193,7 +191,11 @@ export default function CadastrarAdvogado() {
       <button type="submit" className={styles.button}>
         Cadastrar
       </button>
-      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+      <ToastContainer
+        position="top-end"
+        className="p-3"
+        style={{ zIndex: 9999 }}
+      >
         <Toast
           onClose={() => setMostrarToast(false)}
           show={mostrarToast}
@@ -207,6 +209,5 @@ export default function CadastrarAdvogado() {
         </Toast>
       </ToastContainer>
     </form>
-
   );
 }

@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import axios from "axios";
-import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./CadastrarAssistido.module.css";
-import Input from "../../components/Input/Input";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import axios from 'axios';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import styles from './CadastrarAssistido.module.css';
+import Input from '../../components/Input/Input';
 
-import { scrollToTop } from "./../../utils/Utils";
-import { EnderecoViaCep } from "./types";
+import { scrollToTop } from './../../utils/Utils';
+import { EnderecoViaCep } from './types';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarAssistido() {
-  const [nome, setNome] = useState("");
-  const [matricula, setMatricula] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [email, setEmail] = useState("");
-  const [profissao, setProfissao] = useState("");
-  const [nacionalidade, setNacionalidade] = useState("brasileiro");
-  const [naturalidade, setNaturalidade] = useState("");
+  const [nome, setNome] = useState('');
+  const [matricula, setMatricula] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [email, setEmail] = useState('');
+  const [profissao, setProfissao] = useState('');
+  const [nacionalidade, setNacionalidade] = useState('brasileiro');
+  const [naturalidade, setNaturalidade] = useState('');
   const [estadosCivis, setEstadosCivis] = useState<string[]>([]);
-  const [estadoCivil, setEstadoCivil] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [rua, setRua] = useState("");
-  const [numeroDaCasa, setNumeroDaCasa] = useState("");
-  const [cep, setCep] = useState("");
+  const [estadoCivil, setEstadoCivil] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [rua, setRua] = useState('');
+  const [numeroDaCasa, setNumeroDaCasa] = useState('');
+  const [cep, setCep] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">(
-    "success",
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
   );
 
   const navigate = useNavigate();
@@ -52,12 +52,11 @@ export default function CadastrarAssistido() {
   }, []);
 
   useEffect(() => {
-
-    if(cep.length === 0) {
+    if (cep.length === 0) {
       limparEndereco();
     }
 
-    if(cep.length < 8) {
+    if (cep.length < 8) {
       return;
     }
 
@@ -79,7 +78,7 @@ export default function CadastrarAssistido() {
     buscarviaCep();
   }, [cep]);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" />;
 
   const cadastrarAssistido = async (e: any) => {
@@ -111,8 +110,8 @@ export default function CadastrarAssistido() {
       );
 
       setMostrarToast(true);
-      setMensagemToast("Aassistido cadastrado com sucesso.");
-      setVarianteToast("success");
+      setMensagemToast('Aassistido cadastrado com sucesso.');
+      setVarianteToast('success');
 
       limparCampos();
 
@@ -121,8 +120,8 @@ export default function CadastrarAssistido() {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao Cadastrar Assistido");
-      setVarianteToast("danger");
+      setMensagemToast('Falha ao Cadastrar Assistido');
+      setVarianteToast('danger');
     }
   };
 
@@ -131,27 +130,27 @@ export default function CadastrarAssistido() {
   };
 
   const limparEndereco = () => {
-    setCidade("");
-    setBairro("");
-    setRua("");
-    setNumeroDaCasa("");
-    setCep("");
-  }
+    setCidade('');
+    setBairro('');
+    setRua('');
+    setNumeroDaCasa('');
+    setCep('');
+  };
 
   const limparCampos = () => {
-    setNome("");
-    setMatricula("");
-    setTelefone("");
-    setEmail("");
-    setCidade("");
-    setBairro("");
-    setRua("");
-    setNumeroDaCasa("");
-    setCep("");
-    setProfissao("");
-    setNacionalidade("");
-    setNaturalidade("");
-    setEstadoCivil("");
+    setNome('');
+    setMatricula('');
+    setTelefone('');
+    setEmail('');
+    setCidade('');
+    setBairro('');
+    setRua('');
+    setNumeroDaCasa('');
+    setCep('');
+    setProfissao('');
+    setNacionalidade('');
+    setNaturalidade('');
+    setEstadoCivil('');
   };
 
   return (

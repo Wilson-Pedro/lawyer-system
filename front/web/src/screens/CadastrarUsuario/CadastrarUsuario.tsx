@@ -1,70 +1,71 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
-import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./CadastrarUsuario.module.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate, Navigate } from 'react-router-dom';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import styles from './CadastrarUsuario.module.css';
 
-import Input from "../../components/Input/Input";
+import Input from '../../components/Input/Input';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function CadastrarUsuario() {
   const navigate = useNavigate();
 
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [tipoAtor, setTipoAtor] = useState("");
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [tipoAtor, setTipoAtor] = useState('');
   const [tiposDeAtores, setTiposDeAtores] = useState<string[]>([]);
-  const [senha, setSenha] = useState("");
+  const [senha, setSenha] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   useEffect(() => {
-
     const buscarTipoAtores = async () => {
-
       try {
-
         const response = await axios.get(`${API_URL}/atores/tipoAtores`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setTiposDeAtores(response.data);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-
-    }
+    };
     buscarTipoAtores();
   }, []);
 
   const cadastrarUsuario = async () => {
     try {
-      await axios.post(`${API_URL}/atores/`, {
-        nome,
-        email,
-        tipoAtor,
-        senha,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axios.post(
+        `${API_URL}/atores/`,
+        {
+          nome,
+          email,
+          tipoAtor,
+          senha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
-      setMensagemToast("Usuário cadastrado com sucesso!");
-      setVarianteToast("success");
+      setMensagemToast('Usuário cadastrado com sucesso!');
+      setVarianteToast('success');
       setMostrarToast(true);
 
       limparCampos();
     } catch (error) {
       console.error(error);
 
-      setMensagemToast("Erro ao cadastrar usuário.");
-      setVarianteToast("danger");
+      setMensagemToast('Erro ao cadastrar usuário.');
+      setVarianteToast('danger');
       setMostrarToast(true);
     }
   };
@@ -74,26 +75,34 @@ export default function CadastrarUsuario() {
   };
 
   const limparCampos = () => {
-    setNome("");
-    setEmail("");
-    setTipoAtor("");
-    setSenha("");
+    setNome('');
+    setEmail('');
+    setTipoAtor('');
+    setSenha('');
   };
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   return (
     <div className={styles.container}>
       {/* Botão de Voltar */}
-      <button className={styles.backButton} onClick={() => navigate("/cadastrar")}>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate('/cadastrar')}
+      >
         ← Voltar
       </button>
 
       <h1 className={styles.title}>Cadastrar Usuário</h1>
 
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); cadastrarUsuario(); }}>
-
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          cadastrarUsuario();
+        }}
+      >
         <Input
           value={nome}
           title="Nome Completo"
@@ -118,7 +127,9 @@ export default function CadastrarUsuario() {
           >
             <option value="" disabled selected></option>
             {tiposDeAtores.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
+              <option key={key} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
@@ -137,7 +148,11 @@ export default function CadastrarUsuario() {
       </form>
 
       {/* Toast visual */}
-      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+      <ToastContainer
+        position="top-end"
+        className="p-3"
+        style={{ zIndex: 9999 }}
+      >
         <Toast
           onClose={() => setMostrarToast(false)}
           show={mostrarToast}

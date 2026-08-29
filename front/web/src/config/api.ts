@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -6,7 +6,7 @@ export const api = axios.create({
 
 // Intercepta TODAS as requisições antes de saírem e injeta o token
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`;
   }

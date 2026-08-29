@@ -1,31 +1,55 @@
-import React from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { 
-    FileAltIcon, 
-    SingOutAltIcon,
-    FileCirclePlusIcon,
-    PlusCircleIcon,
-    UserCogIcon
-} from "../../Icons/Icon";
-import { MenuItem } from "../../types/MenuItem";
+import React from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  FileAltIcon,
+  SingOutAltIcon,
+  FileCirclePlusIcon,
+  PlusCircleIcon,
+  UserCogIcon,
+} from '../../Icons/Icon';
+import { MenuItem } from '../../types/MenuItem';
 
 export default function HomeAdmin() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
-  if(!token) return <Navigate to="/login" />
-  if(role !== 'ADMIN') return <Navigate to="/login" />
-  
+  if (!token) return <Navigate to="/login" />;
+  if (role !== 'ADMIN') return <Navigate to="/login" />;
 
   const menuItems: MenuItem[] = [
-    { label: "Ver Processos", icon: <FileAltIcon />, path: "/processos", variant: "primary" },
-    { label: "Cadastrar", icon: <PlusCircleIcon />, path: "/cadastrar", variant: "success" },
-    { label: "Movimentar", icon: <FileCirclePlusIcon />, path: "/movimentar", variant: "secondary" },
-    { label: "Demandas", icon: <FileAltIcon />, path: "/demandas", variant: "warning" },
-    { label: "Usuários", icon: <UserCogIcon />, path: "/usuarios", variant: "info" },
-    { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
+    {
+      label: 'Ver Processos',
+      icon: <FileAltIcon />,
+      path: '/processos',
+      variant: 'primary',
+    },
+    {
+      label: 'Cadastrar',
+      icon: <PlusCircleIcon />,
+      path: '/cadastrar',
+      variant: 'success',
+    },
+    {
+      label: 'Movimentar',
+      icon: <FileCirclePlusIcon />,
+      path: '/movimentar',
+      variant: 'secondary',
+    },
+    {
+      label: 'Demandas',
+      icon: <FileAltIcon />,
+      path: '/demandas',
+      variant: 'warning',
+    },
+    {
+      label: 'Usuários',
+      icon: <UserCogIcon />,
+      path: '/usuarios',
+      variant: 'info',
+    },
+    { label: 'Sair', icon: <SingOutAltIcon />, path: '/', variant: 'danger' },
   ];
 
   return (
@@ -36,7 +60,7 @@ export default function HomeAdmin() {
           className="btn btn-outline-light ms-auto"
           onClick={() => {
             localStorage.clear();
-            navigate("/");
+            navigate('/');
           }}
         >
           <SingOutAltIcon className="me-2" /> Sair
@@ -51,18 +75,19 @@ export default function HomeAdmin() {
               <div
                 className={`card text-center border-0 shadow-sm h-100 bg-${item.variant} bg-opacity-75 text-white`}
                 style={{
-                  borderRadius: "1rem",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  cursor: "pointer",
+                  borderRadius: '1rem',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'pointer',
                 }}
                 onClick={() => navigate(item.path)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.03)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)";
+                  e.currentTarget.style.transform = 'scale(1.03)';
+                  e.currentTarget.style.boxShadow =
+                    '0 6px 20px rgba(0,0,0,0.2)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
@@ -77,8 +102,9 @@ export default function HomeAdmin() {
 
       {/* Rodapé */}
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
-        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.
+        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD -
+        Estácio.
       </footer>
     </div>
   );
-};
+}

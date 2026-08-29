@@ -1,12 +1,12 @@
-import React from "react";
-import { 
-  useForm, 
-  FormProvider, 
-  FieldValues, 
+import React from 'react';
+import {
+  useForm,
+  FormProvider,
+  FieldValues,
   DefaultValues,
   Resolver,
-  UseFormSetError
-} from "react-hook-form";
+  UseFormSetError,
+} from 'react-hook-form';
 
 interface FormProps<T extends FieldValues> {
   onSubmit: (dados: T, setError: UseFormSetError<T>) => Promise<void> | void;
@@ -24,7 +24,6 @@ export function Form<T extends FieldValues>({
   defaultValues,
   className,
 }: FormProps<T>) {
-  
   const methods = useForm<T>({
     defaultValues,
     resolver,
@@ -37,7 +36,10 @@ export function Form<T extends FieldValues>({
   return (
     // O FormProvider "espalha" o estado do formulário para todos os filhos
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmitWrapper)} className={className}>
+      <form
+        onSubmit={methods.handleSubmit(handleSubmitWrapper)}
+        className={className}
+      >
         {children}
       </form>
     </FormProvider>

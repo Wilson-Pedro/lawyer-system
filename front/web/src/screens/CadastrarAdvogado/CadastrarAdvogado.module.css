@@ -71,7 +71,9 @@
   border-radius: 10px;
   cursor: pointer;
   margin-top: 1rem;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 .button:hover {
@@ -111,7 +113,6 @@
   max-width: 100%;
 }
 
-
 li:hover {
   background-color: lightgray;
 }
@@ -145,8 +146,6 @@ li:hover {
     flex: 1;
   }
 }
-
-
 
 .input:invalid:focus {
   border-color: #e63946;

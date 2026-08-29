@@ -1,8 +1,8 @@
 .divBtn {
-    display: flex;
-    width: 100%;
-    justify-content: end;
-    margin-bottom: 2%;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  margin-bottom: 2%;
 }
 
 .inputGroup {

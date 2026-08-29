@@ -1,28 +1,58 @@
-import React from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { 
-    UsersIcon, 
-    UserPlusIcon, 
-    GavelIcon, 
-    FileAltIcon, 
-    SingOutAltIcon, 
-    FileCirclePlusIcon
-} from "../../Icons/Icon";
-import { MenuItem } from "../../types/MenuItem";
+import React from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  UsersIcon,
+  UserPlusIcon,
+  GavelIcon,
+  FileAltIcon,
+  SingOutAltIcon,
+  FileCirclePlusIcon,
+} from '../../Icons/Icon';
+import { MenuItem } from '../../types/MenuItem';
 export default function Cadastros() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   const menuItems: MenuItem[] = [
-    { label: "Cadastrar Assistido", icon: <UsersIcon />, path: "/cadastrar/assistido", variant: "success" },
-    { label: "Cadastrar Estagiário", icon: <UserPlusIcon />, path: "/cadastrar/estagiario", variant: "info" },
-    { label: "Cadastrar Advogado", icon: <GavelIcon />, path: "/cadastrar/advogado", variant: "warning" },
-    { label: "Cadastrar Processo", icon: <FileAltIcon />, path: "/cadastrar/processo", variant: "secondary" },
-    { label: "Cadastrar Usuario", icon: <UserPlusIcon />, path: "/cadastrar/usuario", variant: "primary" },
-    { label: "Cadastrar Demanda", icon: <FileCirclePlusIcon />, path: "/cadastrar/demanda", variant: "danger" },
+    {
+      label: 'Cadastrar Assistido',
+      icon: <UsersIcon />,
+      path: '/cadastrar/assistido',
+      variant: 'success',
+    },
+    {
+      label: 'Cadastrar Estagiário',
+      icon: <UserPlusIcon />,
+      path: '/cadastrar/estagiario',
+      variant: 'info',
+    },
+    {
+      label: 'Cadastrar Advogado',
+      icon: <GavelIcon />,
+      path: '/cadastrar/advogado',
+      variant: 'warning',
+    },
+    {
+      label: 'Cadastrar Processo',
+      icon: <FileAltIcon />,
+      path: '/cadastrar/processo',
+      variant: 'secondary',
+    },
+    {
+      label: 'Cadastrar Usuario',
+      icon: <UserPlusIcon />,
+      path: '/cadastrar/usuario',
+      variant: 'primary',
+    },
+    {
+      label: 'Cadastrar Demanda',
+      icon: <FileCirclePlusIcon />,
+      path: '/cadastrar/demanda',
+      variant: 'danger',
+    },
   ];
 
   return (
@@ -31,7 +61,7 @@ export default function Cadastros() {
         <span className="navbar-brand fw-bold fs-4">Cadastrar</span>
         <button
           className="btn btn-outline-light ms-auto"
-          onClick={() => navigate("/home/admin")}
+          onClick={() => navigate('/home/admin')}
         >
           <SingOutAltIcon className="me-2" /> Voltar
         </button>
@@ -45,18 +75,19 @@ export default function Cadastros() {
               <div
                 className={`card text-center border-0 shadow-sm h-100 bg-${item.variant} bg-opacity-75 text-white`}
                 style={{
-                  borderRadius: "1rem",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  cursor: "pointer",
+                  borderRadius: '1rem',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'pointer',
                 }}
                 onClick={() => navigate(item.path)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.03)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)";
+                  e.currentTarget.style.transform = 'scale(1.03)';
+                  e.currentTarget.style.boxShadow =
+                    '0 6px 20px rgba(0,0,0,0.2)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
@@ -71,8 +102,9 @@ export default function Cadastros() {
 
       {/* Rodapé */}
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
-        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.
+        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD -
+        Estácio.
       </footer>
     </div>
   );
-};
+}

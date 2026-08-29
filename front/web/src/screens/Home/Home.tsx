@@ -1,6 +1,6 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./Home.module.css"; // estilos separados em CSS
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import styles from './Home.module.css'; // estilos separados em CSS
 
 export default function Home() {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <img
-        src={require("./../../assets/Balanca-da-justica.png")}
+        src={require('./../../assets/Balanca-da-justica.png')}
         alt="Logo"
         className={styles.logo}
       />
@@ -20,13 +20,9 @@ export default function Home() {
         Atendimento jurídico gratuito e orientado à comunidade.
       </p>
 
-      <button
-        className={`${styles.button}`}
-        onClick={() => navigate("/login")}
-      >
+      <button className={`${styles.button}`} onClick={() => navigate('/login')}>
         Fazer Login
       </button>
-
     </div>
   );
 }

@@ -3,9 +3,9 @@ export type MenuItem = {
   icon: React.JSX.Element;
   path: string;
   variant: string;
-}
+};
 
-export type  Response = {
+export type Response = {
   id: number;
   nome: string;
-}
+};

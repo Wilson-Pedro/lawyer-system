@@ -1,46 +1,50 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
-import axios from "axios";
-import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { EditIcon, FileCirclePlusIcon } from "../../Icons/Icon";
-import Paginacao from "../../components/Paginacao/Paginacao";
-import { PageableResponse } from "../../types/PageableResponse";
-import { Processo } from "../../types/Processo";
+import React, { useState, useEffect, ChangeEvent } from 'react';
+import axios from 'axios';
+import { useNavigate, Navigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { EditIcon, FileCirclePlusIcon } from '../../Icons/Icon';
+import Paginacao from '../../components/Paginacao/Paginacao';
+import { PageableResponse } from '../../types/PageableResponse';
+import { Processo } from '../../types/Processo';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function Processos() {
   const [processos, setProcessos] = useState<Processo[]>([]);
   const [filteredProcessos, setFilteredProcessos] = useState<Processo[]>([]);
-  const [busca, setBusca] = useState("");
-  const [statusFiltro, setStatusFiltro] = useState<string>("Todos");
+  const [busca, setBusca] = useState('');
+  const [statusFiltro, setStatusFiltro] = useState<string>('Todos');
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
 
   const [primeiraPagina, setPrimeiraPagina] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  
+
   const [totalElements, setTotalElements] = useState(0);
   const [paginas, setPaginas] = useState<number[]>([]);
   const [ultimaPagina, setUltimaPagina] = useState<number>(10);
   const [paginaAtual, setPaginaAtual] = useState<number>(0);
 
-  const [mostrarUltimaPagina, setMostrarUltimaPagina] = useState<boolean>(false);
-  const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] = useState<boolean>(false);
+  const [mostrarUltimaPagina, setMostrarUltimaPagina] =
+    useState<boolean>(false);
+  const [mostrarPrimeiraPagina, setMostrarPrimeiraPagina] =
+    useState<boolean>(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
 
-
     const fetchProcessos = async () => {
       try {
-        const response = await axios.get(`${API_URL}/processos/statusDoProcesso/${statusFiltro}?page=${page}&size=${size}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+        const response = await axios.get(
+          `${API_URL}/processos/statusDoProcesso/${statusFiltro}?page=${page}&size=${size}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         const pages: PageableResponse<Processo> = response.data;
         setProcessos(pages.content);
         setTotalPages(pages.totalPages);
@@ -56,12 +60,12 @@ export default function Processos() {
   useEffect(() => {
     let dados = [...processos];
 
-    if (busca.trim() !== "") {
+    if (busca.trim() !== '') {
       dados = dados.filter(
         (p) =>
           p.numeroDoProcesso.toLowerCase().includes(busca.toLowerCase()) ||
           p.assunto.toLowerCase().includes(busca.toLowerCase()) ||
-          p.advogadoNome.toLowerCase().includes(busca.toLowerCase())
+          p.advogadoNome.toLowerCase().includes(busca.toLowerCase()),
       );
     }
 
@@ -70,42 +74,44 @@ export default function Processos() {
 
   const getStatusClass = (status: string): string => {
     switch (status) {
-      case "Tramitando":
-        return "bg-success bg-opacity-25 text-success fw-semibold";
-      case "Suspenso":
-        return "bg-warning bg-opacity-25 text-warning fw-semibold";
-      case "Arquivado":
-        return "bg-danger bg-opacity-25 text-danger fw-semibold";
+      case 'Tramitando':
+        return 'bg-success bg-opacity-25 text-success fw-semibold';
+      case 'Suspenso':
+        return 'bg-warning bg-opacity-25 text-warning fw-semibold';
+      case 'Arquivado':
+        return 'bg-danger bg-opacity-25 text-danger fw-semibold';
       default:
-        return "";
+        return '';
     }
   };
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
-      
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
         <span className="navbar-brand fw-bold fs-4">Lista de Processos</span>
-        <button className="btn btn-outline-light ms-auto" onClick={() => navigate("/home/admin")}>
+        <button
+          className="btn btn-outline-light ms-auto"
+          onClick={() => navigate('/home/admin')}
+        >
           ← Voltar
         </button>
       </nav>
 
-      
       <div className="container my-5 flex-grow-1">
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-          
           <input
             type="text"
             className="form-control w-50 mb-2 mb-sm-0"
             placeholder="Buscar por número, assunto ou advogado..."
             value={busca}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setBusca(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setBusca(e.target.value)
+            }
           />
-          
+
           <select
             className="form-select w-auto"
             value={statusFiltro}
@@ -118,7 +124,6 @@ export default function Processos() {
           </select>
         </div>
 
-        
         {filteredProcessos.length > 0 ? (
           <div className="table-responsive shadow-sm rounded">
             <table className="table table-hover align-middle bg-white rounded overflow-hidden">
@@ -146,21 +151,25 @@ export default function Processos() {
                       {proc.statusDoProcesso}
                     </td>
                     <td className="text-center">
-                        <button
-                          className="btn btn-sm btn-outline-primary me-2"
-                          onClick={() => navigate(`/processos/editar/${proc.id}`)}
-                        >
-                          <EditIcon />
-                        </button>
-                      </td>
+                      <button
+                        className="btn btn-sm btn-outline-primary me-2"
+                        onClick={() => navigate(`/processos/editar/${proc.id}`)}
+                      >
+                        <EditIcon />
+                      </button>
+                    </td>
 
-                      <td className="text-center">
-                        <button
-                          className="btn btn-sm btn-outline-success"
-                          onClick={() => navigate(`/processos/${proc.numeroDoProcesso}/movimento`)}
-                        >
-                          <FileCirclePlusIcon />
-                        </button>
+                    <td className="text-center">
+                      <button
+                        className="btn btn-sm btn-outline-success"
+                        onClick={() =>
+                          navigate(
+                            `/processos/${proc.numeroDoProcesso}/movimento`,
+                          )
+                        }
+                      >
+                        <FileCirclePlusIcon />
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -174,29 +183,28 @@ export default function Processos() {
         )}
       </div>
 
-      
-      <Paginacao 
-          page={page}
-          totalPages={totalPages}
-          paginaAtual={paginaAtual}
-          primeiraPagina={primeiraPagina}
-          ultimaPagina={ultimaPagina}
-          paginas={paginas}
-          setPaginaAtual={setPaginaAtual}
-          setPrimeiraPagina={setPrimeiraPagina}
-          setUltimaPagina={setUltimaPagina}
-          setPage={setPage}
-          mostrarPrimeiraPagina={mostrarPrimeiraPagina}
-          mostrarUltimaPagina={mostrarUltimaPagina}
-          setMostrarUltimaPagina={setMostrarUltimaPagina}
-          setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
-          setPaginas={setPaginas}
+      <Paginacao
+        page={page}
+        totalPages={totalPages}
+        paginaAtual={paginaAtual}
+        primeiraPagina={primeiraPagina}
+        ultimaPagina={ultimaPagina}
+        paginas={paginas}
+        setPaginaAtual={setPaginaAtual}
+        setPrimeiraPagina={setPrimeiraPagina}
+        setUltimaPagina={setUltimaPagina}
+        setPage={setPage}
+        mostrarPrimeiraPagina={mostrarPrimeiraPagina}
+        mostrarUltimaPagina={mostrarUltimaPagina}
+        setMostrarUltimaPagina={setMostrarUltimaPagina}
+        setMostrarPrimeiraPagina={setMostrarPrimeiraPagina}
+        setPaginas={setPaginas}
       />
 
-      
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
-        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.
+        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD -
+        Estácio.
       </footer>
     </div>
   );
-};
+}

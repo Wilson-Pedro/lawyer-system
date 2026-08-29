@@ -1,45 +1,47 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate, Navigate, useParams } from "react-router-dom";
-import styles from "./EditarDemanda.module.css";
-import { Toast, ToastContainer } from "react-bootstrap";
-import { scrollToTop } from "../../utils/Utils";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
+import styles from './EditarDemanda.module.css';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { scrollToTop } from '../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function EditarDemanda() {
   const navigate = useNavigate();
 
-  const [demanda, setDemanda] = useState<string>("");
+  const [demanda, setDemanda] = useState<string>('');
 
-  const [demandaStatusAluno, setDemandaStatusAluno] = useState<string>("");
-  const [demandaStatusProfessor, setDemandaStatusProfessor] = useState<string>("");
-  const [demandaStatusAdvogado, setDemandaStatusAdvogado] = useState<string>("");
-  
-  const [prazoFinal, setPrazoFinal] = useState<string>("");
+  const [demandaStatusAluno, setDemandaStatusAluno] = useState<string>('');
+  const [demandaStatusProfessor, setDemandaStatusProfessor] =
+    useState<string>('');
+  const [demandaStatusAdvogado, setDemandaStatusAdvogado] =
+    useState<string>('');
 
-  const [nomeEstagiario, setNomeEstagiario] = useState<string>("");
-  const [nomeProfessor, setNomeProfessor] = useState<string>("");
-  const [nomeAdvogado, setNomeAdvogado] = useState<string>("");
+  const [prazoFinal, setPrazoFinal] = useState<string>('');
+
+  const [nomeEstagiario, setNomeEstagiario] = useState<string>('');
+  const [nomeProfessor, setNomeProfessor] = useState<string>('');
+  const [nomeAdvogado, setNomeAdvogado] = useState<string>('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   const params = useParams();
   const demandaId = params.demandaId || '';
 
   useEffect(() => {
-
     const token = localStorage.getItem('token');
 
     const fetchDemanda = async () => {
       try {
-
-        const response = await axios.get(`${API_URL}/demandas/${demandaId}`,{
+        const response = await axios.get(`${API_URL}/demandas/${demandaId}`, {
           headers: {
-              Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         const dados = response.data;
         setDemanda(dados.demanda);
@@ -50,44 +52,45 @@ export default function EditarDemanda() {
         setDemandaStatusAluno(dados.demandaStatusAluno);
         setDemandaStatusProfessor(dados.demandaStatusProfessor);
         setDemandaStatusAdvogado(dados.demandaStatusAdvogado);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-    }
+    };
 
     fetchDemanda();
   }, []);
 
-  const editarDemanda = async (e:any) => {
+  const editarDemanda = async (e: any) => {
     e.preventDefault();
 
-     const token = localStorage.getItem('token');
-     
+    const token = localStorage.getItem('token');
+
     try {
-      await axios.put(`${API_URL}/demandas/${demandaId}/update`, {
-        demandaStatusAluno: demandaStatusAluno,
-        demandaStatusProfessor: demandaStatusProfessor,
-        demandaStatusAdvogado: demandaStatusAdvogado,
-      },
+      await axios.put(
+        `${API_URL}/demandas/${demandaId}/update`,
+        {
+          demandaStatusAluno: demandaStatusAluno,
+          demandaStatusProfessor: demandaStatusProfessor,
+          demandaStatusAdvogado: demandaStatusAdvogado,
+        },
         {
           headers: {
-              Authorization: `Bearer ${token}`
-          }
-        }
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
 
       scrollToTop();
 
       setMostrarToast(true);
-      setMensagemToast("Demanda editada com sucesso.");
-      setVarianteToast("success");
+      setMensagemToast('Demanda editada com sucesso.');
+      setVarianteToast('success');
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao editar Demanda");
-      setVarianteToast("danger");
+      setMensagemToast('Falha ao editar Demanda');
+      setVarianteToast('danger');
     }
   };
 
@@ -103,14 +106,14 @@ export default function EditarDemanda() {
     setDemandaStatusAdvogado(e.target.value);
   };
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" />;
 
   return (
     <div className={styles.container}>
       <button
         className={styles.backButton}
-        onClick={() => navigate("/demandas")}
+        onClick={() => navigate('/demandas')}
       >
         ← Voltar
       </button>
@@ -139,7 +142,6 @@ export default function EditarDemanda() {
             required
             disabled
           />
-
         </div>
 
         <div className={styles.inputGroup}>
@@ -152,9 +154,7 @@ export default function EditarDemanda() {
             required
             disabled
           />
-
         </div>
-
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Advogado</label>
@@ -166,7 +166,6 @@ export default function EditarDemanda() {
             required
             disabled
           />
-
         </div>
 
         <div className={styles.inputGroup}>
@@ -199,7 +198,6 @@ export default function EditarDemanda() {
           </select>
         </div>
 
-        
         {/* <div className={styles.inputGroup}>
           <label className={styles.label}>Status da demanda (Advogado)</label>
           <select
@@ -215,16 +213,16 @@ export default function EditarDemanda() {
           </select>
         </div> */}
 
-          <div className={styles.inputGroup}>
-            <label className={styles.label}>Prazo Final</label>
-            <input
-              className={styles.input}
-              placeholder="Prazo Final"
-              value={prazoFinal}
-              onChange={(e: any) => setPrazoFinal(e.target.value)}
-              disabled
-            />
-          </div>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Prazo Final</label>
+          <input
+            className={styles.input}
+            placeholder="Prazo Final"
+            value={prazoFinal}
+            onChange={(e: any) => setPrazoFinal(e.target.value)}
+            disabled
+          />
+        </div>
 
         <button type="submit" className={styles.button}>
           Editar Demanda

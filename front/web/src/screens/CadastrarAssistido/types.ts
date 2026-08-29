@@ -12,4 +12,4 @@ export type EnderecoViaCep = {
   gia: string;
   ddd: string;
   siafi: string;
-}
+};

@@ -1,61 +1,67 @@
-import React, {useEffect, useState} from "react";
-import { useNavigate, Navigate } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { 
-    FileAltIcon, 
-    SingOutAltIcon,
-} from "../../Icons/Icon";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FileAltIcon, SingOutAltIcon } from '../../Icons/Icon';
 
-import axios from  'axios';
-import { MenuItem, Response } from "../../types/MenuItem";
+import axios from 'axios';
+import { MenuItem, Response } from '../../types/MenuItem';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function HomeAdvogado() {
-
   const [advogadoId, setAdvogadoId] = useState<number | null>(null);
 
   const navigate = useNavigate();
 
-    useEffect(() => {
-      const token = localStorage.getItem('token') || '';
-      const email = localStorage.getItem('login') || '';
-      
-      const fetchIdUser = async () => {
-          try {
-              const response = await axios.get<Response>(`${API_URL}/advogados/buscarId/email/${email}`, {
-                  headers: {
-                      Authorization: `Bearer ${token}`
-                  }
-              });
-              setAdvogadoId(response.data.id);
-          } catch (error) {
-                console.error(error);
-            }
-      };
-      fetchIdUser();
-    }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token') || '';
+    const email = localStorage.getItem('login') || '';
+
+    const fetchIdUser = async () => {
+      try {
+        const response = await axios.get<Response>(
+          `${API_URL}/advogados/buscarId/email/${email}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setAdvogadoId(response.data.id);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchIdUser();
+  }, []);
 
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
 
-  if(!token) return <Navigate to="/login" />
-  if(role !== 'ADVOGADO') return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
+  if (role !== 'ADVOGADO') return <Navigate to="/login" />;
 
   const menuItems: MenuItem[] = [
-    { label: "Demandas", icon: <FileAltIcon />, path: `/demandas/advogado/${advogadoId}`, variant: "warning" },
-    { label: "Sair", icon: <SingOutAltIcon />, path: "/", variant: "danger" },
+    {
+      label: 'Demandas',
+      icon: <FileAltIcon />,
+      path: `/demandas/advogado/${advogadoId}`,
+      variant: 'warning',
+    },
+    { label: 'Sair', icon: <SingOutAltIcon />, path: '/', variant: 'danger' },
   ];
 
   return (
     <div className="min-vh-100 d-flex flex-column bg-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm px-4">
-        <span className="navbar-brand fw-bold fs-4">Painel de Gerenciamento - Advogado</span>
+        <span className="navbar-brand fw-bold fs-4">
+          Painel de Gerenciamento - Advogado
+        </span>
         <button
           className="btn btn-outline-light ms-auto"
           onClick={() => {
             localStorage.clear();
-            navigate("/");
+            navigate('/');
           }}
         >
           <SingOutAltIcon className="me-2" /> Sair
@@ -70,18 +76,19 @@ export default function HomeAdvogado() {
               <div
                 className={`card text-center border-0 shadow-sm h-100 bg-${item.variant} bg-opacity-75 text-white`}
                 style={{
-                  borderRadius: "1rem",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  cursor: "pointer",
+                  borderRadius: '1rem',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  cursor: 'pointer',
                 }}
                 onClick={() => navigate(item.path)}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.03)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.2)";
+                  e.currentTarget.style.transform = 'scale(1.03)';
+                  e.currentTarget.style.boxShadow =
+                    '0 6px 20px rgba(0,0,0,0.2)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "scale(1)";
-                  e.currentTarget.style.boxShadow = "none";
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = 'none';
                 }}
               >
                 <div className="card-body d-flex flex-column align-items-center justify-content-center p-4">
@@ -96,8 +103,9 @@ export default function HomeAdvogado() {
 
       {/* Rodapé */}
       <footer className="text-center py-3 bg-dark text-white-50 small mt-auto">
-        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD - Estácio.
+        © {new Date().getFullYear()} Sistema Jurídico | Desenvolvido pelo LTD -
+        Estácio.
       </footer>
     </div>
   );
-};
+}

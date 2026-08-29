@@ -1,123 +1,123 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Navigate, useParams } from "react-router-dom";
-import axios from "axios";
-import { Toast, ToastContainer } from "react-bootstrap";
-import styles from "./EditarAdvogado.module.css";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Navigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import styles from './EditarAdvogado.module.css';
 import { scrollToTop } from './../../utils/Utils';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function EditarAdvogado() {
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [dataDeNascimento, setDataDeNascimento] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [rua, setRua] = useState('');
+  const [numeroDaCasa, setNumeroDaCasa] = useState('');
+  const [cep, setCep] = useState('');
 
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [dataDeNascimento, setDataDeNascimento] = useState("");
-  const [cidade, setCidade] = useState("");
-  const [bairro, setBairro] = useState("");
-  const [rua, setRua] = useState("");
-  const [numeroDaCasa, setNumeroDaCasa] = useState("");
-  const [cep, setCep] = useState("");
-
-  const [usuarioStatus, setUsuarioStatus] = useState("");
+  const [usuarioStatus, setUsuarioStatus] = useState('');
   const [statusDoUsuario, setStatusDoUsuario] = useState<string[]>([]);
-  const [senha, setSenha] = useState("");
+  const [senha, setSenha] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   const navigate = useNavigate();
   const params = useParams();
   const advogadoId = params.advogadoId || '';
 
   useEffect(() => {
-
     const token = localStorage.getItem('token');
 
     const fecthAdvogado = async () => {
       try {
-          const response = await axios.get(`${API_URL}/advogados/${advogadoId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-
-          const dados = response.data;
-          setNome(dados.nome);
-          setEmail(dados.email);
-          setTelefone(dados.telefone);
-          setDataDeNascimento(dados.dataDeNascimento);
-          setCidade(dados.cidade);
-          setBairro(dados.bairro);
-          setRua(dados.rua);
-          setNumeroDaCasa(dados.numeroDaCasa);
-          setCep(dados.cep);
-          setUsuarioStatus(dados.usuarioStatus);
-      } catch(error) {
-        console.log(error)
-      }
-    }
-
-    const buscarUsuarioStatus = async () => {
-
-      try {
-
-        const response = await axios.get(`${API_URL}/auth/usuarioStatus`, {
+        const response = await axios.get(`${API_URL}/advogados/${advogadoId}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setStatusDoUsuario(response.data);
 
-      } catch(error) {
+        const dados = response.data;
+        setNome(dados.nome);
+        setEmail(dados.email);
+        setTelefone(dados.telefone);
+        setDataDeNascimento(dados.dataDeNascimento);
+        setCidade(dados.cidade);
+        setBairro(dados.bairro);
+        setRua(dados.rua);
+        setNumeroDaCasa(dados.numeroDaCasa);
+        setCep(dados.cep);
+        setUsuarioStatus(dados.usuarioStatus);
+      } catch (error) {
         console.log(error);
       }
+    };
 
-    }
+    const buscarUsuarioStatus = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/auth/usuarioStatus`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setStatusDoUsuario(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     fecthAdvogado();
     buscarUsuarioStatus();
   }, []);
 
-  const atualizarAdvogado = async (e:any) => {
+  const atualizarAdvogado = async (e: any) => {
     e.preventDefault();
 
     try {
-      await axios.put(`${API_URL}/advogados/${advogadoId}`, {
-        nome,
-        email,
-        telefone,
-        dataDeNascimento,
-        cidade,
-        bairro,
-        rua,
-        numeroDaCasa: parseInt(numeroDaCasa),
-        cep,
-        usuarioStatus,
-        senha
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axios.put(
+        `${API_URL}/advogados/${advogadoId}`,
+        {
+          nome,
+          email,
+          telefone,
+          dataDeNascimento,
+          cidade,
+          bairro,
+          rua,
+          numeroDaCasa: parseInt(numeroDaCasa),
+          cep,
+          usuarioStatus,
+          senha,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       scrollToTop();
 
       setMostrarToast(true);
-      setMensagemToast("Advogado atualizado com sucesso.");
-      setVarianteToast("success");
+      setMensagemToast('Advogado atualizado com sucesso.');
+      setVarianteToast('success');
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao atualizar advogado");
-      setVarianteToast("danger");
+      setMensagemToast('Falha ao atualizar advogado');
+      setVarianteToast('danger');
     }
   };
 
   const formatarData = (dataValue: string) => {
-    let numeros = dataValue.replace(/\D/g, "");
+    let numeros = dataValue.replace(/\D/g, '');
 
     if (numeros.length > 8) {
       numeros = numeros.substring(0, 8);
@@ -126,27 +126,34 @@ export default function EditarAdvogado() {
     let formatado = numeros;
 
     if (numeros.length > 2) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
+      formatado = numeros.substring(0, 2) + '/' + numeros.substring(2);
     }
 
     if (numeros.length > 4) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2, 4) + "/" + numeros.substring(4);
+      formatado =
+        numeros.substring(0, 2) +
+        '/' +
+        numeros.substring(2, 4) +
+        '/' +
+        numeros.substring(4);
     }
 
     setDataDeNascimento(formatado);
-  }
+  };
 
   const selecionarUsuarioStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUsuarioStatus(e.target.value);
   };
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   return (
-
     <form className={styles.container} onSubmit={atualizarAdvogado}>
-      <button className={styles.backButton} onClick={() => navigate('/usuarios')}>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate('/usuarios')}
+      >
         ← Voltar
       </button>
       <h1 className={styles.title}>Atualizar Advogado</h1>
@@ -221,7 +228,6 @@ export default function EditarAdvogado() {
         </div>
       </div>
 
-
       <div className={styles.inputGroup}>
         <label className={styles.label}>Rua</label>
         <input
@@ -264,9 +270,11 @@ export default function EditarAdvogado() {
           onChange={selecionarUsuarioStatus}
         >
           <option value="" disabled selected></option>
-            {statusDoUsuario.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
-            ))}
+          {statusDoUsuario.map((option, key) => (
+            <option key={key} value={option}>
+              {option}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -284,7 +292,11 @@ export default function EditarAdvogado() {
       <button type="submit" className={styles.button}>
         Atualizar
       </button>
-      <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+      <ToastContainer
+        position="top-end"
+        className="p-3"
+        style={{ zIndex: 9999 }}
+      >
         <Toast
           onClose={() => setMostrarToast(false)}
           show={mostrarToast}
@@ -298,6 +310,5 @@ export default function EditarAdvogado() {
         </Toast>
       </ToastContainer>
     </form>
-
   );
 }

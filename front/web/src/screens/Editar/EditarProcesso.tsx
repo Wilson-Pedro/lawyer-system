@@ -1,55 +1,59 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate, useParams, Navigate } from "react-router-dom";
-import styles from "./EditarProcesso.module.css";
-import { Toast, ToastContainer } from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate, useParams, Navigate } from 'react-router-dom';
+import styles from './EditarProcesso.module.css';
+import { Toast, ToastContainer } from 'react-bootstrap';
 import { scrollToTop } from './../../utils/Utils';
-import { Advogado, Estagiario } from "../../types/Entities";
-import { PageableResponse } from "../../types/PageableResponse";
+import { Advogado, Estagiario } from '../../types/Entities';
+import { PageableResponse } from '../../types/PageableResponse';
 
 const API_URL = process.env.REACT_APP_API;
 
 export default function EditarProcesso() {
   const navigate = useNavigate();
 
-  const [numeroDoProcesso, setNumeroDoProcesso] = useState<string | "">("");
-  const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState<string | "">("");
-  const [assunto, setAssunto] = useState("");
-  const [vara, setVara] = useState("");
-  const [responsavel, setResponsavel] = useState("");
+  const [numeroDoProcesso, setNumeroDoProcesso] = useState<string | ''>('');
+  const [numeroDoProcessoPje, setNumeroDoProcessoPje] = useState<string | ''>(
+    '',
+  );
+  const [assunto, setAssunto] = useState('');
+  const [vara, setVara] = useState('');
+  const [responsavel, setResponsavel] = useState('');
 
-  const [areaDoDireito, setAreaDeDireito] = useState("");
+  const [areaDoDireito, setAreaDeDireito] = useState('');
   const [areasDoDireito, setAreasDeDireito] = useState<string[]>([]);
 
-  const [tribunal, setTribunal] = useState("");
+  const [tribunal, setTribunal] = useState('');
   const [tribunais, setTribunais] = useState<string[]>([]);
 
-  const [prazo, setPrazo] = useState<string | "">("");
+  const [prazo, setPrazo] = useState<string | ''>('');
 
-  const [messageDataError, setMessageDataError] = useState("");
+  const [messageDataError, setMessageDataError] = useState('');
 
-  const [nomeAssistido, setNomeAssistido] = useState("");
+  const [nomeAssistido, setNomeAssistido] = useState('');
   const [assistidoId, setAssistidoId] = useState<number>(0);
 
-  const [nomeAdvogado, setNomeAdvogado] = useState("");
-  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState("");
+  const [nomeAdvogado, setNomeAdvogado] = useState('');
+  const [nomeAdvogadoSearch, setNomeAdvogadoSearch] = useState('');
   const [advogadoId, setAdvogadoId] = useState<number>(0);
   const [advogados, setAdvogados] = useState<Advogado[]>([]);
 
-  const [nomeEstagiario, setNomeEstagiario] = useState("");
-  const [nomeEstagiarioSearch, setNomeEstagiarioSearch] = useState("");
+  const [nomeEstagiario, setNomeEstagiario] = useState('');
+  const [nomeEstagiarioSearch, setNomeEstagiarioSearch] = useState('');
   const [estagiarioId, setEstagiarioId] = useState<number>(0);
   const [estagiarios, setEstagiarios] = useState<Estagiario[]>([]);
 
   const [statusProcesso, setStatusProcesso] = useState<string[]>([]);
 
-  const [statusDoProcesso, setStatusDoProcesso] = useState("");
-  const [partesEnvolvidas, setPartesEnvolvidas] = useState("");
-  const [ultimaAtualizacao, setUltimaAtualizacao] = useState("");
+  const [statusDoProcesso, setStatusDoProcesso] = useState('');
+  const [partesEnvolvidas, setPartesEnvolvidas] = useState('');
+  const [ultimaAtualizacao, setUltimaAtualizacao] = useState('');
 
   const [mostrarToast, setMostrarToast] = useState(false);
-  const [mensagemToast, setMensagemToast] = useState("");
-  const [varianteToast, setVarianteToast] = useState<"success" | "danger">("success");
+  const [mensagemToast, setMensagemToast] = useState('');
+  const [varianteToast, setVarianteToast] = useState<'success' | 'danger'>(
+    'success',
+  );
 
   //const [processoDto, setProcessoDto] = useState<ProcessoDto | null>(null);
 
@@ -60,57 +64,50 @@ export default function EditarProcesso() {
   const size = 20;
 
   useEffect(() => {
-
     const buscarAreasDoDireito = async () => {
-
       try {
-
-        const response = await axios.get(`${API_URL}/processos/areasDoDireito`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await axios.get(
+          `${API_URL}/processos/areasDoDireito`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         setAreasDeDireito(response.data);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-
-    }
+    };
 
     const buscarTribunais = async () => {
-
       try {
-
         const response = await axios.get(`${API_URL}/processos/tribunais`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         setTribunais(response.data);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-
-    }
+    };
 
     const buscarStatusDoProcesso = async () => {
-
       try {
-
-        const response = await axios.get(`${API_URL}/processos/processoStatus`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await axios.get(
+          `${API_URL}/processos/processoStatus`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         setStatusProcesso(response.data);
-
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       }
-
-    }
+    };
 
     buscarAreasDoDireito();
     buscarTribunais();
@@ -118,13 +115,12 @@ export default function EditarProcesso() {
   }, []);
 
   useEffect(() => {
-
     const buscarProcessoPorId = async () => {
       try {
         const response = await axios.get(`${API_URL}/processos/${processoId}`, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         const processo = response.data;
         setAssistidoId(processo.assistidoId);
@@ -147,18 +143,16 @@ export default function EditarProcesso() {
         setPrazo(processo.prazoFinal);
         setPartesEnvolvidas(processo.partesEnvolvidas);
         setUltimaAtualizacao(processo.ultimaAtualizacao);
-
-      } catch(error) {
-          console.log(error);
-          setMostrarToast(true);
-          setMensagemToast("Error ao buscar processo");
-          setVarianteToast("danger")
+      } catch (error) {
+        console.log(error);
+        setMostrarToast(true);
+        setMensagemToast('Error ao buscar processo');
+        setVarianteToast('danger');
       }
-  }
+    };
 
-  buscarProcessoPorId();
-
-  }, [processoId])
+    buscarProcessoPorId();
+  }, [processoId]);
 
   useEffect(() => {
     const buscarAdvogado = async () => {
@@ -167,17 +161,19 @@ export default function EditarProcesso() {
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
+        const response = await axios.get(
+          `${API_URL}/advogados/buscar/${nomeAdvogadoSearch}?page=${page}&size=${size}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         const pageData: PageableResponse<Advogado> = response.data;
         setAdvogados(pageData.content);
       } catch (error) {
-        setMensagemToast("Error ao tentar buscar advogados");
+        setMensagemToast('Error ao tentar buscar advogados');
       }
-
     };
 
     const delay = setTimeout(buscarAdvogado, 100);
@@ -187,21 +183,23 @@ export default function EditarProcesso() {
 
   useEffect(() => {
     const buscarEstagiario = async () => {
-      if(nomeEstagiarioSearch.length < 2) {
+      if (nomeEstagiarioSearch.length < 2) {
         setEstagiarios([]);
         return;
       }
       try {
-        const response = await axios.get(`${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-       });
+        const response = await axios.get(
+          `${API_URL}/estagiarios/buscar/${nomeEstagiarioSearch}?page=${page}&size=${size}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
         const pageData: PageableResponse<Estagiario> = response.data;
         setEstagiarios(pageData.content);
-
-      } catch(error) {
-        console.log("Error ao tentar buscar estagiarios ", error)
+      } catch (error) {
+        console.log('Error ao tentar buscar estagiarios ', error);
       }
     };
 
@@ -210,47 +208,48 @@ export default function EditarProcesso() {
     return () => clearTimeout(delay);
   }, [nomeEstagiarioSearch]);
 
-
   const atualizarProcesso = async () => {
-
     try {
-      await axios.put(`${API_URL}/processos/${processoId}`, {
-        assistidoId,
-        numeroDoProcesso,
-        numeroDoProcessoPje,
-        assunto,
-        vara,
-        prazoFinal: prazo,
-        responsavel,
-        advogadoId,
-        estagiarioId,
-        areaDoDireito,
-        tribunal,
-        statusDoProcesso,
-        partesEnvolvidas,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      
-      scrollToTop();
-      
-      setMostrarToast(true);
-      setMensagemToast("Processo atualizado com sucesso.");
-      setVarianteToast("success");
+      await axios.put(
+        `${API_URL}/processos/${processoId}`,
+        {
+          assistidoId,
+          numeroDoProcesso,
+          numeroDoProcessoPje,
+          assunto,
+          vara,
+          prazoFinal: prazo,
+          responsavel,
+          advogadoId,
+          estagiarioId,
+          areaDoDireito,
+          tribunal,
+          statusDoProcesso,
+          partesEnvolvidas,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
+      scrollToTop();
+
+      setMostrarToast(true);
+      setMensagemToast('Processo atualizado com sucesso.');
+      setVarianteToast('success');
     } catch (error) {
       console.error(error);
 
       setMostrarToast(true);
-      setMensagemToast("Falha ao atualizar Processo.");
-      setVarianteToast("danger");
+      setMensagemToast('Falha ao atualizar Processo.');
+      setVarianteToast('danger');
     }
   };
 
   const formatarData = (dataValue: string) => {
-    let numeros = dataValue.replace(/\D/g, "");
+    let numeros = dataValue.replace(/\D/g, '');
 
     if (numeros.length > 8) {
       numeros = numeros.substring(0, 8);
@@ -259,11 +258,16 @@ export default function EditarProcesso() {
     let formatado = numeros;
 
     if (numeros.length > 2) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2);
+      formatado = numeros.substring(0, 2) + '/' + numeros.substring(2);
     }
 
     if (numeros.length > 4) {
-      formatado = numeros.substring(0, 2) + "/" + numeros.substring(2, 4) + "/" + numeros.substring(4);
+      formatado =
+        numeros.substring(0, 2) +
+        '/' +
+        numeros.substring(2, 4) +
+        '/' +
+        numeros.substring(4);
     }
 
     if (numeros.length === 8) {
@@ -275,51 +279,59 @@ export default function EditarProcesso() {
       const hoje = new Date();
 
       if (dataDigitada.getTime() < hoje.getTime()) {
-        setMessageDataError("*Prazo inválida");
+        setMessageDataError('*Prazo inválida');
       } else {
-        setMessageDataError("");
+        setMessageDataError('');
       }
     }
 
     setPrazo(formatado);
-  }
+  };
 
-  const selecionarAreaDoDireito = async (e:any) => {
+  const selecionarAreaDoDireito = async (e: any) => {
     setAreaDeDireito(e.target.value);
-  }
+  };
 
-  const selecionarTribunal = async (e:any) => {
+  const selecionarTribunal = async (e: any) => {
     setTribunal(e.target.value);
-  }
+  };
 
-  const selecionarStatusDoProcesso = async (e:any) => {
+  const selecionarStatusDoProcesso = async (e: any) => {
     setStatusDoProcesso(e.target.value);
-  }
+  };
 
   const setAdvogado = (advogado: Advogado) => {
     setNomeAdvogado(advogado.nome);
     setAdvogadoId(advogado.id);
-    setNomeAdvogadoSearch("");
-  }
+    setNomeAdvogadoSearch('');
+  };
 
   const setEstagiario = (estagiario: Estagiario) => {
     setNomeEstagiario(estagiario.nome);
     setEstagiarioId(estagiario.id);
-    setNomeEstagiarioSearch("");
-  }
+    setNomeEstagiarioSearch('');
+  };
 
   const token = localStorage.getItem('token');
-  if(!token) return <Navigate to="/login" />
+  if (!token) return <Navigate to="/login" />;
 
   return (
-
     <div className={styles.container}>
-      <button className={styles.backButton} onClick={() => navigate("/processos")}>
+      <button
+        className={styles.backButton}
+        onClick={() => navigate('/processos')}
+      >
         ← Voltar
       </button>
 
       <h1 className={styles.title}>Editar Processo</h1>
-      <form className={styles.form} onSubmit={(e) => { e.preventDefault(); atualizarProcesso(); }}>
+      <form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          atualizarProcesso();
+        }}
+      >
         <div className={styles.inputGroup}>
           <label className={styles.label}>Assistido</label>
           <input
@@ -401,7 +413,9 @@ export default function EditarProcesso() {
                   className={styles.li}
                   key={data.id}
                   onClick={() => setAdvogado(data)}
-                >{data.nome}</li>
+                >
+                  {data.nome}
+                </li>
               ))}
             </ul>
           )}
@@ -423,7 +437,9 @@ export default function EditarProcesso() {
                   className={styles.li}
                   key={data.id}
                   onClick={() => setEstagiario(data)}
-                >{data.nome}</li>
+                >
+                  {data.nome}
+                </li>
               ))}
             </ul>
           )}
@@ -431,22 +447,24 @@ export default function EditarProcesso() {
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Área de Direito</label>
-          <select 
-            className={styles.input} 
-            value={areaDoDireito} 
-            onChange={selecionarAreaDoDireito} 
+          <select
+            className={styles.input}
+            value={areaDoDireito}
+            onChange={selecionarAreaDoDireito}
             required
           >
             <option value="" disabled selected></option>
             {areasDoDireito.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
+              <option key={key} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Tribunal</label>
-          <select 
+          <select
             className={styles.input}
             value={tribunal}
             onChange={selecionarTribunal}
@@ -454,14 +472,16 @@ export default function EditarProcesso() {
           >
             <option value="" disabled selected></option>
             {tribunais.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
+              <option key={key} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
 
         <div className={styles.inputGroup}>
           <label className={styles.label}>Status Do Processo</label>
-          <select 
+          <select
             className={styles.input}
             value={statusDoProcesso}
             onChange={selecionarStatusDoProcesso}
@@ -469,13 +489,18 @@ export default function EditarProcesso() {
           >
             <option value="" disabled selected></option>
             {statusProcesso.map((option, key) => (
-              <option key={key} value={option}>{option}</option>
+              <option key={key} value={option}>
+                {option}
+              </option>
             ))}
           </select>
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Prazo <span className={styles.messageError}>{messageDataError}</span></label>
+          <label className={styles.label}>
+            Prazo{' '}
+            <span className={styles.messageError}>{messageDataError}</span>
+          </label>
           <input
             className={styles.input}
             placeholder="Prazo (DD/MM/AAAA)"
@@ -484,7 +509,7 @@ export default function EditarProcesso() {
             required
           />
         </div>
-     
+
         <div className={styles.inputGroup}>
           <label className={styles.label}>Partes Envolvidas</label>
           <input
@@ -509,7 +534,11 @@ export default function EditarProcesso() {
           Atualizar Processo
         </button>
 
-        <ToastContainer position="top-end" className="p-3" style={{ zIndex: 9999 }}>
+        <ToastContainer
+          position="top-end"
+          className="p-3"
+          style={{ zIndex: 9999 }}
+        >
           <Toast
             show={mostrarToast}
             onClose={() => setMostrarToast(false)}
@@ -523,7 +552,6 @@ export default function EditarProcesso() {
           </Toast>
         </ToastContainer>
       </form>
-      
     </div>
   );
 }
