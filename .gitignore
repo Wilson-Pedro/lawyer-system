@@ -7,3 +7,6 @@ front/web/env
 front/mobile/node_module
 
 front/mobile
+
+.vscode/
+.idea/
