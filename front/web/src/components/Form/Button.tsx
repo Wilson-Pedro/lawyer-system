@@ -6,5 +6,5 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export function Button({ children, ...rest }: ButtonProps) {
-    return <Btn variant = "dark" {...rest}>{children}</Btn>;
+    return <Btn variant = "primary" {...rest}>{children}</Btn>;
 }

@@ -89,12 +89,14 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import CadastrarEstagiario from './features/estagiarios/pages/CadastrarEstagiario';
+import CadastrarAtor from './features/atores/pages/CadastrarAtor';
+import CadastrarAdvogado from './features/advogados/pages/CadastrarAdvogado';
 
 export default function App() {
   return (
     // O BrowserRouter cria o "ambiente" necessário para o useNavigate funcionar
     <BrowserRouter>
-      <CadastrarEstagiario />
+      <CadastrarAdvogado/>
     </BrowserRouter>
   );
 }
