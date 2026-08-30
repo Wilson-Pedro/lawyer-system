@@ -1,5 +1,9 @@
-// import React from 'react';
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
+import { ProtectedRoute } from './features/auth';
+import { ROLES } from './config/roles';
+import Login from './features/auth/pages/Login';
+import { SideBar } from './components/SideBar/SideBar';
+
 // import Home from './screens/Home/Home';
 // import HomeAdmin from './screens/Home/HomeAdmin';
 // import HomeEstagiario from './screens/Home/HomeEstagiario';
@@ -45,8 +49,7 @@
 //                 <Route path="/home/estagiario" element={<HomeEstagiario />} />
 //                 <Route path="/home/advogado" element={<HomeAdvogado />} />
 //                 <Route path="/home/professor" element={<HomeProfessor />} />
-
-//                 <Route path="/processos" element={<Processos />} />
+//                <Route path="/processos" element={<Processos />} />;
 
 //                 <Route path="/cadastrar/assistido" element={<CadastrarAssistido />} />
 //                 <Route path="/cadastrar/estagiario" element={<CadastrarEstagiario />} />
@@ -86,15 +89,43 @@
 //     );
 // src/App.tsx (ou main.tsx)
 // src/App.tsx
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import CadastrarEstagiario from './features/estagiarios/pages/CadastrarEstagiario';
+// import CadastrarEstagiario from './features/estagiarios/pages/CadastrarEstagiario';
+// import CadastrarAtor from './features/atores/pages/CadastrarAtor';
+// import CadastrarAdvogado from './features/advogados/pages/CadastrarAdvogado';
+// import CadastrarAssistido from './features/assistidos/pages/CadastrarAssistido';
 
 export default function App() {
   return (
-    // O BrowserRouter cria o "ambiente" necessário para o useNavigate funcionar
-    <BrowserRouter>
-      <CadastrarEstagiario />
-    </BrowserRouter>
+    <Routes>
+      {/*  ROTAS PÚBLICAS (Qualquer um acessa) */}
+      <Route path="/auth/login" element={<Login />} />
+
+      {/* <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/meu-perfil" element={<div>Meu Perfil</div>} />
+        </Route>
+
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={[ROLES.ADVOGADO, ROLES.ESTAGIARIO]} />
+          }
+        >
+         
+          <Route path="/processos/*" element={<ProcessosRoutes />} />
+        </Route>
+
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={[ROLES.ADMIN, ROLES.COORDENADOR]} />
+          }
+        >
+          <Route
+            path="/configuracoes"
+            element={<div>Configurações do Sistema</div>}
+          />
+        </Route>
+
+        <Route path="*" element={<div>Página não encontrada (404)</div>} />*/}
+    </Routes>
   );
 }

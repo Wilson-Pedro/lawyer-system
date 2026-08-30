@@ -12,7 +12,7 @@ import {
 // import { meuSchemaZod } from "../schemas/estagiariosSchemas";
 
 // import { scrollToTop } from "./../../utils/Utils";
-import { Input } from '../../../components/Form/Imput';
+import { Input } from '../../../components/Form/Input';
 import { Select } from '../../../components/Form/Select';
 import { Button } from '../../../components/Form/Button';
 
