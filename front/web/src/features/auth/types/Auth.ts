@@ -11,3 +11,12 @@ export interface User {
   email: string;
   role: Role;
 }
+
+export interface AuthResponse {
+  id: number;
+  nome: string;
+  email: string;
+  tipoAtor: string;
+  usuarioStatus: string;
+  senha: string;
+}
