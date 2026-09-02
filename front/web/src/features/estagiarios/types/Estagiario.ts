@@ -14,10 +14,12 @@ export const periodoEstagioLabel: Record<PeriodoEstagio, string> = {
 };
 
 export interface EstagiarioRequest {
+  id: number;
   nome: string;
   email: string;
   telefone: string;
   matricula: string;
-  periodo: PeriodoEstagio;
+  periodo: string;
+  usuarioStatus: string;
   senha: string;
 }

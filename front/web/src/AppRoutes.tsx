@@ -3,6 +3,7 @@ import { ProtectedRoute } from './features/auth';
 import { ROLES } from './config/roles';
 import Login from './features/auth/pages/Login';
 import { SideBar } from './components/SideBar/SideBar';
+import CadastrarEstagiario from './features/estagiarios/pages/CadastrarEstagiario';
 
 // import Home from './screens/Home/Home';
 // import HomeAdmin from './screens/Home/HomeAdmin';
@@ -99,6 +100,7 @@ export default function App() {
     <Routes>
       {/*  ROTAS PÚBLICAS (Qualquer um acessa) */}
       <Route path="/auth/login" element={<Login />} />
+      <Route path="/estagiarios/cadastro" element={<CadastrarEstagiario />} />
 
       {/* <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />

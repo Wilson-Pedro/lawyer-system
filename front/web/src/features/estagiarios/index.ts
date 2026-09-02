@@ -1,7 +1,7 @@
 import { estagiariosService } from '../../features/estagiarios/api/estagiariosService';
-import { EstagiarioRequest } from '../../features/estagiarios/types/EstagiarioRequest';
+import { EstagiarioRequest } from './types/Estagiario';
 
-export * from './types/EstagiarioRequest';
+export * from './types/Estagiario';
 
 // 2. Exporta o service para caso outra tela queira buscar dados de estagiários
 export * from './api/estagiariosService';

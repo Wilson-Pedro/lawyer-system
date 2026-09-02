@@ -1,2 +1,2 @@
-export * from './types/AdvogadoRequest';
+export * from './types/Advogado';
 export * from './api/advogadosService';

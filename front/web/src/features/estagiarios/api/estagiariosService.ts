@@ -1,5 +1,5 @@
 import { api } from '../../../config/api';
-import { EstagiarioRequest } from '../types/EstagiarioRequest';
+import { EstagiarioRequest } from '../types/Estagiario';
 
 export const estagiariosService = {
   buscarPeriodos: async (): Promise<string[]> => {

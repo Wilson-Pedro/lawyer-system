@@ -1,5 +1,5 @@
 import { api } from '../../../config/api';
-import { ProcessoRequest } from '../types/ProcessosRequest';
+import { ProcessoRequest } from '../types/Processos';
 
 export const processosService = {
   cadastrar: async (dados: ProcessoRequest): Promise<void> => {
