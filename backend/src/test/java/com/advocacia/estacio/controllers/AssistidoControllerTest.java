@@ -23,10 +23,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.entities.Assistido;
-import com.advocacia.estacio.domain.enums.EstadoCivil;
-import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.modules.assistidos.Assistido;
+import com.advocacia.estacio.modules.pessoas.EstadoCivil;
+import com.advocacia.estacio.modules.assistidos.AssistidoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

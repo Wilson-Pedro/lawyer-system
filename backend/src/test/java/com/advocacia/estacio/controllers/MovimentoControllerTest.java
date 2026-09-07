@@ -15,13 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.MovimentoDto;
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.MovimentoRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
-import com.advocacia.estacio.services.AdvogadoService;
-import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.processos.movimentacoes.MovimentoRepository;
+import com.advocacia.estacio.modules.processos.ProcessoRepository;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
 import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;

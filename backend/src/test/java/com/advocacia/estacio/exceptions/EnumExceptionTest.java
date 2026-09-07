@@ -1,8 +1,14 @@
 package com.advocacia.estacio.exceptions;
 
-import com.advocacia.estacio.domain.enums.*;
-import com.advocacia.estacio.services.AdvogadoService;
-import com.advocacia.estacio.services.DemandaService;
+import com.advocacia.estacio.modules.demandas.enums.EtapaDemanda;
+import com.advocacia.estacio.modules.demandas.enums.RespondidoPor;
+import com.advocacia.estacio.modules.demandas.services.DemandaService;
+import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
+import com.advocacia.estacio.modules.pessoas.EstadoCivil;
+import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.ProcessoStatus;
+import com.advocacia.estacio.modules.processos.Tribunal;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +39,19 @@ class EnumExceptionTest {
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
 	void EnumException_DemandaStatus_getDemandaStatus() {
-		assertThrows(EnumException.class, () -> demandaService.getDemandaStatus(UserRole.COORDENADOR_DO_CURSO));
+		assertThrows(EnumException.class, () -> demandaService.getDemandaStatus(UsuarioRole.COORDENADOR_DO_CURSO));
 	}
 
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por código")
 	void EnumException_DemandaStatus_codigo() {
-		assertThrows(EnumException.class, () -> DemandaStatus.toEnum(20));
+		assertThrows(EnumException.class, () -> EtapaDemanda.toEnum(20));
 	}
 
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para DemandaStatus por status")
 	void EnumException_DemandaStatus_status() {
-		assertThrows(EnumException.class, () -> DemandaStatus.toEnum("error"));
+		assertThrows(EnumException.class, () -> EtapaDemanda.toEnum("error"));
 	}
 
 	// ESTADO CIVIL
@@ -91,13 +97,13 @@ class EnumExceptionTest {
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para StatusProcesso por tipo")
 	void EnumException_StatusProcesso_codigo() {
-		assertThrows(EnumException.class, () -> StatusProcesso.toEnum(6));
+		assertThrows(EnumException.class, () -> ProcessoStatus.toEnum(6));
 	}
 
 	@Test
 	@DisplayName("Deve lançar exceção EnumException para StatusProcesso por tipo")
 	void EnumException_StatusProcesso_tipo() {
-		assertThrows(EnumException.class, () -> StatusProcesso.toEnum("error"));
+		assertThrows(EnumException.class, () -> ProcessoStatus.toEnum("error"));
 	}
 
 	// TIPO DO ATOR

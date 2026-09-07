@@ -4,10 +4,25 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.advocacia.estacio.domain.dto.*;
-import com.advocacia.estacio.domain.entities.*;
-import com.advocacia.estacio.domain.enums.*;
-import com.advocacia.estacio.repositories.*;
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.advogados.AdvogadoRepository;
+import com.advocacia.estacio.modules.assistidos.Assistido;
+import com.advocacia.estacio.modules.assistidos.AssistidoRepository;
+import com.advocacia.estacio.modules.demandas.repositories.DemandaRepository;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
+import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoRepository;
+import com.advocacia.estacio.modules.processos.Processo;
+import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.ProcessoStatus;
+import com.advocacia.estacio.modules.processos.Tribunal;
+import com.advocacia.estacio.modules.processos.ProcessoRepository;
+import com.advocacia.estacio.modules.processos.movimentacoes.MovimentoRepository;
+import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -16,19 +31,18 @@ import com.advocacia.estacio.domain.records.AuthenticationDto;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.exceptions.NumeroDoProcessoExistenteException;
 import com.advocacia.estacio.infra.security.TokenService;
-import com.advocacia.estacio.services.AdvogadoService;
-import com.advocacia.estacio.services.AssistidoService;
-import com.advocacia.estacio.services.EstagiarioService;
-import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 
 @Component
 public class TestUtil {
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+	UsuarioRepository usuarioRepository;
 	
 	@Autowired
-	EstagiarioRepository estagiarioRepository;
+    EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
 	EnderecoRepository enderecoRepository;
@@ -61,7 +75,7 @@ public class TestUtil {
 	EstagiarioService estagiarioService;
 	
 	@Autowired
-    UsuarioAuthServiceImpl usuarioAuthServiceImpl;
+	UsuarioService usuarioService;
 
 	@Autowired
 	DemandaRespondeRepository demandaRespondeRepository;
@@ -82,7 +96,7 @@ public class TestUtil {
 		assistidoRepository.deleteAll();
 		advogadoRepository.deleteAll();
 		enderecoRepository.deleteAll();
-		usuarioAuthRepository.deleteAll();
+		usuarioRepository.deleteAll();
 		desativarAtivarUsuarioPorDataRepository.deleteAll();
 	}
 	
@@ -96,7 +110,7 @@ public class TestUtil {
 
 		return new Processo(null, assistido, numeroDoProcesso, "62354", "Seguro", "3210",
 				LocalDate.now().plusDays(2L), advogado.getNome(), advogado, estagiario, 
-				AreaDoDireito.CIVIL, Tribunal.ESTADUAL, StatusProcesso.TRAMITANDO, "", 
+				AreaDoDireito.CIVIL, Tribunal.ESTADUAL, ProcessoStatus.TRAMITANDO, "",
 				null, LocalDateTime.now());
 	}
 	
@@ -167,17 +181,17 @@ public class TestUtil {
 				"20251208", "Estágio II", "1234");
 	}
 	
-	public UsuarioAuth getUsuarioAuth() {
+	public Usuario getUsuarioAuth() {
 		String senha = new BCryptPasswordEncoder().encode("1234");
-		return new UsuarioAuth("professor@gmail.com", senha, UserRole.ADMIN);
+		return new Usuario("professor@gmail.com", senha, UsuarioRole.ADMIN);
 	}
 
 	public DesativarAtivarUsuarioPorData getDataAtivacaoDto() {
-		return new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
+		return new DesativarAtivarUsuarioPorData(UsuarioRole.ESTAGIARIO, null, UsuarioStatus.ATIVO);
 	}
 
 	public DesativarAtivarUsuarioPorData getDataDesativacaoDto() {
-		return new DesativarAtivarUsuarioPorData(UserRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
+		return new DesativarAtivarUsuarioPorData(UsuarioRole.ESTAGIARIO, null, UsuarioStatus.INATIVO);
 	}
 	
 	public AuthenticationDto getAuthenticationDto() {
@@ -186,9 +200,9 @@ public class TestUtil {
 	
 	public List<RegistroDto> getRegistroDtos() {
 		return List.of(
-				new RegistroDto("professor@gmail.com", "1234", UserRole.ADMIN),
-				new RegistroDto("professor2@gmail.com", "1234", UserRole.ADMIN),
-				new RegistroDto("professor3@gmail.com", "1234", UserRole.ADMIN));
+				new RegistroDto("professor@gmail.com", "1234", UsuarioRole.ADMIN),
+				new RegistroDto("professor2@gmail.com", "1234", UsuarioRole.ADMIN),
+				new RegistroDto("professor3@gmail.com", "1234", UsuarioRole.ADMIN));
 
 	}
 	
@@ -201,7 +215,7 @@ public class TestUtil {
 	}
 	
 	public String getToken() {
-		usuarioAuthServiceImpl.salvar(getRegistroDtos().get(0));
-		return usuarioAuthServiceImpl.login(getAuthenticationDto()).token();
+		usuarioService.salvar(getRegistroDtos().get(0));
+		return usuarioService.login(getAuthenticationDto()).token();
 	}
 }

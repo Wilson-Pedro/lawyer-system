@@ -3,13 +3,13 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.entities.Endereco;
-import com.advocacia.estacio.repositories.EnderecoRepository;
+import com.advocacia.estacio.modules.pessoas.enderecos.Endereco;
+import com.advocacia.estacio.modules.pessoas.enderecos.EnderecoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
@@ -17,7 +17,7 @@ import com.advocacia.estacio.utils.TestUtil;
 class EnderecoServiceTest {
 	
 	@Autowired
-	EnderecoService enderecoService;
+    EnderecoService enderecoService;
 	
 	@Autowired
 	EnderecoRepository enderecoRepository;

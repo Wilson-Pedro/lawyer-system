@@ -24,14 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
 import com.advocacia.estacio.domain.entities.DesativarAtivarUsuarioPorData;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
 import com.advocacia.estacio.domain.records.AuthenticationDto;
-import com.advocacia.estacio.repositories.DesativarAtivarUsuarioPorDataRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.services.EstagiarioService;
-import com.advocacia.estacio.services.impl.UsuarioAuthServiceImpl;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import com.advocacia.estacio.utils.TestUtil;
 import com.advocacia.estacio.utils.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +39,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 class AuthenticationControllerTest {
 	
 	@Autowired
-    UsuarioAuthServiceImpl usuarioAuthServiceImpl;
+	UsuarioService usuarioService;
 
 	@Autowired
 	DesativarAtivarUsuarioPorDataRepository dataRepository;
@@ -86,7 +83,7 @@ class AuthenticationControllerTest {
 	@DisplayName("Deve Realizar Login Pelo Controller")
 	void login() throws Exception {
 		
-		usuarioAuthServiceImpl.salvar(testUtil.getRegistroDtos().get(1));
+		usuarioService.salvar(testUtil.getRegistroDtos().get(1));
 				
 		AuthenticationDto authenticationDto = testUtil.getAuthenticationDto();
 		

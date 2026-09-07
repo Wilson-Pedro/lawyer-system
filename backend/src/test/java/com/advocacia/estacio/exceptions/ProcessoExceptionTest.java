@@ -7,9 +7,8 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.entities.Processo;
-import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.modules.processos.Processo;
+import com.advocacia.estacio.modules.processos.ProcessoRepository;
 import com.advocacia.estacio.services.ProcessoService;
 import com.advocacia.estacio.utils.TestUtil;
 

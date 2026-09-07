@@ -3,16 +3,16 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.modules.usuarios.Usuario;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
 import com.advocacia.estacio.domain.records.RegistroDto;
 import com.advocacia.estacio.infra.security.TokenService;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
@@ -20,7 +20,7 @@ import com.advocacia.estacio.utils.TestUtil;
 class TokenServiceTest {
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+	UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -43,7 +43,7 @@ class TokenServiceTest {
 	@Order(2)
 	@DisplayName("Deve gerar Token")
 	void gerar_token() {
-		usuarioAuthRepository.save(testUtil.getUsuarioAuth());
+		usuarioRepository.save(testUtil.getUsuarioAuth());
 		
 		RegistroDto dto = testUtil.getRegistroDtos().get(0);
 		
@@ -51,7 +51,7 @@ class TokenServiceTest {
 		
 		var auth = authenticationManager.authenticate(usernamePassword);
 		
-		String token = tokenService.generateToken((UsuarioAuth) auth.getPrincipal());
+		String token = tokenService.generateToken((Usuario) auth.getPrincipal());
 		TOKEN = token;
 		assertNotNull(token);
 	}
@@ -62,7 +62,7 @@ class TokenServiceTest {
 	void validar_token() {
 		String login = tokenService.validateToken(TOKEN);
 		
-		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(login);
+		Usuario userAuth = (Usuario) usuarioRepository.findByLogin(login);
 		
 		assertEquals(userAuth.getLogin(), testUtil.getRegistroDtos().get(0).login());
 	}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentação de Erros - API Estácio</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; }
+        h1 { border-bottom: 2px solid #0056b3; padding-bottom: 10px; color: #0056b3; }
+        .error-section { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .error-section h2 { margin-top: 0; color: #d9534f; }
+        .http-status { display: inline-block; background: #eee; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 0.9em; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<h1>Dicionário de Erros da API</h1>
+<p>Esta página documenta os erros que podem ser retornados pela API e como resolvê-los.</p>
+
+<!-- Erro 400: Dados Inválidos -->
+<div class="error-section">
+    <h2 id="dados-invalidos">Dados Inválidos</h2>
+    <span class="http-status">HTTP 400 Bad Request</span>
+    <p><strong>O que significa:</strong> O corpo da requisição possui campos inválidos, em branco ou fora do padrão esperado.</p>
+    <p><strong>Como resolver:</strong> Verifique a lista <code>fields</code> retornada na resposta para identificar quais campos falharam e corrija-os.</p>
+</div>
+
+<!-- Erro 400: Regra de Negócio -->
+<div class="error-section">
+    <h2 id="violacao-regra-negocio">Violação de Regra de Negócio</h2>
+    <span class="http-status">HTTP 400 Bad Request</span>
+    <p><strong>O que significa:</strong> A requisição é válida estruturalmente, mas a ação solicitada fere alguma regra de negócio da aplicação.</p>
+    <p><strong>Como resolver:</strong> Leia a mensagem no campo <code>detail</code> para entender o motivo do bloqueio e ajuste a operação de acordo.</p>
+</div>
+
+<!-- Erro 400: Violação de Integridade -->
+<div class="error-section">
+    <h2 id="violacao-de-integridade">Violação de Integridade</h2>
+    <span class="http-status">HTTP 400 Bad Request</span>
+    <p><strong>O que significa:</strong> A operação tentou referenciar um ID que não existe no banco de dados ou tentou excluir um registro que possui vínculos importantes.</p>
+    <p><strong>Como resolver:</strong> Verifique se os IDs passados (ex: IDs de chaves estrangeiras) estão corretos e existem na base de dados.</p>
+</div>
+
+<!-- Erro 401: Token Inválido -->
+<div class="error-section">
+    <h2 id="token-invalido-ou-ausente">Não Autenticado (Token Inválido)</h2>
+    <span class="http-status">HTTP 401 Unauthorized</span>
+    <p><strong>O que significa:</strong> A requisição não enviou o cabeçalho <code>Authorization: Bearer {token}</code>, ou o token enviado expirou/é inválido.</p>
+    <p><strong>Como resolver:</strong> Faça login novamente na rota <code>/auth/login</code> para obter um novo token JWT e envie-o no cabeçalho da requisição.</p>
+</div>
+
+<!-- Erro 401: Credenciais Inválidas -->
+<div class="error-section">
+    <h2 id="credenciais-invalidas">Credenciais Inválidas</h2>
+    <span class="http-status">HTTP 401 Unauthorized</span>
+    <p><strong>O que significa:</strong> O e-mail ou a senha fornecidos durante a tentativa de login estão incorretos.</p>
+    <p><strong>Como resolver:</strong> Verifique se os dados de acesso foram digitados corretamente e tente novamente.</p>
+</div>
+
+<!-- Erro 403: Acesso Negado -->
+<div class="error-section">
+    <h2 id="acesso-negado">Acesso Negado</h2>
+    <span class="http-status">HTTP 403 Forbidden</span>
+    <p><strong>O que significa:</strong> O seu token é válido, mas o seu perfil (Role) não tem permissão para acessar este recurso. Exemplo: Um estagiário tentando acessar uma rota exclusiva de administrador.</p>
+    <p><strong>Como resolver:</strong> Contate um administrador do sistema para revisar suas permissões.</p>
+</div>
+
+<!-- Erro 403: Conta Bloqueada -->
+<div class="error-section">
+    <h2 id="conta-bloqueada">Conta Bloqueada</h2>
+    <span class="http-status">HTTP 403 Forbidden</span>
+    <p><strong>O que significa:</strong> A conta de usuário está temporariamente suspensa ou em período de férias, impedindo o acesso ao sistema.</p>
+    <p><strong>Como resolver:</strong> Aguarde o término do período de bloqueio ou contate a administração.</p>
+</div>
+
+<!-- Erro 403: Conta Inativa -->
+<div class="error-section">
+    <h2 id="conta-inativa">Conta Inativa</h2>
+    <span class="http-status">HTTP 403 Forbidden</span>
+    <p><strong>O que significa:</strong> A conta de usuário foi desativada ou excluída pelo administrador.</p>
+    <p><strong>Como resolver:</strong> Entre em contato com a administração para solicitar a reativação da conta.</p>
+</div>
+
+<!-- Erro 404: Não Encontrado -->
+<div class="error-section">
+    <h2 id="recurso-nao-encontrado">Recurso Não Encontrado</h2>
+    <span class="http-status">HTTP 404 Not Found</span>
+    <p><strong>O que significa:</strong> O registro, usuário ou recurso solicitado na URL não existe no sistema.</p>
+    <p><strong>Como resolver:</strong> Verifique se o ID ou parâmetro passado na URL está correto.</p>
+</div>
+
+<!-- Erro 409: Conflito -->
+<div class="error-section">
+    <h2 id="conflito-de-dados">Conflito de Dados</h2>
+    <span class="http-status">HTTP 409 Conflict</span>
+    <p><strong>O que significa:</strong> Você tentou cadastrar um dado que já existe no banco de dados e deve ser único (como uma Matrícula ou E-mail).</p>
+    <p><strong>Como resolver:</strong> Verifique se o usuário já possui cadastro ou utilize dados diferentes na requisição.</p>
+</div>
+
+<!-- Erro 500: Erro Interno -->
+<div class="error-section">
+    <h2 id="erro-interno-servidor">Erro Interno do Servidor</h2>
+    <span class="http-status">HTTP 500 Internal Server Error</span>
+    <p><strong>O que significa:</strong> Ocorreu uma falha inesperada no servidor durante o processamento da sua requisição.</p>
+    <p><strong>Como resolver:</strong> Tente novamente mais tarde. Se o erro persistir, acione o suporte técnico informando a hora exata da falha e a ação que tentou realizar.</p>
+</div>
+
+</body>
+</html>

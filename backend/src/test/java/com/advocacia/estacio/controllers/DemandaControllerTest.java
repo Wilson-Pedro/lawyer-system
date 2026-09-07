@@ -6,16 +6,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import com.advocacia.estacio.domain.dto.DemandaStatusDto;
-import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.Professor;
-import com.advocacia.estacio.domain.enums.DemandaStatus;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
+import com.advocacia.estacio.modules.demandas.entities.Demanda;
+import com.advocacia.estacio.modules.professores.Professor;
+import com.advocacia.estacio.modules.demandas.enums.EtapaDemanda;
+import com.advocacia.estacio.modules.advogados.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AtorRepository;
-import com.advocacia.estacio.services.AdvogadoService;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
 import com.advocacia.estacio.services.AtorService;
-import com.advocacia.estacio.services.DemandaService;
-import com.advocacia.estacio.services.EstagiarioService;
+import com.advocacia.estacio.modules.demandas.services.DemandaService;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,10 +22,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.DemandaDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.repositories.DemandaRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.demandas.repositories.DemandaRepository;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -157,7 +155,7 @@ class DemandaControllerTest {
 
         Demanda demanda = demandaRepository.findById(id).get();
 
-        assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatusAluno());
+        assertEquals(EtapaDemanda.DEVOLVIDO, demanda.getDemandaStatusAluno());
     }
 
 	@Test
@@ -233,7 +231,7 @@ class DemandaControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$", hasSize(DemandaStatus.values().length)))
+				.andExpect(jsonPath("$", hasSize(EtapaDemanda.values().length)))
 				.andExpect(jsonPath("$[0]", equalTo("Corrigido")))
 				.andExpect(jsonPath("$[1]", equalTo("Em Correção")))
 				.andExpect(jsonPath("$[2]", equalTo("Devolvido")))

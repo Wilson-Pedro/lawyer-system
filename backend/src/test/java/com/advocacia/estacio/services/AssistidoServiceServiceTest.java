@@ -1,15 +1,14 @@
 package com.advocacia.estacio.services;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.AssistidoDto;
-import com.advocacia.estacio.domain.entities.Assistido;
-import com.advocacia.estacio.domain.enums.EstadoCivil;
-import com.advocacia.estacio.repositories.AssistidoRepository;
+import com.advocacia.estacio.modules.assistidos.Assistido;
+import com.advocacia.estacio.modules.pessoas.EstadoCivil;
+import com.advocacia.estacio.modules.assistidos.AssistidoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AssistidoServiceServiceTest {
 	
 	@Autowired
-	AssistidoService assistidoService;
+    AssistidoService assistidoService;
 	
 	@Autowired
 	AssistidoRepository assistidoRepository;

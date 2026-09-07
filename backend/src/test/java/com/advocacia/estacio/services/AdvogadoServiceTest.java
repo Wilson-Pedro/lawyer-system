@@ -1,18 +1,17 @@
 package com.advocacia.estacio.services;
 
-import com.advocacia.estacio.domain.dto.ResponseMinDto;
 import com.advocacia.estacio.domain.entities.Ator;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.AdvogadoDto;
-import com.advocacia.estacio.domain.entities.Advogado;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.advogados.AdvogadoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
@@ -30,7 +29,7 @@ class AdvogadoServiceTest {
 	AdvogadoRepository advogadoRepository;
 
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+    UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -65,7 +64,7 @@ class AdvogadoServiceTest {
 		assertEquals(UsuarioStatus.ATIVO, advogado.getUsuarioAuth().getUsuarioStatus());
 		
 		assertEquals(1, advogadoRepository.count());
-		assertEquals(1, usuarioAuthRepository.count());
+		assertEquals(1, usuarioRepository.count());
 
 	}
 	
@@ -101,7 +100,7 @@ class AdvogadoServiceTest {
 
 		List<Long> ids = advogadoRepository.findAll().stream().map(Advogado::getId).toList();
 
-		List<UsuarioAuth> usuariosAuth = advogadoService.buscarUsuariosAuthPorId(ids);
+		List<Usuario> usuariosAuth = advogadoService.buscarUsuariosAuthPorId(ids);
 
 		assertNotNull(usuariosAuth);
 		assertEquals(2, usuariosAuth.size());

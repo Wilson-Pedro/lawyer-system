@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.services.AssistidoService;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
 
 @SpringBootTest
 class AssistidoExceptionTest {

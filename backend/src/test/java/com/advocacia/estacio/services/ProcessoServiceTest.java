@@ -2,23 +2,22 @@ package com.advocacia.estacio.services;
 
 import java.util.List;
 
-import com.advocacia.estacio.domain.enums.AreaDoDireito;
-import com.advocacia.estacio.domain.enums.StatusProcesso;
-import com.advocacia.estacio.domain.enums.Tribunal;
+import com.advocacia.estacio.modules.processos.AreaDoDireito;
+import com.advocacia.estacio.modules.processos.ProcessoStatus;
+import com.advocacia.estacio.modules.processos.Tribunal;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.ProcessoDto;
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.dto.ProcessoUpdate;
-import com.advocacia.estacio.domain.entities.Advogado;
-import com.advocacia.estacio.domain.entities.Assistido;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.entities.Processo;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.ProcessoRepository;
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.assistidos.Assistido;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.processos.Processo;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.processos.ProcessoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -149,7 +148,7 @@ class ProcessoServiceTest {
 		List<AreaDoDireito> areasDoDireito = processoService.getAreasDoDireito();
 
 		assertEquals(AreaDoDireito.CIVIL, areasDoDireito.get(0));
-		assertEquals(AreaDoDireito.TRABALHO, areasDoDireito.get(1));
+		assertEquals(AreaDoDireito.TRABALHISTA, areasDoDireito.get(1));
 		assertEquals(AreaDoDireito.PREVIDENCIARIO, areasDoDireito.get(2));
 	}
 
@@ -166,10 +165,10 @@ class ProcessoServiceTest {
 	@Test
 	@DisplayName("Deve buscar Status do Processo")
 	void buscar_status_processo() {
-		List<StatusProcesso> statusProcesso = processoService.getProcessoStatus();
+		List<ProcessoStatus> processoStatus = processoService.getProcessoStatus();
 
-		assertEquals(StatusProcesso.TRAMITANDO, statusProcesso.get(0));
-		assertEquals(StatusProcesso.SUSPENSO, statusProcesso.get(1));
-		assertEquals(StatusProcesso.ARQUIVADO, statusProcesso.get(2));
+		assertEquals(ProcessoStatus.TRAMITANDO, processoStatus.get(0));
+		assertEquals(ProcessoStatus.SUSPENSO, processoStatus.get(1));
+		assertEquals(ProcessoStatus.ARQUIVADO, processoStatus.get(2));
 	}
 }

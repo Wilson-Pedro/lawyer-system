@@ -4,8 +4,9 @@ import static com.advocacia.estacio.utils.Utils.localDateToString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.advocacia.estacio.domain.dto.DesativarAtivarUsuarioPorDataDto;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import com.advocacia.estacio.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -16,17 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.domain.enums.UserRole;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
 import com.advocacia.estacio.domain.records.EntidadeMinDto;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -40,7 +38,7 @@ class EstagiarioServiceTest {
 	EstagiarioRepository estagiarioRepository;
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+    UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -56,7 +54,7 @@ class EstagiarioServiceTest {
 	@DisplayName("Deve Salvar Estagiario No Banco de Dados Pelo Service")
 	void salvar_estagiario() {
 		assertEquals(0, estagiarioRepository.count());
-		assertEquals(0, usuarioAuthRepository.count());
+		assertEquals(0, usuarioRepository.count());
 		
 		Estagiario estagiarioSalvo = estagiarioService.salvar(testUtil.getEstagiarioDto());
 		
@@ -66,11 +64,11 @@ class EstagiarioServiceTest {
 		assertEquals(PeriodoEstagio.ESTAGIO_I, estagiarioSalvo.getPeriodo());
 		assertEquals(UsuarioStatus.ATIVO, estagiarioSalvo.getUsuarioAuth().getUsuarioStatus());
 		
-		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(estagiarioSalvo.getEmail());
+		Usuario userAuth = (Usuario) usuarioRepository.findByLogin(estagiarioSalvo.getEmail());
 		
 		assertEquals(1, estagiarioRepository.count());
-		assertEquals(1, usuarioAuthRepository.count());
-		assertEquals(UserRole.ESTAGIARIO, userAuth.getRole());
+		assertEquals(1, usuarioRepository.count());
+		assertEquals(UsuarioRole.ESTAGIARIO, userAuth.getRole());
 	}
 	
 	@Test
@@ -92,8 +90,8 @@ class EstagiarioServiceTest {
 		assertEquals(PeriodoEstagio.ESTAGIO_II, estagiarioAtualizado.getPeriodo());
 		assertEquals(UsuarioStatus.INATIVO, estagiarioAtualizado.getUsuarioAuth().getUsuarioStatus());
 		
-		UsuarioAuth userAuth = (UsuarioAuth) 
-				usuarioAuthRepository.findByLogin(estagiarioAtualizado.getEmail());
+		Usuario userAuth = (Usuario)
+				usuarioRepository.findByLogin(estagiarioAtualizado.getEmail());
 		
 		assertEquals("pedro22@gmail.com", userAuth.getLogin());
 		
@@ -109,7 +107,7 @@ class EstagiarioServiceTest {
 
 		List<Long> ids = estagiarioRepository.findAll().stream().map(Estagiario::getId).toList();
 
-		List<UsuarioAuth> usuariosAuth = estagiarioService.buscarUsuariosAuthPorId(ids);
+		List<Usuario> usuariosAuth = estagiarioService.buscarUsuariosAuthPorId(ids);
 
 		assertEquals(2, usuariosAuth.size());
 		assertEquals("pedro22@gmail.com", usuariosAuth.get(0).getLogin());

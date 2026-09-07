@@ -1,24 +1,24 @@
 package com.advocacia.estacio.services;
 
-import com.advocacia.estacio.domain.dto.DemandaStatusDto;
-import com.advocacia.estacio.domain.entities.Advogado;
-import com.advocacia.estacio.domain.entities.Professor;
-import com.advocacia.estacio.domain.enums.DemandaStatus;
-import com.advocacia.estacio.domain.enums.Tempestividade;
-import com.advocacia.estacio.domain.enums.TipoDoAtor;
-import com.advocacia.estacio.domain.enums.UserRole;
-import com.advocacia.estacio.repositories.AdvogadoRepository;
+import com.advocacia.estacio.modules.advogados.Advogado;
+import com.advocacia.estacio.modules.professores.Professor;
+import com.advocacia.estacio.modules.demandas.enums.EtapaDemanda;
+import com.advocacia.estacio.modules.demandas.enums.Tempestividade;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioRole;
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.demandas.services.DemandaService;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
+import com.advocacia.estacio.modules.advogados.AdvogadoRepository;
 import com.advocacia.estacio.repositories.AtorRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 
-import com.advocacia.estacio.domain.dto.DemandaDto;
-import com.advocacia.estacio.domain.entities.Demanda;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.repositories.DemandaRepository;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.modules.demandas.entities.Demanda;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.demandas.repositories.DemandaRepository;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
@@ -87,9 +87,9 @@ class DemandaServiceTest {
 		assertEquals("2025-11-12", demanda.getPrazo().toString());
 		assertEquals("2025-11-02", demanda.getPrazoDocumentos().toString());
 		assertEquals(Tempestividade.DENTRO_DO_PRAZO, demanda.getTempestividade());
-		assertEquals(DemandaStatus.AGUARDANDO_ALUNO, demanda.getDemandaStatusAluno());
-		assertEquals(DemandaStatus.NULL, demanda.getDemandaStatusProfessor());
-		assertEquals(DemandaStatus.NULL, demanda.getDemandaStatusAdvogado());
+		assertEquals(EtapaDemanda.AGUARDANDO_ALUNO, demanda.getDemandaStatusAluno());
+		assertEquals(EtapaDemanda.NULL, demanda.getDemandaStatusProfessor());
+		assertEquals(EtapaDemanda.NULL, demanda.getDemandaStatusAdvogado());
 
 		assertEquals(1, demandaRepository.count());
 	}
@@ -126,7 +126,7 @@ class DemandaServiceTest {
 
 		Demanda demanda = demandaRepository.findById(id).get();
 
-		assertEquals(DemandaStatus.DEVOLVIDO, demanda.getDemandaStatusAluno());
+		assertEquals(EtapaDemanda.DEVOLVIDO, demanda.getDemandaStatusAluno());
 	}
 
 	@Test
@@ -141,7 +141,7 @@ class DemandaServiceTest {
 
 		Demanda demanda = demandaRepository.findById(id).get();
 
-		assertEquals(DemandaStatus.RECEBIDO, demanda.getDemandaStatusProfessor());
+		assertEquals(EtapaDemanda.RECEBIDO, demanda.getDemandaStatusProfessor());
 	}
 
 
@@ -157,7 +157,7 @@ class DemandaServiceTest {
 
 		Demanda demanda = demandaRepository.findById(id).get();
 
-		assertEquals(DemandaStatus.PROTOCOLADO, demanda.getDemandaStatusAdvogado());
+		assertEquals(EtapaDemanda.PROTOCOLADO, demanda.getDemandaStatusAdvogado());
 	}
 	
 	@Test
@@ -256,46 +256,46 @@ class DemandaServiceTest {
 	@DisplayName("Deve buscar Demanda Status Do ADMIN pelo Service")
 	void buscar_demanda_status_admin() {
 
-		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.ADMIN);
+		List<EtapaDemanda> etapaDemandas = demandaService.getDemandaStatus(UsuarioRole.ADMIN);
 
-		assertEquals(demandaStatus.size(), DemandaStatus.values().length);
+		assertEquals(etapaDemandas.size(), EtapaDemanda.values().length);
 
-		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(0));
-		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(1));
-		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
-		assertEquals(DemandaStatus.DENTRO_DO_PRAZO, demandaStatus.get(3));
-		assertEquals(DemandaStatus.FORA_DO_PRAZO, demandaStatus.get(4));
-		assertEquals(DemandaStatus.RECEBIDO, demandaStatus.get(5));
-		assertEquals(DemandaStatus.PROTOCOLADO, demandaStatus.get(6));
-		assertEquals(DemandaStatus.AGUARDANDO_PROFESSOR, demandaStatus.get(7));
-		assertEquals(DemandaStatus.AGUARDANDO_ADVOGADO, demandaStatus.get(8));
-		assertEquals(DemandaStatus.AGUARDANDO_ALUNO, demandaStatus.get(9));
+		assertEquals(EtapaDemanda.CORRIGIDO, etapaDemandas.get(0));
+		assertEquals(EtapaDemanda.EM_CORRECAO, etapaDemandas.get(1));
+		assertEquals(EtapaDemanda.DEVOLVIDO, etapaDemandas.get(2));
+		assertEquals(EtapaDemanda.DENTRO_DO_PRAZO, etapaDemandas.get(3));
+		assertEquals(EtapaDemanda.FORA_DO_PRAZO, etapaDemandas.get(4));
+		assertEquals(EtapaDemanda.RECEBIDO, etapaDemandas.get(5));
+		assertEquals(EtapaDemanda.PROTOCOLADO, etapaDemandas.get(6));
+		assertEquals(EtapaDemanda.AGUARDANDO_PROFESSOR, etapaDemandas.get(7));
+		assertEquals(EtapaDemanda.AGUARDANDO_ADVOGADO, etapaDemandas.get(8));
+		assertEquals(EtapaDemanda.AGUARDANDO_ALUNO, etapaDemandas.get(9));
 	}
 
 	@Test
 	@DisplayName("Deve buscar Demanda Status Do PROFESSOR pelo Service")
 	void buscar_demanda_status_professor() {
 
-		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.PROFESSOR);
+		List<EtapaDemanda> etapaDemandas = demandaService.getDemandaStatus(UsuarioRole.PROFESSOR);
 
-		assertEquals(5, demandaStatus.size());
+		assertEquals(5, etapaDemandas.size());
 
-		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(0));
-		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(1));
-		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
-		assertEquals(DemandaStatus.DENTRO_DO_PRAZO, demandaStatus.get(3));
-		assertEquals(DemandaStatus.FORA_DO_PRAZO, demandaStatus.get(4));
+		assertEquals(EtapaDemanda.EM_CORRECAO, etapaDemandas.get(0));
+		assertEquals(EtapaDemanda.CORRIGIDO, etapaDemandas.get(1));
+		assertEquals(EtapaDemanda.DEVOLVIDO, etapaDemandas.get(2));
+		assertEquals(EtapaDemanda.DENTRO_DO_PRAZO, etapaDemandas.get(3));
+		assertEquals(EtapaDemanda.FORA_DO_PRAZO, etapaDemandas.get(4));
 	}
 	@Test
 	@DisplayName("Deve buscar Demanda Status Do ADVOGADO pelo Service")
 	void buscar_demanda_status_advogado() {
 
-		List<DemandaStatus> demandaStatus = demandaService.getDemandaStatus(UserRole.ADVOGADO);
+		List<EtapaDemanda> etapaDemandas = demandaService.getDemandaStatus(UsuarioRole.ADVOGADO);
 
-		assertEquals(3, demandaStatus.size());
+		assertEquals(3, etapaDemandas.size());
 
-		assertEquals(DemandaStatus.EM_CORRECAO, demandaStatus.get(0));
-		assertEquals(DemandaStatus.CORRIGIDO, demandaStatus.get(1));
-		assertEquals(DemandaStatus.DEVOLVIDO, demandaStatus.get(2));
+		assertEquals(EtapaDemanda.EM_CORRECAO, etapaDemandas.get(0));
+		assertEquals(EtapaDemanda.CORRIGIDO, etapaDemandas.get(1));
+		assertEquals(EtapaDemanda.DEVOLVIDO, etapaDemandas.get(2));
 	}
 }

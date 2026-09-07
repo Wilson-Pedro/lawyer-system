@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.advocacia.estacio.domain.entities.*;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.domain.enums.TipoDoAtor;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.professores.Professor;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.Usuario;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -19,7 +19,7 @@ import org.springframework.data.domain.Page;
 
 import com.advocacia.estacio.domain.dto.AtorDto;
 import com.advocacia.estacio.repositories.AtorRepository;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 import java.util.List;
@@ -35,7 +35,7 @@ class AtorServiceTest {
 	AtorRepository atorRepository;
 	
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+    UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -51,7 +51,7 @@ class AtorServiceTest {
 	@DisplayName("Deve Salvar Coordenador No Banco De Dados Pelo Service")
 	void salvar_coordenador() {
 		assertEquals(0, atorRepository.count());
-		assertEquals(0, usuarioAuthRepository.count());
+		assertEquals(0, usuarioRepository.count());
 		
 		Ator ator = atorService.salvar(testUtil.getAtores().get(0));
 		
@@ -63,10 +63,10 @@ class AtorServiceTest {
 		assertEquals("Coordenador do curso", ator.getTipoDoAtor().getTipo());
 		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
-		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		Usuario userAuth = (Usuario) usuarioRepository.findByLogin(ator.getEmail());
 		
 		assertEquals(1, atorRepository.count());
-		assertEquals(1, usuarioAuthRepository.count());
+		assertEquals(1, usuarioRepository.count());
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 
@@ -85,10 +85,10 @@ class AtorServiceTest {
 		assertEquals("Secretário", ator.getTipoDoAtor().getTipo());
 		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
-		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		Usuario userAuth = (Usuario) usuarioRepository.findByLogin(ator.getEmail());
 		
 		assertEquals(2, atorRepository.count());
-		assertEquals(2, usuarioAuthRepository.count());
+		assertEquals(2, usuarioRepository.count());
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 	
@@ -107,10 +107,10 @@ class AtorServiceTest {
 		assertEquals("Professor", ator.getTipoDoAtor().getTipo());
 		assertEquals(UsuarioStatus.ATIVO, ator.getUsuarioAuth().getUsuarioStatus());
 		
-		UsuarioAuth userAuth = (UsuarioAuth) usuarioAuthRepository.findByLogin(ator.getEmail());
+		Usuario userAuth = (Usuario) usuarioRepository.findByLogin(ator.getEmail());
 		
 		assertEquals(3, atorRepository.count());
-		assertEquals(3, usuarioAuthRepository.count());
+		assertEquals(3, usuarioRepository.count());
 		assertEquals(ator.getTipoDoAtor().getTipo(), userAuth.getRole().getRole());
 	}
 	
@@ -141,7 +141,7 @@ class AtorServiceTest {
 
 		List<Long> ids = atorRepository.findAll().stream().map(Ator::getId).toList();
 
-		List<UsuarioAuth> usuariosAuth = atorService.buscarUsuariosAuthPorId(ids);
+		List<Usuario> usuariosAuth = atorService.buscarUsuariosAuthPorId(ids);
 
 		assertEquals(3, usuariosAuth.size());
 		assertEquals("roberto22@gmail.com", usuariosAuth.get(0).getLogin());

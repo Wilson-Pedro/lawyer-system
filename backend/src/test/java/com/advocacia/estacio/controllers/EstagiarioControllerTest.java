@@ -8,11 +8,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.advocacia.estacio.domain.dto.RequestIds;
-import com.advocacia.estacio.domain.entities.UsuarioAuth;
-import com.advocacia.estacio.domain.enums.UsuarioStatus;
-import com.advocacia.estacio.repositories.UsuarioAuthRepository;
-import com.advocacia.estacio.services.EstagiarioService;
+import com.advocacia.estacio.modules.usuarios.Usuario;
+import com.advocacia.estacio.modules.usuarios.enums.UsuarioStatus;
+import com.advocacia.estacio.modules.usuarios.UsuarioRepository;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,10 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.advocacia.estacio.domain.dto.EstagiarioDto;
-import com.advocacia.estacio.domain.entities.Estagiario;
-import com.advocacia.estacio.domain.enums.PeriodoEstagio;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
+import com.advocacia.estacio.modules.estagiarios.Estagiario;
+import com.advocacia.estacio.modules.estagiarios.PeriodoEstagio;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
 import com.advocacia.estacio.utils.TestUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -41,7 +39,7 @@ class EstagiarioControllerTest {
 	EstagiarioService estagiarioService;
 
 	@Autowired
-	UsuarioAuthRepository usuarioAuthRepository;
+    UsuarioRepository usuarioRepository;
 	
 	@Autowired
 	TestUtil testUtil;
@@ -208,9 +206,9 @@ class EstagiarioControllerTest {
 	void desativar_usuarios() throws Exception {
 
 		Estagiario estagiario = estagiarioRepository.findAll().get(0);
-		UsuarioAuth auth = estagiario.getUsuarioAuth();
+		Usuario auth = estagiario.getUsuarioAuth();
 		auth.setUsuarioStatus(UsuarioStatus.ATIVO);
-		usuarioAuthRepository.save(auth);
+		usuarioRepository.save(auth);
 
 		assertEquals(UsuarioStatus.ATIVO, estagiario.getUsuarioAuth().getUsuarioStatus());
 

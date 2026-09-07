@@ -3,15 +3,15 @@ package com.advocacia.estacio.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.advocacia.estacio.modules.advogados.AdvogadoService;
+import com.advocacia.estacio.modules.assistidos.AssistidoService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.advocacia.estacio.domain.dto.MovimentoDto;
-import com.advocacia.estacio.domain.dto.ProcessoRequestDto;
-import com.advocacia.estacio.domain.entities.Movimento;
-import com.advocacia.estacio.repositories.EstagiarioRepository;
-import com.advocacia.estacio.repositories.MovimentoRepository;
+import com.advocacia.estacio.modules.processos.movimentacoes.Movimento;
+import com.advocacia.estacio.modules.estagiarios.EstagiarioRepository;
+import com.advocacia.estacio.modules.processos.movimentacoes.MovimentoRepository;
 import com.advocacia.estacio.utils.TestUtil;
 
 @SpringBootTest
